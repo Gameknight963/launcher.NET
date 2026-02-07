@@ -16,7 +16,7 @@ namespace launcherdotnet
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            await Install.DownloadAndInstallGameAsync("bujehvbe", Path.Combine(Directory.GetCurrentDirectory(), "Games"), SetStatus);
+            await Install.DownloadAndInstallGameAsync("bujehvbe", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Games"), SetStatus);
         }
     }
 }
