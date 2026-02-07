@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             button1 = new Button();
-            listBox1 = new ListBox();
+            gamesList = new ListBox();
             status = new Label();
             SuspendLayout();
             // 
@@ -43,13 +43,13 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
-            // listBox1
+            // gamesList
             // 
-            listBox1.FormattingEnabled = true;
-            listBox1.Location = new Point(510, 239);
-            listBox1.Name = "listBox1";
-            listBox1.Size = new Size(278, 199);
-            listBox1.TabIndex = 1;
+            gamesList.FormattingEnabled = true;
+            gamesList.Location = new Point(510, 239);
+            gamesList.Name = "gamesList";
+            gamesList.Size = new Size(278, 199);
+            gamesList.TabIndex = 1;
             // 
             // status
             // 
@@ -60,15 +60,15 @@
             status.TabIndex = 2;
             status.Text = "label1";
             // 
-            // Form1
+            // LauncherForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(status);
-            Controls.Add(listBox1);
+            Controls.Add(gamesList);
             Controls.Add(button1);
-            Name = "Form1";
+            Name = "LauncherForm";
             Text = "Form1";
             ResumeLayout(false);
             PerformLayout();
@@ -77,7 +77,7 @@
         #endregion
 
         private Button button1;
-        private ListBox listBox1;
+        private ListBox gamesList;
         private Label status;
     }
 }
