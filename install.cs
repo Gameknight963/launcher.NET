@@ -7,13 +7,15 @@ namespace launcherdotnet
 {
     public class Install
     {
-        public static async Task<string> DownloadAndInstallGameAsync(string gameIdOrUrl, string destinationDir)
+        public static async Task<string> DownloadAndInstallGameAsync(string gameIdOrUrl, string destinationDir, Action<string> setStatus)
         {
+            setStatus("Preparing temporary directory...");
             string tempDir = Path.Combine(destinationDir, "temp");
             if (Directory.Exists(tempDir))
                 Directory.Delete(tempDir, true);
             Directory.CreateDirectory(tempDir);
-
+            
+            setStatus("Downloading...");
             string zipPath = Path.Combine(tempDir, "dummyGame.zip");
             if (!File.Exists(zipPath))
             {
@@ -28,6 +30,7 @@ namespace launcherdotnet
             }
             await Task.Delay(500); // simulate async download
 
+            setStatus($"Extracting {zipPath}...");
             string extractDir = Path.Combine(tempDir, "extracted");
             Directory.CreateDirectory(extractDir);
             ZipFile.ExtractToDirectory(zipPath, extractDir);
@@ -59,10 +62,11 @@ namespace launcherdotnet
                         MessageBoxIcon.Information);
             }
 
-            // clean up
+            setStatus("Cleaning up...");
             Directory.Delete(tempDir, true);
 
             Console.WriteLine($"[INFO] Installed game to {finalFolder}");
+            setStatus($"Installed to {finalFolder}");
             return finalFolder;
         }
     }
