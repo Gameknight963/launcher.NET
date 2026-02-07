@@ -43,8 +43,21 @@ namespace launcherdotnet
 
             string finalFolder = Path.Combine(destinationDir, Path.GetFileName(extractedFolder));
             if (Directory.Exists(finalFolder))
-                Directory.Delete(finalFolder, true);
-            Directory.Move(extractedFolder, finalFolder);
+            {
+                DialogResult result = MessageBox.Show("An instance of the downloaded version already exists. Overwrite?",
+                    "Overwrite? ",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
+                {
+                    Directory.Delete(finalFolder, true);
+                    Directory.Move(extractedFolder, finalFolder);
+                }
+                if (result == DialogResult.No)
+                    MessageBox.Show("Install aborted.",
+                        "Notice", MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+            }
 
             // clean up
             Directory.Delete(tempDir, true);
