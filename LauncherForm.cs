@@ -16,7 +16,6 @@ namespace launcherdotnet
         public void UpdateGameList(ListBox listBox, LauncherData data)
         {
             listBox.Items.Clear();
-
             foreach (var game in data.Versions)
             {
                 listBox.Items.Add(game.Label);
