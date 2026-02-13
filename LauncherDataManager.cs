@@ -37,6 +37,7 @@ namespace launcherdotnet
     {
         public string Label { get; set; } = "";
         public string Path { get; set; } = "";
+        public string UniqueID { get; set; } = Guid.NewGuid().ToString();
     }
     public class LauncherData
     {
