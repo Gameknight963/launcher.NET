@@ -32,6 +32,8 @@
             status = new Label();
             label1 = new Label();
             gamesView = new ListView();
+            LabelColumn = new ColumnHeader();
+            PathColumn = new ColumnHeader();
             SuspendLayout();
             // 
             // button1
@@ -66,11 +68,24 @@
             // 
             // gamesView
             // 
+            gamesView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            gamesView.Columns.AddRange(new ColumnHeader[] { LabelColumn, PathColumn });
             gamesView.Location = new Point(12, 27);
             gamesView.Name = "gamesView";
-            gamesView.Size = new Size(276, 389);
+            gamesView.Size = new Size(504, 389);
             gamesView.TabIndex = 4;
             gamesView.UseCompatibleStateImageBehavior = false;
+            gamesView.View = View.Details;
+            // 
+            // LabelColumn
+            // 
+            LabelColumn.Text = "Name";
+            LabelColumn.Width = 300;
+            // 
+            // PathColumn
+            // 
+            PathColumn.Text = "Path";
+            PathColumn.Width = 500;
             // 
             // LauncherForm
             // 
@@ -93,5 +108,7 @@
         private Label status;
         private Label label1;
         private ListView gamesView;
+        private ColumnHeader LabelColumn;
+        private ColumnHeader PathColumn;
     }
 }
