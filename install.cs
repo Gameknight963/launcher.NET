@@ -18,6 +18,7 @@ namespace launcherdotnet
             
             setStatus("Downloading...");
             
+            // create a dummy directory, i'm yet to make an actual download function
             string zipPath = Path.Combine(tempDir, "dummyGame.zip");
             if (!File.Exists(zipPath))
             {
@@ -42,9 +43,11 @@ namespace launcherdotnet
                 .ToList();
 
             if (extractedItems.Count != 1)
-                throw new Exception("ZIP should contain exactly one folder or file at top level.");
+                throw new InvalidOperationException("ZIP should contain exactly one folder or file at top level.");
 
             string extractedFolder = extractedItems[0];
+            Directory.Move(extractedFolder, Path.Combine(extractDir, UserChosenLabel));
+            extractedFolder = Path.Combine(extractDir, UserChosenLabel);
 
             string finalFolder = Path.Combine(destinationDir, Path.GetFileName(extractedFolder));
 
