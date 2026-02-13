@@ -57,6 +57,7 @@ namespace launcherdotnet
                 gamesView.SelectedItems[0].Text, // legends will remember salamalonekabatrabaslatrowerebakaedro
                 SetStatus);
             RereadLauncherData(); // MUST do this here
+            // todo: fix duplication on install
             UpdateGameList(gamesView, Data);
         }
 
