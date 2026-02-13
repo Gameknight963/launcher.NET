@@ -31,6 +31,7 @@
             button1 = new Button();
             gamesList = new ListBox();
             status = new Label();
+            label1 = new Label();
             SuspendLayout();
             // 
             // button1
@@ -48,9 +49,9 @@
             // 
             gamesList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gamesList.FormattingEnabled = true;
-            gamesList.Location = new Point(12, 213);
+            gamesList.Location = new Point(12, 33);
             gamesList.Name = "gamesList";
-            gamesList.Size = new Size(278, 199);
+            gamesList.Size = new Size(278, 379);
             gamesList.TabIndex = 1;
             gamesList.SelectedIndexChanged += gamesList_SelectedIndexChanged;
             // 
@@ -64,11 +65,21 @@
             status.TabIndex = 2;
             status.Text = "Status will appear here";
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(12, 9);
+            label1.Name = "label1";
+            label1.Size = new Size(103, 15);
+            label1.TabIndex = 3;
+            label1.Text = "Installed instances";
+            // 
             // LauncherForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label1);
             Controls.Add(status);
             Controls.Add(gamesList);
             Controls.Add(button1);
@@ -83,5 +94,6 @@
         private Button button1;
         private ListBox gamesList;
         private Label status;
+        private Label label1;
     }
 }
