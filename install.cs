@@ -8,7 +8,7 @@ namespace launcherdotnet
 {
     public class Install
     {
-        public static async Task<string?> DownloadAndInstallGameAsync(string gameIdOrUrl, string destinationDir, string UserChosenLabel, GameInfo installTo, Action<string> setStatus)
+        public static async Task<string?> DownloadAndInstallGameAsync(string gameIdOrUrl, string destinationDir, string UserChosenLabel, Action<string> setStatus)
         {
             // installTo MUST exist before installation! This will probably change in the future
             setStatus("Preparing temporary directory...");
