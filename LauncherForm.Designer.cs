@@ -63,7 +63,6 @@
             status.Size = new Size(125, 15);
             status.TabIndex = 2;
             status.Text = "Status will appear here";
-            status.Click += this.status_Click;
             // 
             // LauncherForm
             // 
