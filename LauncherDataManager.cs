@@ -40,7 +40,7 @@ namespace launcherdotnet
     }
     public class LauncherData
     {
-        public string Name { get; set; } = "Game";
+        public string? Name { get; set; }
         public List<GameInfo> Versions { get; set; } = new List<GameInfo>();
     }
 }

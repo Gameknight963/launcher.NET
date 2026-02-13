@@ -8,7 +8,7 @@ namespace launcherdotnet
 {
     public class Install
     {
-        public static async Task<string?> DownloadAndInstallGameAsync(string gameIdOrUrl, string destinationDir, Action<string> setStatus)
+        public static async Task<string?> DownloadAndInstallGameAsync(string gameIdOrUrl, string destinationDir, string UserChosenLabel, Action<string> setStatus)
         {
             setStatus("Preparing temporary directory...");
             string tempDir = Path.Combine(destinationDir, "temp");
@@ -47,11 +47,9 @@ namespace launcherdotnet
             string extractedFolder = extractedItems[0];
 
             string finalFolder = Path.Combine(destinationDir, Path.GetFileName(extractedFolder));
-            bool shouldIUpdateConfig = true;
 
                 if (Directory.Exists(finalFolder))
                 {
-                    shouldIUpdateConfig = false;
                     DialogResult result = MessageBox.Show("An instance of the downloaded version already exists. Overwrite?",
                         "Overwrite? ",
                         MessageBoxButtons.YesNo,
@@ -63,29 +61,42 @@ namespace launcherdotnet
                     if (result == DialogResult.No)
                     {
                         MessageBox.Show("Install aborted.",
-                        "Notice", MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                           "Notice", MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
                         return null;
                     }
                 }
 
-                Directory.Move(extractedFolder, finalFolder);
+            Directory.Move(extractedFolder, finalFolder);
+            
+            // extraction is complete, now we update json
 
+            string exePath = FindGameExe(finalFolder);
             LauncherData data = LauncherDataManager.ReadLauncherData();
-            if (shouldIUpdateConfig == true)
+            
+            var existing = data.Versions.FirstOrDefault(g => g.Path == exePath);
+            if (existing != null)
             {
-                string exePath = FindGameExe(finalFolder);
+                existing.Label = UserChosenLabel; 
+            }
+            else
+            {
                 data.Versions.Add(new GameInfo
                 {
-                    Label = Path.GetFileName(finalFolder),
+                    Label = UserChosenLabel,
                     Path = exePath
                 });
-                LauncherDataManager.SaveLauncherData(data);
             }
+            LauncherDataManager.SaveLauncherData(data);
 
             setStatus("Cleaning up...");
             Directory.Delete(tempDir, true);
 
+            MessageBox.Show(
+                $"Installed to {finalFolder}",
+                "Installation complete.",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
             Console.WriteLine($"[INFO] Installed game to {finalFolder}");
             setStatus($"Installed to {finalFolder}");
             return finalFolder;
