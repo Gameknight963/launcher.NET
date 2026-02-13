@@ -8,20 +8,28 @@ namespace launcherdotnet
         public LauncherForm()
         {
             InitializeComponent();
-            UpdateGameList(gamesList, LauncherDataManager.ReadLauncherData());
+            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
         }
         public void SetStatus(string text)
         {
             status.Text = text;
         }
-        public void UpdateGameList(ListBox listBox, LauncherData data)
+        public void UpdateGameList(ListView gamesView, LauncherData data)
         {
-            listBox.Items.Clear();
+            gamesView.Items.Clear();
             foreach (var game in data.Versions)
             {
-                listBox.Items.Add(game.Label);
+                gamesView.Items.Add(game.Label);
             }
         }
+        //public void UpdateGameList(ListBox listBox, LauncherData data)
+        //{
+        //    listBox.Items.Clear();
+        //    foreach (var game in data.Versions)
+        //    {
+        //        listBox.Items.Add(game.Label);
+        //    }
+        //}
         private void gamesList_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -34,7 +42,7 @@ namespace launcherdotnet
                 Path.Combine(Directory.GetCurrentDirectory(), "Games"),
                 "salamalonekabatrabaslatrowerebakaedro",
                 SetStatus);
-            UpdateGameList(gamesList, LauncherDataManager.ReadLauncherData());
+            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
         }
     }
 }
