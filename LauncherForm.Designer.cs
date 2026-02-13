@@ -59,7 +59,7 @@
             // 
             status.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             status.AutoSize = true;
-            status.Location = new Point(12, 426);
+            status.Location = new Point(12, 419);
             status.Name = "status";
             status.Size = new Size(125, 15);
             status.TabIndex = 2;
