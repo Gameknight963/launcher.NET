@@ -35,30 +35,35 @@
             // 
             // button1
             // 
-            button1.Location = new Point(12, 352);
+            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            button1.Location = new Point(713, 415);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 0;
-            button1.Text = "install";
+            button1.Text = "Install";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
             // gamesList
             // 
+            gamesList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gamesList.FormattingEnabled = true;
-            gamesList.Location = new Point(510, 239);
+            gamesList.Location = new Point(12, 213);
             gamesList.Name = "gamesList";
             gamesList.Size = new Size(278, 199);
             gamesList.TabIndex = 1;
+            gamesList.SelectedIndexChanged += gamesList_SelectedIndexChanged;
             // 
             // status
             // 
+            status.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             status.AutoSize = true;
             status.Location = new Point(12, 426);
             status.Name = "status";
-            status.Size = new Size(38, 15);
+            status.Size = new Size(125, 15);
             status.TabIndex = 2;
-            status.Text = "label1";
+            status.Text = "Status will appear here";
+            status.Click += this.status_Click;
             // 
             // LauncherForm
             // 
