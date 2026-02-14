@@ -8,11 +8,10 @@ namespace launcherdotnet
     {
         public string IdleStatus;
         public string IdleInstallHint;
-        public LauncherData Data = LauncherDataManager.ReadLauncherData();
         public LauncherForm()
         {
             InitializeComponent();
-            UpdateGameList(gamesView, Data);
+            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
             IdleStatus = status.Text;
             IdleInstallHint = InstallHint.Text;
             SetStatus(IdleStatus);
@@ -28,26 +27,10 @@ namespace launcherdotnet
             {
                 ListViewItem item = new ListViewItem(game.Label);
                 item.SubItems.Add(game.Path);
+                item.Tag = game; // THIS IS THE FRICKING KEY BRAINWAVES
                 gamesView.Items.Add(item);
             }
         }
-
-        public void AddNewInstance(string label)
-        {
-            RereadLauncherData();
-            LauncherData data = Data;
-            data.Versions.Add(new GameInfo
-            {
-                Label = label,
-            });
-            Data = data;
-            LauncherDataManager.SaveLauncherData(data);
-        }
-        public void RereadLauncherData()
-        {
-            Data = LauncherDataManager.ReadLauncherData();
-        }
-
         private async void button1_Click(object sender, EventArgs e)
         {
             if (gamesView.SelectedItems.Count < 1) return;
@@ -56,9 +39,8 @@ namespace launcherdotnet
                 Path.Combine(Directory.GetCurrentDirectory(), "Games"),
                 gamesView.SelectedItems[0].Text, // legends will remember salamalonekabatrabaslatrowerebakaedro
                 SetStatus);
-            RereadLauncherData(); // MUST do this here
             // todo: fix duplication on install
-            UpdateGameList(gamesView, Data);
+            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -66,8 +48,8 @@ namespace launcherdotnet
             string result = Interaction.InputBox(
                 "Enter a label for this instance:",
                 "Set Game Label");
-            AddNewInstance(result);
-            UpdateGameList(gamesView, Data);
+            GameService.AddNewInstance(result);
+            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
         }
 
         private void gamesView_SelectedIndexChanged(object sender, EventArgs e)
@@ -90,10 +72,10 @@ namespace launcherdotnet
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void RefreshList_Click(object sender, EventArgs e)
         {
-            RereadLauncherData();
-            SetStatus("Reread games.json");
+            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
+            SetStatus("Reread games.json.");
         }
     }
 }

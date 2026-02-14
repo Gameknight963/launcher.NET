@@ -37,7 +37,7 @@
             instanceOptions = new TableLayoutPanel();
             InstallHint = new Label();
             button3 = new Button();
-            button2 = new Button();
+            RefreshList = new Button();
             instanceOptions.SuspendLayout();
             SuspendLayout();
             // 
@@ -130,22 +130,22 @@
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
-            // button2
+            // RefreshList
             // 
-            button2.Location = new Point(121, 1);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 8;
-            button2.Text = "Reread";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            RefreshList.Location = new Point(121, 1);
+            RefreshList.Name = "RefreshList";
+            RefreshList.Size = new Size(75, 23);
+            RefreshList.TabIndex = 8;
+            RefreshList.Text = "Refresh";
+            RefreshList.UseVisualStyleBackColor = true;
+            RefreshList.Click += RefreshList_Click;
             // 
             // LauncherForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(button2);
+            Controls.Add(RefreshList);
             Controls.Add(button3);
             Controls.Add(instanceOptions);
             Controls.Add(gamesView);
@@ -170,6 +170,6 @@
         private TableLayoutPanel instanceOptions;
         private Button button3;
         private Label InstallHint;
-        private Button button2;
+        private Button RefreshList;
     }
 }
