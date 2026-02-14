@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
+            DeleteButton = new Button();
             status = new Label();
             label1 = new Label();
             gamesView = new ListView();
@@ -41,15 +41,15 @@
             instanceOptions.SuspendLayout();
             SuspendLayout();
             // 
-            // button1
+            // DeleteButton
             // 
-            button1.Location = new Point(3, 85);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 0;
-            button1.Text = "Install";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            DeleteButton.Location = new Point(3, 85);
+            DeleteButton.Name = "DeleteButton";
+            DeleteButton.Size = new Size(75, 23);
+            DeleteButton.TabIndex = 0;
+            DeleteButton.Text = "Delete";
+            DeleteButton.UseVisualStyleBackColor = true;
+            DeleteButton.Click += DeleteButton_Click;
             // 
             // status
             // 
@@ -99,7 +99,7 @@
             instanceOptions.ColumnCount = 1;
             instanceOptions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             instanceOptions.Controls.Add(InstallHint, 0, 1);
-            instanceOptions.Controls.Add(button1, 0, 2);
+            instanceOptions.Controls.Add(DeleteButton, 0, 2);
             instanceOptions.Location = new Point(522, 27);
             instanceOptions.Name = "instanceOptions";
             instanceOptions.RowCount = 3;
@@ -161,7 +161,7 @@
 
         #endregion
 
-        private Button button1;
+        private Button DeleteButton;
         private Label status;
         private Label label1;
         private ListView gamesView;

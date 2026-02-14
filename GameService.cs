@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -34,6 +35,39 @@ namespace launcherdotnet
 
             LauncherDataManager.SaveLauncherData(data);
         }
+        public static bool DeleteGame(GameInfo game)
+        {
+            bool deleted = false;
+
+            if (!string.IsNullOrWhiteSpace(game.Path) && File.Exists(game.Path))
+            {
+                try
+                {
+                    Directory.Delete(Path.GetDirectoryName(game.Path)!, true);
+                    deleted = true;
+                }
+                catch
+                {
+                    throw new InvalidOperationException($"Error deleting {game.Path}!");
+                }
+            }
+
+            var data = LauncherDataManager.ReadLauncherData();
+            int before = data.Versions.Count;
+
+            data.Versions = data.Versions
+                .Where(g => g.Id != game.Id)
+                .ToList();
+
+            if (data.Versions.Count != before)
+            {
+                LauncherDataManager.SaveLauncherData(data);
+                deleted = true;
+            }
+
+            return deleted;
+        }
+
         public static bool RemoveMissingGames()
         {
             var data = LauncherDataManager.ReadLauncherData();
