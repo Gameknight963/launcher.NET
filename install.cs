@@ -8,9 +8,10 @@ namespace launcherdotnet
 {
     public class Install
     {
-        public static async Task<string?> DownloadAndInstallGameAsync(string gameIdOrUrl, string destinationDir, string UserChosenLabel, Action<string> setStatus)
+        public static async Task<string?> DownloadAndInstallGameAsync(string gameIdOrUrl, string destinationDir, GameInfo game, Action<string> setStatus)
         {
-            // installTo MUST exist before installation! This will probably change in the future
+            string UserChosenLabel = game.Label;
+
             setStatus("Preparing temporary directory...");
             string tempDir = Path.Combine(destinationDir, "temp");
             if (Directory.Exists(tempDir))
@@ -76,22 +77,9 @@ namespace launcherdotnet
             // extraction is complete, now we update json
 
             string exePath = FindGameExe(finalFolder);
-            LauncherData data = LauncherDataManager.ReadLauncherData();
-            
-            var existing = data.Versions.FirstOrDefault(g => g.Path == exePath);
-            if (existing != null)
-            {
-                existing.Label = UserChosenLabel; 
-            }
-            else
-            {
-                data.Versions.Add(new GameInfo
-                {
-                    Label = UserChosenLabel,
-                    Path = exePath
-                });
-            }
-            LauncherDataManager.SaveLauncherData(data);
+
+            game.Path = exePath;
+            GameService.UpsertGame(game);
 
             setStatus("Cleaning up...");
             Directory.Delete(tempDir, true);

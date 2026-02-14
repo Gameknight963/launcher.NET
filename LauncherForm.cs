@@ -4,6 +4,7 @@ namespace launcherdotnet
 {
     using Microsoft.VisualBasic;
     using System.IO;
+    using System.Diagnostics;
     public partial class LauncherForm : System.Windows.Forms.Form
     {
         public string IdleStatus;
@@ -33,11 +34,11 @@ namespace launcherdotnet
         }
         private async void button1_Click(object sender, EventArgs e)
         {
-            if (gamesView.SelectedItems.Count < 1) return;
+            if (gamesView.SelectedItems.Count == 0 || !(gamesView.SelectedItems[0].Tag is GameInfo game)) return;
             await Install.DownloadAndInstallGameAsync(
                 "bujehvbe",
                 Path.Combine(Directory.GetCurrentDirectory(), "Games"),
-                gamesView.SelectedItems[0].Text, // legends will remember salamalonekabatrabaslatrowerebakaedro
+                game, // legends will remember salamalonekabatrabaslatrowerebakaedro
                 SetStatus);
             // todo: fix duplication on install
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
@@ -48,7 +49,8 @@ namespace launcherdotnet
             string result = Interaction.InputBox(
                 "Enter a label for this instance:",
                 "Set Game Label");
-            GameService.AddNewInstance(result);
+            GameInfo newGame = new GameInfo { Label = result, Path = ""};
+            GameService.UpsertGame(newGame);
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
         }
 
@@ -74,8 +76,10 @@ namespace launcherdotnet
 
         private void RefreshList_Click(object sender, EventArgs e)
         {
+            Stopwatch sw = Stopwatch.StartNew();
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
-            SetStatus("Reread games.json.");
+            sw.Stop();
+            SetStatus($"Reread games.json, {sw.Elapsed.TotalMilliseconds}ms");
         }
     }
 }
