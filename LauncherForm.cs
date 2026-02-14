@@ -9,6 +9,7 @@ namespace launcherdotnet
     {
         public string IdleStatus;
         public string IdleInstallHint;
+        public string BASE = AppDomain.CurrentDomain.BaseDirectory;
         public LauncherForm()
         {
             InitializeComponent();
@@ -32,26 +33,27 @@ namespace launcherdotnet
                 gamesView.Items.Add(item);
             }
         }
-        private async void button1_Click(object sender, EventArgs e)
+        private async void DeleteButton_Click(object sender, EventArgs e)
         {
             if (gamesView.SelectedItems.Count == 0 || !(gamesView.SelectedItems[0].Tag is GameInfo game)) return;
-            await Install.DownloadAndInstallGameAsync(
-                "bujehvbe",
-                Path.Combine(Directory.GetCurrentDirectory(), "Games"),
-                game, // legends will remember salamalonekabatrabaslatrowerebakaedro
-                SetStatus);
-            // todo: fix duplication on install
+            
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private async void button3_Click(object sender, EventArgs e)
         {
+            // legends will remember salamalonekabatrabaslatrowerebakaedro
             string result = Interaction.InputBox(
                 "Enter a label for this instance:",
                 "Set Game Label");
             GameInfo newGame = new GameInfo { Label = result, Path = ""};
-            GameService.UpsertGame(newGame);
+            await Install.DownloadAndInstallGameAsync(
+                "",
+                Path.Combine(BASE, "Games"),
+                newGame, 
+                SetStatus);
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
+            GameService.UpsertGame(newGame);
         }
 
         private void gamesView_SelectedIndexChanged(object sender, EventArgs e)

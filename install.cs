@@ -51,7 +51,7 @@ namespace launcherdotnet
             Directory.Move(extractedFolder, Path.Combine(extractDir, UserChosenLabel));
             extractedFolder = Path.Combine(extractDir, UserChosenLabel);
 
-            string finalFolder = Path.Combine(destinationDir, Path.GetFileName(extractedFolder));
+            string finalFolder = Path.Combine(destinationDir, $"{Path.GetFileName(extractedFolder)}_{game.Id}");
 
                 if (Directory.Exists(finalFolder))
                 {
