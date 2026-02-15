@@ -33,7 +33,6 @@
             label1 = new Label();
             gamesView = new ListView();
             LabelColumn = new ColumnHeader();
-            PathColumn = new ColumnHeader();
             instanceOptions = new TableLayoutPanel();
             InstallHint = new Label();
             button3 = new Button();
@@ -72,8 +71,7 @@
             // 
             // gamesView
             // 
-            gamesView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            gamesView.Columns.AddRange(new ColumnHeader[] { LabelColumn, PathColumn });
+            gamesView.Columns.AddRange(new ColumnHeader[] { LabelColumn });
             gamesView.Location = new Point(12, 27);
             gamesView.MultiSelect = false;
             gamesView.Name = "gamesView";
@@ -88,14 +86,8 @@
             LabelColumn.Text = "Name";
             LabelColumn.Width = 300;
             // 
-            // PathColumn
-            // 
-            PathColumn.Text = "Path";
-            PathColumn.Width = 500;
-            // 
             // instanceOptions
             // 
-            instanceOptions.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             instanceOptions.ColumnCount = 1;
             instanceOptions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             instanceOptions.Controls.Add(InstallHint, 0, 1);
@@ -166,7 +158,6 @@
         private Label label1;
         private ListView gamesView;
         private ColumnHeader LabelColumn;
-        private ColumnHeader PathColumn;
         private TableLayoutPanel instanceOptions;
         private Button button3;
         private Label InstallHint;
