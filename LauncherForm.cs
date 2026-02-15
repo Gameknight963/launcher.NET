@@ -22,8 +22,8 @@ namespace launcherdotnet
         private static extern bool ShowScrollBar(IntPtr hWnd, int wBar, bool bShow);
 
         public LauncherForm()
-
         {
+            ConsoleHelper.Show();
             InitializeComponent();
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
             IdleStatus = status.Text;
