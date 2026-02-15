@@ -24,14 +24,7 @@ namespace launcherdotnet
             string zipPath = Path.Combine(tempDir, "dummyGame.zip");
             if (!File.Exists(zipPath))
             {
-                using (var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
-                {
-                    string folderName = "DummyGameFolder/";
-                    var entry = archive.CreateEntry(folderName + "DummyGame.exe");
-                    using var stream = entry.Open();
-                    byte[] content = System.Text.Encoding.UTF8.GetBytes("echo hello");
-                    stream.Write(content, 0, content.Length);
-                }
+                DummyFile.MakeDummyZip(zipPath);
             }
             await Task.Delay(500); // simulate async download
 
