@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using MLInstallerSDK;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO.Compression;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Threading.Tasks;
-using MLInstallerSDK;
-using Microsoft.VisualBasic;
 
 namespace launcherdotnet
 {
@@ -41,53 +42,97 @@ namespace launcherdotnet
 
         private async void InstallModloader_Click(object sender, EventArgs e)
         {
-            if (ModloaderDropdown.SelectedItem == null)
+            // validate selection
+            if (ModloaderDropdown.SelectedItem == null || VersionDropdown.SelectedItem == null)
             {
-                MessageBox.Show("You must select something to be installed.",
-                    "Invalid selection",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
+                MessageBox.Show("Select a modloader and version.", "Invalid selection",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-                if (VersionDropdown.SelectedItem == null)
+
+            string? gameDir = Path.GetDirectoryName(game.Path);
+            if (string.IsNullOrEmpty(gameDir))
             {
-                MessageBox.Show("You must select a version.",
-                    "Invalid selection",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
+                MessageBox.Show("Game does not have a valid path!", "Invalid operation",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            string? path = Path.GetDirectoryName(game.Path);
-            if (path == null)
+
+            InstallModloaderButton.Enabled = false;
+            ModloaderDropdown.Enabled = false;
+            VersionDropdown.Enabled = false;
+
+            try
             {
-                MessageBox.Show("Game does not have a path!",
-                    "Invalid operation",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                return;
+                MLVersion chosen = versions[VersionDropdown.SelectedIndex];
+                await InstallSelectedModloaderAsync(chosen, gameDir, progressBar);
             }
-            MessageBox.Show("Installing...",
-                "Notice",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
-            var progress = new Progress<double>(percent =>
+            finally
             {
-                if (progressBar.Style != ProgressBarStyle.Continuous)
-                    progressBar.Style = ProgressBarStyle.Continuous;
-                progressBar.Value = (int)percent;
-            });
-            Installer.Log = msg => Console.WriteLine(msg);
+                // restore UI
+                InstallModloaderButton.Enabled = true;
+                ModloaderDropdown.Enabled = true;
+                VersionDropdown.Enabled = true;
+            }
+        }
+        private async Task InstallSelectedModloaderAsync(MLVersion version, string installDir, System.Windows.Forms.ProgressBar progressBar)
+        {
             progressBar.Style = ProgressBarStyle.Marquee;
             progressBar.MarqueeAnimationSpeed = 30;
-            bool success = await Installer.DownloadVersionAsync(versions[VersionDropdown.SelectedIndex], Path.Combine(path, "installed.zip"), Installer.Architecture.x64, progress);
-            progressBar.Style = ProgressBarStyle.Continuous;
-            progressBar.Value = 100;
-            if (success == true)
+            progressBar.Value = 0;
+            await Task.Yield(); // let UI paint marquee
+
+            bool switchedToPercent = false;
+            var progress = new Progress<double>(percent =>
             {
-                MessageBox.Show($"Installation complete", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (!switchedToPercent)
+                {
+                    progressBar.Style = ProgressBarStyle.Continuous;
+                    progressBar.Value = 0;
+                    switchedToPercent = true;
+                }
+
+                int value = Math.Min(100, Math.Max(0, (int)percent));
+                progressBar.Value = value;
+            });
+
+            Installer.Log = msg => Console.WriteLine(msg);
+            MLManager.Log = msg => Console.WriteLine(msg);
+
+            string tempZip = Path.Combine(Path.GetTempPath(), $"melon_{Guid.NewGuid():N}.zip");
+
+            try
+            {
+                bool downloadOk = await Installer.DownloadVersionAsync(
+                    version,
+                    tempZip,
+                    Installer.Architecture.x64,
+                    progress);
+
+                if (!downloadOk)
+                {
+                    MessageBox.Show("Download failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                progressBar.Style = ProgressBarStyle.Marquee;
+                await Task.Yield(); // let marquee show during extraction
+
+                Directory.CreateDirectory(installDir);
+                ZipFile.ExtractToDirectory(tempZip, installDir, true);
+
+                progressBar.Style = ProgressBarStyle.Continuous;
+                progressBar.Value = 100;
+                MessageBox.Show("Installation complete.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            else
-                MessageBox.Show($"Installer failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Installation failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                try { if (File.Exists(tempZip)) File.Delete(tempZip); } catch { /* ignore */ }
+            }
         }
     }
 }
