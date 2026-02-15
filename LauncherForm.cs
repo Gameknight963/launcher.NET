@@ -1,10 +1,11 @@
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 
 namespace launcherdotnet
 {
     using Microsoft.VisualBasic;
-    using System.IO;
     using System.Diagnostics;
+    using System.IO;
     using System.Runtime.CompilerServices;
 
     public partial class LauncherForm : System.Windows.Forms.Form
@@ -12,6 +13,14 @@ namespace launcherdotnet
         public string IdleStatus;
         public string IdleInstallHint;
         public string BASE = AppDomain.CurrentDomain.BaseDirectory;
+
+        private const int SB_HORZ = 0;
+        private const int SB_VERT = 1;
+        private const int SB_BOTH = 3;
+
+        [DllImport("user32.dll")]
+        private static extern bool ShowScrollBar(IntPtr hWnd, int wBar, bool bShow);
+
         public LauncherForm()
 
         {
@@ -21,6 +30,7 @@ namespace launcherdotnet
             IdleInstallHint = InstallHint.Text;
             SetStatus(IdleStatus);
             SetSidebarMode(SidebarMode.Idle);
+            gamesView.SizeChanged += (sender, e) => ResizeColumns();
         }
 
         public void SetStatus(string text)
@@ -34,10 +44,21 @@ namespace launcherdotnet
             foreach (var game in data.Versions)
             {
                 ListViewItem item = new ListViewItem(game.Label);
+                item.SubItems.Add(game.Path);
                 item.Tag = game;
                 gamesView.Items.Add(item);
             }
         }
+        private void ResizeColumns()
+        {
+            int remaining = gamesView.ClientSize.Width - gamesView.Columns[0].Width;
+            
+            // disable horizontal scrollbar with black magic
+            ShowScrollBar(gamesView.Handle, SB_HORZ, false);
+
+            gamesView.Columns[1].Width = Math.Max(remaining, 230);
+        }
+
         public enum SidebarMode
         {
             Idle,

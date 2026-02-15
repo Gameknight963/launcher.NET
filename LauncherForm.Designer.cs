@@ -33,6 +33,7 @@
             label1 = new Label();
             gamesView = new ListView();
             LabelColumn = new ColumnHeader();
+            GUIDColumn = new ColumnHeader();
             instanceOptions = new TableLayoutPanel();
             InstallHint = new Label();
             button3 = new Button();
@@ -71,7 +72,8 @@
             // 
             // gamesView
             // 
-            gamesView.Columns.AddRange(new ColumnHeader[] { LabelColumn });
+            gamesView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            gamesView.Columns.AddRange(new ColumnHeader[] { LabelColumn, GUIDColumn });
             gamesView.Location = new Point(12, 27);
             gamesView.MultiSelect = false;
             gamesView.Name = "gamesView";
@@ -84,10 +86,16 @@
             // LabelColumn
             // 
             LabelColumn.Text = "Name";
-            LabelColumn.Width = 300;
+            LabelColumn.Width = 230;
+            // 
+            // GUIDColumn
+            // 
+            GUIDColumn.Text = "GUID";
+            GUIDColumn.Width = 270;
             // 
             // instanceOptions
             // 
+            instanceOptions.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             instanceOptions.ColumnCount = 1;
             instanceOptions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             instanceOptions.Controls.Add(InstallHint, 0, 1);
@@ -162,5 +170,6 @@
         private Button button3;
         private Label InstallHint;
         private Button RefreshList;
+        private ColumnHeader GUIDColumn;
     }
 }
