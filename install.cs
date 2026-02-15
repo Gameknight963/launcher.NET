@@ -13,7 +13,7 @@ namespace launcherdotnet
             string UserChosenLabel = game.Label;
 
             setStatus("Preparing temporary directory...");
-            string tempDir = Path.Combine(destinationDir, "temp");
+            string tempDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "temp", $"{Guid.NewGuid():N}");
             if (Directory.Exists(tempDir))
                 Directory.Delete(tempDir, true);
             Directory.CreateDirectory(tempDir);
@@ -106,20 +106,21 @@ namespace launcherdotnet
             var candidates = exes
                 .Where(f => !f.EndsWith("UnityCrashHandler64.exe", StringComparison.OrdinalIgnoreCase) &&
                             !f.EndsWith("CrashReport.exe", StringComparison.OrdinalIgnoreCase) &&
-                            !f.EndsWith("Uninstall.exe", StringComparison.OrdinalIgnoreCase))
+                            !f.EndsWith("Uninstall.exe", StringComparison.OrdinalIgnoreCase) &&
+                            !f.EndsWith("unins000.exe", StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
             if (candidates.Count == 0)
                 throw new FileNotFoundException("No suitable game EXE found in folder.");
 
-            // 1️⃣ Try to find EXE matching the folder name
+            // 1️ Try to find EXE matching the folder name
             var matchByName = candidates.FirstOrDefault(f =>
                 Path.GetFileNameWithoutExtension(f).IndexOf(folderName, StringComparison.OrdinalIgnoreCase) >= 0);
 
             if (matchByName != null)
                 return matchByName;
 
-            // 2️⃣ Otherwise, pick the largest EXE
+            // 2️ Otherwise, pick the largest EXE
             return candidates.OrderByDescending(f => new FileInfo(f).Length).First();
         }
     }
