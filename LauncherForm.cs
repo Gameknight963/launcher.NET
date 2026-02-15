@@ -85,11 +85,13 @@ namespace launcherdotnet
             SetStatus($"Selected: {selectedItem.Text}");
             if (selectedItem.SubItems[1].Text == "")
             {
+                // this case should never happen
                 InstallHint.Text = "No game installed here.";
             }
             else
             {
-                InstallHint.Text = Path.GetFileName(selectedItem.SubItems[1].Text);
+                if (gamesView.SelectedItems.Count == 0 || !(gamesView.SelectedItems[0].Tag is GameInfo game)) return;
+                InstallHint.Text = Path.GetFileName(game.Path);
             }
         }
 
