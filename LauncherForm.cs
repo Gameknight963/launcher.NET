@@ -62,7 +62,7 @@ namespace launcherdotnet
 
         public GameInfo? GetSelectedGame()
         {
-            if (gamesView.SelectedItems.Count == 0 || !(gamesView.SelectedItems[0].Tag is GameInfo game)) 
+            if (gamesView.SelectedItems.Count == 0 || !(gamesView.SelectedItems[0].Tag is GameInfo game))
                 return null;
             return game;
         }
@@ -79,11 +79,13 @@ namespace launcherdotnet
                 case SidebarMode.Idle:
                     DeleteButton.Visible = false;
                     LaunchButton.Visible = false;
+                    InstallSometingButton.Visible = false;
                     break;
 
                 case SidebarMode.GameSelected:
                     DeleteButton.Visible = true;
                     LaunchButton.Visible = true;
+                    InstallSometingButton.Visible = true;
                     break;
             }
         }
@@ -173,6 +175,14 @@ namespace launcherdotnet
             {
                 SetStatus($"Failed to launch: {ex.GetType().Name}");
             }
+        }
+
+        private void InstallSometingButton_Click(object sender, EventArgs e)
+        {
+            GameInfo? game = GetSelectedGame();
+            if (game == null) return;
+            ModloaderInstallForm PromptForm = new ModloaderInstallForm(game);
+            PromptForm.Show();
         }
     }
 }

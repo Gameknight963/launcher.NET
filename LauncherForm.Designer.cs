@@ -39,6 +39,7 @@
             DeleteButton = new Button();
             InstallHint = new Label();
             panel1 = new Panel();
+            InstallSometingButton = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -137,6 +138,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(InstallSometingButton);
             panel1.Controls.Add(InstallHint);
             panel1.Controls.Add(LaunchButton);
             panel1.Controls.Add(DeleteButton);
@@ -144,6 +146,16 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(266, 389);
             panel1.TabIndex = 3;
+            // 
+            // InstallSometingButton
+            // 
+            InstallSometingButton.Location = new Point(3, 334);
+            InstallSometingButton.Name = "InstallSometingButton";
+            InstallSometingButton.Size = new Size(75, 23);
+            InstallSometingButton.TabIndex = 3;
+            InstallSometingButton.Text = "Install...";
+            InstallSometingButton.UseVisualStyleBackColor = true;
+            InstallSometingButton.Click += InstallSometingButton_Click;
             // 
             // LauncherForm
             // 
@@ -176,5 +188,6 @@
         private Button DeleteButton;
         private Label InstallHint;
         private Panel panel1;
+        private Button InstallSometingButton;
     }
 }
