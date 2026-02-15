@@ -49,6 +49,14 @@ namespace launcherdotnet
             string result = Interaction.InputBox(
                 "Enter a label for this instance:",
                 "Set Game Label");
+            if (result != result.Trim())
+            {
+                MessageBox.Show("Label must not contain trailing or leading whitespace.",
+                        "Invalid name",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                return;
+            }
             GameInfo newGame = new GameInfo { Label = result, Path = ""};
             await Install.DownloadAndInstallGameAsync(
                 "",
@@ -64,7 +72,7 @@ namespace launcherdotnet
             if (gamesView.SelectedItems.Count < 1)
             {
                 SetStatus(IdleStatus);
-                InstallHint.Text = "Select an instance to see it's filename";
+                InstallHint.Text = IdleInstallHint;
                 return;
             }
             ListViewItem selectedItem = gamesView.SelectedItems[0];

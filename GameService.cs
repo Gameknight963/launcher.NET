@@ -38,8 +38,7 @@ namespace launcherdotnet
         public static string? DeleteGame(GameInfo game)
         {
             LauncherData data = LauncherDataManager.ReadLauncherData();
-            if (string.IsNullOrWhiteSpace(game.Path) || !File.Exists(game.Path))
-                return null;
+            if (string.IsNullOrWhiteSpace(game.Path) || !File.Exists(game.Path)) return null;
 
             string folder = Path.GetDirectoryName(game.Path)!;
 
