@@ -89,7 +89,7 @@ namespace launcherdotnet
                 "Installation complete.",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
-            Console.WriteLine($"[INFO] Installed game to {finalFolder}");
+            Console.WriteLine($"Installed game to {finalFolder}");
             setStatus($"Installed to {finalFolder}");
             return finalFolder;
         }
