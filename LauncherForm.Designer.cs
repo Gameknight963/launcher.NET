@@ -33,9 +33,10 @@
             label1 = new Label();
             gamesView = new ListView();
             LabelColumn = new ColumnHeader();
-            GUIDColumn = new ColumnHeader();
+            PathColumn = new ColumnHeader();
             instanceOptions = new TableLayoutPanel();
             InstallHint = new Label();
+            LaunchButton = new Button();
             button3 = new Button();
             RefreshList = new Button();
             instanceOptions.SuspendLayout();
@@ -43,7 +44,7 @@
             // 
             // DeleteButton
             // 
-            DeleteButton.Location = new Point(3, 85);
+            DeleteButton.Location = new Point(3, 359);
             DeleteButton.Name = "DeleteButton";
             DeleteButton.Size = new Size(75, 23);
             DeleteButton.TabIndex = 0;
@@ -73,7 +74,7 @@
             // gamesView
             // 
             gamesView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            gamesView.Columns.AddRange(new ColumnHeader[] { LabelColumn, GUIDColumn });
+            gamesView.Columns.AddRange(new ColumnHeader[] { LabelColumn, PathColumn });
             gamesView.Location = new Point(12, 27);
             gamesView.MultiSelect = false;
             gamesView.Name = "gamesView";
@@ -88,10 +89,10 @@
             LabelColumn.Text = "Name";
             LabelColumn.Width = 230;
             // 
-            // GUIDColumn
+            // PathColumn
             // 
-            GUIDColumn.Text = "GUID";
-            GUIDColumn.Width = 270;
+            PathColumn.Text = "Path";
+            PathColumn.Width = 270;
             // 
             // instanceOptions
             // 
@@ -99,25 +100,37 @@
             instanceOptions.ColumnCount = 1;
             instanceOptions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             instanceOptions.Controls.Add(InstallHint, 0, 1);
-            instanceOptions.Controls.Add(DeleteButton, 0, 2);
+            instanceOptions.Controls.Add(DeleteButton, 0, 3);
+            instanceOptions.Controls.Add(LaunchButton, 0, 2);
             instanceOptions.Location = new Point(522, 27);
             instanceOptions.Name = "instanceOptions";
-            instanceOptions.RowCount = 3;
+            instanceOptions.RowCount = 4;
             instanceOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 71.95122F));
             instanceOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 28.04878F));
-            instanceOptions.RowStyles.Add(new RowStyle(SizeType.Absolute, 306F));
+            instanceOptions.RowStyles.Add(new RowStyle(SizeType.Absolute, 294F));
+            instanceOptions.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
             instanceOptions.Size = new Size(250, 389);
             instanceOptions.TabIndex = 5;
             // 
             // InstallHint
             // 
             InstallHint.AutoSize = true;
-            InstallHint.Location = new Point(3, 61);
+            InstallHint.Location = new Point(3, 47);
             InstallHint.Margin = new Padding(3, 2, 3, 0);
             InstallHint.Name = "InstallHint";
-            InstallHint.Size = new Size(202, 15);
+            InstallHint.Size = new Size(209, 15);
             InstallHint.TabIndex = 1;
-            InstallHint.Text = "Select an instance to see it's filename";
+            InstallHint.Text = "Select an instance to see more options";
+            // 
+            // LaunchButton
+            // 
+            LaunchButton.Location = new Point(3, 65);
+            LaunchButton.Name = "LaunchButton";
+            LaunchButton.Size = new Size(75, 23);
+            LaunchButton.TabIndex = 2;
+            LaunchButton.Text = "Launch";
+            LaunchButton.UseVisualStyleBackColor = true;
+            LaunchButton.Click += LaunchButton_Click;
             // 
             // button3
             // 
@@ -170,6 +183,7 @@
         private Button button3;
         private Label InstallHint;
         private Button RefreshList;
-        private ColumnHeader GUIDColumn;
+        private ColumnHeader PathColumn;
+        private Button LaunchButton;
     }
 }

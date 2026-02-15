@@ -36,7 +36,7 @@ namespace launcherdotnet
         public void SetStatus(string text)
         {
             status.Text = text;
-        }   
+        }
 
         public void UpdateGameList(ListView gamesView, LauncherData data)
         {
@@ -49,14 +49,22 @@ namespace launcherdotnet
                 gamesView.Items.Add(item);
             }
         }
+
         private void ResizeColumns()
         {
             int remaining = gamesView.ClientSize.Width - gamesView.Columns[0].Width;
-            
+
             // disable horizontal scrollbar with black magic
             ShowScrollBar(gamesView.Handle, SB_HORZ, false);
 
             gamesView.Columns[1].Width = Math.Max(remaining, 230);
+        }
+
+        public GameInfo? GetSelectedGame()
+        {
+            if (gamesView.SelectedItems.Count == 0 || !(gamesView.SelectedItems[0].Tag is GameInfo game)) 
+                return null;
+            return game;
         }
 
         public enum SidebarMode
@@ -70,18 +78,21 @@ namespace launcherdotnet
             {
                 case SidebarMode.Idle:
                     DeleteButton.Visible = false;
+                    LaunchButton.Visible = false;
                     break;
 
                 case SidebarMode.GameSelected:
                     DeleteButton.Visible = true;
+                    LaunchButton.Visible = true;
                     break;
             }
         }
 
         private async void DeleteButton_Click(object sender, EventArgs e)
         {
-            if (gamesView.SelectedItems.Count == 0 || !(gamesView.SelectedItems[0].Tag is GameInfo game)) return;
-            DialogResult result = MessageBox.Show($"Delete {game.Label}?",
+            GameInfo? game = GetSelectedGame();
+            if (game == null) return;
+            DialogResult result = MessageBox.Show($"Delete \"{game.Label}\"?",
                 "Confirmation",
                 MessageBoxButtons.OKCancel,
                 MessageBoxIcon.Exclamation);
@@ -108,11 +119,11 @@ namespace launcherdotnet
                         MessageBoxIcon.Warning);
                 return;
             }
-            GameInfo newGame = new GameInfo { Label = result};
+            GameInfo newGame = new GameInfo { Label = result };
             await Install.DownloadAndInstallGameAsync(
                 "",
                 Path.Combine(BASE, "Games"),
-                newGame, 
+                newGame,
                 SetStatus);
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
             GameService.UpsertGame(newGame);
@@ -130,8 +141,9 @@ namespace launcherdotnet
             ListViewItem selectedItem = gamesView.SelectedItems[0];
             SetStatus($"Selected: {selectedItem.Text}");
             SetSidebarMode(SidebarMode.GameSelected);
-                if (gamesView.SelectedItems.Count == 0 || !(gamesView.SelectedItems[0].Tag is GameInfo game)) return;
-                InstallHint.Text = Path.GetFileName(game.Path);
+            GameInfo? game = GetSelectedGame();
+            if (game == null) return;
+            InstallHint.Text = Path.GetFileName(game.Path);
         }
 
         private void RefreshList_Click(object sender, EventArgs e)
@@ -140,6 +152,27 @@ namespace launcherdotnet
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
             sw.Stop();
             SetStatus($"Reread games.json, {sw.Elapsed.TotalMilliseconds}ms");
+        }
+
+        private void LaunchButton_Click(object sender, EventArgs e)
+        {
+            GameInfo? game = GetSelectedGame();
+            if (game == null) return;
+
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.FileName = "cmd.exe";
+            psi.Arguments = $"/k \"{game.Path}\"";
+            psi.UseShellExecute = true;
+            psi.CreateNoWindow = true;
+
+            try
+            {
+                Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                SetStatus($"Failed to launch: {ex.GetType().Name}");
+            }
         }
     }
 }
