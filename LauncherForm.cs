@@ -5,6 +5,8 @@ namespace launcherdotnet
     using Microsoft.VisualBasic;
     using System.IO;
     using System.Diagnostics;
+    using System.Runtime.CompilerServices;
+
     public partial class LauncherForm : System.Windows.Forms.Form
     {
         public string IdleStatus;
@@ -21,7 +23,7 @@ namespace launcherdotnet
         public void SetStatus(string text)
         {
             status.Text = text;
-        }
+        }   
         public void UpdateGameList(ListView gamesView, LauncherData data)
         {
             gamesView.Items.Clear();
@@ -36,7 +38,8 @@ namespace launcherdotnet
         private async void DeleteButton_Click(object sender, EventArgs e)
         {
             if (gamesView.SelectedItems.Count == 0 || !(gamesView.SelectedItems[0].Tag is GameInfo game)) return;
-            
+            string? deletedFolder = GameService.DeleteGame(game);
+            SetStatus($"Deleted \"{game.Label}\"");
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
         }
 

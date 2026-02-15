@@ -121,7 +121,7 @@
             // 
             // button3
             // 
-            button3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            button3.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             button3.Location = new Point(387, 422);
             button3.Name = "button3";
             button3.Size = new Size(129, 23);
