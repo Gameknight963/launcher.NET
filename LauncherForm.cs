@@ -38,8 +38,14 @@ namespace launcherdotnet
         private async void DeleteButton_Click(object sender, EventArgs e)
         {
             if (gamesView.SelectedItems.Count == 0 || !(gamesView.SelectedItems[0].Tag is GameInfo game)) return;
+            DialogResult result = MessageBox.Show($"Delete {game.Label}?",
+                "Confirmation",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Exclamation);
+            if (result == DialogResult.Cancel) return;
             string? deletedFolder = GameService.DeleteGame(game);
             SetStatus($"Deleted \"{game.Label}\"");
+            Console.WriteLine($"Deleted {deletedFolder}");
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
         }
 
@@ -57,7 +63,7 @@ namespace launcherdotnet
                         MessageBoxIcon.Warning);
                 return;
             }
-            GameInfo newGame = new GameInfo { Label = result, Path = ""};
+            GameInfo newGame = new GameInfo { Label = result};
             await Install.DownloadAndInstallGameAsync(
                 "",
                 Path.Combine(BASE, "Games"),
