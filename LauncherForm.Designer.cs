@@ -28,29 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DeleteButton = new Button();
             status = new Label();
             label1 = new Label();
             gamesView = new ListView();
             LabelColumn = new ColumnHeader();
             PathColumn = new ColumnHeader();
-            instanceOptions = new TableLayoutPanel();
-            InstallHint = new Label();
-            LaunchButton = new Button();
             button3 = new Button();
             RefreshList = new Button();
-            instanceOptions.SuspendLayout();
+            LaunchButton = new Button();
+            DeleteButton = new Button();
+            InstallHint = new Label();
+            panel1 = new Panel();
+            panel1.SuspendLayout();
             SuspendLayout();
-            // 
-            // DeleteButton
-            // 
-            DeleteButton.Location = new Point(3, 359);
-            DeleteButton.Name = "DeleteButton";
-            DeleteButton.Size = new Size(75, 23);
-            DeleteButton.TabIndex = 0;
-            DeleteButton.Text = "Delete";
-            DeleteButton.UseVisualStyleBackColor = true;
-            DeleteButton.Click += DeleteButton_Click;
             // 
             // status
             // 
@@ -94,44 +84,6 @@
             PathColumn.Text = "Path";
             PathColumn.Width = 270;
             // 
-            // instanceOptions
-            // 
-            instanceOptions.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            instanceOptions.ColumnCount = 1;
-            instanceOptions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            instanceOptions.Controls.Add(InstallHint, 0, 1);
-            instanceOptions.Controls.Add(DeleteButton, 0, 3);
-            instanceOptions.Controls.Add(LaunchButton, 0, 2);
-            instanceOptions.Location = new Point(522, 27);
-            instanceOptions.Name = "instanceOptions";
-            instanceOptions.RowCount = 4;
-            instanceOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 71.95122F));
-            instanceOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 28.04878F));
-            instanceOptions.RowStyles.Add(new RowStyle(SizeType.Absolute, 294F));
-            instanceOptions.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            instanceOptions.Size = new Size(250, 389);
-            instanceOptions.TabIndex = 5;
-            // 
-            // InstallHint
-            // 
-            InstallHint.AutoSize = true;
-            InstallHint.Location = new Point(3, 47);
-            InstallHint.Margin = new Padding(3, 2, 3, 0);
-            InstallHint.Name = "InstallHint";
-            InstallHint.Size = new Size(209, 15);
-            InstallHint.TabIndex = 1;
-            InstallHint.Text = "Select an instance to see more options";
-            // 
-            // LaunchButton
-            // 
-            LaunchButton.Location = new Point(3, 65);
-            LaunchButton.Name = "LaunchButton";
-            LaunchButton.Size = new Size(75, 23);
-            LaunchButton.TabIndex = 2;
-            LaunchButton.Text = "Launch";
-            LaunchButton.UseVisualStyleBackColor = true;
-            LaunchButton.Click += LaunchButton_Click;
-            // 
             // button3
             // 
             button3.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
@@ -153,6 +105,46 @@
             RefreshList.UseVisualStyleBackColor = true;
             RefreshList.Click += RefreshList_Click;
             // 
+            // LaunchButton
+            // 
+            LaunchButton.Location = new Point(3, 45);
+            LaunchButton.Name = "LaunchButton";
+            LaunchButton.Size = new Size(75, 23);
+            LaunchButton.TabIndex = 2;
+            LaunchButton.Text = "Launch";
+            LaunchButton.UseVisualStyleBackColor = true;
+            LaunchButton.Click += LaunchButton_Click;
+            // 
+            // DeleteButton
+            // 
+            DeleteButton.Location = new Point(3, 363);
+            DeleteButton.Name = "DeleteButton";
+            DeleteButton.Size = new Size(75, 23);
+            DeleteButton.TabIndex = 0;
+            DeleteButton.Text = "Delete";
+            DeleteButton.UseVisualStyleBackColor = true;
+            DeleteButton.Click += DeleteButton_Click;
+            // 
+            // InstallHint
+            // 
+            InstallHint.AutoSize = true;
+            InstallHint.Location = new Point(3, 27);
+            InstallHint.Margin = new Padding(3, 2, 3, 0);
+            InstallHint.Name = "InstallHint";
+            InstallHint.Size = new Size(209, 15);
+            InstallHint.TabIndex = 1;
+            InstallHint.Text = "Select an instance to see more options";
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(InstallHint);
+            panel1.Controls.Add(LaunchButton);
+            panel1.Controls.Add(DeleteButton);
+            panel1.Location = new Point(522, 27);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(266, 389);
+            panel1.TabIndex = 3;
+            // 
             // LauncherForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -160,30 +152,29 @@
             ClientSize = new Size(800, 450);
             Controls.Add(RefreshList);
             Controls.Add(button3);
-            Controls.Add(instanceOptions);
             Controls.Add(gamesView);
+            Controls.Add(panel1);
             Controls.Add(label1);
             Controls.Add(status);
             Name = "LauncherForm";
             Text = "Form1";
-            instanceOptions.ResumeLayout(false);
-            instanceOptions.PerformLayout();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private Button DeleteButton;
         private Label status;
         private Label label1;
         private ListView gamesView;
         private ColumnHeader LabelColumn;
-        private TableLayoutPanel instanceOptions;
         private Button button3;
-        private Label InstallHint;
         private Button RefreshList;
         private ColumnHeader PathColumn;
         private Button LaunchButton;
+        private Button DeleteButton;
+        private Label InstallHint;
+        private Panel panel1;
     }
 }
