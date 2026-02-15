@@ -35,37 +35,21 @@ namespace launcherdotnet
 
             LauncherDataManager.SaveLauncherData(data);
         }
-        public static bool DeleteGame(GameInfo game)
+        public static string? DeleteGame(GameInfo game)
         {
-            bool deleted = false;
+            LauncherData data = LauncherDataManager.ReadLauncherData();
+            if (string.IsNullOrWhiteSpace(game.Path) || !File.Exists(game.Path))
+                return null;
 
-            if (!string.IsNullOrWhiteSpace(game.Path) && File.Exists(game.Path))
+            string folder = Path.GetDirectoryName(game.Path)!;
+
+            while (!folder.EndsWith(game.Id, StringComparison.OrdinalIgnoreCase))
             {
-                try
-                {
-                    Directory.Delete(Path.GetDirectoryName(game.Path)!, true);
-                    deleted = true;
-                }
-                catch
-                {
-                    throw new InvalidOperationException($"Error deleting {game.Path}!");
-                }
+                folder = Directory.GetParent(folder)!.FullName;
             }
-
-            var data = LauncherDataManager.ReadLauncherData();
-            int before = data.Versions.Count;
-
-            data.Versions = data.Versions
-                .Where(g => g.Id != game.Id)
-                .ToList();
-
-            if (data.Versions.Count != before)
-            {
-                LauncherDataManager.SaveLauncherData(data);
-                deleted = true;
-            }
-
-            return deleted;
+            Directory.Delete(folder, true);
+            RemoveMissingGames();
+            return folder;
         }
 
         public static bool RemoveMissingGames()
