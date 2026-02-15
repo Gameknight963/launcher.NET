@@ -34,6 +34,7 @@
             VersionDropdown = new ComboBox();
             InstallModloaderButton = new Button();
             progressBar = new ProgressBar();
+            ActivityHint = new Label();
             SuspendLayout();
             // 
             // ModloaderDropdown
@@ -85,14 +86,25 @@
             // 
             progressBar.Location = new Point(41, 161);
             progressBar.Name = "progressBar";
-            progressBar.Size = new Size(430, 23);
+            progressBar.Size = new Size(439, 23);
             progressBar.TabIndex = 4;
+            // 
+            // ActivityHint
+            // 
+            ActivityHint.AutoSize = true;
+            ActivityHint.Location = new Point(41, 187);
+            ActivityHint.Name = "ActivityHint";
+            ActivityHint.Size = new Size(167, 15);
+            ActivityHint.TabIndex = 6;
+            ActivityHint.Text = "Installation hint will show here";
+            ActivityHint.Visible = false;
             // 
             // ModloaderInstallForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(517, 196);
+            ClientSize = new Size(517, 214);
+            Controls.Add(ActivityHint);
             Controls.Add(progressBar);
             Controls.Add(InstallModloaderButton);
             Controls.Add(label2);
@@ -113,5 +125,6 @@
         private ComboBox VersionDropdown;
         private Button InstallModloaderButton;
         private ProgressBar progressBar;
+        private Label ActivityHint;
     }
 }

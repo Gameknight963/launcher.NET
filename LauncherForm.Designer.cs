@@ -66,6 +66,7 @@
             // 
             gamesView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gamesView.Columns.AddRange(new ColumnHeader[] { LabelColumn, PathColumn });
+            gamesView.FullRowSelect = true;
             gamesView.Location = new Point(12, 27);
             gamesView.MultiSelect = false;
             gamesView.Name = "gamesView";
@@ -118,6 +119,7 @@
             // 
             // DeleteButton
             // 
+            DeleteButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             DeleteButton.Location = new Point(3, 363);
             DeleteButton.Name = "DeleteButton";
             DeleteButton.Size = new Size(75, 23);
@@ -138,6 +140,7 @@
             // 
             // panel1
             // 
+            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             panel1.Controls.Add(InstallSometingButton);
             panel1.Controls.Add(InstallHint);
             panel1.Controls.Add(LaunchButton);
@@ -149,6 +152,7 @@
             // 
             // InstallSometingButton
             // 
+            InstallSometingButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             InstallSometingButton.Location = new Point(3, 334);
             InstallSometingButton.Name = "InstallSometingButton";
             InstallSometingButton.Size = new Size(75, 23);

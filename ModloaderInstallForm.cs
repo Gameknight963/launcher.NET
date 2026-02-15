@@ -79,8 +79,6 @@ namespace launcherdotnet
         {
             progressBar.Style = ProgressBarStyle.Marquee;
             progressBar.MarqueeAnimationSpeed = 30;
-            progressBar.Value = 0;
-            await Task.Yield(); // let UI paint marquee
 
             bool switchedToPercent = false;
             var progress = new Progress<double>(percent =>
@@ -90,19 +88,26 @@ namespace launcherdotnet
                     progressBar.Style = ProgressBarStyle.Continuous;
                     progressBar.Value = 0;
                     switchedToPercent = true;
+                    ActivityHint.Text = "Downloading...";
                 }
 
                 int value = Math.Min(100, Math.Max(0, (int)percent));
                 progressBar.Value = value;
+                ActivityHint.Text = $"Downloading... {percent:0.0}%";
             });
 
             Installer.Log = msg => Console.WriteLine(msg);
             MLManager.Log = msg => Console.WriteLine(msg);
-
-            string tempZip = Path.Combine(Path.GetTempPath(), $"melon_{Guid.NewGuid():N}.zip");
+            string tempFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "temp");
+            Directory.CreateDirectory(tempFolder);
+            string tempZip = Path.Combine(Path.Combine(tempFolder, $"melon_{Guid.NewGuid():N}.zip"));
 
             try
             {
+                ActivityHint.Visible = true;
+                ActivityHint.Text = "Preparing download... This may take a while.";
+                progressBar.Style = ProgressBarStyle.Marquee;
+
                 bool downloadOk = await Installer.DownloadVersionAsync(
                     version,
                     tempZip,
@@ -114,24 +119,25 @@ namespace launcherdotnet
                     MessageBox.Show("Download failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-
-                progressBar.Style = ProgressBarStyle.Marquee;
-                await Task.Yield(); // let marquee show during extraction
-
+                
+                ActivityHint.Text = "Extracting...";
                 Directory.CreateDirectory(installDir);
                 ZipFile.ExtractToDirectory(tempZip, installDir, true);
 
                 progressBar.Style = ProgressBarStyle.Continuous;
                 progressBar.Value = 100;
+                ActivityHint.Text = "Installation complete.";
                 MessageBox.Show("Installation complete.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
+                progressBar.Style = ProgressBarStyle.Continuous;
                 MessageBox.Show($"Installation failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
                 try { if (File.Exists(tempZip)) File.Delete(tempZip); } catch { /* ignore */ }
+                try { if (Directory.Exists(tempFolder)) Directory.Delete(tempFolder); } catch { /* ignore again */ }
             }
         }
     }
