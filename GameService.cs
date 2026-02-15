@@ -7,16 +7,6 @@ namespace launcherdotnet
 {
     public class GameService
     {
-        [Obsolete("Use UpsertGame() instead.")]
-        public static void AddNewInstance(string label)
-        {
-            LauncherData data = LauncherDataManager.ReadLauncherData();
-            data.Versions.Add(new GameInfo
-            {
-                Label = label,
-            });
-            LauncherDataManager.SaveLauncherData(data);
-        }
         public static void UpsertGame(GameInfo game)
         {
             LauncherData data = LauncherDataManager.ReadLauncherData();

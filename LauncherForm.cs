@@ -13,28 +13,50 @@ namespace launcherdotnet
         public string IdleInstallHint;
         public string BASE = AppDomain.CurrentDomain.BaseDirectory;
         public LauncherForm()
+
         {
             InitializeComponent();
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
             IdleStatus = status.Text;
             IdleInstallHint = InstallHint.Text;
             SetStatus(IdleStatus);
+            SetSidebarMode(SidebarMode.Idle);
         }
+
         public void SetStatus(string text)
         {
             status.Text = text;
         }   
+
         public void UpdateGameList(ListView gamesView, LauncherData data)
         {
             gamesView.Items.Clear();
             foreach (var game in data.Versions)
             {
                 ListViewItem item = new ListViewItem(game.Label);
-                item.SubItems.Add(game.Path);
-                item.Tag = game; // THIS IS THE FRICKING KEY BRAINWAVES
+                item.Tag = game;
                 gamesView.Items.Add(item);
             }
         }
+        public enum SidebarMode
+        {
+            Idle,
+            GameSelected
+        }
+        public void SetSidebarMode(SidebarMode mode)
+        {
+            switch (mode)
+            {
+                case SidebarMode.Idle:
+                    DeleteButton.Visible = false;
+                    break;
+
+                case SidebarMode.GameSelected:
+                    DeleteButton.Visible = true;
+                    break;
+            }
+        }
+
         private async void DeleteButton_Click(object sender, EventArgs e)
         {
             if (gamesView.SelectedItems.Count == 0 || !(gamesView.SelectedItems[0].Tag is GameInfo game)) return;
@@ -46,6 +68,8 @@ namespace launcherdotnet
             string? deletedFolder = GameService.DeleteGame(game);
             SetStatus($"Deleted \"{game.Label}\"");
             Console.WriteLine($"Deleted {deletedFolder}");
+            SetSidebarMode(SidebarMode.Idle);
+            InstallHint.Text = IdleInstallHint;
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
         }
 
@@ -79,20 +103,14 @@ namespace launcherdotnet
             {
                 SetStatus(IdleStatus);
                 InstallHint.Text = IdleInstallHint;
+                SetSidebarMode(SidebarMode.Idle);
                 return;
             }
             ListViewItem selectedItem = gamesView.SelectedItems[0];
             SetStatus($"Selected: {selectedItem.Text}");
-            if (selectedItem.SubItems[1].Text == "")
-            {
-                // this case should never happen
-                InstallHint.Text = "No game installed here.";
-            }
-            else
-            {
+            SetSidebarMode(SidebarMode.GameSelected);
                 if (gamesView.SelectedItems.Count == 0 || !(gamesView.SelectedItems[0].Tag is GameInfo game)) return;
                 InstallHint.Text = Path.GetFileName(game.Path);
-            }
         }
 
         private void RefreshList_Click(object sender, EventArgs e)
