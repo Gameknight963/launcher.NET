@@ -97,10 +97,13 @@ namespace launcherdotnet
         {
             GameInfo? game = GetSelectedGame();
             if (game == null) return;
-            DialogResult result = MessageBox.Show($"Delete \"{game.Label}\"?",
-                "Confirmation",
-                MessageBoxButtons.OKCancel,
-                MessageBoxIcon.Exclamation);
+            DialogResult result = DialogResult.OK;
+            if (LauncherSettings.Settings.ConfirmDelete == true)
+                result = MessageBox.Show($"Permanently delete \"{game.Label}\"?",
+                    "Confirmation",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Exclamation);
+
             if (result == DialogResult.Cancel) return;
             string? deletedFolder = GameService.DeleteGame(game);
             SetStatus($"Deleted \"{game.Label}\"");
