@@ -31,7 +31,8 @@ namespace launcherdotnet
             LauncherSettings s = LauncherSettings.Settings;
 
             string json = JsonConvert.SerializeObject(s, Formatting.Indented);
-            Console.WriteLine(json);
+            LauncherLogger.WriteLine("New settings saved:");
+            LauncherLogger.WriteLine(json);
 
             // --- General ---
             s.CheckForUpdates = GeneralCheckbox.GetItemChecked(0);
@@ -60,6 +61,8 @@ namespace launcherdotnet
             s.VerboseLogging = AdvancedCheckbox.GetItemChecked(1);
             s.UseCustomTempDirectory = AdvancedCheckbox.GetItemChecked(2);
             s.UseCustomInstallDirectory = AdvancedCheckbox.GetItemChecked(3);
+
+            LauncherSettings.Save();
         }
 
         private void ShowSettings()

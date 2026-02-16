@@ -13,7 +13,7 @@ namespace launcherdotnet
             string UserChosenLabel = game.Label;
 
             setStatus("Preparing temporary directory...");
-            string tempDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "temp", $"{Guid.NewGuid():N}");
+            string tempDir = Path.Combine(LauncherSettings.TempDir, $"{Guid.NewGuid():N}");
             if (Directory.Exists(tempDir))
                 Directory.Delete(tempDir, true);
             Directory.CreateDirectory(tempDir);

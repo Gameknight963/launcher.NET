@@ -7,9 +7,14 @@ namespace launcherdotnet
 {
     public class LauncherSettings
     {
-
+        private static readonly string _defaultTempDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "temp");
+        private static readonly string _defaultGamesDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "games");
         private static readonly string _baseDir = AppDomain.CurrentDomain.BaseDirectory;
         private static readonly string _settingsPath = Path.Combine(_baseDir, "settings.json");
+
+        public static string TempDir => LauncherSettings.Settings.UseCustomTempDirectory ? LauncherSettings.Settings.CustomTempDirectory : _defaultTempDir;
+        public static string GamesDir => LauncherSettings.Settings.UseCustomInstallDirectory ? LauncherSettings.Settings.CustomInstallDirectory : _defaultGamesDir;
+
         public static LauncherSettings Settings { get; private set; } = new();
 
         public static void Load()
@@ -68,5 +73,7 @@ namespace launcherdotnet
 
         public List<string> GameProviders { get; set; } = new();
         public List<string> ModloaderProviders { get; set; } = new();
+
+        // ==== True directories ====
     }
 }
