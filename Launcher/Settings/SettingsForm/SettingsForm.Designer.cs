@@ -112,6 +112,7 @@
             // 
             // ProvidersTab
             // 
+            ProvidersTab.AutoScroll = true;
             ProvidersTab.Controls.Add(AddLoaderButton);
             ProvidersTab.Controls.Add(button1);
             ProvidersTab.Controls.Add(LoadersListView);
@@ -224,7 +225,7 @@
             // AdvancedWarning
             // 
             AdvancedWarning.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            AdvancedWarning.Location = new Point(9, 306);
+            AdvancedWarning.Location = new Point(7, 306);
             AdvancedWarning.Name = "AdvancedWarning";
             AdvancedWarning.Size = new Size(269, 63);
             AdvancedWarning.TabIndex = 8;

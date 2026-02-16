@@ -23,7 +23,6 @@ namespace launcherdotnet
 
         public LauncherForm()
         {
-            ConsoleHelper.Show();
             InitializeComponent();
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
             IdleStatus = status.Text;
@@ -101,7 +100,7 @@ namespace launcherdotnet
             if (result == DialogResult.Cancel) return;
             string? deletedFolder = GameService.DeleteGame(game);
             SetStatus($"Deleted \"{game.Label}\"");
-            Console.WriteLine($"Deleted {deletedFolder}");
+            LauncherLogger.WriteLine($"Deleted {deletedFolder}", true);
             SetSidebarMode(SidebarMode.Idle);
             InstallHint.Text = IdleInstallHint;
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());

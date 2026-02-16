@@ -97,9 +97,9 @@ namespace launcherdotnet
                 ActivityHint.Text = $"Downloading... {percent:0.0}%";
             });
 
-            Installer.Log = msg => Console.WriteLine(msg);
-            MLManager.Log = msg => Console.WriteLine(msg);
-            string tempFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "temp");
+            Installer.Log = msg => LauncherLogger.WriteLine(msg);
+            MLManager.Log = msg => LauncherLogger.WriteLine(msg);
+            string tempFolder = LauncherSettings.TempDir;
             Directory.CreateDirectory(tempFolder);
             string tempZip = Path.Combine(Path.Combine(tempFolder, $"melon_{Guid.NewGuid():N}.zip"));
 
