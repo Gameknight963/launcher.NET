@@ -11,6 +11,7 @@ namespace launcherdotnet
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
+            LauncherSettings.Load();
             Application.Run(new LauncherForm());
         }
     }

@@ -61,8 +61,8 @@ namespace launcherdotnet
         public bool VerboseLogging { get; set; } = false;
         public bool UseCustomTempDirectory { get; set; } = false;
         public bool UseCustomInstallDirectory { get; set; } = false;
-        public string CustomTempDirectory { get; set; } = "temp";
-        public string CustomInstallDirectory { get; set; } = "games";
+        public string CustomTempDirectory { get; set; } = "temp/";
+        public string CustomInstallDirectory { get; set; } = "games/";
 
         // ===== Providers =====
 

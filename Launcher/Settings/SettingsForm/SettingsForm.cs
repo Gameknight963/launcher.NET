@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,10 +11,11 @@ namespace launcherdotnet
 {
     public partial class SettingsForm : Form
     {
-        private string DefaultSelectedHint = "";
+        private string _defaultSelectedHint = "";
         public SettingsForm()
         {
             InitializeComponent();
+            ShowSettings();
             GamesListView.MouseDown += GamesListView_MouseDown;
             LoadersListView.MouseDown += LoadersListView_MouseDown;
             GeneralCheckbox.MouseDown += GeneralCheckbox_MouseDown;
@@ -21,14 +23,89 @@ namespace launcherdotnet
             CustomTempDirPanel.MouseDown += CustomTempDirPanel_MouseDown;
             CustomInstallDirectoryPanel.MouseDown += CustomInstallDirectoryPanel_MouseDown;
             MLCheckbox.MouseDown += MLCheckbox_MouseDown;
-            DefaultSelectedHint = SelectedHint.Text;
+            _defaultSelectedHint = SelectedHint.Text;
         }
+
+        private void ApplySettings()
+        {
+            LauncherSettings s = LauncherSettings.Settings;
+
+            string json = JsonConvert.SerializeObject(s, Formatting.Indented);
+            Console.WriteLine(json);
+
+            // --- General ---
+            s.CheckForUpdates = GeneralCheckbox.GetItemChecked(0);
+            s.ConfirmDelete = GeneralCheckbox.GetItemChecked(1);
+            s.ConfirmOverwrite = GeneralCheckbox.GetItemChecked(2);
+            s.RunOnStartup = GeneralCheckbox.GetItemChecked(3);
+            
+            // --- Providers ---
+            s.GameProviders = new List<string>();
+            foreach (var item in GamesListView.CheckedItems)
+            {
+                s.GameProviders.Add(item.ToString()!); // this is subject to change
+            }
+            s.ModloaderProviders = new List<string>();
+            foreach (var item in LoadersListView.CheckedItems)
+            {
+                s.ModloaderProviders.Add(item.ToString()!); // same here
+            }
+            
+            // --- Melonloader ---
+            s.MLShowCI = MLCheckbox.GetItemChecked(0);
+            s.MLSelectStableByDefault = MLCheckbox.GetItemChecked(1);
+            s.OpenDebugConsole = AdvancedCheckbox.GetItemChecked(0);
+            
+            // --- Advanced ---
+            s.VerboseLogging = AdvancedCheckbox.GetItemChecked(1);
+            s.UseCustomTempDirectory = AdvancedCheckbox.GetItemChecked(2);
+            s.UseCustomInstallDirectory = AdvancedCheckbox.GetItemChecked(3);
+        }
+
+        private void ShowSettings()
+        {
+            LauncherSettings s = LauncherSettings.Settings;
+
+            // --- General ---
+            GeneralCheckbox.SetItemChecked(0, s.CheckForUpdates);
+            GeneralCheckbox.SetItemChecked(1, s.ConfirmDelete);
+            GeneralCheckbox.SetItemChecked(2, s.ConfirmOverwrite);
+            GeneralCheckbox.SetItemChecked(3, s.RunOnStartup);
+
+            // --- Games List ---
+            foreach (string provider in LauncherSettings.Settings.GameProviders)
+            {
+                GamesListView.Items.Add(provider);
+            }
+
+            // --- Loaders List ---
+            LoadersListView.Items.Clear();
+            foreach (string provider in LauncherSettings.Settings.ModloaderProviders)
+            {
+                LoadersListView.Items.Add(provider);
+            }
+
+            // --- MelonLoader ---
+            MLCheckbox.SetItemChecked(0, s.MLShowCI);
+            MLCheckbox.SetItemChecked(1, s.MLSelectStableByDefault);
+
+            // --- Advanced ---
+            AdvancedCheckbox.SetItemChecked(0, s.OpenDebugConsole);
+            AdvancedCheckbox.SetItemChecked(1, s.VerboseLogging);
+            AdvancedCheckbox.SetItemChecked(2, s.UseCustomTempDirectory);
+            AdvancedCheckbox.SetItemChecked(3, s.UseCustomInstallDirectory);
+
+            // --- Custom Directories ---
+            CustomTempDirTextbox.Text = s.CustomInstallDirectory;
+            CustomInstallDirTextbox.Text = s.CustomTempDirectory;
+        }
+
 
         private void SetSelectedHint(string? description, string? defaultSetting = null)
         {
             if (description == null)
             {
-                SelectedHint.Text = DefaultSelectedHint;
+                SelectedHint.Text = _defaultSelectedHint;
                 return;
             }
             SelectedHint.Text = $"{description}\n\nDefault: {defaultSetting ?? "Not specified"}";
@@ -125,6 +202,10 @@ namespace launcherdotnet
                 "This directory is used to store extracted game files. " +
                 "Can be an absolute path or a relative path.",
                 "games/");
+        }
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            ApplySettings();
         }
     }
 }

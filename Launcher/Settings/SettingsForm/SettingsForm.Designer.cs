@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ApplyButton = new Button();
+            SaveButton = new Button();
             SettingsTabControl = new TabControl();
             GeneralTab = new TabPage();
             GeneralCheckbox = new CheckedListBox();
@@ -47,11 +47,11 @@
             CustomInstallDirectoryPanel = new Panel();
             button3 = new Button();
             label1 = new Label();
-            textBox2 = new TextBox();
+            CustomInstallDirTextbox = new TextBox();
             CustomTempDirPanel = new Panel();
             button2 = new Button();
             TempDirLabel = new Label();
-            textBox1 = new TextBox();
+            CustomTempDirTextbox = new TextBox();
             AdvancedCheckbox = new CheckedListBox();
             panel1 = new Panel();
             DescriptionLabel = new Label();
@@ -66,15 +66,16 @@
             panel1.SuspendLayout();
             SuspendLayout();
             // 
-            // ApplyButton
+            // SaveButton
             // 
-            ApplyButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            ApplyButton.Location = new Point(425, 415);
-            ApplyButton.Name = "ApplyButton";
-            ApplyButton.Size = new Size(75, 23);
-            ApplyButton.TabIndex = 4;
-            ApplyButton.Text = "Apply";
-            ApplyButton.UseVisualStyleBackColor = true;
+            SaveButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            SaveButton.Location = new Point(425, 415);
+            SaveButton.Name = "SaveButton";
+            SaveButton.Size = new Size(75, 23);
+            SaveButton.TabIndex = 4;
+            SaveButton.Text = "Save";
+            SaveButton.UseVisualStyleBackColor = true;
+            SaveButton.Click += SaveButton_Click;
             // 
             // SettingsTabControl
             // 
@@ -234,7 +235,7 @@
             CustomInstallDirectoryPanel.BorderStyle = BorderStyle.FixedSingle;
             CustomInstallDirectoryPanel.Controls.Add(button3);
             CustomInstallDirectoryPanel.Controls.Add(label1);
-            CustomInstallDirectoryPanel.Controls.Add(textBox2);
+            CustomInstallDirectoryPanel.Controls.Add(CustomInstallDirTextbox);
             CustomInstallDirectoryPanel.Location = new Point(3, 162);
             CustomInstallDirectoryPanel.Name = "CustomInstallDirectoryPanel";
             CustomInstallDirectoryPanel.Size = new Size(285, 75);
@@ -258,19 +259,19 @@
             label1.TabIndex = 2;
             label1.Text = "Custom install directory:";
             // 
-            // textBox2
+            // CustomInstallDirTextbox
             // 
-            textBox2.Location = new Point(3, 21);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(277, 23);
-            textBox2.TabIndex = 1;
+            CustomInstallDirTextbox.Location = new Point(3, 21);
+            CustomInstallDirTextbox.Name = "CustomInstallDirTextbox";
+            CustomInstallDirTextbox.Size = new Size(277, 23);
+            CustomInstallDirTextbox.TabIndex = 1;
             // 
             // CustomTempDirPanel
             // 
             CustomTempDirPanel.BorderStyle = BorderStyle.FixedSingle;
             CustomTempDirPanel.Controls.Add(button2);
             CustomTempDirPanel.Controls.Add(TempDirLabel);
-            CustomTempDirPanel.Controls.Add(textBox1);
+            CustomTempDirPanel.Controls.Add(CustomTempDirTextbox);
             CustomTempDirPanel.Location = new Point(3, 82);
             CustomTempDirPanel.Name = "CustomTempDirPanel";
             CustomTempDirPanel.Size = new Size(285, 75);
@@ -294,12 +295,12 @@
             TempDirLabel.TabIndex = 2;
             TempDirLabel.Text = "Custom temporary directory:";
             // 
-            // textBox1
+            // CustomTempDirTextbox
             // 
-            textBox1.Location = new Point(3, 21);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(277, 23);
-            textBox1.TabIndex = 1;
+            CustomTempDirTextbox.Location = new Point(3, 21);
+            CustomTempDirTextbox.Name = "CustomTempDirTextbox";
+            CustomTempDirTextbox.Size = new Size(277, 23);
+            CustomTempDirTextbox.TabIndex = 1;
             // 
             // AdvancedCheckbox
             // 
@@ -344,7 +345,7 @@
             ClientSize = new Size(510, 450);
             Controls.Add(panel1);
             Controls.Add(SettingsTabControl);
-            Controls.Add(ApplyButton);
+            Controls.Add(SaveButton);
             Name = "SettingsForm";
             Text = "Settings";
             SettingsTabControl.ResumeLayout(false);
@@ -363,7 +364,7 @@
         }
 
         #endregion
-        private Button ApplyButton;
+        private Button SaveButton;
         private TabControl SettingsTabControl;
         private TabPage GeneralTab;
         private TabPage ProvidersTab;
@@ -381,7 +382,7 @@
         private Label GamesLabel;
         private Label ModloaderLabel;
         private Button AddLoaderButton;
-        private TextBox textBox1;
+        private TextBox CustomTempDirTextbox;
         private Panel CustomTempDirPanel;
         private Button button2;
         private Label TempDirLabel;
@@ -389,7 +390,7 @@
         private Panel CustomInstallDirectoryPanel;
         private Button button3;
         private Label label1;
-        private TextBox textBox2;
+        private TextBox CustomInstallDirTextbox;
         private Label DescriptionLabel;
     }
 }
