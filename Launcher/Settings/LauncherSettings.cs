@@ -46,19 +46,19 @@ namespace launcherdotnet
         // ===== General =====
 
         public bool CheckForUpdates { get; set; } = false;
-        public bool ConfirmBeforeDeletingInstance { get; set; } = true;
-        public bool ConfirmBeforeOverwritingInstance { get; set; } = true;
+        public bool ConfirmDelete { get; set; } = true;
+        public bool ConfirmOverwrite { get; set; } = true;
         public bool RunOnStartup { get; set; } = false;
 
         // ===== Melonloader =====
 
-        public bool ShowBleedingEdgeBuilds { get; set; } = true;
-        public bool PreferLatestStableOverCI { get; set; } = true;
+        public bool MLShowCI { get; set; } = true;
+        public bool MLSelectStableByDefault { get; set; } = true;
 
         // ===== Advanced =====
 
-        public bool OpenConsoleWhenApplyingSettings { get; set; } = false;
-        public bool EnableVerboseLogging { get; set; } = false;
+        public bool OpenDebugConsole { get; set; } = false;
+        public bool VerboseLogging { get; set; } = false;
         public bool UseCustomTempDirectory { get; set; } = false;
         public bool UseCustomInstallDirectory { get; set; } = false;
         public string CustomTempDirectory { get; set; } = "temp";
@@ -66,7 +66,7 @@ namespace launcherdotnet
 
         // ===== Providers =====
 
-        public List<string> EnabledGameProviders { get; set; } = new();
-        public List<string> EnabledModloaderProviders { get; set; } = new();
+        public List<string> GameProviders { get; set; } = new();
+        public List<string> ModloaderProviders { get; set; } = new();
     }
 }
