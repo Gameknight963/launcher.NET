@@ -32,7 +32,7 @@
             SettingsTabControl = new TabControl();
             GeneralTab = new TabPage();
             GeneralCheckbox = new CheckedListBox();
-            MirrorsTab = new TabPage();
+            ProvidersTab = new TabPage();
             AddLoaderButton = new Button();
             button1 = new Button();
             LoadersListView = new ListView();
@@ -58,7 +58,7 @@
             SelectedHint = new Label();
             SettingsTabControl.SuspendLayout();
             GeneralTab.SuspendLayout();
-            MirrorsTab.SuspendLayout();
+            ProvidersTab.SuspendLayout();
             ModloaderTab.SuspendLayout();
             AdvancedTab.SuspendLayout();
             CustomInstallDirectoryPanel.SuspendLayout();
@@ -80,7 +80,7 @@
             // 
             SettingsTabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             SettingsTabControl.Controls.Add(GeneralTab);
-            SettingsTabControl.Controls.Add(MirrorsTab);
+            SettingsTabControl.Controls.Add(ProvidersTab);
             SettingsTabControl.Controls.Add(ModloaderTab);
             SettingsTabControl.Controls.Add(AdvancedTab);
             SettingsTabControl.Location = new Point(12, 12);
@@ -109,21 +109,21 @@
             GeneralCheckbox.Size = new Size(279, 364);
             GeneralCheckbox.TabIndex = 0;
             // 
-            // MirrorsTab
+            // ProvidersTab
             // 
-            MirrorsTab.Controls.Add(AddLoaderButton);
-            MirrorsTab.Controls.Add(button1);
-            MirrorsTab.Controls.Add(LoadersListView);
-            MirrorsTab.Controls.Add(GamesListView);
-            MirrorsTab.Controls.Add(GamesLabel);
-            MirrorsTab.Controls.Add(ModloaderLabel);
-            MirrorsTab.Controls.Add(MirrorsHint);
-            MirrorsTab.Location = new Point(4, 24);
-            MirrorsTab.Name = "MirrorsTab";
-            MirrorsTab.Size = new Size(291, 378);
-            MirrorsTab.TabIndex = 2;
-            MirrorsTab.Text = "Mirrors";
-            MirrorsTab.UseVisualStyleBackColor = true;
+            ProvidersTab.Controls.Add(AddLoaderButton);
+            ProvidersTab.Controls.Add(button1);
+            ProvidersTab.Controls.Add(LoadersListView);
+            ProvidersTab.Controls.Add(GamesListView);
+            ProvidersTab.Controls.Add(GamesLabel);
+            ProvidersTab.Controls.Add(ModloaderLabel);
+            ProvidersTab.Controls.Add(MirrorsHint);
+            ProvidersTab.Location = new Point(4, 24);
+            ProvidersTab.Name = "ProvidersTab";
+            ProvidersTab.Size = new Size(291, 378);
+            ProvidersTab.TabIndex = 2;
+            ProvidersTab.Text = "Providers";
+            ProvidersTab.UseVisualStyleBackColor = true;
             // 
             // AddLoaderButton
             // 
@@ -349,8 +349,8 @@
             Text = "Settings";
             SettingsTabControl.ResumeLayout(false);
             GeneralTab.ResumeLayout(false);
-            MirrorsTab.ResumeLayout(false);
-            MirrorsTab.PerformLayout();
+            ProvidersTab.ResumeLayout(false);
+            ProvidersTab.PerformLayout();
             ModloaderTab.ResumeLayout(false);
             AdvancedTab.ResumeLayout(false);
             CustomInstallDirectoryPanel.ResumeLayout(false);
@@ -366,7 +366,7 @@
         private Button ApplyButton;
         private TabControl SettingsTabControl;
         private TabPage GeneralTab;
-        private TabPage MirrorsTab;
+        private TabPage ProvidersTab;
         private TabPage ModloaderTab;
         private TabPage AdvancedTab;
         private CheckedListBox AdvancedCheckbox;

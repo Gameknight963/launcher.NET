@@ -117,14 +117,14 @@ namespace launcherdotnet
             SetSelectedHint("Specifies the directory use if the \"Use custom temporary directory\" option is on. " +
                 "This directory is used to store .zip files before they are extracted. " +
                 "Can be an absolute path or a relative path.",
-                "/temp");
+                "temp/");
         }
         private void CustomInstallDirectoryPanel_MouseDown(object? sender, MouseEventArgs e)
         {
             SetSelectedHint("Specifies the directory use if the \"Use custom install directory\" option is on. " +
                 "This directory is used to store extracted game files. " +
                 "Can be an absolute path or a relative path.",
-                "/games");
+                "games/");
         }
     }
 }
