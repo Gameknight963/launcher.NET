@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO.Compression;
 using System.Text;
@@ -81,7 +82,7 @@ namespace launcherdotnet
             progressBar.MarqueeAnimationSpeed = 30;
 
             bool switchedToPercent = false;
-            var progress = new Progress<double>(percent =>
+            Progress<double> progress = new Progress<double>(percent =>
             {
                 if (!switchedToPercent)
                 {
