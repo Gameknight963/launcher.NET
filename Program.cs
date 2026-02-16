@@ -1,3 +1,5 @@
+using launcherdotnet.Launcher;
+
 namespace launcherdotnet
 {
     internal static class Program

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using launcherdotnet.Launcher;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,10 +13,17 @@ namespace launcherdotnet
         private static readonly string _baseDir = AppDomain.CurrentDomain.BaseDirectory;
         private static readonly string _settingsPath = Path.Combine(_baseDir, "settings.json");
 
-        public static string TempDir => LauncherSettings.Settings.UseCustomTempDirectory ? LauncherSettings.Settings.CustomTempDirectory : _defaultTempDir;
-        public static string GamesDir => LauncherSettings.Settings.UseCustomInstallDirectory ? LauncherSettings.Settings.CustomInstallDirectory : _defaultGamesDir;
+        public static string TempDir => ToAbsolutePath(LauncherSettings.Settings.UseCustomTempDirectory ? 
+            LauncherSettings.Settings.CustomTempDirectory : 
+            _defaultTempDir);
+        public static string GamesDir => ToAbsolutePath(LauncherSettings.Settings.UseCustomInstallDirectory ? 
+            LauncherSettings.Settings.CustomInstallDirectory : 
+            _defaultGamesDir);
 
         public static LauncherSettings Settings { get; private set; } = new();
+
+        private static string ToAbsolutePath(string path) => 
+            Path.IsPathRooted(path) ? path : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
 
         public static void Load()
         {
@@ -74,6 +82,5 @@ namespace launcherdotnet
         public List<string> GameProviders { get; set; } = new();
         public List<string> ModloaderProviders { get; set; } = new();
 
-        // ==== True directories ====
     }
 }
