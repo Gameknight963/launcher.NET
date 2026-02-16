@@ -35,8 +35,8 @@
             MirrorsTab = new TabPage();
             AddLoaderButton = new Button();
             button1 = new Button();
-            listView1 = new ListView();
-            listView2 = new ListView();
+            LoadersListView = new ListView();
+            GamesListView = new ListView();
             GamesLabel = new Label();
             ModloaderLabel = new Label();
             MirrorsHint = new Label();
@@ -44,24 +44,25 @@
             MLCheckbox = new CheckedListBox();
             AdvancedTab = new TabPage();
             AdvancedWarning = new Label();
-            panel3 = new Panel();
+            CustomInstallDirectoryPanel = new Panel();
             button3 = new Button();
             label1 = new Label();
             textBox2 = new TextBox();
-            panel2 = new Panel();
+            CustomTempDirPanel = new Panel();
             button2 = new Button();
             TempDirLabel = new Label();
             textBox1 = new TextBox();
             AdvancedCheckbox = new CheckedListBox();
             panel1 = new Panel();
+            DescriptionLabel = new Label();
             SelectedHint = new Label();
             SettingsTabControl.SuspendLayout();
             GeneralTab.SuspendLayout();
             MirrorsTab.SuspendLayout();
             ModloaderTab.SuspendLayout();
             AdvancedTab.SuspendLayout();
-            panel3.SuspendLayout();
-            panel2.SuspendLayout();
+            CustomInstallDirectoryPanel.SuspendLayout();
+            CustomTempDirPanel.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -102,7 +103,7 @@
             // GeneralCheckbox
             // 
             GeneralCheckbox.FormattingEnabled = true;
-            GeneralCheckbox.Items.AddRange(new object[] { "Check for launcher updates automatically", "Check for game updates automatically", "Confirm before deleting instances", "Confirm before overwriting instances", "Run on startup" });
+            GeneralCheckbox.Items.AddRange(new object[] { "Check for launcher.net updates automatically", "Confirm before deleting instances", "Confirm before overwriting instances", "Run on startup" });
             GeneralCheckbox.Location = new Point(6, 6);
             GeneralCheckbox.Name = "GeneralCheckbox";
             GeneralCheckbox.Size = new Size(279, 364);
@@ -112,8 +113,8 @@
             // 
             MirrorsTab.Controls.Add(AddLoaderButton);
             MirrorsTab.Controls.Add(button1);
-            MirrorsTab.Controls.Add(listView1);
-            MirrorsTab.Controls.Add(listView2);
+            MirrorsTab.Controls.Add(LoadersListView);
+            MirrorsTab.Controls.Add(GamesListView);
             MirrorsTab.Controls.Add(GamesLabel);
             MirrorsTab.Controls.Add(ModloaderLabel);
             MirrorsTab.Controls.Add(MirrorsHint);
@@ -142,21 +143,23 @@
             button1.Text = "+ Add";
             button1.UseVisualStyleBackColor = true;
             // 
-            // listView1
+            // LoadersListView
             // 
-            listView1.Location = new Point(3, 241);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(285, 123);
-            listView1.TabIndex = 4;
-            listView1.UseCompatibleStateImageBehavior = false;
+            LoadersListView.Location = new Point(3, 241);
+            LoadersListView.Name = "LoadersListView";
+            LoadersListView.Size = new Size(285, 123);
+            LoadersListView.TabIndex = 4;
+            LoadersListView.UseCompatibleStateImageBehavior = false;
+            LoadersListView.View = View.Details;
             // 
-            // listView2
+            // GamesListView
             // 
-            listView2.Location = new Point(3, 85);
-            listView2.Name = "listView2";
-            listView2.Size = new Size(285, 123);
-            listView2.TabIndex = 4;
-            listView2.UseCompatibleStateImageBehavior = false;
+            GamesListView.Location = new Point(3, 85);
+            GamesListView.Name = "GamesListView";
+            GamesListView.Size = new Size(285, 123);
+            GamesListView.TabIndex = 4;
+            GamesListView.UseCompatibleStateImageBehavior = false;
+            GamesListView.View = View.Details;
             // 
             // GamesLabel
             // 
@@ -207,8 +210,8 @@
             // AdvancedTab
             // 
             AdvancedTab.Controls.Add(AdvancedWarning);
-            AdvancedTab.Controls.Add(panel3);
-            AdvancedTab.Controls.Add(panel2);
+            AdvancedTab.Controls.Add(CustomInstallDirectoryPanel);
+            AdvancedTab.Controls.Add(CustomTempDirPanel);
             AdvancedTab.Controls.Add(AdvancedCheckbox);
             AdvancedTab.Location = new Point(4, 24);
             AdvancedTab.Name = "AdvancedTab";
@@ -226,16 +229,16 @@
             AdvancedWarning.TabIndex = 8;
             AdvancedWarning.Text = "WARNING: Custom directory is expirmental, stability is not guarnteed! launcher.net may not function properly if you enable the custom directory settings.";
             // 
-            // panel3
+            // CustomInstallDirectoryPanel
             // 
-            panel3.BorderStyle = BorderStyle.FixedSingle;
-            panel3.Controls.Add(button3);
-            panel3.Controls.Add(label1);
-            panel3.Controls.Add(textBox2);
-            panel3.Location = new Point(3, 162);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(285, 75);
-            panel3.TabIndex = 7;
+            CustomInstallDirectoryPanel.BorderStyle = BorderStyle.FixedSingle;
+            CustomInstallDirectoryPanel.Controls.Add(button3);
+            CustomInstallDirectoryPanel.Controls.Add(label1);
+            CustomInstallDirectoryPanel.Controls.Add(textBox2);
+            CustomInstallDirectoryPanel.Location = new Point(3, 162);
+            CustomInstallDirectoryPanel.Name = "CustomInstallDirectoryPanel";
+            CustomInstallDirectoryPanel.Size = new Size(285, 75);
+            CustomInstallDirectoryPanel.TabIndex = 7;
             // 
             // button3
             // 
@@ -262,16 +265,16 @@
             textBox2.Size = new Size(277, 23);
             textBox2.TabIndex = 1;
             // 
-            // panel2
+            // CustomTempDirPanel
             // 
-            panel2.BorderStyle = BorderStyle.FixedSingle;
-            panel2.Controls.Add(button2);
-            panel2.Controls.Add(TempDirLabel);
-            panel2.Controls.Add(textBox1);
-            panel2.Location = new Point(3, 82);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(285, 75);
-            panel2.TabIndex = 7;
+            CustomTempDirPanel.BorderStyle = BorderStyle.FixedSingle;
+            CustomTempDirPanel.Controls.Add(button2);
+            CustomTempDirPanel.Controls.Add(TempDirLabel);
+            CustomTempDirPanel.Controls.Add(textBox1);
+            CustomTempDirPanel.Location = new Point(3, 82);
+            CustomTempDirPanel.Name = "CustomTempDirPanel";
+            CustomTempDirPanel.Size = new Size(285, 75);
+            CustomTempDirPanel.TabIndex = 7;
             // 
             // button2
             // 
@@ -309,17 +312,28 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(DescriptionLabel);
             panel1.Controls.Add(SelectedHint);
-            panel1.Location = new Point(317, 36);
+            panel1.Location = new Point(313, 36);
             panel1.Name = "panel1";
-            panel1.Size = new Size(183, 369);
+            panel1.Size = new Size(187, 369);
             panel1.TabIndex = 6;
+            // 
+            // DescriptionLabel
+            // 
+            DescriptionLabel.AutoSize = true;
+            DescriptionLabel.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            DescriptionLabel.Location = new Point(0, 30);
+            DescriptionLabel.Name = "DescriptionLabel";
+            DescriptionLabel.Size = new Size(71, 15);
+            DescriptionLabel.TabIndex = 1;
+            DescriptionLabel.Text = "Description:";
             // 
             // SelectedHint
             // 
-            SelectedHint.Location = new Point(3, 45);
+            SelectedHint.Location = new Point(0, 45);
             SelectedHint.Name = "SelectedHint";
-            SelectedHint.Size = new Size(177, 148);
+            SelectedHint.Size = new Size(180, 319);
             SelectedHint.TabIndex = 0;
             SelectedHint.Text = "Select a setting for more information on what it does.";
             // 
@@ -339,11 +353,12 @@
             MirrorsTab.PerformLayout();
             ModloaderTab.ResumeLayout(false);
             AdvancedTab.ResumeLayout(false);
-            panel3.ResumeLayout(false);
-            panel3.PerformLayout();
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
+            CustomInstallDirectoryPanel.ResumeLayout(false);
+            CustomInstallDirectoryPanel.PerformLayout();
+            CustomTempDirPanel.ResumeLayout(false);
+            CustomTempDirPanel.PerformLayout();
             panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -361,19 +376,20 @@
         private Label MirrorsHint;
         private CheckedListBox MLCheckbox;
         private Button button1;
-        private ListView listView1;
-        private ListView listView2;
+        private ListView LoadersListView;
+        private ListView GamesListView;
         private Label GamesLabel;
         private Label ModloaderLabel;
         private Button AddLoaderButton;
         private TextBox textBox1;
-        private Panel panel2;
+        private Panel CustomTempDirPanel;
         private Button button2;
         private Label TempDirLabel;
         private Label AdvancedWarning;
-        private Panel panel3;
+        private Panel CustomInstallDirectoryPanel;
         private Button button3;
         private Label label1;
         private TextBox textBox2;
+        private Label DescriptionLabel;
     }
 }
