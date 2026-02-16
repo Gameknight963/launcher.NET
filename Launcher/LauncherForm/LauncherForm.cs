@@ -3,7 +3,9 @@ using System.Runtime.InteropServices.Marshalling;
 
 namespace launcherdotnet
 {
+    using launcherdotnet.Launcher;
     using Microsoft.VisualBasic;
+    using Semver;
     using System.Diagnostics;
     using System.IO;
     using System.Runtime.CompilerServices;
@@ -30,6 +32,7 @@ namespace launcherdotnet
             SetStatus(IdleStatus);
             SetSidebarMode(SidebarMode.Idle);
             gamesView.SizeChanged += (sender, e) => ResizeColumns();
+            Updater.CheckForUpdates();
         }
 
         public void SetStatus(string text)
@@ -71,6 +74,7 @@ namespace launcherdotnet
             Idle,
             GameSelected
         }
+
         public void SetSidebarMode(SidebarMode mode)
         {
             switch (mode)
@@ -123,9 +127,10 @@ namespace launcherdotnet
             GameInfo newGame = new GameInfo { Label = result };
             await Install.DownloadAndInstallGameAsync(
                 "",
-                Path.Combine(LauncherSettings.GamesDir),
+                LauncherSettings.GamesDir,
                 newGame,
                 SetStatus);
+            LauncherLogger.WriteLine($"Installing {result} to {LauncherSettings.GamesDir}");
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
             GameService.UpsertGame(newGame);
         }

@@ -30,10 +30,6 @@ namespace launcherdotnet
         {
             LauncherSettings s = LauncherSettings.Settings;
 
-            string json = JsonConvert.SerializeObject(s, Formatting.Indented);
-            LauncherLogger.WriteLine("New settings saved:");
-            LauncherLogger.WriteLine(json);
-
             // --- General ---
             s.CheckForUpdates = GeneralCheckbox.GetItemChecked(0);
             s.ConfirmDelete = GeneralCheckbox.GetItemChecked(1);
@@ -61,6 +57,12 @@ namespace launcherdotnet
             s.VerboseLogging = AdvancedCheckbox.GetItemChecked(1);
             s.UseCustomTempDirectory = AdvancedCheckbox.GetItemChecked(2);
             s.UseCustomInstallDirectory = AdvancedCheckbox.GetItemChecked(3);
+            s.CustomTempDirectory = CustomTempDirTextbox.Text;
+            s.CustomInstallDirectory = CustomInstallDirTextbox.Text;
+
+            string json = JsonConvert.SerializeObject(s, Formatting.Indented);
+            LauncherLogger.WriteLine("New settings saved:");
+            LauncherLogger.WriteLine(json);
 
             LauncherSettings.Save();
         }
@@ -99,8 +101,8 @@ namespace launcherdotnet
             AdvancedCheckbox.SetItemChecked(3, s.UseCustomInstallDirectory);
 
             // --- Custom Directories ---
-            CustomTempDirTextbox.Text = s.CustomInstallDirectory;
-            CustomInstallDirTextbox.Text = s.CustomTempDirectory;
+            CustomTempDirTextbox.Text = s.CustomTempDirectory;
+            CustomInstallDirTextbox.Text = s.CustomInstallDirectory;
         }
 
 
