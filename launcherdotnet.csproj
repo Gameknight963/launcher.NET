@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Version>$(VersionPrefix)0.39.0</Version>
+    <Version>$(VersionPrefix)0.2.1</Version>
     <Authors>$(AssemblyName)0.2.0-alpha</Authors>
   </PropertyGroup>
 
