@@ -14,7 +14,7 @@ namespace launcherdotnet
 
         // ===== Modloader =====
 
-        public bool ShowBleedingEdgeBuilds { get; set; } = false;
+        public bool ShowBleedingEdgeBuilds { get; set; } = true;
         public bool PreferLatestStableOverCI { get; set; } = true;
 
         // ===== Advanced =====
