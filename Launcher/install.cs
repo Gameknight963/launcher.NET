@@ -45,6 +45,7 @@ namespace launcherdotnet
             extractedFolder = Path.Combine(extractDir, UserChosenLabel);
 
             string finalFolder = Path.Combine(destinationDir, $"{Path.GetFileName(extractedFolder)}_{game.Id}");
+            Directory.CreateDirectory(destinationDir);
 
                 if (Directory.Exists(finalFolder))
                 {

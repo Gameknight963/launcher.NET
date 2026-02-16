@@ -123,7 +123,7 @@ namespace launcherdotnet
             GameInfo newGame = new GameInfo { Label = result };
             await Install.DownloadAndInstallGameAsync(
                 "",
-                Path.Combine(BASE, "Games"),
+                Path.Combine(LauncherSettings.GamesDir),
                 newGame,
                 SetStatus);
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
