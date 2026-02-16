@@ -141,7 +141,7 @@ namespace launcherdotnet
                 return;
             }
             ListViewItem selectedItem = gamesView.SelectedItems[0];
-            SetStatus($"Selected: {selectedItem.Text}");
+            SetStatus($"Selected: \"{selectedItem.Text}\"");
             SetSidebarMode(SidebarMode.GameSelected);
             GameInfo? game = GetSelectedGame();
             if (game == null) return;
@@ -181,8 +181,14 @@ namespace launcherdotnet
         {
             GameInfo? game = GetSelectedGame();
             if (game == null) return;
-            ModloaderInstallForm PromptForm = new ModloaderInstallForm(game);
-            PromptForm.Show();
+            ModloaderInstallForm form = new ModloaderInstallForm(game);
+            form.Show();
+        }
+
+        private void SettingsButton_Click(object sender, EventArgs e)
+        {
+            SettingsForm form = new SettingsForm();
+            form.Show();
         }
     }
 }

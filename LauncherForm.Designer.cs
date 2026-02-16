@@ -40,6 +40,7 @@
             InstallHint = new Label();
             panel1 = new Panel();
             InstallSometingButton = new Button();
+            SettingsButton = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -120,7 +121,7 @@
             // DeleteButton
             // 
             DeleteButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            DeleteButton.Location = new Point(3, 363);
+            DeleteButton.Location = new Point(165, 45);
             DeleteButton.Name = "DeleteButton";
             DeleteButton.Size = new Size(75, 23);
             DeleteButton.TabIndex = 0;
@@ -153,7 +154,7 @@
             // InstallSometingButton
             // 
             InstallSometingButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            InstallSometingButton.Location = new Point(3, 334);
+            InstallSometingButton.Location = new Point(84, 45);
             InstallSometingButton.Name = "InstallSometingButton";
             InstallSometingButton.Size = new Size(75, 23);
             InstallSometingButton.TabIndex = 3;
@@ -161,11 +162,23 @@
             InstallSometingButton.UseVisualStyleBackColor = true;
             InstallSometingButton.Click += InstallSometingButton_Click;
             // 
+            // SettingsButton
+            // 
+            SettingsButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            SettingsButton.Location = new Point(713, 422);
+            SettingsButton.Name = "SettingsButton";
+            SettingsButton.Size = new Size(75, 23);
+            SettingsButton.TabIndex = 9;
+            SettingsButton.Text = "Settings";
+            SettingsButton.UseVisualStyleBackColor = true;
+            SettingsButton.Click += SettingsButton_Click;
+            // 
             // LauncherForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(SettingsButton);
             Controls.Add(RefreshList);
             Controls.Add(button3);
             Controls.Add(gamesView);
@@ -173,7 +186,7 @@
             Controls.Add(label1);
             Controls.Add(status);
             Name = "LauncherForm";
-            Text = "Form1";
+            Text = "launcher.net";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
@@ -193,5 +206,6 @@
         private Label InstallHint;
         private Panel panel1;
         private Button InstallSometingButton;
+        private Button SettingsButton;
     }
 }
