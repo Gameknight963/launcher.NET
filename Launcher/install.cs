@@ -46,13 +46,17 @@ namespace launcherdotnet
 
             string finalFolder = Path.Combine(destinationDir, $"{Path.GetFileName(extractedFolder)}_{game.Id}");
             Directory.CreateDirectory(destinationDir);
-
+            DialogResult result = DialogResult.OK;
                 if (Directory.Exists(finalFolder))
                 {
-                    DialogResult result = MessageBox.Show("An instance of the downloaded version already exists. Overwrite?",
-                        "Overwrite? ",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Warning);
+                    if (LauncherSettings.Settings.ConfirmOverwrite)
+                    {
+                        result = MessageBox.Show("An instance of the downloaded version already exists. Overwrite?",
+                            "Overwrite? ",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Warning);
+                    }
+
                     if (result == DialogResult.Yes)
                     {
                         Directory.Delete(finalFolder, true);
