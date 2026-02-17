@@ -28,5 +28,5 @@ namespace launcherdotnet
             return key?.GetValue(KeyName) != null;
         }
     }
-
 }
+

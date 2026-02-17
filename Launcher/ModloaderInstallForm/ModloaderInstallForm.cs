@@ -32,12 +32,33 @@ namespace launcherdotnet
         {
             InstallModloaderButton.Enabled = false;
             versions = await MLInstallerSDK.MLManager.FetchAvailableVersionsAsync();
-            foreach (MLVersion v in versions)
+            List<MLVersion> stableVersions = versions
+                .Where(v => string.IsNullOrEmpty(v.Version.Prerelease))
+                .ToList();
+            if (LauncherSettings.Settings.MLShowCI)
             {
-                VersionDropdown.Items.Add(v.Version);
+                foreach (MLVersion v in versions)
+                    VersionDropdown.Items.Add(v.Version);
             }
-            if (VersionDropdown.Items.Count > 0)
+            else
+            {
+                foreach (MLVersion v in stableVersions)
+                    VersionDropdown.Items.Add(v.Version);
+            }
+
+            if (VersionDropdown.Items.Count == 0)
+            {
+                LauncherLogger.Error("Error: No Melonloader versions were sent by the Github API.");
+                MessageBox.Show("No Melonloader versions were sent by the Github API.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (LauncherSettings.Settings.MLSelectStableByDefault || LauncherSettings.Settings.MLShowCI)
+                VersionDropdown.SelectedIndex = versions.Count - stableVersions.Count;
+            else
                 VersionDropdown.SelectedIndex = 0;
+
             InstallModloaderButton.Enabled = true;
         }
 
