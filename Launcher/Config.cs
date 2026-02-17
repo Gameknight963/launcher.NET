@@ -12,6 +12,8 @@ namespace launcherdotnet
         public static readonly string DefaultTempDir = Path.Combine(BaseDir, "temp");
         public static readonly string DefaultGamesDir = Path.Combine(BaseDir, "games");
 
+        public static readonly string PluginsDir = Path.Combine(BaseDir, "plugins");
+
         public const string StartupRegistryKeyName = "launcherdotnet";
         public const string StartupRegistryPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
 
