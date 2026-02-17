@@ -16,14 +16,12 @@ namespace launcherdotnet.Launcher
             InformationalVersion
             .Split('+')[0];
         public static SemVersion CurrentVersion => SemVersion.Parse(CurrentVersionString!);
-        public static readonly string Releases = "https://api.github.com/repos/Gameknight963/launcher.NET/releases";
-        public static readonly string ReleasesPage = "https://github.com/Gameknight963/launcher.NET/releases";
 
         public static async Task<SemVersion?> GetLatestVersionAsync()
         {
             using HttpClient http = new HttpClient();
             http.DefaultRequestHeaders.Add("User-Agent", "launcher.net");
-            string response = await http.GetStringAsync(Releases);
+            string response = await http.GetStringAsync(Config.ReleasesAPIUrl);
 
             JsonNode? json = JsonNode.Parse(response);
             if (json is null || json.AsArray().Count == 0)
@@ -51,7 +49,7 @@ namespace launcherdotnet.Launcher
             if (latest == null) return;
             if (Updater.CurrentVersion != latest)
             {
-                LauncherLogger.Write($" Update available: {latest}");
+                LauncherLogger.WriteLine($" Update available: {latest}");
                 DialogResult result = MessageBox.Show($"New version is available: {latest}. You are currently on version {Updater.CurrentVersion.ToString()}. Update?",
                     "Update available",
                     MessageBoxButtons.YesNo,
@@ -59,12 +57,12 @@ namespace launcherdotnet.Launcher
                 if (result == DialogResult.No) return;
                 System.Diagnostics.Process.Start(new ProcessStartInfo
                 {
-                    FileName = Updater.ReleasesPage,
+                    FileName = Config.RelesesPage,
                     UseShellExecute = true
                 });
                 return;
             }
-            LauncherLogger.Write($" No updates availabe.");
+            LauncherLogger.WriteLine($" No updates availabe.");
         }
 
     }
