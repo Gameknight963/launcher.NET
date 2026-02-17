@@ -1,5 +1,6 @@
 ﻿using launcherdotnet.Launcher;
 using Newtonsoft.Json;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,7 @@ namespace launcherdotnet
         private static readonly string _defaultGamesDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "games");
         private static readonly string _baseDir = AppDomain.CurrentDomain.BaseDirectory;
         private static readonly string _settingsPath = Path.Combine(_baseDir, "settings.json");
+        private const string KeyName = "launcherdotnet";
 
         public static string TempDir => ToAbsolutePath(LauncherSettings.Settings.UseCustomTempDirectory ? 
             LauncherSettings.Settings.CustomTempDirectory : 
@@ -50,6 +52,21 @@ namespace launcherdotnet
             string json = JsonConvert.SerializeObject(Settings, Formatting.Indented);
             Directory.CreateDirectory(Path.GetDirectoryName(_settingsPath)!);
             File.WriteAllText(_settingsPath, json);
+            try
+            {
+                if (Settings.RunOnStartup)
+                    StartupHelper.EnableRunOnStartup();
+                else
+                    StartupHelper.DisableRunOnStartup();
+            }
+            catch (Exception ex)
+            {
+                LauncherLogger.WriteLine($"Failed to set Run on startup to {Settings.RunOnStartup}: {ex.Message}", true);
+                MessageBox.Show($"Failed to set Run on startup to {Settings.RunOnStartup}. Check the console for more details.", 
+                    "Error", 
+                    MessageBoxButtons.OK, 
+                    MessageBoxIcon.Error);
+            }
         }
 
         // ======================

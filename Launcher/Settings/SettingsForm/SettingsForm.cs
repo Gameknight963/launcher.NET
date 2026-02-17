@@ -144,7 +144,7 @@ namespace launcherdotnet
         {
             SetSelectedHint("Specifies which games launcher.net can download from. " +
                 "launcher.net can currently only download from Github Releases.\n" +
-                "launcher.net expects a .zip file containing a folder, which further contains the game folder. If this is not the case, the installation will fail.");
+                "launcher.net expects a .zip file containing the game folder. If this is not the case, the installation will fail.");
         }
 
         private void LoadersListView_MouseDown(object? sender, MouseEventArgs e)
