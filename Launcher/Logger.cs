@@ -1,4 +1,5 @@
-﻿using System;
+﻿using launcherdotnet.PluginAPI;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -29,6 +30,15 @@ namespace launcherdotnet
             if (LauncherSettings.Settings.VerboseLogging || force)
             {
                 Console.WriteLine(message);
+            }
+        }
+        public static void Highlight(string message, bool force = false)
+        {
+            if (LauncherSettings.Settings.VerboseLogging || force)
+            {
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
+                WriteAndResetColor(message);
             }
         }
         public static void Success(string message, bool force = false)
