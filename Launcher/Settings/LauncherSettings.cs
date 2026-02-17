@@ -4,14 +4,16 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.Versioning;
 
 namespace launcherdotnet
 {
     public class LauncherSettings
     {
-        private static readonly string _defaultTempDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "temp");
-        private static readonly string _defaultGamesDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "games");
-        private static readonly string _baseDir = AppDomain.CurrentDomain.BaseDirectory;
+        private static readonly string _defaultTempDir = Config.DefaultTempDir;
+        private static readonly string _defaultGamesDir = Config.DefaultGamesDir;
+
+        private static readonly string _baseDir = Config.BaseDir;
         private static readonly string _settingsPath = Path.Combine(_baseDir, "settings.json");
         private const string KeyName = "launcherdotnet";
 
@@ -21,8 +23,6 @@ namespace launcherdotnet
         public static string GamesDir => ToAbsolutePath(LauncherSettings.Settings.UseCustomInstallDirectory ? 
             LauncherSettings.Settings.CustomInstallDirectory : 
             _defaultGamesDir);
-
-        public static LauncherSettings Settings { get; private set; } = new();
 
         private static string ToAbsolutePath(string path) => 
             Path.IsPathRooted(path) ? path : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
@@ -68,6 +68,8 @@ namespace launcherdotnet
                     MessageBoxIcon.Error);
             }
         }
+
+        public static LauncherSettings Settings { get; private set; } = new();
 
         // ======================
         // Settings
