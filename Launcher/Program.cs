@@ -1,4 +1,6 @@
 using launcherdotnet.Launcher;
+using launcherdotnet.PluginAPI;
+using System.Reflection;
 
 namespace launcherdotnet
 {

@@ -44,16 +44,36 @@ namespace launcherdotnet
                 MessageBox.Show("Select a game.", "Invalid selection,", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            string? result = QueryName();
+            if (result == null) return;
+
+            GameInfo newGame = new GameInfo { Label = result };
+
+            // implement later LauncherForm.UpdateGameList(LauncherForm., LauncherDataManager.ReadLauncherData());
+
             GamesListItem item = (GamesListItem)GameDropdown.SelectedItem;
+            string installDir = Path.Combine(LauncherSettings.GamesDir, $"{newGame.Label}_{newGame.Id}");
+            Directory.CreateDirectory(installDir);
             try
             {
-                item.Tag!.OnInstallGameClicked?.Invoke(LauncherSettings.GamesDir);
+                string? exePath = item.Tag!.OnInstallGameClicked?.Invoke(installDir);
+                if (string.IsNullOrWhiteSpace(exePath))
+                {
+                    MessageBox.Show("Installation failed or returned no executable.",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return;
+                }
+                newGame.Path = exePath;
+                GameService.UpsertGame(newGame);
             }
             catch (Exception ex)
             {
-                LauncherLogger.Error($"Error: Game intall menu: {ex}");
+                LauncherLogger.Error($"Error installing game: {ex}");
             }
         }
+
         private void GameDropdown_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (GameDropdown.SelectedItem == null)
@@ -74,6 +94,24 @@ namespace launcherdotnet
                 if (VersionDropdown.Items.Count > 0) VersionDropdown.SelectedIndex = 0;
             }
         }
+
+        private string? QueryName()
+        {
+            string result = Interaction.InputBox(
+                "Enter a label for this instance:",
+                "Set Game Label");
+            if (string.IsNullOrWhiteSpace(result))
+                return null;
+            if (result != result.Trim())
+            {
+                MessageBox.Show("Label must not contain trailing or leading whitespace.",
+                        "Invalid name",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                return null;
+            }
+            return result;
+        }
     }
 }
 
@@ -83,28 +121,3 @@ internal class GamesListItem
     public GameInstallPluginEntry? Tag { get; set; }
     public override string ToString() => Text;
 }
-
-/* for reference:
-            string result = Interaction.InputBox(
-                "Enter a label for this instance:",
-                "Set Game Label");
-            if (string.IsNullOrWhiteSpace(result))
-                return;
-            if (result != result.Trim())
-            {
-                MessageBox.Show("Label must not contain trailing or leading whitespace.",
-                        "Invalid name",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                return;
-            }
-            GameInfo newGame = new GameInfo { Label = result };
-            await Install.DownloadAndInstallGameAsync(
-                "",
-                LauncherSettings.GamesDir,
-                newGame,
-                SetStatus);
-            LauncherLogger.WriteLine($"Installing {result} to {LauncherSettings.GamesDir}");
-            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
-            GameService.UpsertGame(newGame);
-*/
