@@ -19,9 +19,6 @@ namespace launcherdotnet
 {
     internal partial class GameInstallForm : Form
     {
-        List<MLVersion> versions = new List<MLVersion>();
-        GameInfo game = new GameInfo();
-
         public GameInstallForm()
         {
             InitializeComponent();
@@ -29,11 +26,11 @@ namespace launcherdotnet
             Initialize();
         }
 
-        public async void Initialize()
+        public void Initialize()
         {
             foreach (GameInstallPluginEntry entry in PluginApi.GameInstallPlugins)
             {
-                int index = GameDropdown.Items.Add(new GamesListItem { Text = entry.Plugin.Name, Tag = entry });
+                int index = GameDropdown.Items.Add(new GamesListItem { Text = entry.Installer.Name, Tag = entry });
             }
         }
 
@@ -56,7 +53,7 @@ namespace launcherdotnet
             Directory.CreateDirectory(installDir);
             try
             {
-                string? exePath = item.Tag!.OnInstallGameClicked?.Invoke(installDir);
+                string exePath = item.Tag!.Installer.Install(installDir);
                 if (string.IsNullOrWhiteSpace(exePath))
                 {
                     MessageBox.Show("Installation failed or returned no executable.",
