@@ -8,7 +8,7 @@ using System.Runtime.Versioning;
 
 namespace launcherdotnet
 {
-    public class LauncherSettings
+    internal class LauncherSettings
     {
         private static readonly string _defaultTempDir = Config.DefaultTempDir;
         private static readonly string _defaultGamesDir = Config.DefaultGamesDir;

@@ -6,7 +6,7 @@ using System.Threading.Tasks.Dataflow;
 
 namespace launcherdotnet
 {
-    public class Install
+    internal class Install
     {
         public static async Task<string?> DownloadAndInstallGameAsync(string gameIdOrUrl, string destinationDir, GameInfo game, Action<string> setStatus)
         {

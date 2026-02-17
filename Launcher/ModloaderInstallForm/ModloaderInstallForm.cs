@@ -14,7 +14,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace launcherdotnet
 {
-    public partial class ModloaderInstallForm : Form
+    internal partial class ModloaderInstallForm : Form
     {
         List<MLVersion> versions = new List<MLVersion>();
         GameInfo game = new GameInfo();

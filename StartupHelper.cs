@@ -6,7 +6,7 @@ using Microsoft.Win32;
 namespace launcherdotnet
 {
 
-    public static class StartupHelper
+    internal static class StartupHelper
     {
         private const string KeyName = "launcherdotnet";
 
