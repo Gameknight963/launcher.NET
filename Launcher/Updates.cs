@@ -11,12 +11,6 @@ namespace launcherdotnet.Launcher
 {
     internal class Updater
     {
-        public static string? CurrentVersionString => Assembly.GetExecutingAssembly().
-            GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.
-            InformationalVersion
-            .Split('+')[0];
-        public static SemVersion CurrentVersion => SemVersion.Parse(CurrentVersionString!);
-
         public static async Task<SemVersion?> GetLatestVersionAsync()
         {
             using HttpClient http = new HttpClient();
@@ -39,7 +33,7 @@ namespace launcherdotnet.Launcher
 
         public static async void CheckForUpdates()
         {
-            LauncherLogger.Write($"Using version {Updater.CurrentVersionString}. ");
+            LauncherLogger.Write($"Using version {Config.CurrentVersionString}. ");
             if (LauncherSettings.Settings.CheckForUpdates == false)
             {
                 LauncherLogger.WriteLine("Checking for updates is disabled.");
@@ -47,10 +41,10 @@ namespace launcherdotnet.Launcher
             }
             SemVersion? latest = await Updater.GetLatestVersionAsync();
             if (latest == null) return;
-            if (Updater.CurrentVersion != latest)
+            if (Config.CurrentVersion != latest)
             {
                 LauncherLogger.WriteLine($" Update available: {latest}");
-                DialogResult result = MessageBox.Show($"New version is available: {latest}. You are currently on version {Updater.CurrentVersion.ToString()}. Update?",
+                DialogResult result = MessageBox.Show($"New version is available: {latest}. You are currently on version {Config.CurrentVersionString}. Update?",
                     "Update available",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
