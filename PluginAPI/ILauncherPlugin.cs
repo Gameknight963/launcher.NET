@@ -10,6 +10,9 @@ namespace launcherdotnet.PluginAPI
         string Name { get; }
         SemVersion TargetApiVersion { get; }
 
+        /// <summary>
+        /// Called when the plugin is loaded.
+        /// </summary>
         void Initialize();
     }
 }

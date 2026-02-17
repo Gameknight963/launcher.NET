@@ -116,28 +116,8 @@ namespace launcherdotnet
         private async void button3_Click(object sender, EventArgs e)
         {
             // legends will remember salamalonekabatrabaslatrowerebakaedro
-            string result = Interaction.InputBox(
-                "Enter a label for this instance:",
-                "Set Game Label");
-            if (string.IsNullOrWhiteSpace(result))
-                return;
-            if (result != result.Trim())
-            {
-                MessageBox.Show("Label must not contain trailing or leading whitespace.",
-                        "Invalid name",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                return;
-            }
-            GameInfo newGame = new GameInfo { Label = result };
-            await Install.DownloadAndInstallGameAsync(
-                "",
-                LauncherSettings.GamesDir,
-                newGame,
-                SetStatus);
-            LauncherLogger.WriteLine($"Installing {result} to {LauncherSettings.GamesDir}");
-            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
-            GameService.UpsertGame(newGame);
+            GameInstallForm form = new GameInstallForm();
+            form.ShowDialog();
         }
 
         private void gamesView_SelectedIndexChanged(object sender, EventArgs e)

@@ -24,6 +24,7 @@ namespace launcherdotnet
             InitializeComponent();
             game = userChosenGame;
             this.Icon = SystemIcons.Information;
+            ModloaderDropdown.Items.Add("Melonloader");
             ModloaderDropdown.SelectedIndex = 0;
             Initialize();
         }
