@@ -119,6 +119,8 @@ namespace launcherdotnet
             string result = Interaction.InputBox(
                 "Enter a label for this instance:",
                 "Set Game Label");
+            if (string.IsNullOrWhiteSpace(result))
+                return;
             if (result != result.Trim())
             {
                 MessageBox.Show("Label must not contain trailing or leading whitespace.",
