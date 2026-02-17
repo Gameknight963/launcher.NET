@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Semver;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace launcherdotnet
@@ -19,6 +21,11 @@ namespace launcherdotnet
         public static readonly string RelesesPage = $"https://github.com/{RepoOwner}/{RepoName}/releases";
         public static readonly string GithubPage = $"https://github.com/{RepoOwner}/{RepoName}";
 
-        
+
+        public static string? CurrentVersionString => Assembly.GetExecutingAssembly().
+            GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.
+            InformationalVersion
+            .Split('+')[0];
+        public static SemVersion CurrentVersion => SemVersion.Parse(CurrentVersionString!);
     }
 }
