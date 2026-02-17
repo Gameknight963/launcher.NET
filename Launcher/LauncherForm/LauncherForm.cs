@@ -189,13 +189,13 @@ namespace launcherdotnet
             GameInfo? game = GetSelectedGame();
             if (game == null) return;
             ModloaderInstallForm form = new ModloaderInstallForm(game);
-            form.Show();
+            form.ShowDialog();
         }
 
         private void SettingsButton_Click(object sender, EventArgs e)
         {
             SettingsForm form = new SettingsForm();
-            form.Show();
+            form.ShowDialog();
         }
     }
 }
