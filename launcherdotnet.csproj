@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Version>$(VersionPrefix)0.3.0-alpha</Version>
+    <Version>$(VersionPrefix)0.4.0-alpha</Version>
     <Authors>gameknight963</Authors>
     <Description>Lightweight universal game launcher in .net framework</Description>
   </PropertyGroup>

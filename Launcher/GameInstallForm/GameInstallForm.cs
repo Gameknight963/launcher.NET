@@ -32,6 +32,7 @@ namespace launcherdotnet
             {
                 int index = GameDropdown.Items.Add(new GamesListItem { Text = entry.Installer.Name, Tag = entry });
             }
+            if (GameDropdown.Items.Count > 0) GameDropdown.SelectedIndex = 0;
         }
 
         private async void InstallGameButton_Click(object sender, EventArgs e)
