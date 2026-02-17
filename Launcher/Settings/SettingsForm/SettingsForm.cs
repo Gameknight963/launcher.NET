@@ -36,6 +36,7 @@ namespace launcherdotnet
 
         private void Form_MouseDown(object? sender, MouseEventArgs e)
         {
+            if (SettingsTabControl.SelectedIndex != 3) return;
             Point pt = CustomTempDirPanel.PointToClient((sender as Control)!.PointToScreen(e.Location));
             if (CustomTempDirPanel.ClientRectangle.Contains(pt))
                 SetSelectedHint("Specifies the directory use if the \"Use custom temporary directory\" option is on. " +

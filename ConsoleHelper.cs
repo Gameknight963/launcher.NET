@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-class ConsoleHelper
+internal class ConsoleHelper
 {
     [DllImport("kernel32.dll")]
     private static extern bool AllocConsole();

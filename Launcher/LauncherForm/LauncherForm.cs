@@ -10,7 +10,7 @@ namespace launcherdotnet
     using System.IO;
     using System.Runtime.CompilerServices;
 
-    public partial class LauncherForm : System.Windows.Forms.Form
+    internal partial class LauncherForm : System.Windows.Forms.Form
     {
         public string IdleStatus;
         public string IdleInstallHint;

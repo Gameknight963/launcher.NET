@@ -6,11 +6,11 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace launcherdotnet
 {
-    public class LauncherDataManager
+    internal class LauncherDataManager
     {
         private static string GetDataPath()
         {
-            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "games.json");
+            return Path.Combine(Config.BaseDir, "games.json");
         }
         public static LauncherData ReadLauncherData()
         {

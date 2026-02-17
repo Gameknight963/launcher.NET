@@ -5,7 +5,7 @@ using System.Text;
 
 namespace launcherdotnet
 {
-    public class GameService
+    internal class GameService
     {
         public static void UpsertGame(GameInfo game)
         {
