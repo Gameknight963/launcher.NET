@@ -47,11 +47,19 @@ namespace launcherdotnet
 
             GameInfo newGame = new GameInfo { Label = result };
 
-            // implement later LauncherForm.UpdateGameList(LauncherForm., LauncherDataManager.ReadLauncherData());
-
             GamesListItem item = (GamesListItem)GameDropdown.SelectedItem;
             string installDir = Path.Combine(LauncherSettings.GamesDir, $"{newGame.Label}_{newGame.Id}");
             Directory.CreateDirectory(installDir);
+
+            Progress<double> progress = new Progress<double>(percent =>
+            {
+                progressBar.Value = Math.Min(100, Math.Max(0, (int)percent));
+            });
+            var status = new Progress<string>(text =>
+            {
+                ActivityHint.Text = text;
+            });
+
             try
             {
                 string exePath = item.Tag!.Installer.Install(installDir);
