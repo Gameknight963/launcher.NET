@@ -40,7 +40,7 @@ namespace launcherdotnet
             status.Text = text;
         }
 
-        public void UpdateGameList(ListView gamesView, LauncherData data)
+        public static void UpdateGameList(ListView gamesView, LauncherData data)
         {
             gamesView.Items.Clear();
             foreach (var game in data.Versions)
@@ -118,6 +118,7 @@ namespace launcherdotnet
             // legends will remember salamalonekabatrabaslatrowerebakaedro
             GameInstallForm form = new GameInstallForm();
             form.ShowDialog();
+            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
         }
 
         private void gamesView_SelectedIndexChanged(object sender, EventArgs e)

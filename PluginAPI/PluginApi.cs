@@ -12,11 +12,11 @@ namespace launcherdotnet.PluginAPI
         /// <summary>
         /// Called by a plugin to register itself as a game installer
         /// </summary>
-        public static void RegisterGameInstallPlugin(ILauncherPlugin plugin, 
-            Func<string, string>? onInstallGameClicked = null, 
+        public static void RegisterGameInstallPlugin(
+            IGameInstaller Installer, 
             IEnumerable<SemVersion>? Versions = null)
         {
-            _gameInstallPlugins.Add(new GameInstallPluginEntry(plugin, onInstallGameClicked, Versions));
+            _gameInstallPlugins.Add(new GameInstallPluginEntry(Installer, Versions));
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace launcherdotnet.PluginAPI
         public static IReadOnlyList<GameInstallPluginEntry> GameInstallPlugins => _gameInstallPlugins.AsReadOnly();
     }
 
-    public record GameInstallPluginEntry(ILauncherPlugin Plugin,
-        Func<string, string>? OnInstallGameClicked, 
+    public record GameInstallPluginEntry(
+        IGameInstaller Installer,
         IEnumerable<SemVersion>? Versions);
 }
