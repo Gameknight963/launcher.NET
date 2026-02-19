@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace launcherdotnet
@@ -55,14 +56,16 @@ namespace launcherdotnet
             {
                 progressBar.Value = Math.Min(100, Math.Max(0, (int)percent));
             });
-            var status = new Progress<string>(text =>
+            Progress<string> status = new Progress<string>(text =>
             {
+                ActivityHint.Visible = true;
                 ActivityHint.Text = text;
             });
 
             try
             {
-                string exePath = item.Tag!.Installer.Install(installDir);
+                LauncherLogger.WriteLine($"Installing {item.Tag!.Installer.Name} as {newGame.Label}");
+                string exePath = await Task.Run(() => item.Tag!.Installer.Install(installDir, progress, status));
                 if (string.IsNullOrWhiteSpace(exePath))
                 {
                     MessageBox.Show("Installation failed or returned no executable.",
@@ -72,6 +75,7 @@ namespace launcherdotnet
                     return;
                 }
                 newGame.Path = exePath;
+                ActivityHint.Text = "Installation complete.";
                 GameService.UpsertGame(newGame);
             }
             catch (Exception ex)

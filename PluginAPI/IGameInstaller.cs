@@ -14,7 +14,7 @@ namespace launcherdotnet.PluginAPI
         /// <param name="status">Reports a status message string, displayed on the bottom of the installer.</param>
         /// <returns>The path to the executable.</returns>
         string Install(string installDir, 
-            IProgress<double>? progress = null, 
-            IProgress<string>? status = null);
+            IProgress<double> progress,
+            IProgress<string> status);
     }
 }
