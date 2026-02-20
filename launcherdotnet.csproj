@@ -9,6 +9,7 @@
     <Version>$(VersionPrefix)0.4.0-alpha</Version>
     <Authors>gameknight963</Authors>
     <Description>Lightweight universal game launcher in .net framework</Description>
+    <AssemblyVersion></AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
