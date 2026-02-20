@@ -120,8 +120,7 @@
             // 
             // DeleteButton
             // 
-            DeleteButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            DeleteButton.Location = new Point(165, 45);
+            DeleteButton.Location = new Point(3, 157);
             DeleteButton.Name = "DeleteButton";
             DeleteButton.Size = new Size(75, 23);
             DeleteButton.TabIndex = 0;
@@ -153,7 +152,6 @@
             // 
             // InstallSometingButton
             // 
-            InstallSometingButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             InstallSometingButton.Location = new Point(84, 45);
             InstallSometingButton.Name = "InstallSometingButton";
             InstallSometingButton.Size = new Size(75, 23);
