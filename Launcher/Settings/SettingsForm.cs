@@ -192,7 +192,7 @@ namespace launcherdotnet
                 return;
             }
             GameInstallPluginEntry entry = (GameInstallPluginEntry)GamePluginView.SelectedItems[0].Tag!;
-            SetPluginHint(entry.Installer.Name, entry.Installer.TargetApiVersion.ToString());
+            SetPluginHint(entry.Installer.Description, entry.Installer.TargetApiVersion.ToString());
         }
 
         private void MLCheckbox_MouseDown(object? sender, MouseEventArgs e)
@@ -237,26 +237,25 @@ namespace launcherdotnet
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            ApplySettings();
-            //try
-            //{
-            //    ApplySettings();
-            //    MessageBox.Show(
-            //        "Settings applied succesfully.",
-            //        "Notice",
-            //        MessageBoxButtons.OK,
-            //        MessageBoxIcon.Information);
-            //}
-            //catch (Exception ex)
-            //{
-            //    LauncherLogger.Error($"Error applying settings: {ex}");
-            //    MessageBox.Show(
-            //        $"Error applying settings: {ex.GetType().Name}. The console may include additional " +
-            //        $"information to help resolve this error.",
-            //        "Error",
-            //        MessageBoxButtons.OK,
-            //        MessageBoxIcon.Error);
-            //}
+            try
+            {
+                ApplySettings();
+                MessageBox.Show(
+                    "Settings applied succesfully.",
+                    "Notice",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                LauncherLogger.Error($"Error applying settings: {ex}");
+                MessageBox.Show(
+                    $"Error applying settings: {ex.GetType().Name}. The console may include additional " +
+                    $"information to help resolve this error.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
     }
 }

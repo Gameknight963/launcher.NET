@@ -16,5 +16,10 @@ namespace launcherdotnet.PluginAPI
         string Install(string installDir, 
             IProgress<double> progress,
             IProgress<string> status);
+        
+        /// <summary>
+        /// The name of the game your installer plugin installs.
+        /// </summary>
+        string GameName { get; }
     }
 }

@@ -17,7 +17,7 @@ namespace launcherdotnet
         {
             foreach (GameInstallPluginEntry entry in PluginApi.GameInstallPlugins)
             {
-                int index = GameDropdown.Items.Add(new GamesListItem { Text = entry.Installer.Name, Tag = entry });
+                int index = GameDropdown.Items.Add(new GamesListItem { Text = entry.Installer.GameName, Tag = entry });
             }
             if (GameDropdown.Items.Count > 0) GameDropdown.SelectedIndex = 0;
         }
