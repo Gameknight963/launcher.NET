@@ -2,6 +2,10 @@
 
 A lightweight game launcher capable of playing **any** game, through the power of plugins. 
 
+<img width="725" height="489" alt="launcherdotnet_Jjlpgl8Mfb" src="https://github.com/user-attachments/assets/b4e48baf-08ac-4050-8139-d0184529c5ef" />
+
+Shown: Windows 10 with [Aero10](https://www.deviantart.com/vaporvance/art/Aero10-Vista-Seven-909711949) theme, _not_ windows 7. 
+
 ### but how??
 
 Instead of implementing installation a million times for a million games, launcher.NET uses 'plugins,' which are dll files that get loaded containing implementations for installing games. As of such, it doesn't currently come with much functionality. You'll need to either script plugins to install games, or find them online. However, this system makes it fully modular.
@@ -40,7 +44,13 @@ In the "plugins" tab of the settings menu, click "open plugins folder." Drag any
 Plugins have FULL ACCESS to your PC when running, as any other program would! Use plugins with caution.
 
 ## Developing plugins
-see PLUGINS.MD
+see [PLUGINS.MD](https://github.com/Gameknight963/launcher.NET/blob/main/PLUGINS.md)
+
+## Screenshots
+
+<img width="526" height="489" alt="launcherdotnet_iBvbmKe2Cb" src="https://github.com/user-attachments/assets/cfc0b90c-51a3-4979-912d-f820d69ade5a" />
+
+<img width="725" height="489" alt="launcherdotnet_IgWOlE3189" src="https://github.com/user-attachments/assets/a8aa6b16-25ca-4a80-9604-cf6cf6afe951" />
 
 #### What is MLInstaller.SDK.dll?
 
