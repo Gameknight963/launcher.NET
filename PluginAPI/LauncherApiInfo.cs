@@ -8,6 +8,6 @@ namespace launcherdotnet.PluginAPI
 {
     public class LauncherApiInfo
     {
-        public static readonly SemVersion ApiVersion = new SemVersion(0, 5, 0);
+        public static readonly SemVersion ApiVersion = new SemVersion(0, 6, 0);
     }
 }

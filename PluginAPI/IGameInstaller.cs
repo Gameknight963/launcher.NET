@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Semver;
 
 namespace launcherdotnet.PluginAPI
 {
@@ -14,6 +15,7 @@ namespace launcherdotnet.PluginAPI
         /// <param name="status">Reports a status message string, displayed on the bottom of the installer.</param>
         /// <returns>The path to the executable.</returns>
         string Install(string installDir, 
+            SemVersion version,
             IProgress<double> progress,
             IProgress<string> status);
         

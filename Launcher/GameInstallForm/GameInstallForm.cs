@@ -53,9 +53,11 @@ namespace launcherdotnet
             {
                 LauncherLogger.WriteLine($"Installing {item.Tag!.Installer.Name} as {newGame.Label}");
                 string exePath;
+                VersionDropdownItem selectedVersion = (VersionDropdownItem)VersionDropdown.SelectedItem!;
+                SemVersion ver = selectedVersion.Version;
                 try
                 {
-                    exePath = await Task.Run(() => item.Tag!.Installer.Install(installDir, progress, status));
+                    exePath = await Task.Run(() => item.Tag!.Installer.Install(installDir, ver, progress, status));
                 }
                 catch (Exception ex)
                 {
@@ -98,7 +100,7 @@ namespace launcherdotnet
             {
                 foreach (SemVersion ver in entry.Versions)
                 {
-                    VersionDropdown.Items.Add(ver);
+                    VersionDropdown.Items.Add(new VersionDropdownItem { Text = ver.ToString(), Version = ver });
                 }
 
                 if (VersionDropdown.Items.Count > 0) VersionDropdown.SelectedIndex = 0;
@@ -127,6 +129,12 @@ namespace launcherdotnet
         {
             public required string Text { get; set; }
             public GameInstallPluginEntry? Tag { get; set; }
+            public override string ToString() => Text;
+        }
+        private class VersionDropdownItem
+        {
+            public required string Text { get; set; }
+            public required SemVersion Version { get; set; }
             public override string ToString() => Text;
         }
     }
