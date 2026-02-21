@@ -52,6 +52,10 @@
             CustomTempDirTextbox = new TextBox();
             AdvancedCheckbox = new CheckedListBox();
             AboutTab = new TabPage();
+            license1 = new Label();
+            linkLabel1 = new LinkLabel();
+            GithubLink = new LinkLabel();
+            MadeBy = new Label();
             LauncherApiVersionLabel = new Label();
             LauncherVersionLabel = new Label();
             LauncherLabel = new Label();
@@ -301,6 +305,10 @@
             // 
             // AboutTab
             // 
+            AboutTab.Controls.Add(license1);
+            AboutTab.Controls.Add(linkLabel1);
+            AboutTab.Controls.Add(GithubLink);
+            AboutTab.Controls.Add(MadeBy);
             AboutTab.Controls.Add(LauncherApiVersionLabel);
             AboutTab.Controls.Add(LauncherVersionLabel);
             AboutTab.Controls.Add(LauncherLabel);
@@ -313,6 +321,50 @@
             AboutTab.TabIndex = 4;
             AboutTab.Text = "About";
             AboutTab.UseVisualStyleBackColor = true;
+            // 
+            // license1
+            // 
+            license1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            license1.Location = new Point(3, 253);
+            license1.Name = "license1";
+            license1.Size = new Size(251, 60);
+            license1.TabIndex = 9;
+            license1.Text = "This software is licensed to you under the GNU General Public License v3.0.\r\nIf a copy of this license was not distributed to you alonside this software, visit";
+            // 
+            // linkLabel1
+            // 
+            linkLabel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            linkLabel1.AutoSize = true;
+            linkLabel1.Location = new Point(3, 313);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new Size(251, 15);
+            linkLabel1.TabIndex = 8;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "https://www.gnu.org/licenses/gpl-3.0.en.html";
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
+            // 
+            // GithubLink
+            // 
+            GithubLink.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            GithubLink.AutoSize = true;
+            GithubLink.Location = new Point(3, 354);
+            GithubLink.Name = "GithubLink";
+            GithubLink.Size = new Size(272, 15);
+            GithubLink.TabIndex = 8;
+            GithubLink.TabStop = true;
+            GithubLink.Text = "https://github.com/Gameknight963/launcher.NET";
+            GithubLink.LinkClicked += GithubLink_LinkClicked;
+            // 
+            // MadeBy
+            // 
+            MadeBy.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            MadeBy.AutoSize = true;
+            MadeBy.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            MadeBy.Location = new Point(3, 339);
+            MadeBy.Name = "MadeBy";
+            MadeBy.Size = new Size(178, 15);
+            MadeBy.TabIndex = 6;
+            MadeBy.Text = "launcher.NET by gameknight963";
             // 
             // LauncherApiVersionLabel
             // 
@@ -355,9 +407,10 @@
             // LauncherApiLabel
             // 
             LauncherApiLabel.AutoSize = true;
+            LauncherApiLabel.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             LauncherApiLabel.Location = new Point(3, 60);
             LauncherApiLabel.Name = "LauncherApiLabel";
-            LauncherApiLabel.Size = new Size(135, 15);
+            LauncherApiLabel.Size = new Size(136, 15);
             LauncherApiLabel.TabIndex = 6;
             LauncherApiLabel.Text = "launcher.NET Plugin API";
             // 
@@ -448,5 +501,9 @@
         private Label LauncherApiVersionLabel;
         private Label PluginsTabApiVersionLabel;
         private ListBox GamePluginsBox;
+        private LinkLabel GithubLink;
+        private Label MadeBy;
+        private Label license1;
+        private LinkLabel linkLabel1;
     }
 }
