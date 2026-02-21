@@ -150,7 +150,7 @@
             panel1.Controls.Add(DeleteButton);
             panel1.Location = new Point(524, 27);
             panel1.Name = "panel1";
-            panel1.Size = new Size(168, 389);
+            panel1.Size = new Size(173, 389);
             panel1.TabIndex = 3;
             // 
             // InstallSometingButton
@@ -186,7 +186,7 @@
             // SettingsButton
             // 
             SettingsButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            SettingsButton.Location = new Point(617, 422);
+            SettingsButton.Location = new Point(622, 422);
             SettingsButton.Name = "SettingsButton";
             SettingsButton.Size = new Size(75, 23);
             SettingsButton.TabIndex = 9;

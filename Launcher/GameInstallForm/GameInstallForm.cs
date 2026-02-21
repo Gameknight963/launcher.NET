@@ -52,7 +52,20 @@ namespace launcherdotnet
             try
             {
                 LauncherLogger.WriteLine($"Installing {item.Tag!.Installer.Name} as {newGame.Label}");
-                string exePath = await Task.Run(() => item.Tag!.Installer.Install(installDir, progress, status));
+                string exePath;
+                try
+                {
+                    exePath = await Task.Run(() => item.Tag!.Installer.Install(installDir, progress, status));
+                }
+                catch (Exception ex)
+                {
+                    LauncherLogger.Error($"Eror installing plugin: {ex}\nSTACK TRACK\n{ex.StackTrace}");
+                    MessageBox.Show($"Installation failed: {ex.Message}",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return;
+                }
                 if (string.IsNullOrWhiteSpace(exePath))
                 {
                     MessageBox.Show("Installation failed or returned no executable.",
