@@ -237,25 +237,26 @@ namespace launcherdotnet
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            try
-            {
-                ApplySettings();
-                MessageBox.Show(
-                    "Settings applied succesfully.",
-                    "Notice",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                LauncherLogger.Error($"Error applying settings: {ex}");
-                MessageBox.Show(
-                    $"Error applying settings: {ex.GetType().Name}. The console may include additional " +
-                    $"information to help resolve this error.",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
+            ApplySettings();
+            //try
+            //{
+            //    ApplySettings();
+            //    MessageBox.Show(
+            //        "Settings applied succesfully.",
+            //        "Notice",
+            //        MessageBoxButtons.OK,
+            //        MessageBoxIcon.Information);
+            //}
+            //catch (Exception ex)
+            //{
+            //    LauncherLogger.Error($"Error applying settings: {ex}");
+            //    MessageBox.Show(
+            //        $"Error applying settings: {ex.GetType().Name}. The console may include additional " +
+            //        $"information to help resolve this error.",
+            //        "Error",
+            //        MessageBoxButtons.OK,
+            //        MessageBoxIcon.Error);
+            //}
         }
     }
 }
