@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -233,10 +234,15 @@ namespace launcherdotnet
                         "Disabled");
                     break;
                 case 2:
-                    SetSelectedHint("If enabled, launcher.net will download games to custom temporary directory.",
+                    SetSelectedHint("If enabled, launcher.net will load plugins even if the major " +
+                        "versions of the target API don't match.",
                         "Disabled");
                     break;
                 case 3:
+                    SetSelectedHint("If enabled, launcher.net will download games to custom temporary directory.",
+                        "Disabled");
+                    break;
+                case 4:
                     SetSelectedHint("If enabled, launcher.net will install games to a custom directory.",
                         "Disabled");
                     break;
@@ -263,6 +269,33 @@ namespace launcherdotnet
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
+            }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            OpenInBrowser(linkLabel1.Text);
+        }
+
+        private void GithubLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            OpenInBrowser(GithubLink.Text);
+        }
+
+        private void OpenInBrowser(string url)
+        {
+            try
+            {
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                };
+                Process.Start(psi);
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
