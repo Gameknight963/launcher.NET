@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -56,14 +57,14 @@ namespace launcherdotnet
                 SetSelectedHint("Specifies the directory use if the \"Use custom temporary directory\" option is on. " +
                 "This directory is used to store .zip files before they are extracted. " +
                 "Can be an absolute path or a relative path.",
-                "temp/");
+                @"temp\");
 
             pt = CustomInstallDirectoryPanel.PointToClient((sender as Control)!.PointToScreen(e.Location));
             if (CustomInstallDirectoryPanel.ClientRectangle.Contains(pt))
                 SetSelectedHint("Specifies the directory use if the \"Use custom install directory\" option is on. " +
                     "This directory is used to store extracted game files. " +
                     "Can be an absolute path or a relative path.",
-                    "games/");
+                    @"games\");
         }
 
         private void ApplySettings()
@@ -296,6 +297,57 @@ namespace launcherdotnet
             catch (System.Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = Config.PluginsDir,
+                    UseShellExecute = true
+                };
+
+                Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to open folder: {ex.Message}");
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog dialog = new FolderBrowserDialog())
+            {
+                dialog.Description = "Select a folder";
+                dialog.UseDescriptionForTitle = true;
+                dialog.InitialDirectory = LauncherSettings.ToAbsolutePath(LauncherSettings.Settings.CustomTempDirectory);
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    CustomTempDirTextbox.Text = dialog.SelectedPath;
+                }
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            LauncherLogger.WriteLine(LauncherSettings.ToAbsolutePath(LauncherSettings.Settings.CustomInstallDirectory));
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.ValidateNames = false;
+                dialog.CheckFileExists = false;
+                dialog.CheckPathExists = true;
+                dialog.FileName = "Select a folder";
+                dialog.InitialDirectory = LauncherSettings.ToAbsolutePath(LauncherSettings.Settings.CustomInstallDirectory);
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    CustomInstallDirTextbox.Text = Path.GetDirectoryName(dialog.FileName);
+                }
             }
         }
     }
