@@ -33,9 +33,9 @@
             GeneralTab = new TabPage();
             GeneralCheckbox = new CheckedListBox();
             PluginsTab = new TabPage();
+            GamePluginsBox = new ListBox();
             PluginsTabApiVersionLabel = new Label();
             button1 = new Button();
-            GamePluginView = new ListView();
             GamesLabel = new Label();
             MirrorsHint = new Label();
             ModloaderTab = new TabPage();
@@ -119,9 +119,9 @@
             // PluginsTab
             // 
             PluginsTab.AutoScroll = true;
+            PluginsTab.Controls.Add(GamePluginsBox);
             PluginsTab.Controls.Add(PluginsTabApiVersionLabel);
             PluginsTab.Controls.Add(button1);
-            PluginsTab.Controls.Add(GamePluginView);
             PluginsTab.Controls.Add(GamesLabel);
             PluginsTab.Controls.Add(MirrorsHint);
             PluginsTab.Location = new Point(4, 24);
@@ -130,6 +130,15 @@
             PluginsTab.TabIndex = 2;
             PluginsTab.Text = "Plugins";
             PluginsTab.UseVisualStyleBackColor = true;
+            // 
+            // GamePluginsBox
+            // 
+            GamePluginsBox.FormattingEnabled = true;
+            GamePluginsBox.Location = new Point(0, 83);
+            GamePluginsBox.Name = "GamePluginsBox";
+            GamePluginsBox.Size = new Size(285, 274);
+            GamePluginsBox.TabIndex = 7;
+            GamePluginsBox.SelectedIndexChanged += GamePluginsBox_SelectedIndexChanged;
             // 
             // PluginsTabApiVersionLabel
             // 
@@ -149,18 +158,6 @@
             button1.TabIndex = 5;
             button1.Text = "+ Add";
             button1.UseVisualStyleBackColor = true;
-            // 
-            // GamePluginView
-            // 
-            GamePluginView.FullRowSelect = true;
-            GamePluginView.Location = new Point(3, 85);
-            GamePluginView.MultiSelect = false;
-            GamePluginView.Name = "GamePluginView";
-            GamePluginView.Size = new Size(285, 272);
-            GamePluginView.TabIndex = 4;
-            GamePluginView.UseCompatibleStateImageBehavior = false;
-            GamePluginView.View = View.List;
-            GamePluginView.SelectedIndexChanged += GamePluginView_SelectedIndexChanged;
             // 
             // GamesLabel
             // 
@@ -432,7 +429,6 @@
         private Label MirrorsHint;
         private CheckedListBox MLCheckbox;
         private Button button1;
-        private ListView GamePluginView;
         private Label GamesLabel;
         private TextBox CustomTempDirTextbox;
         private Panel CustomTempDirPanel;
@@ -451,5 +447,6 @@
         private Label label2;
         private Label LauncherApiVersionLabel;
         private Label PluginsTabApiVersionLabel;
+        private ListBox GamePluginsBox;
     }
 }

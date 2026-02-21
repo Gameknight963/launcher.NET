@@ -1,4 +1,5 @@
-﻿using launcherdotnet.PluginAPI;
+﻿using launcherdotnet.Launcher;
+using launcherdotnet.PluginAPI;
 using MLInstallerSDK;
 using Newtonsoft.Json;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
@@ -13,14 +15,24 @@ namespace launcherdotnet
 {
     public partial class SettingsForm : Form
     {
+        public class TaggedListBoxItem
+        {
+            public required string Text { get; set; }
+            public required object Tag { get; set; }
+            public override string ToString() => Text;
+        }
+
+        [DllImport("user32.dll")]
+        private static extern bool ShowScrollBar(IntPtr hWnd, int wBar, bool bShow);
+
         private string _defaultSelectedHint = "";
         public SettingsForm()
         {
             InitializeComponent();
             ShowSettings();
-            GamePluginView.MouseDown += GamesListView_MouseDown;
             GeneralCheckbox.MouseDown += GeneralCheckbox_MouseDown;
             AdvancedCheckbox.MouseDown += AdvancedCheckbox_MouseDown;
+            GamePluginsBox.MouseDown += GamePluginsBox_MouseDown;
             //CustomTempDirPanel.MouseDown += CustomTempDirPanel_MouseDown;
             //CustomInstallDirectoryPanel.MouseDown += CustomInstallDirectoryPanel_MouseDown;
             MLCheckbox.MouseDown += MLCheckbox_MouseDown;
@@ -97,14 +109,14 @@ namespace launcherdotnet
             GeneralCheckbox.SetItemChecked(3, s.RunOnStartup);
 
             // --- Plugin List ---
-            GamePluginView.Items.Clear();
+
+            GamePluginsBox.Items.Clear();
             foreach (GameInstallPluginEntry entry in PluginApi.GameInstallPlugins)
             {
-                ListViewItem item = new ListViewItem(entry.Installer.Name);
-                item.Tag = (entry);
-                GamePluginView.Items.Add(item);
-                LauncherLogger.WriteLine(item.Name);
+                TaggedListBoxItem item = new TaggedListBoxItem { Text = entry.Installer.Name, Tag = entry };
+                GamePluginsBox.Items.Add(item);
             }
+
             PluginsTabApiVersionLabel.Text = $"launcher.NET plugin API v{PluginAPI.LauncherApiInfo.ApiVersion}";
 
             // --- MelonLoader ---
@@ -175,23 +187,19 @@ namespace launcherdotnet
             }
         }
 
-        private const string _pluginHint = "Specifies which games launcher.net can download from. " +
-            "launcher.net can currently only download from Github Releases.\n" +
-            "launcher.net expects a .zip file containing the game folder. If this is not the case, the installation will fail.";
-
-        private void GamesListView_MouseDown(object? sender, MouseEventArgs e)
+        private void GamePluginsBox_MouseDown(object? sender, MouseEventArgs e)
         {
-            SetSelectedHint(_pluginHint);
+            if (GamePluginsBox.SelectedItems.Count == 0) return;
+            TaggedListBoxItem item = (TaggedListBoxItem)GamePluginsBox.SelectedItems[0]!;
+            GameInstallPluginEntry entry = (GameInstallPluginEntry)item.Tag!;
+            SetPluginHint(entry.Installer.Description, entry.Installer.TargetApiVersion.ToString());
         }
 
-        private void GamePluginView_SelectedIndexChanged(object sender, EventArgs e)
+        private void GamePluginsBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (GamePluginView.SelectedItems.Count == 0)
-            {
-                SetSelectedHint(_pluginHint);
-                return;
-            }
-            GameInstallPluginEntry entry = (GameInstallPluginEntry)GamePluginView.SelectedItems[0].Tag!;
+            if (GamePluginsBox.SelectedItems.Count == 0) return;
+            TaggedListBoxItem item = (TaggedListBoxItem)GamePluginsBox.SelectedItems[0]!;
+            GameInstallPluginEntry entry = (GameInstallPluginEntry)item.Tag!;
             SetPluginHint(entry.Installer.Description, entry.Installer.TargetApiVersion.ToString());
         }
 

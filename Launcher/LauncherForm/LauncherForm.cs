@@ -16,13 +16,6 @@ namespace launcherdotnet
         public string IdleInstallHint;
         public string BASE = AppDomain.CurrentDomain.BaseDirectory;
 
-        private const int SB_HORZ = 0;
-        private const int SB_VERT = 1;
-        private const int SB_BOTH = 3;
-
-        [DllImport("user32.dll")]
-        private static extern bool ShowScrollBar(IntPtr hWnd, int wBar, bool bShow);
-
         public LauncherForm()
         {
             InitializeComponent();
@@ -57,7 +50,7 @@ namespace launcherdotnet
             int remaining = gamesView.ClientSize.Width - gamesView.Columns[0].Width;
 
             // disable horizontal scrollbar with black magic
-            ShowScrollBar(gamesView.Handle, SB_HORZ, false);
+            ScrollbarHelper.Set(gamesView, ScrollbarHelper.Scrollbar.Horz, false);
 
             gamesView.Columns[1].Width = Math.Max(remaining, 230);
         }
