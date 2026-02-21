@@ -36,6 +36,7 @@ namespace launcherdotnet
 
             GamesListItem item = (GamesListItem)GameDropdown.SelectedItem;
             string installDir = Path.Combine(LauncherSettings.GamesDir, $"{newGame.Label}_{newGame.Id}");
+            newGame.RootDirectory = installDir;
             Directory.CreateDirectory(installDir);
 
             Progress<double> progress = new Progress<double>(percent =>
@@ -108,12 +109,13 @@ namespace launcherdotnet
             }
             return result;
         }
+
+        private class GamesListItem
+        {
+            public required string Text { get; set; }
+            public GameInstallPluginEntry? Tag { get; set; }
+            public override string ToString() => Text;
+        }
     }
 }
 
-internal class GamesListItem
-{
-    public required string Text { get; set; }
-    public GameInstallPluginEntry? Tag { get; set; }
-    public override string ToString() => Text;
-}
