@@ -40,6 +40,8 @@
             InstallHint = new Label();
             panel1 = new Panel();
             InstallSometingButton = new Button();
+            OpenFolderButton = new Button();
+            RenameButton = new Button();
             SettingsButton = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -71,7 +73,7 @@
             gamesView.Location = new Point(12, 27);
             gamesView.MultiSelect = false;
             gamesView.Name = "gamesView";
-            gamesView.Size = new Size(504, 389);
+            gamesView.Size = new Size(506, 389);
             gamesView.TabIndex = 4;
             gamesView.UseCompatibleStateImageBehavior = false;
             gamesView.View = View.Details;
@@ -90,7 +92,7 @@
             // button3
             // 
             button3.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button3.Location = new Point(387, 422);
+            button3.Location = new Point(389, 422);
             button3.Name = "button3";
             button3.Size = new Size(129, 23);
             button3.TabIndex = 7;
@@ -110,7 +112,7 @@
             // 
             // LaunchButton
             // 
-            LaunchButton.Location = new Point(3, 45);
+            LaunchButton.Location = new Point(5, 95);
             LaunchButton.Name = "LaunchButton";
             LaunchButton.Size = new Size(75, 23);
             LaunchButton.TabIndex = 2;
@@ -120,7 +122,7 @@
             // 
             // DeleteButton
             // 
-            DeleteButton.Location = new Point(3, 157);
+            DeleteButton.Location = new Point(86, 153);
             DeleteButton.Name = "DeleteButton";
             DeleteButton.Size = new Size(75, 23);
             DeleteButton.TabIndex = 0;
@@ -130,11 +132,10 @@
             // 
             // InstallHint
             // 
-            InstallHint.AutoSize = true;
-            InstallHint.Location = new Point(3, 27);
+            InstallHint.Location = new Point(5, 48);
             InstallHint.Margin = new Padding(3, 2, 3, 0);
             InstallHint.Name = "InstallHint";
-            InstallHint.Size = new Size(209, 15);
+            InstallHint.Size = new Size(156, 33);
             InstallHint.TabIndex = 1;
             InstallHint.Text = "Select an instance to see more options";
             // 
@@ -143,16 +144,18 @@
             panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             panel1.Controls.Add(InstallSometingButton);
             panel1.Controls.Add(InstallHint);
+            panel1.Controls.Add(OpenFolderButton);
             panel1.Controls.Add(LaunchButton);
+            panel1.Controls.Add(RenameButton);
             panel1.Controls.Add(DeleteButton);
-            panel1.Location = new Point(522, 27);
+            panel1.Location = new Point(524, 27);
             panel1.Name = "panel1";
-            panel1.Size = new Size(266, 389);
+            panel1.Size = new Size(168, 389);
             panel1.TabIndex = 3;
             // 
             // InstallSometingButton
             // 
-            InstallSometingButton.Location = new Point(84, 45);
+            InstallSometingButton.Location = new Point(86, 95);
             InstallSometingButton.Name = "InstallSometingButton";
             InstallSometingButton.Size = new Size(75, 23);
             InstallSometingButton.TabIndex = 3;
@@ -160,10 +163,30 @@
             InstallSometingButton.UseVisualStyleBackColor = true;
             InstallSometingButton.Click += InstallSometingButton_Click;
             // 
+            // OpenFolderButton
+            // 
+            OpenFolderButton.Location = new Point(5, 124);
+            OpenFolderButton.Name = "OpenFolderButton";
+            OpenFolderButton.Size = new Size(156, 23);
+            OpenFolderButton.TabIndex = 2;
+            OpenFolderButton.Text = "Open game folder";
+            OpenFolderButton.UseVisualStyleBackColor = true;
+            OpenFolderButton.Click += OpenFolderButton_Click;
+            // 
+            // RenameButton
+            // 
+            RenameButton.Location = new Point(5, 153);
+            RenameButton.Name = "RenameButton";
+            RenameButton.Size = new Size(75, 23);
+            RenameButton.TabIndex = 0;
+            RenameButton.Text = "Rename";
+            RenameButton.UseVisualStyleBackColor = true;
+            RenameButton.Click += RenameButton_Click;
+            // 
             // SettingsButton
             // 
             SettingsButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            SettingsButton.Location = new Point(713, 422);
+            SettingsButton.Location = new Point(617, 422);
             SettingsButton.Name = "SettingsButton";
             SettingsButton.Size = new Size(75, 23);
             SettingsButton.TabIndex = 9;
@@ -175,7 +198,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(709, 450);
             Controls.Add(SettingsButton);
             Controls.Add(RefreshList);
             Controls.Add(button3);
@@ -186,7 +209,6 @@
             Name = "LauncherForm";
             Text = "launcher.net";
             panel1.ResumeLayout(false);
-            panel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -205,5 +227,7 @@
         private Panel panel1;
         private Button InstallSometingButton;
         private Button SettingsButton;
+        private Button OpenFolderButton;
+        private Button RenameButton;
     }
 }

@@ -75,12 +75,16 @@ namespace launcherdotnet
                 case SidebarMode.Idle:
                     DeleteButton.Visible = false;
                     LaunchButton.Visible = false;
+                    OpenFolderButton.Visible = false;
+                    RenameButton.Visible = false;
                     InstallSometingButton.Visible = false;
                     break;
 
                 case SidebarMode.GameSelected:
                     DeleteButton.Visible = true;
                     LaunchButton.Visible = true;
+                    OpenFolderButton.Visible = true;
+                    RenameButton.Visible = true;
                     InstallSometingButton.Visible = true;
                     break;
             }
@@ -158,6 +162,29 @@ namespace launcherdotnet
             {
                 SetStatus($"Failed to launch: {ex.GetType().Name}");
             }
+        }
+
+        private void OpenFolderButton_Click(object sender, EventArgs e)
+        {
+            GameInfo? game = GetSelectedGame();
+            if (game == null) return;
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = game.RootDirectory,
+                UseShellExecute = true
+            });
+        }
+
+        private void RenameButton_Click(object sender, EventArgs e)
+        {
+            GameInfo? game = GetSelectedGame();
+            if (game == null) return;
+            string result = Interaction.InputBox("Enter a new label:", "Rename", game.Label);
+            if (string.IsNullOrWhiteSpace(result)) return;
+            game.Label = result;
+            GameService.UpsertGame(game);
+            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
+
         }
 
         private void InstallSometingButton_Click(object sender, EventArgs e)
