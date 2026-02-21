@@ -7,8 +7,8 @@ namespace launcherdotnet.PluginAPI
 {
     public static class PluginLogger
     {
-        public static void Log(string msg) => LauncherLogger.WriteLine(msg);
-        public static void Error(string msg) => LauncherLogger.Error(msg);
-        public static void Success(string msg) => LauncherLogger.Success(msg);
+        public static void Log(string msg, bool force = false) => LauncherLogger.WriteLine(msg, force);
+        public static void Error(string msg, bool force = false) => LauncherLogger.Error(msg, force);
+        public static void Success(string msg, bool force = false) => LauncherLogger.Success(msg, force);
     }
 }
