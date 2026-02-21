@@ -156,12 +156,13 @@
             // 
             // button1
             // 
-            button1.Location = new Point(224, 56);
+            button1.Location = new Point(142, 58);
             button1.Name = "button1";
-            button1.Size = new Size(64, 23);
+            button1.Size = new Size(143, 23);
             button1.TabIndex = 5;
-            button1.Text = "+ Add";
+            button1.Text = "Open plugins folder...";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // GamesLabel
             // 
@@ -241,6 +242,7 @@
             button3.TabIndex = 3;
             button3.Text = "Browse";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // label1
             // 
@@ -277,6 +279,7 @@
             button2.TabIndex = 3;
             button2.Text = "Browse";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // TempDirLabel
             // 

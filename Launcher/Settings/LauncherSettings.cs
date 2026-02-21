@@ -24,7 +24,7 @@ namespace launcherdotnet
             LauncherSettings.Settings.CustomInstallDirectory : 
             _defaultGamesDir);
 
-        private static string ToAbsolutePath(string path) => 
+        public static string ToAbsolutePath(string path) => 
             Path.IsPathRooted(path) ? path : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
 
         public static void Load()
@@ -99,7 +99,7 @@ namespace launcherdotnet
         public bool UseCustomTempDirectory { get; set; } = false;
         public bool DisablePluginVersionCheck { get; set; } = false;
         public bool UseCustomInstallDirectory { get; set; } = false;
-        public string CustomTempDirectory { get; set; } = "temp/";
-        public string CustomInstallDirectory { get; set; } = "games/";
+        public string CustomTempDirectory { get; set; } = @"temp\";
+        public string CustomInstallDirectory { get; set; } = @"games\";
     }
 }
