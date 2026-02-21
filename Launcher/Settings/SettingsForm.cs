@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using launcherdotnet.PluginAPI;
+using MLInstallerSDK;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,8 +18,7 @@ namespace launcherdotnet
         {
             InitializeComponent();
             ShowSettings();
-            GamesListView.MouseDown += GamesListView_MouseDown;
-            LoadersListView.MouseDown += LoadersListView_MouseDown;
+            GamePluginView.MouseDown += GamesListView_MouseDown;
             GeneralCheckbox.MouseDown += GeneralCheckbox_MouseDown;
             AdvancedCheckbox.MouseDown += AdvancedCheckbox_MouseDown;
             //CustomTempDirPanel.MouseDown += CustomTempDirPanel_MouseDown;
@@ -43,7 +44,7 @@ namespace launcherdotnet
                 "This directory is used to store .zip files before they are extracted. " +
                 "Can be an absolute path or a relative path.",
                 "temp/");
-            
+
             pt = CustomInstallDirectoryPanel.PointToClient((sender as Control)!.PointToScreen(e.Location));
             if (CustomInstallDirectoryPanel.ClientRectangle.Contains(pt))
                 SetSelectedHint("Specifies the directory use if the \"Use custom install directory\" option is on. " +
@@ -61,28 +62,17 @@ namespace launcherdotnet
             s.ConfirmDelete = GeneralCheckbox.GetItemChecked(1);
             s.ConfirmOverwrite = GeneralCheckbox.GetItemChecked(2);
             s.RunOnStartup = GeneralCheckbox.GetItemChecked(3);
-            
-            // --- Providers ---
-            s.GameProviders = new List<string>();
-            foreach (var item in GamesListView.CheckedItems)
-            {
-                s.GameProviders.Add(item.ToString()!); // this is subject to change
-            }
-            s.ModloaderProviders = new List<string>();
-            foreach (var item in LoadersListView.CheckedItems)
-            {
-                s.ModloaderProviders.Add(item.ToString()!); // same here
-            }
-            
+
             // --- Melonloader ---
             s.MLShowCI = MLCheckbox.GetItemChecked(0);
             s.MLSelectStableByDefault = MLCheckbox.GetItemChecked(1);
-            s.OpenDebugConsole = AdvancedCheckbox.GetItemChecked(0);
-            
+
             // --- Advanced ---
+            s.OpenDebugConsole = AdvancedCheckbox.GetItemChecked(0);
             s.VerboseLogging = AdvancedCheckbox.GetItemChecked(1);
-            s.UseCustomTempDirectory = AdvancedCheckbox.GetItemChecked(2);
-            s.UseCustomInstallDirectory = AdvancedCheckbox.GetItemChecked(3);
+            s.DisablePluginVersionCheck = AdvancedCheckbox.GetItemChecked(2);
+            s.UseCustomTempDirectory = AdvancedCheckbox.GetItemChecked(3);
+            s.UseCustomInstallDirectory = AdvancedCheckbox.GetItemChecked(4);
             s.CustomTempDirectory = CustomTempDirTextbox.Text;
             s.CustomInstallDirectory = CustomInstallDirTextbox.Text;
 
@@ -106,18 +96,16 @@ namespace launcherdotnet
             GeneralCheckbox.SetItemChecked(2, s.ConfirmOverwrite);
             GeneralCheckbox.SetItemChecked(3, s.RunOnStartup);
 
-            // --- Games List ---
-            foreach (string provider in LauncherSettings.Settings.GameProviders)
+            // --- Plugin List ---
+            GamePluginView.Items.Clear();
+            foreach (GameInstallPluginEntry entry in PluginApi.GameInstallPlugins)
             {
-                GamesListView.Items.Add(provider);
+                ListViewItem item = new ListViewItem(entry.Installer.Name);
+                item.Tag = (entry);
+                GamePluginView.Items.Add(item);
+                LauncherLogger.WriteLine(item.Name);
             }
-
-            // --- Loaders List ---
-            LoadersListView.Items.Clear();
-            foreach (string provider in LauncherSettings.Settings.ModloaderProviders)
-            {
-                LoadersListView.Items.Add(provider);
-            }
+            PluginsTabApiVersionLabel.Text = $"launcher.NET plugin API v{PluginAPI.LauncherApiInfo.ApiVersion}";
 
             // --- MelonLoader ---
             MLCheckbox.SetItemChecked(0, s.MLShowCI);
@@ -126,15 +114,20 @@ namespace launcherdotnet
             // --- Advanced ---
             AdvancedCheckbox.SetItemChecked(0, s.OpenDebugConsole);
             AdvancedCheckbox.SetItemChecked(1, s.VerboseLogging);
-            AdvancedCheckbox.SetItemChecked(2, s.UseCustomTempDirectory);
-            AdvancedCheckbox.SetItemChecked(3, s.UseCustomInstallDirectory);
+            AdvancedCheckbox.SetItemChecked(2, s.DisablePluginVersionCheck);
+            AdvancedCheckbox.SetItemChecked(3, s.UseCustomTempDirectory);
+            AdvancedCheckbox.SetItemChecked(4, s.UseCustomInstallDirectory);
 
             // --- Custom Directories ---
             CustomTempDirTextbox.Text = s.CustomTempDirectory;
             CustomInstallDirTextbox.Text = s.CustomInstallDirectory;
-            
+
             CustomTempDirPanel.Enabled = s.UseCustomTempDirectory;
             CustomInstallDirectoryPanel.Enabled = s.UseCustomInstallDirectory;
+
+            // --- About ---
+            LauncherVersionLabel.Text = $"v{Config.CurrentVersionString}";
+            LauncherApiVersionLabel.Text = $"v{PluginAPI.LauncherApiInfo.ApiVersion.ToString()}";
         }
 
 
@@ -146,6 +139,16 @@ namespace launcherdotnet
                 return;
             }
             SelectedHint.Text = $"{description}\n\nDefault: {defaultSetting ?? "Not specified"}";
+        }
+
+        private void SetPluginHint(string? description, string? apiVersion = null)
+        {
+            if (description == null)
+            {
+                SelectedHint.Text = _defaultSelectedHint;
+                return;
+            }
+            SelectedHint.Text = $"{description}\n\nTarget API version: {apiVersion ?? "Not specified"}";
         }
 
         private void GeneralCheckbox_MouseDown(object? sender, MouseEventArgs e)
@@ -172,19 +175,24 @@ namespace launcherdotnet
             }
         }
 
+        private const string _pluginHint = "Specifies which games launcher.net can download from. " +
+            "launcher.net can currently only download from Github Releases.\n" +
+            "launcher.net expects a .zip file containing the game folder. If this is not the case, the installation will fail.";
+
         private void GamesListView_MouseDown(object? sender, MouseEventArgs e)
         {
-            SetSelectedHint("Specifies which games launcher.net can download from. " +
-                "launcher.net can currently only download from Github Releases.\n" +
-                "launcher.net expects a .zip file containing the game folder. If this is not the case, the installation will fail.");
+            SetSelectedHint(_pluginHint);
         }
 
-        private void LoadersListView_MouseDown(object? sender, MouseEventArgs e)
+        private void GamePluginView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SetSelectedHint("Specifies which mods launcher.net can download from. " +
-                "launcher.net can currently only download from Github Releases.\n" +
-                "launcher.net expects a .zip that can be extracted directly to the game folder. " +
-                "If this is not the case, the modloader will probably not work.");
+            if (GamePluginView.SelectedItems.Count == 0)
+            {
+                SetSelectedHint(_pluginHint);
+                return;
+            }
+            GameInstallPluginEntry entry = (GameInstallPluginEntry)GamePluginView.SelectedItems[0].Tag!;
+            SetPluginHint(entry.Installer.Name, entry.Installer.TargetApiVersion.ToString());
         }
 
         private void MLCheckbox_MouseDown(object? sender, MouseEventArgs e)
@@ -192,7 +200,7 @@ namespace launcherdotnet
             switch (MLCheckbox.SelectedIndex)
             {
                 case 0:
-                    SetSelectedHint("If enabled bleeding edge builds will appear in the download list.\n" +
+                    SetSelectedHint("If enabled, bleeding edge builds will appear in the download list.\n" +
                         "These builds may be unstable, but contain the newest features and bugfixes.",
                         "Enabled");
                     break;
@@ -248,7 +256,6 @@ namespace launcherdotnet
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
-            
         }
     }
 }

@@ -32,13 +32,11 @@
             SettingsTabControl = new TabControl();
             GeneralTab = new TabPage();
             GeneralCheckbox = new CheckedListBox();
-            ProvidersTab = new TabPage();
-            AddLoaderButton = new Button();
+            PluginsTab = new TabPage();
+            PluginsTabApiVersionLabel = new Label();
             button1 = new Button();
-            LoadersListView = new ListView();
-            GamesListView = new ListView();
+            GamePluginView = new ListView();
             GamesLabel = new Label();
-            ModloaderLabel = new Label();
             MirrorsHint = new Label();
             ModloaderTab = new TabPage();
             MLCheckbox = new CheckedListBox();
@@ -53,16 +51,23 @@
             TempDirLabel = new Label();
             CustomTempDirTextbox = new TextBox();
             AdvancedCheckbox = new CheckedListBox();
+            AboutTab = new TabPage();
+            LauncherApiVersionLabel = new Label();
+            LauncherVersionLabel = new Label();
+            LauncherLabel = new Label();
+            label2 = new Label();
+            LauncherApiLabel = new Label();
             panel1 = new Panel();
             DescriptionLabel = new Label();
             SelectedHint = new Label();
             SettingsTabControl.SuspendLayout();
             GeneralTab.SuspendLayout();
-            ProvidersTab.SuspendLayout();
+            PluginsTab.SuspendLayout();
             ModloaderTab.SuspendLayout();
             AdvancedTab.SuspendLayout();
             CustomInstallDirectoryPanel.SuspendLayout();
             CustomTempDirPanel.SuspendLayout();
+            AboutTab.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -81,9 +86,10 @@
             // 
             SettingsTabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             SettingsTabControl.Controls.Add(GeneralTab);
-            SettingsTabControl.Controls.Add(ProvidersTab);
+            SettingsTabControl.Controls.Add(PluginsTab);
             SettingsTabControl.Controls.Add(ModloaderTab);
             SettingsTabControl.Controls.Add(AdvancedTab);
+            SettingsTabControl.Controls.Add(AboutTab);
             SettingsTabControl.Location = new Point(12, 12);
             SettingsTabControl.Name = "SettingsTabControl";
             SettingsTabControl.SelectedIndex = 0;
@@ -110,31 +116,30 @@
             GeneralCheckbox.Size = new Size(279, 364);
             GeneralCheckbox.TabIndex = 0;
             // 
-            // ProvidersTab
+            // PluginsTab
             // 
-            ProvidersTab.AutoScroll = true;
-            ProvidersTab.Controls.Add(AddLoaderButton);
-            ProvidersTab.Controls.Add(button1);
-            ProvidersTab.Controls.Add(LoadersListView);
-            ProvidersTab.Controls.Add(GamesListView);
-            ProvidersTab.Controls.Add(GamesLabel);
-            ProvidersTab.Controls.Add(ModloaderLabel);
-            ProvidersTab.Controls.Add(MirrorsHint);
-            ProvidersTab.Location = new Point(4, 24);
-            ProvidersTab.Name = "ProvidersTab";
-            ProvidersTab.Size = new Size(291, 378);
-            ProvidersTab.TabIndex = 2;
-            ProvidersTab.Text = "Providers";
-            ProvidersTab.UseVisualStyleBackColor = true;
+            PluginsTab.AutoScroll = true;
+            PluginsTab.Controls.Add(PluginsTabApiVersionLabel);
+            PluginsTab.Controls.Add(button1);
+            PluginsTab.Controls.Add(GamePluginView);
+            PluginsTab.Controls.Add(GamesLabel);
+            PluginsTab.Controls.Add(MirrorsHint);
+            PluginsTab.Location = new Point(4, 24);
+            PluginsTab.Name = "PluginsTab";
+            PluginsTab.Size = new Size(291, 378);
+            PluginsTab.TabIndex = 2;
+            PluginsTab.Text = "Plugins";
+            PluginsTab.UseVisualStyleBackColor = true;
             // 
-            // AddLoaderButton
+            // PluginsTabApiVersionLabel
             // 
-            AddLoaderButton.Location = new Point(224, 214);
-            AddLoaderButton.Name = "AddLoaderButton";
-            AddLoaderButton.Size = new Size(64, 23);
-            AddLoaderButton.TabIndex = 5;
-            AddLoaderButton.Text = "+ Add";
-            AddLoaderButton.UseVisualStyleBackColor = true;
+            PluginsTabApiVersionLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            PluginsTabApiVersionLabel.AutoSize = true;
+            PluginsTabApiVersionLabel.Location = new Point(3, 360);
+            PluginsTabApiVersionLabel.Name = "PluginsTabApiVersionLabel";
+            PluginsTabApiVersionLabel.Size = new Size(102, 15);
+            PluginsTabApiVersionLabel.TabIndex = 6;
+            PluginsTabApiVersionLabel.Text = "API version: v0.0.0";
             // 
             // button1
             // 
@@ -145,23 +150,17 @@
             button1.Text = "+ Add";
             button1.UseVisualStyleBackColor = true;
             // 
-            // LoadersListView
+            // GamePluginView
             // 
-            LoadersListView.Location = new Point(3, 241);
-            LoadersListView.Name = "LoadersListView";
-            LoadersListView.Size = new Size(285, 123);
-            LoadersListView.TabIndex = 4;
-            LoadersListView.UseCompatibleStateImageBehavior = false;
-            LoadersListView.View = View.Details;
-            // 
-            // GamesListView
-            // 
-            GamesListView.Location = new Point(3, 85);
-            GamesListView.Name = "GamesListView";
-            GamesListView.Size = new Size(285, 123);
-            GamesListView.TabIndex = 4;
-            GamesListView.UseCompatibleStateImageBehavior = false;
-            GamesListView.View = View.Details;
+            GamePluginView.FullRowSelect = true;
+            GamePluginView.Location = new Point(3, 85);
+            GamePluginView.MultiSelect = false;
+            GamePluginView.Name = "GamePluginView";
+            GamePluginView.Size = new Size(285, 272);
+            GamePluginView.TabIndex = 4;
+            GamePluginView.UseCompatibleStateImageBehavior = false;
+            GamePluginView.View = View.List;
+            GamePluginView.SelectedIndexChanged += GamePluginView_SelectedIndexChanged;
             // 
             // GamesLabel
             // 
@@ -172,22 +171,13 @@
             GamesLabel.TabIndex = 2;
             GamesLabel.Text = "Games:";
             // 
-            // ModloaderLabel
-            // 
-            ModloaderLabel.AutoSize = true;
-            ModloaderLabel.Location = new Point(3, 219);
-            ModloaderLabel.Name = "ModloaderLabel";
-            ModloaderLabel.Size = new Size(73, 15);
-            ModloaderLabel.TabIndex = 2;
-            ModloaderLabel.Text = "Modloaders:";
-            // 
             // MirrorsHint
             // 
             MirrorsHint.Location = new Point(3, 3);
             MirrorsHint.Name = "MirrorsHint";
             MirrorsHint.Size = new Size(285, 55);
             MirrorsHint.TabIndex = 0;
-            MirrorsHint.Text = "You can change what Github repositories launcher.net downloads games and modloaders from.";
+            MirrorsHint.Text = "Plugins are custom installation scripts that tell launcher.net how to install games and modloaders. Only game installers are currently supported.";
             // 
             // ModloaderTab
             // 
@@ -237,7 +227,7 @@
             CustomInstallDirectoryPanel.Controls.Add(button3);
             CustomInstallDirectoryPanel.Controls.Add(label1);
             CustomInstallDirectoryPanel.Controls.Add(CustomInstallDirTextbox);
-            CustomInstallDirectoryPanel.Location = new Point(3, 162);
+            CustomInstallDirectoryPanel.Location = new Point(3, 184);
             CustomInstallDirectoryPanel.Name = "CustomInstallDirectoryPanel";
             CustomInstallDirectoryPanel.Size = new Size(285, 75);
             CustomInstallDirectoryPanel.TabIndex = 7;
@@ -273,7 +263,7 @@
             CustomTempDirPanel.Controls.Add(button2);
             CustomTempDirPanel.Controls.Add(TempDirLabel);
             CustomTempDirPanel.Controls.Add(CustomTempDirTextbox);
-            CustomTempDirPanel.Location = new Point(3, 82);
+            CustomTempDirPanel.Location = new Point(3, 103);
             CustomTempDirPanel.Name = "CustomTempDirPanel";
             CustomTempDirPanel.Size = new Size(285, 75);
             CustomTempDirPanel.TabIndex = 7;
@@ -306,11 +296,73 @@
             // AdvancedCheckbox
             // 
             AdvancedCheckbox.FormattingEnabled = true;
-            AdvancedCheckbox.Items.AddRange(new object[] { "Show debug console", "Enable verbose logging", "Use custom temporary directory", "Use custom install directory" });
+            AdvancedCheckbox.Items.AddRange(new object[] { "Show debug console", "Enable verbose logging", "Disable plugin version check", "Use custom temporary directory", "Use custom install directory" });
             AdvancedCheckbox.Location = new Point(3, 3);
             AdvancedCheckbox.Name = "AdvancedCheckbox";
-            AdvancedCheckbox.Size = new Size(285, 76);
+            AdvancedCheckbox.Size = new Size(285, 94);
             AdvancedCheckbox.TabIndex = 0;
+            // 
+            // AboutTab
+            // 
+            AboutTab.Controls.Add(LauncherApiVersionLabel);
+            AboutTab.Controls.Add(LauncherVersionLabel);
+            AboutTab.Controls.Add(LauncherLabel);
+            AboutTab.Controls.Add(label2);
+            AboutTab.Controls.Add(LauncherApiLabel);
+            AboutTab.Location = new Point(4, 24);
+            AboutTab.Name = "AboutTab";
+            AboutTab.Padding = new Padding(3);
+            AboutTab.Size = new Size(291, 378);
+            AboutTab.TabIndex = 4;
+            AboutTab.Text = "About";
+            AboutTab.UseVisualStyleBackColor = true;
+            // 
+            // LauncherApiVersionLabel
+            // 
+            LauncherApiVersionLabel.AutoSize = true;
+            LauncherApiVersionLabel.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            LauncherApiVersionLabel.Location = new Point(3, 75);
+            LauncherApiVersionLabel.Name = "LauncherApiVersionLabel";
+            LauncherApiVersionLabel.Size = new Size(37, 15);
+            LauncherApiVersionLabel.TabIndex = 6;
+            LauncherApiVersionLabel.Text = "v0.0.0";
+            // 
+            // LauncherVersionLabel
+            // 
+            LauncherVersionLabel.AutoSize = true;
+            LauncherVersionLabel.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            LauncherVersionLabel.Location = new Point(3, 34);
+            LauncherVersionLabel.Name = "LauncherVersionLabel";
+            LauncherVersionLabel.Size = new Size(37, 15);
+            LauncherVersionLabel.TabIndex = 6;
+            LauncherVersionLabel.Text = "v0.0.0";
+            // 
+            // LauncherLabel
+            // 
+            LauncherLabel.AutoSize = true;
+            LauncherLabel.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            LauncherLabel.Location = new Point(3, 19);
+            LauncherLabel.Name = "LauncherLabel";
+            LauncherLabel.Size = new Size(77, 15);
+            LauncherLabel.TabIndex = 6;
+            LauncherLabel.Text = "launcher.NET";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(3, 45);
+            label2.Name = "label2";
+            label2.Size = new Size(0, 15);
+            label2.TabIndex = 6;
+            // 
+            // LauncherApiLabel
+            // 
+            LauncherApiLabel.AutoSize = true;
+            LauncherApiLabel.Location = new Point(3, 60);
+            LauncherApiLabel.Name = "LauncherApiLabel";
+            LauncherApiLabel.Size = new Size(135, 15);
+            LauncherApiLabel.TabIndex = 6;
+            LauncherApiLabel.Text = "launcher.NET Plugin API";
             // 
             // panel1
             // 
@@ -351,14 +403,16 @@
             Text = "Settings";
             SettingsTabControl.ResumeLayout(false);
             GeneralTab.ResumeLayout(false);
-            ProvidersTab.ResumeLayout(false);
-            ProvidersTab.PerformLayout();
+            PluginsTab.ResumeLayout(false);
+            PluginsTab.PerformLayout();
             ModloaderTab.ResumeLayout(false);
             AdvancedTab.ResumeLayout(false);
             CustomInstallDirectoryPanel.ResumeLayout(false);
             CustomInstallDirectoryPanel.PerformLayout();
             CustomTempDirPanel.ResumeLayout(false);
             CustomTempDirPanel.PerformLayout();
+            AboutTab.ResumeLayout(false);
+            AboutTab.PerformLayout();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
@@ -368,7 +422,7 @@
         private Button SaveButton;
         private TabControl SettingsTabControl;
         private TabPage GeneralTab;
-        private TabPage ProvidersTab;
+        private TabPage PluginsTab;
         private TabPage ModloaderTab;
         private TabPage AdvancedTab;
         private CheckedListBox AdvancedCheckbox;
@@ -378,11 +432,8 @@
         private Label MirrorsHint;
         private CheckedListBox MLCheckbox;
         private Button button1;
-        private ListView LoadersListView;
-        private ListView GamesListView;
+        private ListView GamePluginView;
         private Label GamesLabel;
-        private Label ModloaderLabel;
-        private Button AddLoaderButton;
         private TextBox CustomTempDirTextbox;
         private Panel CustomTempDirPanel;
         private Button button2;
@@ -393,5 +444,12 @@
         private Label label1;
         private TextBox CustomInstallDirTextbox;
         private Label DescriptionLabel;
+        private Label LauncherApiLabel;
+        private TabPage AboutTab;
+        private Label LauncherVersionLabel;
+        private Label LauncherLabel;
+        private Label label2;
+        private Label LauncherApiVersionLabel;
+        private Label PluginsTabApiVersionLabel;
     }
 }

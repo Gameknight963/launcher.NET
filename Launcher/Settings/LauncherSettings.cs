@@ -67,6 +67,11 @@ namespace launcherdotnet
                     MessageBoxButtons.OK, 
                     MessageBoxIcon.Error);
             }
+            if (ConsoleHelper.ConsoleShown == Settings.OpenDebugConsole) return;
+            if (Settings.OpenDebugConsole)
+                ConsoleHelper.Show();
+            else
+                ConsoleHelper.Hide();
         }
 
         public static LauncherSettings Settings { get; private set; } = new();
@@ -92,14 +97,9 @@ namespace launcherdotnet
         public bool OpenDebugConsole { get; set; } = false;
         public bool VerboseLogging { get; set; } = false;
         public bool UseCustomTempDirectory { get; set; } = false;
+        public bool DisablePluginVersionCheck { get; set; } = false;
         public bool UseCustomInstallDirectory { get; set; } = false;
         public string CustomTempDirectory { get; set; } = "temp/";
         public string CustomInstallDirectory { get; set; } = "games/";
-
-        // ===== Providers =====
-
-        public List<string> GameProviders { get; set; } = new();
-        public List<string> ModloaderProviders { get; set; } = new();
-
     }
 }
