@@ -1,20 +1,6 @@
 ﻿using launcherdotnet.PluginAPI;
 using Microsoft.VisualBasic;
-using MLInstallerSDK;
 using Semver;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO.Compression;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace launcherdotnet
 {
