@@ -26,6 +26,7 @@ namespace launcherdotnet
             this.Icon = SystemIcons.Information;
             ModloaderDropdown.Items.Add("Melonloader");
             ModloaderDropdown.SelectedIndex = 0;
+            this.FormClosing += ModloaderInstallForm_FormClosing;
             Initialize();
         }
 
@@ -84,7 +85,7 @@ namespace launcherdotnet
             InstallModloaderButton.Enabled = false;
             ModloaderDropdown.Enabled = false;
             VersionDropdown.Enabled = false;
-
+            _installInProgress = true;
             try
             {
                 MLVersion chosen = versions[VersionDropdown.SelectedIndex];
@@ -92,14 +93,28 @@ namespace launcherdotnet
             }
             finally
             {
-                // restore UI
+                _installInProgress = false;
                 InstallModloaderButton.Enabled = true;
                 ModloaderDropdown.Enabled = true;
                 VersionDropdown.Enabled = true;
             }
         }
+
+        private void ModloaderInstallForm_FormClosing(object? sender, FormClosingEventArgs e)
+        {
+            if (_installInProgress)
+            {
+                MessageBox.Show("Please wait for the installation to finish.", "Installation in progress",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                e.Cancel = true;
+            }
+        }
+
+        private bool _installInProgress = false;
+
         private async Task InstallSelectedModloaderAsync(MLVersion version, string installDir, System.Windows.Forms.ProgressBar progressBar)
         {
+
             progressBar.Style = ProgressBarStyle.Marquee;
             progressBar.MarqueeAnimationSpeed = 30;
 
