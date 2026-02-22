@@ -10,7 +10,7 @@ namespace launcherdotnet.PluginAPI
 
         public InstanceTempDir()
         {
-            Path = System.IO.Path.Combine(LauncherSettings.TempDir, Guid.NewGuid().ToString());
+            Path = System.IO.Path.Combine(Config.TempDir, Guid.NewGuid().ToString());
             Directory.CreateDirectory(Path);
         }
 

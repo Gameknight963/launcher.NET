@@ -38,33 +38,7 @@ namespace launcherdotnet
             //CustomTempDirPanel.MouseDown += CustomTempDirPanel_MouseDown;
             //CustomInstallDirectoryPanel.MouseDown += CustomInstallDirectoryPanel_MouseDown;
             MLCheckbox.MouseDown += MLCheckbox_MouseDown;
-            HookMouseDown(this);
             _defaultSelectedHint = SelectedHint.Text;
-        }
-
-        private void HookMouseDown(Control parent)
-        {
-            parent.MouseDown += Form_MouseDown;
-            foreach (Control child in parent.Controls)
-                HookMouseDown(child);
-        }
-
-        private void Form_MouseDown(object? sender, MouseEventArgs e)
-        {
-            if (SettingsTabControl.SelectedIndex != 3) return;
-            Point pt = CustomTempDirPanel.PointToClient((sender as Control)!.PointToScreen(e.Location));
-            if (CustomTempDirPanel.ClientRectangle.Contains(pt))
-                SetSelectedHint("Specifies the directory use if the \"Use custom temporary directory\" option is on. " +
-                "This directory is used to store .zip files before they are extracted. " +
-                "Can be an absolute path or a relative path.",
-                @"temp\");
-
-            pt = CustomInstallDirectoryPanel.PointToClient((sender as Control)!.PointToScreen(e.Location));
-            if (CustomInstallDirectoryPanel.ClientRectangle.Contains(pt))
-                SetSelectedHint("Specifies the directory use if the \"Use custom install directory\" option is on. " +
-                    "This directory is used to store extracted game files. " +
-                    "Can be an absolute path or a relative path.",
-                    @"games\");
         }
 
         private void ApplySettings()
@@ -85,13 +59,6 @@ namespace launcherdotnet
             s.OpenDebugConsole = AdvancedCheckbox.GetItemChecked(0);
             s.VerboseLogging = AdvancedCheckbox.GetItemChecked(1);
             s.DisablePluginVersionCheck = AdvancedCheckbox.GetItemChecked(2);
-            s.UseCustomTempDirectory = AdvancedCheckbox.GetItemChecked(3);
-            s.UseCustomInstallDirectory = AdvancedCheckbox.GetItemChecked(4);
-            s.CustomTempDirectory = CustomTempDirTextbox.Text;
-            s.CustomInstallDirectory = CustomInstallDirTextbox.Text;
-
-            CustomTempDirPanel.Enabled = s.UseCustomTempDirectory;
-            CustomInstallDirectoryPanel.Enabled = s.UseCustomInstallDirectory;
 
             string json = JsonConvert.SerializeObject(s, Formatting.Indented);
             LauncherLogger.WriteLine("New settings saved:");
@@ -129,15 +96,6 @@ namespace launcherdotnet
             AdvancedCheckbox.SetItemChecked(0, s.OpenDebugConsole);
             AdvancedCheckbox.SetItemChecked(1, s.VerboseLogging);
             AdvancedCheckbox.SetItemChecked(2, s.DisablePluginVersionCheck);
-            AdvancedCheckbox.SetItemChecked(3, s.UseCustomTempDirectory);
-            AdvancedCheckbox.SetItemChecked(4, s.UseCustomInstallDirectory);
-
-            // --- Custom Directories ---
-            CustomTempDirTextbox.Text = s.CustomTempDirectory;
-            CustomInstallDirTextbox.Text = s.CustomInstallDirectory;
-
-            CustomTempDirPanel.Enabled = s.UseCustomTempDirectory;
-            CustomInstallDirectoryPanel.Enabled = s.UseCustomInstallDirectory;
 
             // --- About ---
             LauncherVersionLabel.Text = $"v{Config.CurrentVersionString}";
@@ -315,39 +273,6 @@ namespace launcherdotnet
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to open folder: {ex.Message}");
-            }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            using (FolderBrowserDialog dialog = new FolderBrowserDialog())
-            {
-                dialog.Description = "Select a folder";
-                dialog.UseDescriptionForTitle = true;
-                dialog.InitialDirectory = LauncherSettings.ToAbsolutePath(LauncherSettings.Settings.CustomTempDirectory);
-
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    CustomTempDirTextbox.Text = dialog.SelectedPath;
-                }
-            }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            LauncherLogger.WriteLine(LauncherSettings.ToAbsolutePath(LauncherSettings.Settings.CustomInstallDirectory));
-            using (OpenFileDialog dialog = new OpenFileDialog())
-            {
-                dialog.ValidateNames = false;
-                dialog.CheckFileExists = false;
-                dialog.CheckPathExists = true;
-                dialog.FileName = "Select a folder";
-                dialog.InitialDirectory = LauncherSettings.ToAbsolutePath(LauncherSettings.Settings.CustomInstallDirectory);
-
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    CustomInstallDirTextbox.Text = Path.GetDirectoryName(dialog.FileName);
-                }
             }
         }
     }

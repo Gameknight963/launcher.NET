@@ -136,7 +136,7 @@ namespace launcherdotnet
 
             Installer.Log = msg => LauncherLogger.WriteLine(msg);
             MLManager.Log = msg => LauncherLogger.WriteLine(msg);
-            string tempFolder = LauncherSettings.TempDir;
+            string tempFolder = Config.TempDir;
             Directory.CreateDirectory(tempFolder);
             string tempZip = Path.Combine(Path.Combine(tempFolder, $"melon_{Guid.NewGuid():N}.zip"));
 

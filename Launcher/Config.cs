@@ -9,8 +9,8 @@ namespace launcherdotnet
     internal static class Config
     {
         public static readonly string BaseDir = AppDomain.CurrentDomain.BaseDirectory;
-        public static readonly string DefaultTempDir = Path.Combine(BaseDir, "temp");
-        public static readonly string DefaultGamesDir = Path.Combine(BaseDir, "games");
+        public static readonly string TempDir = Path.Combine(BaseDir, "temp");
+        public static readonly string GamesDir = Path.Combine(BaseDir, "games");
 
         public static readonly string PluginsDir = Path.Combine(BaseDir, "plugins");
 

@@ -10,11 +10,11 @@ namespace launcherdotnet.PluginAPI
         /// <summary>
         /// Temporary directory where plugins can put things.
         /// </summary>
-        public static string TempDir => LauncherSettings.TempDir;
+        public static string TempDir => Config.TempDir;
         /// <summary>
         /// The games directory
         /// </summary>
-        public static string GamesDir => LauncherSettings.GamesDir;
+        public static string GamesDir => Config.GamesDir;
         /// <summary>
         /// User agent for plugins to use when making requests to APIs
         /// </summary>

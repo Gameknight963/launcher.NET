@@ -10,19 +10,9 @@ namespace launcherdotnet
 {
     internal class LauncherSettings
     {
-        private static readonly string _defaultTempDir = Config.DefaultTempDir;
-        private static readonly string _defaultGamesDir = Config.DefaultGamesDir;
-
         private static readonly string _baseDir = Config.BaseDir;
         private static readonly string _settingsPath = Path.Combine(_baseDir, "settings.json");
         private const string KeyName = "launcherdotnet";
-
-        public static string TempDir => ToAbsolutePath(LauncherSettings.Settings.UseCustomTempDirectory ? 
-            LauncherSettings.Settings.CustomTempDirectory : 
-            _defaultTempDir);
-        public static string GamesDir => ToAbsolutePath(LauncherSettings.Settings.UseCustomInstallDirectory ? 
-            LauncherSettings.Settings.CustomInstallDirectory : 
-            _defaultGamesDir);
 
         public static string ToAbsolutePath(string path) => 
             Path.IsPathRooted(path) ? path : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
@@ -96,10 +86,6 @@ namespace launcherdotnet
 
         public bool OpenDebugConsole { get; set; } = false;
         public bool VerboseLogging { get; set; } = false;
-        public bool UseCustomTempDirectory { get; set; } = false;
         public bool DisablePluginVersionCheck { get; set; } = false;
-        public bool UseCustomInstallDirectory { get; set; } = false;
-        public string CustomTempDirectory { get; set; } = @"temp\";
-        public string CustomInstallDirectory { get; set; } = @"games\";
     }
 }
