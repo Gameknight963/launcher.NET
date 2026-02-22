@@ -39,11 +39,11 @@ namespace launcherdotnet
         public string Path { get; set; } = "";
         public string RootDirectory { get; set; } = "";
         public bool RunWithCmd { get; set; } = false;
-        public string Id { get; } = Guid.NewGuid().ToString();
+        public string Id { get; set; } = Guid.NewGuid().ToString();
     }
     public class LauncherData
     {
-        public string? Name { get; set; }
+        public string? Name { get; init; }
         public List<GameInfo> Versions { get; set; } = new List<GameInfo>();
     }
 }
