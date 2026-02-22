@@ -199,7 +199,6 @@ namespace launcherdotnet
             game.Label = result;
             GameService.UpsertGame(game);
             UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
-
         }
 
         private void InstallSometingButton_Click(object sender, EventArgs e)
