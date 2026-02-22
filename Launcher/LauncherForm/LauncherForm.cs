@@ -39,7 +39,7 @@ namespace launcherdotnet
             foreach (var game in data.Versions)
             {
                 ListViewItem item = new ListViewItem(game.Label);
-                item.SubItems.Add(game.Path);
+                item.SubItems.Add(game.GameName);
                 item.Tag = game;
                 gamesView.Items.Add(item);
             }

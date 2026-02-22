@@ -32,7 +32,7 @@
             label1 = new Label();
             gamesView = new ListView();
             LabelColumn = new ColumnHeader();
-            PathColumn = new ColumnHeader();
+            GameColumn = new ColumnHeader();
             button3 = new Button();
             RefreshList = new Button();
             LaunchButton = new Button();
@@ -68,7 +68,7 @@
             // gamesView
             // 
             gamesView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            gamesView.Columns.AddRange(new ColumnHeader[] { LabelColumn, PathColumn });
+            gamesView.Columns.AddRange(new ColumnHeader[] { LabelColumn, GameColumn });
             gamesView.FullRowSelect = true;
             gamesView.Location = new Point(12, 27);
             gamesView.MultiSelect = false;
@@ -82,12 +82,12 @@
             // LabelColumn
             // 
             LabelColumn.Text = "Name";
-            LabelColumn.Width = 230;
+            LabelColumn.Width = 370;
             // 
-            // PathColumn
+            // GameColumn
             // 
-            PathColumn.Text = "Path";
-            PathColumn.Width = 270;
+            GameColumn.Text = "Game";
+            GameColumn.Width = 132;
             // 
             // button3
             // 
@@ -220,7 +220,7 @@
         private ColumnHeader LabelColumn;
         private Button button3;
         private Button RefreshList;
-        private ColumnHeader PathColumn;
+        private ColumnHeader GameColumn;
         private Button LaunchButton;
         private Button DeleteButton;
         private Label InstallHint;
