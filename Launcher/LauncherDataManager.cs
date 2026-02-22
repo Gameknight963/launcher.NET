@@ -38,7 +38,8 @@ namespace launcherdotnet
         public string Label { get; set; } = "";
         public string Path { get; set; } = "";
         public string RootDirectory { get; set; } = "";
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public bool RunWithCmd { get; set; } = false;
+        public string Id { get; } = Guid.NewGuid().ToString();
     }
     public class LauncherData
     {

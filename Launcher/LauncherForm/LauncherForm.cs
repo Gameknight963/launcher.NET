@@ -149,10 +149,19 @@ namespace launcherdotnet
             if (game == null) return;
 
             ProcessStartInfo psi = new ProcessStartInfo();
-            psi.FileName = "cmd.exe";
-            psi.Arguments = $"/k \"{game.Path}\"";
             psi.UseShellExecute = true;
-            psi.CreateNoWindow = true;
+
+            if (game.RunWithCmd)
+            {
+                psi.FileName = "cmd.exe";
+                psi.Arguments = $"/k \"{game.Path}\"";
+                psi.CreateNoWindow = true;
+            }
+            else
+            {
+                psi.FileName = game.Path;
+                psi.CreateNoWindow = false;
+            }
 
             try
             {

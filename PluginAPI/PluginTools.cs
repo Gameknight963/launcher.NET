@@ -65,6 +65,13 @@ namespace launcherdotnet.PluginAPI
             public bool SearchSubdirectories { get; set; }
 
             /// <summary>
+            /// If <c>true</c>, the search will include helpers such as the Unity crash handler.
+            /// If <c>false</c>, helpers will be ignored.
+            /// Default is <c>false</c>.
+            /// </summary>
+            public bool ExcludeHelpers { get; set; }
+            
+            /// <summary>
             /// Initializes a new instance of the <see cref="GameSearchOptions"/> struct with optional settings.
             /// </summary>
             /// <param name="searchSubdirs">
@@ -73,11 +80,9 @@ namespace launcherdotnet.PluginAPI
             /// </param>
             /// <param name="excludeHelpers">
             /// Determines whether common helper executables should be excluded.
-            /// Defaults to <c>true</c>.
+            /// Defaults to <c>false</c>.
             /// </param>
-            public bool ExcludeHelpers { get; set; }
-
-            public GameSearchOptions(bool searchSubdirs = true, bool excludeHelpers = true)
+            public GameSearchOptions(bool searchSubdirs = true, bool excludeHelpers = false)
             {
                 SearchSubdirectories = searchSubdirs;
                 ExcludeHelpers = excludeHelpers;

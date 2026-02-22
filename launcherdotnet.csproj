@@ -10,6 +10,7 @@
     <Authors>gameknight963</Authors>
     <Description>Lightweight universal game launcher in .net framework</Description>
     <AssemblyVersion></AssemblyVersion>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

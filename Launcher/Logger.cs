@@ -41,6 +41,12 @@ namespace launcherdotnet
             Console.ForegroundColor = ConsoleColor.Black;
             WriteAndResetColor(message);
         }
+        public static void Warn(string message, bool force = false)
+        {
+            if (!(CanWrite || force)) return;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            WriteAndResetColor(message);
+        }
         public static void Success(string message, bool force = false)
         {
             if (!(CanWrite || force)) return;
