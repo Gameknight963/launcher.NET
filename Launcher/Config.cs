@@ -6,7 +6,7 @@ using System.Text;
 
 namespace launcherdotnet
 {
-    public static class Config
+    internal static class Config
     {
         public static readonly string BaseDir = AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string DefaultTempDir = Path.Combine(BaseDir, "temp");

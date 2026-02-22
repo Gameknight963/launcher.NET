@@ -72,24 +72,26 @@ namespace launcherdotnet
 
             try
             {
-                LauncherLogger.WriteLine($"Installing {item.Tag!.Installer.Name} as {newGame.Label}");
-                string exePath;
+                LauncherLogger.WriteLine($"Installing {item.Tag!.Installer.GameName} as {newGame.Label}");
                 VersionDropdownItem selectedVersion = (VersionDropdownItem)VersionDropdown.SelectedItem!;
                 ReleaseInfo release = selectedVersion.Release;
+                PluginGameInfo installed;
                 try
                 {
-                    exePath = await Task.Run(() => item.Tag!.Installer.Install(installDir, release, progress, status));
+                    installed = await Task.Run(() => item.Tag!.Installer.Install(installDir, release, progress, status));
+                    newGame.Path = installed.ExePath;
+                    newGame.RunWithCmd = installed.RunWithCmd;
                 }
                 catch (Exception ex)
                 {
-                    LauncherLogger.Error($"Eror installing plugin: {ex}\nSTACK TRACK\n{ex.StackTrace}");
+                    LauncherLogger.Error($"Erore installing game: {ex}\nSTACK TRACK\n{ex.StackTrace}");
                     MessageBox.Show($"Installation failed: {ex.Message}",
                         "Error",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                     return;
                 }
-                if (string.IsNullOrWhiteSpace(exePath))
+                if (string.IsNullOrWhiteSpace(installed.ExePath))
                 {
                     MessageBox.Show("Installation failed or returned no executable.",
                         "Error",
@@ -97,13 +99,13 @@ namespace launcherdotnet
                         MessageBoxIcon.Error);
                     return;
                 }
-                newGame.Path = exePath;
                 ActivityHint.Text = "Installation complete.";
                 GameService.UpsertGame(newGame);
             }
             catch (Exception ex)
             {
                 LauncherLogger.Error($"Error installing game: {ex}");
+                LauncherLogger.Error($"Stack trace:\n{ex.StackTrace}", false);
             }
         }
 
