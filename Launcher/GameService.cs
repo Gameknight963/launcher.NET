@@ -30,12 +30,7 @@ namespace launcherdotnet
             LauncherData data = LauncherDataManager.ReadLauncherData();
             if (string.IsNullOrWhiteSpace(game.Path) || !File.Exists(game.Path)) return null;
 
-            string folder = Path.GetDirectoryName(game.Path)!;
-
-            while (!folder.EndsWith(game.Id, StringComparison.OrdinalIgnoreCase))
-            {
-                folder = Directory.GetParent(folder)!.FullName;
-            }
+            string folder = game.RootDirectory;
             Directory.Delete(folder, true);
             RemoveMissingGames();
             return folder;

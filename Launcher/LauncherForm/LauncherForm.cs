@@ -103,6 +103,12 @@ namespace launcherdotnet
 
             if (result == DialogResult.Cancel) return;
             string? deletedFolder = GameService.DeleteGame(game);
+            if (deletedFolder == null)
+            {
+                MessageBox.Show("Invalid game location.", "Deletion error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                SetStatus($"Deletion failed");
+                return;
+            }
             SetStatus($"Deleted \"{game.Label}\"");
             LauncherLogger.WriteLine($"Deleted {deletedFolder}", true);
             SetSidebarMode(SidebarMode.Idle);
