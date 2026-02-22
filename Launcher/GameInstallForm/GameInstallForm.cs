@@ -1,5 +1,6 @@
 ﻿using launcherdotnet.PluginAPI;
 using Microsoft.VisualBasic;
+using MLInstallerSDK;
 using Semver;
 
 namespace launcherdotnet
@@ -78,9 +79,11 @@ namespace launcherdotnet
                 PluginGameInfo installed;
                 try
                 {
-                    installed = await Task.Run(() => item.Tag!.Installer.Install(installDir, release, progress, status));
+                    IGameInstaller installer = item.Tag!.Installer;
+                    installed = await Task.Run(() => installer.Install(installDir, release, progress, status));
                     newGame.Path = installed.ExePath;
                     newGame.RunWithCmd = installed.RunWithCmd;
+                    newGame.GameName = installer.GameName;
                 }
                 catch (Exception ex)
                 {

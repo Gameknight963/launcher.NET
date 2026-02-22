@@ -38,6 +38,7 @@ namespace launcherdotnet
         public string Label { get; set; } = "";
         public string Path { get; set; } = "";
         public string RootDirectory { get; set; } = "";
+        public string GameName { get; set; } = "Unspecified";
         public bool RunWithCmd { get; set; } = false;
         public string Id { get; set; } = Guid.NewGuid().ToString();
     }
