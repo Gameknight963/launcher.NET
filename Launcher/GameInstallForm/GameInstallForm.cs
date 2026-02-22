@@ -84,7 +84,7 @@ namespace launcherdotnet
                 }
                 catch (Exception ex)
                 {
-                    LauncherLogger.Error($"Erore installing game: {ex}\nSTACK TRACK\n{ex.StackTrace}");
+                    LauncherLogger.Error($"Error installing game: {ex}\nSTACK TRACE\n{ex.StackTrace}");
                     MessageBox.Show($"Installation failed: {ex.Message}",
                         "Error",
                         MessageBoxButtons.OK,
