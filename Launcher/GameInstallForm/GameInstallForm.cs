@@ -22,6 +22,27 @@ namespace launcherdotnet
             if (GameDropdown.Items.Count > 0) GameDropdown.SelectedIndex = 0;
         }
 
+        private void GameDropdown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (GameDropdown.SelectedItem == null)
+                return;
+
+            GamesListItem selectedItem = (GamesListItem)GameDropdown.SelectedItem;
+            GameInstallPluginEntry entry = selectedItem.Tag!;
+
+            VersionDropdown.Items.Clear();
+
+            if (entry.Releases != null)
+            {
+                foreach (ReleaseInfo r in entry.Releases)
+                {
+                    VersionDropdown.Items.Add(new VersionDropdownItem { Text = r.Version.ToString(), Release = r });
+                }
+
+                if (VersionDropdown.Items.Count > 0) VersionDropdown.SelectedIndex = 0;
+            }
+        }
+
         private async void InstallGameButton_Click(object sender, EventArgs e)
         {
             if (GameDropdown.SelectedItem == null)
@@ -54,10 +75,10 @@ namespace launcherdotnet
                 LauncherLogger.WriteLine($"Installing {item.Tag!.Installer.Name} as {newGame.Label}");
                 string exePath;
                 VersionDropdownItem selectedVersion = (VersionDropdownItem)VersionDropdown.SelectedItem!;
-                SemVersion ver = selectedVersion.Version;
+                ReleaseInfo release = selectedVersion.Release;
                 try
                 {
-                    exePath = await Task.Run(() => item.Tag!.Installer.Install(installDir, ver, progress, status));
+                    exePath = await Task.Run(() => item.Tag!.Installer.Install(installDir, release, progress, status));
                 }
                 catch (Exception ex)
                 {
@@ -83,27 +104,6 @@ namespace launcherdotnet
             catch (Exception ex)
             {
                 LauncherLogger.Error($"Error installing game: {ex}");
-            }
-        }
-
-        private void GameDropdown_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (GameDropdown.SelectedItem == null)
-                return;
-
-            GamesListItem selectedItem = (GamesListItem)GameDropdown.SelectedItem;
-            GameInstallPluginEntry entry = selectedItem.Tag!;
-
-            VersionDropdown.Items.Clear();
-
-            if (entry.Versions != null)
-            {
-                foreach (SemVersion ver in entry.Versions)
-                {
-                    VersionDropdown.Items.Add(new VersionDropdownItem { Text = ver.ToString(), Version = ver });
-                }
-
-                if (VersionDropdown.Items.Count > 0) VersionDropdown.SelectedIndex = 0;
             }
         }
 
@@ -134,7 +134,7 @@ namespace launcherdotnet
         private class VersionDropdownItem
         {
             public required string Text { get; set; }
-            public required SemVersion Version { get; set; }
+            public required ReleaseInfo Release { get; set; }
             public override string ToString() => Text;
         }
     }

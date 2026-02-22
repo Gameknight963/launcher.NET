@@ -14,9 +14,9 @@ namespace launcherdotnet.PluginAPI
         /// </summary>
         public static void RegisterGameInstallPlugin(
             IGameInstaller Installer, 
-            IEnumerable<SemVersion>? Versions = null)
+            IEnumerable<ReleaseInfo>? Releases = null)
         {
-            _gameInstallPlugins.Add(new GameInstallPluginEntry(Installer, Versions));
+            _gameInstallPlugins.Add(new GameInstallPluginEntry(Installer, Releases));
         }
 
         /// <summary>
@@ -27,5 +27,5 @@ namespace launcherdotnet.PluginAPI
 
     public record GameInstallPluginEntry(
         IGameInstaller Installer,
-        IEnumerable<SemVersion>? Versions);
+        IEnumerable<ReleaseInfo>? Releases);
 }
