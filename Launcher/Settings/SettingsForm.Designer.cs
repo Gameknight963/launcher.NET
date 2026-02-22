@@ -41,15 +41,6 @@
             ModloaderTab = new TabPage();
             MLCheckbox = new CheckedListBox();
             AdvancedTab = new TabPage();
-            AdvancedWarning = new Label();
-            CustomInstallDirectoryPanel = new Panel();
-            button3 = new Button();
-            label1 = new Label();
-            CustomInstallDirTextbox = new TextBox();
-            CustomTempDirPanel = new Panel();
-            button2 = new Button();
-            TempDirLabel = new Label();
-            CustomTempDirTextbox = new TextBox();
             AdvancedCheckbox = new CheckedListBox();
             AboutTab = new TabPage();
             license1 = new Label();
@@ -69,8 +60,6 @@
             PluginsTab.SuspendLayout();
             ModloaderTab.SuspendLayout();
             AdvancedTab.SuspendLayout();
-            CustomInstallDirectoryPanel.SuspendLayout();
-            CustomTempDirPanel.SuspendLayout();
             AboutTab.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -203,9 +192,6 @@
             // 
             // AdvancedTab
             // 
-            AdvancedTab.Controls.Add(AdvancedWarning);
-            AdvancedTab.Controls.Add(CustomInstallDirectoryPanel);
-            AdvancedTab.Controls.Add(CustomTempDirPanel);
             AdvancedTab.Controls.Add(AdvancedCheckbox);
             AdvancedTab.Location = new Point(4, 24);
             AdvancedTab.Name = "AdvancedTab";
@@ -214,96 +200,13 @@
             AdvancedTab.Text = "Advanced";
             AdvancedTab.UseVisualStyleBackColor = true;
             // 
-            // AdvancedWarning
-            // 
-            AdvancedWarning.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            AdvancedWarning.Location = new Point(7, 306);
-            AdvancedWarning.Name = "AdvancedWarning";
-            AdvancedWarning.Size = new Size(269, 63);
-            AdvancedWarning.TabIndex = 8;
-            AdvancedWarning.Text = "WARNING: Custom directory is expirmental, stability is not guarnteed! launcher.net may not function properly if you enable the custom directory settings.";
-            // 
-            // CustomInstallDirectoryPanel
-            // 
-            CustomInstallDirectoryPanel.BorderStyle = BorderStyle.FixedSingle;
-            CustomInstallDirectoryPanel.Controls.Add(button3);
-            CustomInstallDirectoryPanel.Controls.Add(label1);
-            CustomInstallDirectoryPanel.Controls.Add(CustomInstallDirTextbox);
-            CustomInstallDirectoryPanel.Location = new Point(3, 184);
-            CustomInstallDirectoryPanel.Name = "CustomInstallDirectoryPanel";
-            CustomInstallDirectoryPanel.Size = new Size(285, 75);
-            CustomInstallDirectoryPanel.TabIndex = 7;
-            // 
-            // button3
-            // 
-            button3.Location = new Point(3, 47);
-            button3.Name = "button3";
-            button3.Size = new Size(75, 23);
-            button3.TabIndex = 3;
-            button3.Text = "Browse";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(3, 3);
-            label1.Name = "label1";
-            label1.Size = new Size(136, 15);
-            label1.TabIndex = 2;
-            label1.Text = "Custom install directory:";
-            // 
-            // CustomInstallDirTextbox
-            // 
-            CustomInstallDirTextbox.Location = new Point(3, 21);
-            CustomInstallDirTextbox.Name = "CustomInstallDirTextbox";
-            CustomInstallDirTextbox.Size = new Size(277, 23);
-            CustomInstallDirTextbox.TabIndex = 1;
-            // 
-            // CustomTempDirPanel
-            // 
-            CustomTempDirPanel.BorderStyle = BorderStyle.FixedSingle;
-            CustomTempDirPanel.Controls.Add(button2);
-            CustomTempDirPanel.Controls.Add(TempDirLabel);
-            CustomTempDirPanel.Controls.Add(CustomTempDirTextbox);
-            CustomTempDirPanel.Location = new Point(3, 103);
-            CustomTempDirPanel.Name = "CustomTempDirPanel";
-            CustomTempDirPanel.Size = new Size(285, 75);
-            CustomTempDirPanel.TabIndex = 7;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(3, 47);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 3;
-            button2.Text = "Browse";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
-            // 
-            // TempDirLabel
-            // 
-            TempDirLabel.AutoSize = true;
-            TempDirLabel.Location = new Point(3, 3);
-            TempDirLabel.Name = "TempDirLabel";
-            TempDirLabel.Size = new Size(160, 15);
-            TempDirLabel.TabIndex = 2;
-            TempDirLabel.Text = "Custom temporary directory:";
-            // 
-            // CustomTempDirTextbox
-            // 
-            CustomTempDirTextbox.Location = new Point(3, 21);
-            CustomTempDirTextbox.Name = "CustomTempDirTextbox";
-            CustomTempDirTextbox.Size = new Size(277, 23);
-            CustomTempDirTextbox.TabIndex = 1;
-            // 
             // AdvancedCheckbox
             // 
             AdvancedCheckbox.FormattingEnabled = true;
-            AdvancedCheckbox.Items.AddRange(new object[] { "Show debug console", "Enable verbose logging", "Disable plugin version check", "Use custom temporary directory", "Use custom install directory" });
+            AdvancedCheckbox.Items.AddRange(new object[] { "Show debug console", "Enable verbose logging", "Disable plugin version check" });
             AdvancedCheckbox.Location = new Point(3, 3);
             AdvancedCheckbox.Name = "AdvancedCheckbox";
-            AdvancedCheckbox.Size = new Size(285, 94);
+            AdvancedCheckbox.Size = new Size(285, 58);
             AdvancedCheckbox.TabIndex = 0;
             // 
             // AboutTab
@@ -352,7 +255,7 @@
             GithubLink.AutoSize = true;
             GithubLink.Location = new Point(3, 354);
             GithubLink.Name = "GithubLink";
-            GithubLink.Size = new Size(272, 15);
+            GithubLink.Size = new Size(273, 15);
             GithubLink.TabIndex = 8;
             GithubLink.TabStop = true;
             GithubLink.Text = "https://github.com/Gameknight963/launcher.NET";
@@ -365,7 +268,7 @@
             MadeBy.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             MadeBy.Location = new Point(3, 339);
             MadeBy.Name = "MadeBy";
-            MadeBy.Size = new Size(178, 15);
+            MadeBy.Size = new Size(179, 15);
             MadeBy.TabIndex = 6;
             MadeBy.Text = "launcher.NET by gameknight963";
             // 
@@ -460,10 +363,6 @@
             PluginsTab.PerformLayout();
             ModloaderTab.ResumeLayout(false);
             AdvancedTab.ResumeLayout(false);
-            CustomInstallDirectoryPanel.ResumeLayout(false);
-            CustomInstallDirectoryPanel.PerformLayout();
-            CustomTempDirPanel.ResumeLayout(false);
-            CustomTempDirPanel.PerformLayout();
             AboutTab.ResumeLayout(false);
             AboutTab.PerformLayout();
             panel1.ResumeLayout(false);
@@ -486,15 +385,6 @@
         private CheckedListBox MLCheckbox;
         private Button button1;
         private Label GamesLabel;
-        private TextBox CustomTempDirTextbox;
-        private Panel CustomTempDirPanel;
-        private Button button2;
-        private Label TempDirLabel;
-        private Label AdvancedWarning;
-        private Panel CustomInstallDirectoryPanel;
-        private Button button3;
-        private Label label1;
-        private TextBox CustomInstallDirTextbox;
         private Label DescriptionLabel;
         private Label LauncherApiLabel;
         private TabPage AboutTab;

@@ -57,7 +57,7 @@ namespace launcherdotnet
             GameInfo newGame = new GameInfo { Label = result };
 
             GamesListItem item = (GamesListItem)GameDropdown.SelectedItem;
-            string installDir = Path.Combine(LauncherSettings.GamesDir, $"{newGame.Label}_{newGame.Id}");
+            string installDir = Path.Combine(Config.GamesDir, $"{newGame.Label}_{newGame.Id}");
             newGame.RootDirectory = installDir;
             Directory.CreateDirectory(installDir);
 

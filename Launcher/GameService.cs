@@ -34,7 +34,7 @@ namespace launcherdotnet
                 return null;
             if (Path.GetPathRoot(folder) == folder)
                 throw new InvalidOperationException("Refusing to delete root directory.");
-            if (!folder.StartsWith(LauncherSettings.GamesDir, StringComparison.OrdinalIgnoreCase))
+            if (!folder.StartsWith(Config.GamesDir, StringComparison.OrdinalIgnoreCase))
                 throw new InvalidOperationException("Refusing to delete folder outside games directory.");
             Directory.Delete(folder, true);
             RemoveMissingGames();
