@@ -29,8 +29,13 @@ namespace launcherdotnet
         {
             LauncherData data = LauncherDataManager.ReadLauncherData();
             if (string.IsNullOrWhiteSpace(game.Path) || !File.Exists(game.Path)) return null;
-
             string folder = game.RootDirectory;
+            if (!Directory.Exists(folder))
+                return null;
+            if (Path.GetPathRoot(folder) == folder)
+                throw new InvalidOperationException("Refusing to delete root directory.");
+            if (!folder.StartsWith(LauncherSettings.GamesDir, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("Refusing to delete folder outside games directory.");
             Directory.Delete(folder, true);
             RemoveMissingGames();
             return folder;
