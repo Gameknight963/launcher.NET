@@ -179,7 +179,7 @@ namespace launcherdotnet
             if (game == null) return;
             Process.Start(new ProcessStartInfo
             {
-                FileName = game.AbsolutePath,
+                FileName = game.AbsoluteRootDirectory,
                 UseShellExecute = true
             });
         }
