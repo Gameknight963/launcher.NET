@@ -74,10 +74,15 @@ namespace launcherdotnet
                 return;
             }
 
-            string? gameDir = Path.GetDirectoryName(game.Path);
-            if (string.IsNullOrEmpty(gameDir))
+            string? gameDir = Path.GetDirectoryName(game.AbsolutePath);
+            try
             {
-                MessageBox.Show("Game does not have a valid path!", "Invalid operation",
+                game.EnsurePathsValid();
+                if (gameDir == null) throw new NullReferenceException("Game path is null.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Game does not have a valid path! {ex.Message}", "Invalid operation",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }

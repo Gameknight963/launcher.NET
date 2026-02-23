@@ -16,7 +16,8 @@ namespace launcherdotnet
             if (existing != null)
             {
                 existing.Label = game.Label;
-                existing.Path = game.Path;
+                existing.RelativePath = game.RelativePath;
+                existing.RunWithCmd = game.RunWithCmd;
             }
             else
             {
@@ -25,18 +26,15 @@ namespace launcherdotnet
 
             LauncherDataManager.SaveLauncherData(data);
         }
-        public static string? DeleteGame(GameInfo game)
+        public static string DeleteGame(GameInfo game)
         {
-            LauncherData data = LauncherDataManager.ReadLauncherData();
-            if (string.IsNullOrWhiteSpace(game.Path) || !File.Exists(game.Path)) return null;
-            string folder = game.RootDirectory;
+            game.EnsurePathsValid();
+            string folder = game.RelativeRootDirectory;
             if (!Directory.Exists(folder))
-                return null;
+                throw new InvalidOperationException("Deletion error: Game does not exist");
             if (Path.GetPathRoot(folder) == folder)
                 throw new InvalidOperationException("Refusing to delete root directory.");
-            if (!folder.StartsWith(Config.GamesDir, StringComparison.OrdinalIgnoreCase))
-                throw new InvalidOperationException("Refusing to delete folder outside games directory.");
-            Directory.Delete(folder, true);
+            File.Delete(game.AbsolutePath);
             RemoveMissingGames();
             return folder;
         }
@@ -47,7 +45,7 @@ namespace launcherdotnet
             int before = data.Versions.Count;
 
             data.Versions = data.Versions
-                .Where(g => !string.IsNullOrWhiteSpace(g.Path) && File.Exists(g.Path))
+                .Where(g => !string.IsNullOrWhiteSpace(g.RelativePath) && File.Exists(g.AbsolutePath))
                 .ToList();
 
             if (data.Versions.Count != before)
