@@ -58,7 +58,7 @@ namespace launcherdotnet
 
             GamesListItem item = (GamesListItem)GameDropdown.SelectedItem;
             string installDir = Path.Combine(Config.GamesDir, $"{newGame.Label}_{newGame.Id}");
-            newGame.RootDirectory = installDir;
+            newGame.RelativeRootDirectory = Path.GetRelativePath(Config.BaseDir, installDir);
             Directory.CreateDirectory(installDir);
 
             Progress<double> progress = new Progress<double>(percent =>
@@ -81,7 +81,7 @@ namespace launcherdotnet
                 {
                     IGameInstaller installer = item.Tag!.Installer;
                     installed = await Task.Run(() => installer.Install(installDir, release, progress, status));
-                    newGame.Path = installed.ExePath;
+                    newGame.RelativePath = Path.GetRelativePath(Config.BaseDir, installed.ExePath);
                     newGame.RunWithCmd = installed.RunWithCmd;
                     newGame.GameName = installer.GameName;
                 }

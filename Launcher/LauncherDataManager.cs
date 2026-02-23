@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using launcherdotnet.Launcher;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,18 +34,8 @@ namespace launcherdotnet
             File.WriteAllText(GetDataPath(), json);
         }
     }
-    public class GameInfo
-    {
-        public string Label { get; set; } = "";
-        public string Path { get; set; } = "";
-        public string RootDirectory { get; set; } = "";
-        public string GameName { get; set; } = "Unspecified";
-        public bool RunWithCmd { get; set; } = false;
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-    }
     public class LauncherData
     {
-        public string? Name { get; init; }
         public List<GameInfo> Versions { get; set; } = new List<GameInfo>();
     }
 }

@@ -8,7 +8,7 @@ namespace launcherdotnet
 {
     internal static class Config
     {
-        public static readonly string BaseDir = AppDomain.CurrentDomain.BaseDirectory;
+        public static readonly string BaseDir = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory);
         public static readonly string TempDir = Path.Combine(BaseDir, "temp");
         public static readonly string GamesDir = Path.Combine(BaseDir, "games");
 

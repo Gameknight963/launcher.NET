@@ -103,12 +103,6 @@ namespace launcherdotnet
 
             if (result == DialogResult.Cancel) return;
             string? deletedFolder = GameService.DeleteGame(game);
-            if (deletedFolder == null)
-            {
-                MessageBox.Show("Invalid game location.", "Deletion error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                SetStatus($"Deletion failed");
-                return;
-            }
             SetStatus($"Deleted \"{game.Label}\"");
             LauncherLogger.WriteLine($"Deleted {deletedFolder}", true);
             SetSidebarMode(SidebarMode.Idle);
@@ -138,7 +132,7 @@ namespace launcherdotnet
             SetSidebarMode(SidebarMode.GameSelected);
             GameInfo? game = GetSelectedGame();
             if (game == null) return;
-            InstallHint.Text = Path.GetFileName(game.Path);
+            InstallHint.Text = Path.GetFileName(game.AbsolutePath);
         }
 
         private void RefreshList_Click(object sender, EventArgs e)
@@ -160,12 +154,12 @@ namespace launcherdotnet
             if (game.RunWithCmd)
             {
                 psi.FileName = "cmd.exe";
-                psi.Arguments = $"/k \"{game.Path}\"";
+                psi.Arguments = $"/k \"{game.AbsolutePath}\"";
                 psi.CreateNoWindow = true;
             }
             else
             {
-                psi.FileName = game.Path;
+                psi.FileName = game.AbsolutePath;
                 psi.CreateNoWindow = false;
             }
 
@@ -185,7 +179,7 @@ namespace launcherdotnet
             if (game == null) return;
             Process.Start(new ProcessStartInfo
             {
-                FileName = game.RootDirectory,
+                FileName = game.AbsolutePath,
                 UseShellExecute = true
             });
         }
