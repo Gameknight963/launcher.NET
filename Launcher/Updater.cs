@@ -39,6 +39,7 @@ namespace launcherdotnet.Launcher
                 false, ConsoleColor.White, ConsoleColor.Black);
 
             SemVersion? latest;
+            if (!LauncherSettings.Settings.CheckForUpdates) return;
             try
             {
                 latest = await Updater.GetLatestVersionAsync();
