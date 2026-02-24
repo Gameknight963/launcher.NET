@@ -36,8 +36,8 @@ namespace launcherdotnet
             WriteColor($"{message}\n", force, textColor, bgColor);
         }
 
-        public static void WriteLine(string message, bool force = false) { WriteColor($"{message}\n", force, ConsoleColor.White, ConsoleColor.Black); }
-        public static void Write(string message, bool force = false) { WriteColor(message, force, ConsoleColor.White, ConsoleColor.Black); }
+        public static void WriteLine(string message, bool force = false) { WriteColor($"{message}\n", force, ConsoleColor.Gray, ConsoleColor.Black); }
+        public static void Write(string message, bool force = false) { WriteColor(message, force, ConsoleColor.Gray, ConsoleColor.Black); }
 
         public static void Highlight(string message, bool force = false) { WriteColor($"{message}\n", force, ConsoleColor.Black, ConsoleColor.White); }
         public static void Warn(string message, bool force = false) { WriteColor($"{message}\n", force, ConsoleColor.Yellow); }
