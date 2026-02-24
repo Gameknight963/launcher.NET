@@ -11,7 +11,7 @@ namespace launcherdotnet.Launcher
     {
         private static readonly List<ILauncherPlugin> _plugins = new();
 
-        public static void LoadPlugins(string folder)
+        public static async void LoadPlugins(string folder)
         {
             if (!Directory.Exists(folder))
             {
@@ -49,7 +49,7 @@ namespace launcherdotnet.Launcher
                         if (plugin.TargetApiVersion.Major != LauncherApiInfo.ApiVersion.Major)
                             continue;
 
-                        plugin.Initialize();
+                        await plugin.Initialize();
                         LauncherLogger.WriteLine($"Loaded plugin: {plugin.Name}");
                         _plugins.Add(plugin);
                     }

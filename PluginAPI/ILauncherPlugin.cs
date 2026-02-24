@@ -28,6 +28,6 @@ namespace launcherdotnet.PluginAPI
         /// <summary>
         /// Called when the plugin is loaded.
         /// </summary>
-        void Initialize();
+        Task Initialize();
     }
 }
