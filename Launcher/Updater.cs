@@ -34,12 +34,17 @@ namespace launcherdotnet.Launcher
 
         public static async void CheckForUpdates()
         {
-            LauncherLogger.WriteColorLine($"Using version {Config.CurrentVersionString}. " +
-                $"{(LauncherSettings.Settings.CheckForUpdates ? "Checking for updates is disabled." : "")}",
+            LauncherLogger.WriteColor($"Using version {Config.CurrentVersionString}.",
                 false, ConsoleColor.White, ConsoleColor.Black);
+            if (LauncherSettings.Settings.CheckForUpdates)
+                LauncherLogger.Write("\n");
+            else
+            {
+                LauncherLogger.WriteLine(" Checking for updates is disabled.");
+                return;
+            }
 
             SemVersion? latest;
-            if (!LauncherSettings.Settings.CheckForUpdates) return;
             try
             {
                 latest = await Updater.GetLatestVersionAsync();
