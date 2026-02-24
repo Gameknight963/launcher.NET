@@ -5,7 +5,7 @@ using System.Text;
 
 namespace launcherdotnet.PluginAPI
 {
-    public static class PluginApi
+    public static class GameInstallerRegistry
     {
         private static readonly List<GameInstallPluginEntry> _gameInstallPlugins = new();
 

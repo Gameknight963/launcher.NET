@@ -103,7 +103,7 @@
             // GeneralCheckbox
             // 
             GeneralCheckbox.FormattingEnabled = true;
-            GeneralCheckbox.Items.AddRange(new object[] { "Check for launcher.net updates automatically", "Confirm before deleting instances", "Confirm before overwriting instances", "Run on startup" });
+            GeneralCheckbox.Items.AddRange(new object[] { "Check for launcher.net updates automatically", "Warn if update check failed", "Confirm before deleting instances", "Confirm before overwriting instances", "Run on startup" });
             GeneralCheckbox.Location = new Point(6, 6);
             GeneralCheckbox.Name = "GeneralCheckbox";
             GeneralCheckbox.Size = new Size(279, 364);
