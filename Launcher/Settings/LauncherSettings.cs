@@ -72,7 +72,7 @@ namespace launcherdotnet
         // ===== General =====
 
         public bool CheckForUpdates { get; set; } = false;
-        public bool WarnOnFailedUpdate { get; set; } = false; 
+        public bool WarnOnFailedUpdate { get; set; } = true; 
         public bool ConfirmDelete { get; set; } = true;
         public bool ConfirmOverwrite { get; set; } = true;
         public bool RunOnStartup { get; set; } = false;
