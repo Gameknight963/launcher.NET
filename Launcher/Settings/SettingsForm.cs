@@ -133,7 +133,7 @@ namespace launcherdotnet
                     break;
                 case 1:
                     SetSelectedHint("If enabled, launcher.net will not display a dialog if an update check has failed. " +
-                        "There will still be a warning in the console, if the console is enabled.");
+                        "There will still be a warning in the console, if the console is enabled.", "Enabled");
                     break;
                 case 2:
                     SetSelectedHint("If enabled, launcher.net will ask you for confirmation before it tries to delete an instance.",
