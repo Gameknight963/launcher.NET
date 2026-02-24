@@ -16,7 +16,7 @@ namespace launcherdotnet
 
         public void Initialize()
         {
-            foreach (GameInstallPluginEntry entry in PluginApi.GameInstallPlugins)
+            foreach (GameInstallPluginEntry entry in GameInstallerRegistry.GameInstallPlugins)
             {
                 int index = GameDropdown.Items.Add(new GamesListItem { Text = entry.Installer.GameName, Tag = entry });
             }

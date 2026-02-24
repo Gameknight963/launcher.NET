@@ -24,9 +24,6 @@ namespace launcherdotnet
             public override string ToString() => Text;
         }
 
-        [DllImport("user32.dll")]
-        private static extern bool ShowScrollBar(IntPtr hWnd, int wBar, bool bShow);
-
         private string _defaultSelectedHint = "";
         public SettingsForm()
         {
@@ -35,8 +32,6 @@ namespace launcherdotnet
             GeneralCheckbox.MouseDown += GeneralCheckbox_MouseDown;
             AdvancedCheckbox.MouseDown += AdvancedCheckbox_MouseDown;
             GamePluginsBox.MouseDown += GamePluginsBox_MouseDown;
-            //CustomTempDirPanel.MouseDown += CustomTempDirPanel_MouseDown;
-            //CustomInstallDirectoryPanel.MouseDown += CustomInstallDirectoryPanel_MouseDown;
             MLCheckbox.MouseDown += MLCheckbox_MouseDown;
             _defaultSelectedHint = SelectedHint.Text;
         }
@@ -47,9 +42,10 @@ namespace launcherdotnet
 
             // --- General ---
             s.CheckForUpdates = GeneralCheckbox.GetItemChecked(0);
-            s.ConfirmDelete = GeneralCheckbox.GetItemChecked(1);
-            s.ConfirmOverwrite = GeneralCheckbox.GetItemChecked(2);
-            s.RunOnStartup = GeneralCheckbox.GetItemChecked(3);
+            s.WarnOnFailedUpdate = GeneralCheckbox.GetItemChecked(1);
+            s.ConfirmDelete = GeneralCheckbox.GetItemChecked(2);
+            s.ConfirmOverwrite = GeneralCheckbox.GetItemChecked(3);
+            s.RunOnStartup = GeneralCheckbox.GetItemChecked(4);
 
             // --- Melonloader ---
             s.MLShowCI = MLCheckbox.GetItemChecked(0);
@@ -74,20 +70,21 @@ namespace launcherdotnet
 
             // --- General ---
             GeneralCheckbox.SetItemChecked(0, s.CheckForUpdates);
-            GeneralCheckbox.SetItemChecked(1, s.ConfirmDelete);
-            GeneralCheckbox.SetItemChecked(2, s.ConfirmOverwrite);
-            GeneralCheckbox.SetItemChecked(3, s.RunOnStartup);
+            GeneralCheckbox.SetItemChecked(1, s.WarnOnFailedUpdate);
+            GeneralCheckbox.SetItemChecked(2, s.ConfirmDelete);
+            GeneralCheckbox.SetItemChecked(3, s.ConfirmOverwrite);
+            GeneralCheckbox.SetItemChecked(4, s.RunOnStartup);
 
             // --- Plugin List ---
 
             GamePluginsBox.Items.Clear();
-            foreach (GameInstallPluginEntry entry in PluginApi.GameInstallPlugins)
+            foreach (GameInstallPluginEntry entry in GameInstallerRegistry.GameInstallPlugins)
             {
                 TaggedListBoxItem item = new TaggedListBoxItem { Text = entry.Installer.Name, Tag = entry };
                 GamePluginsBox.Items.Add(item);
             }
 
-            PluginsTabApiVersionLabel.Text = $"launcher.NET plugin API v{PluginAPI.LauncherApiInfo.ApiVersion}";
+            PluginsTabApiVersionLabel.Text = $"launcher.NET plugin API v{LauncherApiInfo.ApiVersion}";
 
             // --- MelonLoader ---
             MLCheckbox.SetItemChecked(0, s.MLShowCI);
@@ -135,14 +132,18 @@ namespace launcherdotnet
                         "Disabled");
                     break;
                 case 1:
+                    SetSelectedHint("If enabled, launcher.net will not display a dialog if an update check has failed. " +
+                        "There will still be a warning in the console, if the console is enabled.");
+                    break;
+                case 2:
                     SetSelectedHint("If enabled, launcher.net will ask you for confirmation before it tries to delete an instance.",
                         "Enabled");
                     break;
-                case 2:
+                case 3:
                     SetSelectedHint("If enabled, launcher.net will ask you for confirmation when it tries to overwrite an instance.",
                         "Enabled");
                     break;
-                case 3:
+                case 4:
                     SetSelectedHint("If enabled, launcher.net will run when your computer turns on.",
                         "Disabled");
                     break;

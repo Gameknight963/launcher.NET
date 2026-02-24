@@ -1,5 +1,4 @@
-﻿using launcherdotnet.Launcher;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ namespace launcherdotnet
     {
         private static readonly string _baseDir = Config.BaseDir;
         private static readonly string _settingsPath = Path.Combine(_baseDir, "settings.json");
-        private const string KeyName = "launcherdotnet";
+        private const string KeyName = "Launcher.NET";
 
         public static string ToAbsolutePath(string path) => 
             Path.IsPathRooted(path) ? path : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
@@ -73,6 +72,7 @@ namespace launcherdotnet
         // ===== General =====
 
         public bool CheckForUpdates { get; set; } = false;
+        public bool WarnOnFailedUpdate { get; set; } = false; 
         public bool ConfirmDelete { get; set; } = true;
         public bool ConfirmOverwrite { get; set; } = true;
         public bool RunOnStartup { get; set; } = false;
