@@ -20,18 +20,19 @@ namespace launcherdotnet.Launcher
                 return;
             }
 
-            string[] names = Directory.GetFiles(folder, "*.dll");
-            if (names.Length == 0)
+            string[] paths = Directory.GetFiles(folder, "*.dll");
+            if (paths.Length == 0)
             {
                 LauncherLogger.WriteLine("No plugins found.");
                 return;
             }
 
-            LauncherLogger.Highlight($"Found {names.Length} plugins:");
-            foreach (string n in names)
-                LauncherLogger.WriteLine(n);
+            LauncherLogger.WriteColor($"Found {paths.Length} plugins", false, ConsoleColor.White, ConsoleColor.Black);
+            LauncherLogger.WriteLine(" in plugins folder:");
+            foreach (string p in paths)
+                LauncherLogger.WriteLine(Path.GetFileName(p));
 
-            foreach (string file in names)
+            foreach (string file in paths)
             {
                 try
                 {
@@ -56,7 +57,7 @@ namespace launcherdotnet.Launcher
                 }
                 catch (Exception ex)
                 {
-                    LauncherLogger.Error($"Failed to load plugin {file}: {ex.Message}");
+                    LauncherLogger.Error($"Failed to load plugin {Path.GetFileName(file)} due to a {ex.GetType().Name}: {ex.Message}");
                 }
             }
             if (_plugins.Count > 0)
