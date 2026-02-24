@@ -59,6 +59,7 @@ namespace launcherdotnet
             s.OpenDebugConsole = AdvancedCheckbox.GetItemChecked(0);
             s.VerboseLogging = AdvancedCheckbox.GetItemChecked(1);
             s.DisablePluginVersionCheck = AdvancedCheckbox.GetItemChecked(2);
+            s.DisablePathChecks = AdvancedCheckbox.GetItemChecked(3);
 
             string json = JsonConvert.SerializeObject(s, Formatting.Indented);
             LauncherLogger.WriteLine("New settings saved:");
@@ -96,6 +97,7 @@ namespace launcherdotnet
             AdvancedCheckbox.SetItemChecked(0, s.OpenDebugConsole);
             AdvancedCheckbox.SetItemChecked(1, s.VerboseLogging);
             AdvancedCheckbox.SetItemChecked(2, s.DisablePluginVersionCheck);
+            AdvancedCheckbox.SetItemChecked(3, s.DisablePathChecks);
 
             // --- About ---
             LauncherVersionLabel.Text = $"v{Config.CurrentVersionString}";
@@ -198,11 +200,8 @@ namespace launcherdotnet
                         "Disabled");
                     break;
                 case 3:
-                    SetSelectedHint("If enabled, launcher.net will download games to custom temporary directory.",
-                        "Disabled");
-                    break;
-                case 4:
-                    SetSelectedHint("If enabled, launcher.net will install games to a custom directory.",
+                    SetSelectedHint("If enabled, launcher.net will not check if a game's path is outside of " +
+                        "it's root folder, during actions such as deletions.",
                         "Disabled");
                     break;
             }

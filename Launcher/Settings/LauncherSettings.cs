@@ -87,5 +87,6 @@ namespace launcherdotnet
         public bool OpenDebugConsole { get; set; } = false;
         public bool VerboseLogging { get; set; } = false;
         public bool DisablePluginVersionCheck { get; set; } = false;
+        public bool DisablePathChecks { get; set; } = false;
     }
 }

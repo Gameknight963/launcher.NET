@@ -28,12 +28,19 @@ namespace launcherdotnet
         }
         public static string DeleteGame(GameInfo game)
         {
-            game.EnsurePathsValid();
             string folder = game.RelativeRootDirectory;
-            if (!Directory.Exists(folder))
-                throw new InvalidOperationException("Deletion error: Game does not exist");
-            if (Path.GetPathRoot(folder) == folder)
-                throw new InvalidOperationException("Refusing to delete root directory.");
+            try
+            {
+                game.EnsurePathsValid();
+                if (!Directory.Exists(folder))
+                    throw new InvalidOperationException("Game does not exist.");
+                if (Path.GetPathRoot(folder) == folder)
+                    throw new InvalidOperationException("Refusing to delete root directory.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex} Check if games");
+            }
             File.Delete(game.AbsolutePath);
             RemoveMissingGames();
             return folder;
