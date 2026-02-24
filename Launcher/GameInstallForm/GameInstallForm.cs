@@ -21,6 +21,7 @@ namespace launcherdotnet
                 int index = GameDropdown.Items.Add(new GamesListItem { Text = entry.Installer.GameName, Tag = entry });
             }
             if (GameDropdown.Items.Count > 0) GameDropdown.SelectedIndex = 0;
+            InstallGameButton.Select();
         }
 
         private void GameDropdown_SelectedIndexChanged(object sender, EventArgs e)
@@ -70,53 +71,58 @@ namespace launcherdotnet
                 ActivityHint.Visible = true;
                 ActivityHint.Text = text;
             });
+            
+
+            LauncherLogger.WriteLine($"Installing {item.Tag!.Installer.GameName} as {newGame.Label}");
+            VersionDropdownItem selectedVersion = (VersionDropdownItem)VersionDropdown.SelectedItem!;
+
+            ReleaseInfo release;
+            PluginGameInfo installed;
+            release = selectedVersion.Release;
 
             try
             {
-                LauncherLogger.WriteLine($"Installing {item.Tag!.Installer.GameName} as {newGame.Label}");
-                VersionDropdownItem selectedVersion = (VersionDropdownItem)VersionDropdown.SelectedItem!;
-                ReleaseInfo release = selectedVersion.Release;
-                PluginGameInfo installed;
-                try
-                {
-                    IGameInstaller installer = item.Tag!.Installer;
-                    installed = await Task.Run(() => installer.Install(installDir, release, progress, status));
-                    newGame.RelativePath = Path.GetRelativePath(Config.BaseDir, installed.ExePath);
-                    newGame.RunWithCmd = installed.RunWithCmd;
-                    newGame.GameName = installer.GameName;
-                }
-                catch (Exception ex)
-                {
-                    LauncherLogger.Error($"Error installing game: {ex}\nSTACK TRACE\n{ex.StackTrace}");
-                    MessageBox.Show($"Installation failed: {ex.Message}",
-                        "Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                    return;
-                }
-                if (string.IsNullOrWhiteSpace(installed.ExePath))
-                {
-                    MessageBox.Show("Installation failed or returned no executable.",
-                        "Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                    return;
-                }
-                ActivityHint.Text = "Installation complete.";
-                GameService.UpsertGame(newGame);
+                IGameInstaller installer = item.Tag!.Installer;
+                installed = await Task.Run(() => installer.Install(installDir, release, progress, status));
+                newGame.GameName = installer.GameName;
             }
             catch (Exception ex)
             {
-                LauncherLogger.Error($"Error installing game: {ex}");
-                LauncherLogger.Error($"Stack trace:\n{ex.StackTrace}", false);
+                LauncherLogger.Error($"Error installing game:\n{ex}");
+                MessageBox.Show($"Installation failed: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
             }
+
+            newGame.RelativePath = Path.GetRelativePath(Config.BaseDir, installed.ExePath);
+            newGame.RunWithCmd = installed.RunWithCmd;
+
+            if (string.IsNullOrWhiteSpace(installed.ExePath))
+            {
+                LauncherLogger.Warn("Installation returned no executable. This can be caused by" +
+                    "a bug in the intstaller plugin, or the plugin silently failing.");
+                MessageBox.Show("Installation failed or returned no executable.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                ActivityHint.Text = "Installation failed.";
+                return;
+            }
+
+            ActivityHint.Text = "Installation complete.";
+            GameService.UpsertGame(newGame);
+            MessageBox.Show("Installation complete.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            this.Close();
         }
 
         private string? QueryName()
         {
             string result = Interaction.InputBox(
                 "Enter a label for this instance:",
-                "Set Game Label");
+                "Set Game Label",
+                "New game");
             if (string.IsNullOrWhiteSpace(result))
                 return null;
             if (result != result.Trim())
