@@ -41,7 +41,7 @@ In the "plugins" tab of the settings menu, click "open plugins folder." Drag any
 
 **WARNING**
 
-Plugins have FULL ACCESS to your PC when running, as any other program would! Use plugins with caution.
+Plugins have FULL ACCESS to your PC when running, as any other program would! Use plugins with caution. There is some security planned. You may have noticed CasCore.dll (and its dependencies) in the latest release. While they are not currently in use, I plan to use it to make excecuting plugins much more secure. See https://douglasdwyer.github.io/CasCore/ for more details.
 
 ## Developing plugins
 see [PLUGINS.MD](https://github.com/Gameknight963/launcher.NET/blob/main/PLUGINS.md)
