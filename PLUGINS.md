@@ -1,3 +1,9 @@
+WARNING!! This guide has not been updates for plugin API v0.6.0! Refer to the source code when there's a discrepancy. Here are some changes I know off the top of my head:
+
+ - **IGameInstaller.cs:** It is now type ``Task<PluginGameInfo>``.  PluginGameInfo (inside PluginGameInfo.cs) is a class containing string ExePath and bool RunWithCmd.
+ - **GameInstallerRegisty.cs (formerly PluginApi.cs):** Class PluginApi renamned to GameInstallerRegisty
+ - **ILauncherPlugin.cs:** ILauncherPlugin.Initialize() is now of type ``Task``. For synchronous methods, return ``Task.CompletedTask`` at the end of Initialize(). For asynchronous methods, nothing needs to change, just make sure it has ``async`` modifier
+
 # launcher.NET plugin development guide
 
 This guide will walk you through the process of developing a launcher.NET plugin to install any game you're capable of programming an installations script for.
