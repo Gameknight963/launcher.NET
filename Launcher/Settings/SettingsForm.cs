@@ -55,7 +55,6 @@ namespace launcherdotnet
             s.OpenDebugConsole = AdvancedCheckbox.GetItemChecked(0);
             s.VerboseLogging = AdvancedCheckbox.GetItemChecked(1);
             s.DisablePluginVersionCheck = AdvancedCheckbox.GetItemChecked(2);
-            s.DisablePathChecks = AdvancedCheckbox.GetItemChecked(3);
 
             string json = JsonConvert.SerializeObject(s, Formatting.Indented);
             LauncherLogger.WriteLine("New settings saved:");
@@ -94,7 +93,6 @@ namespace launcherdotnet
             AdvancedCheckbox.SetItemChecked(0, s.OpenDebugConsole);
             AdvancedCheckbox.SetItemChecked(1, s.VerboseLogging);
             AdvancedCheckbox.SetItemChecked(2, s.DisablePluginVersionCheck);
-            AdvancedCheckbox.SetItemChecked(3, s.DisablePathChecks);
 
             // --- About ---
             LauncherVersionLabel.Text = $"v{Config.CurrentVersionString}";
@@ -128,23 +126,23 @@ namespace launcherdotnet
             switch (GeneralCheckbox.SelectedIndex)
             {
                 case 0:
-                    SetSelectedHint("If enabled, launcher.net will notify you if an update is available.",
+                    SetSelectedHint("If enabled, launcher.NET will notify you if an update is available.",
                         "Disabled");
                     break;
                 case 1:
-                    SetSelectedHint("If enabled, launcher.net will not display a dialog if an update check has failed. " +
+                    SetSelectedHint("If enabled, launcher.NET will not display a dialog if an update check has failed. " +
                         "There will still be a warning in the console, if the console is enabled.", "Enabled");
                     break;
                 case 2:
-                    SetSelectedHint("If enabled, launcher.net will ask you for confirmation before it tries to delete an instance.",
+                    SetSelectedHint("If enabled, launcher.NET will ask you for confirmation before it tries to delete an instance.",
                         "Enabled");
                     break;
                 case 3:
-                    SetSelectedHint("If enabled, launcher.net will ask you for confirmation when it tries to overwrite an instance.",
+                    SetSelectedHint("If enabled, launcher.NET will ask you for confirmation when it tries to overwrite an instance.",
                         "Enabled");
                     break;
                 case 4:
-                    SetSelectedHint("If enabled, launcher.net will run when your computer turns on.",
+                    SetSelectedHint("If enabled, launcher.NET will run when your computer turns on.",
                         "Disabled");
                     break;
             }
@@ -196,13 +194,13 @@ namespace launcherdotnet
                         "Disabled");
                     break;
                 case 2:
-                    SetSelectedHint("If enabled, launcher.net will load plugins even if the major " +
+                    SetSelectedHint("If enabled, launcher.NET will load plugins even if the major " +
                         "versions of the target API don't match.",
                         "Disabled");
                     break;
                 case 3:
-                    SetSelectedHint("If enabled, launcher.net will not check if a game's path is outside of " +
-                        "it's root folder, during actions such as deletions.",
+                    SetSelectedHint("If enabled, launcher.net will not prevent plugins from installing outside of " +
+                        "launcher.NET's's root folder.",
                         "Disabled");
                     break;
             }
