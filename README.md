@@ -4,7 +4,7 @@ A lightweight game launcher capable of playing **any** game, through the power o
 
 <img width="725" height="489" alt="launcherdotnet_Jjlpgl8Mfb" src="https://github.com/user-attachments/assets/b4e48baf-08ac-4050-8139-d0184529c5ef" />
 
-Shown: Windows 10 with [Aero10](https://www.deviantart.com/vaporvance/art/Aero10-Vista-Seven-909711949) theme, _not_ windows 7. 
+Shown: Windows 10 with [Aero10](https://www.deviantart.com/vaporvance/art/Aero10-Vista-Seven-909711949) theme, _not_ windows 7. Windows 7 compatability not guranteed. Good luck getting .NET 10 running.
 
 ### but how??
 
@@ -41,7 +41,7 @@ In the "plugins" tab of the settings menu, click "open plugins folder." Drag any
 
 **WARNING**
 
-Plugins have FULL ACCESS to your PC when running, as any other program would! Use plugins with caution. There is some security planned. You may have noticed CasCore.dll (and its dependencies) in the latest release. While they are not currently in use, I plan to use it to make excecuting plugins much more secure. See https://douglasdwyer.github.io/CasCore/ for more details.
+Plugins have FULL ACCESS to your PC when running, as any other program would! Use plugins with caution. I was planning to use CasCore for security, but it really doesn't make sense to try to stop a program with Internet access from doing bad things. Even without internet if it uses Http to get access to Docker its over.
 
 ## Developing plugins
 see [PLUGINS.MD](https://github.com/Gameknight963/launcher.NET/blob/main/PLUGINS.md)
@@ -51,6 +51,8 @@ see [PLUGINS.MD](https://github.com/Gameknight963/launcher.NET/blob/main/PLUGINS
 <img width="526" height="489" alt="launcherdotnet_iBvbmKe2Cb" src="https://github.com/user-attachments/assets/cfc0b90c-51a3-4979-912d-f820d69ade5a" />
 
 <img width="725" height="489" alt="launcherdotnet_IgWOlE3189" src="https://github.com/user-attachments/assets/a8aa6b16-25ca-4a80-9604-cf6cf6afe951" />
+
+(screenshots are out of date, but I couldn't care less lol)
 
 #### What is MLInstaller.SDK.dll?
 
