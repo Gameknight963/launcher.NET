@@ -51,6 +51,9 @@ see [PLUGINS.MD](https://github.com/Gameknight963/launcher.NET/blob/main/PLUGINS
 
 (screenshots are out of date, but I couldn't care less lol)
 
+### Source of "Hello World" plugin
+https://github.com/Gameknight963/launcher.NET-hello-world-plugin
+
 #### What is MLInstaller.SDK.dll?
 
 It's a little open-source program I wrote to assist with fetching and downloading Melonloader versions. [View it's source code here](https://github.com/Gameknight963/MLInstaller.SDK)
