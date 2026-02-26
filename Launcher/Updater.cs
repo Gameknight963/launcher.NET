@@ -72,8 +72,9 @@ namespace launcherdotnet.Launcher
                 LauncherLogger.Warn("The launcher.NET Github Releases API sent a response that was either invalid or contained no releases.");
                 MessageBox.Show("Github releases sent an invalid response.",
                     "Update check error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
-            if (Config.CurrentVersion != latest)
+            if (latest.ComparePrecedenceTo(Config.CurrentVersion) > 0)
             {
                 LauncherLogger.WriteLine($" Update available: {latest}");
                 DialogResult result = MessageBox.Show($"New version is available: {latest}. You are currently on version {Config.CurrentVersionString}. Update?",
