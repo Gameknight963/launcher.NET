@@ -41,7 +41,7 @@ namespace launcherdotnet
             {
                 MessageBox.Show($"{ex} Check if games");
             }
-            File.Delete(game.AbsolutePath);
+            Directory.Delete(game.AbsoluteRootDirectory, true);
             RemoveMissingGames();
             return folder;
         }
