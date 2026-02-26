@@ -23,9 +23,6 @@ Instead of implementing installation a million times for a million games, launch
 
 Click "+ Add new Instance" and follow the instructions.
 
-### Important
-All instances are currently run through cmd.exe. This will be configurable in the next update.
-
 ### Installing mods
 
 Melonloader, a Unity modloader, is the only modloader currently integrated into launcher.NET. To install it, click 'Install..." on the left panel with an instance selected, and follow the instructions.
