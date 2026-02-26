@@ -60,7 +60,7 @@ namespace launcherdotnet.Launcher
             }
             catch (Exception ex)
             {
-                LauncherLogger.Warn($"A {ex.GetType().Name} occured while checking for updates. {ex.Message}");
+                LauncherLogger.Warn($"Unprecedented exception {ex.GetType().Name} occured while checking for updates. {ex.Message}");
                 if (!LauncherSettings.Settings.WarnOnFailedUpdate) return;
                 MessageBox.Show("An unprecedented error occured while checking for updates. Check the console for more details.",
                     "Update check error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -88,7 +88,7 @@ namespace launcherdotnet.Launcher
                 });
                 return;
             }
-            LauncherLogger.WriteLine($" No updates availabe.");
+            LauncherLogger.WriteLine($"No updates available.");
         }
 
     }
