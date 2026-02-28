@@ -9,9 +9,10 @@ namespace launcherdotnet
     {
         public static void UpsertGame(GameInfo game)
         {
-            LauncherData data = LauncherDataManager.ReadLauncherData();
+            LauncherData? data = LauncherDataManager.ReadLauncherData();
+            if (data == null) return;
 
-            var existing = data.Versions.FirstOrDefault(g => g.Id == game.Id);
+            GameInfo? existing = data.Versions.FirstOrDefault(g => g.Id == game.Id);
 
             if (existing != null)
             {
@@ -49,7 +50,8 @@ namespace launcherdotnet
 
         public static bool RemoveMissingGames()
         {
-            var data = LauncherDataManager.ReadLauncherData();
+            LauncherData? data = LauncherDataManager.ReadLauncherData();
+            if (data == null) return false;
             int before = data.Versions.Count;
 
             data.Versions = data.Versions

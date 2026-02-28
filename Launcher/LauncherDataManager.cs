@@ -13,25 +13,63 @@ namespace launcherdotnet
         {
             return Path.Combine(Config.BaseDir, "games.json");
         }
-        public static LauncherData ReadLauncherData()
+        public static LauncherData? ReadLauncherData()
         {
             string dataPath = GetDataPath();
             LauncherData data;
-            if (File.Exists(dataPath))
+            if (!File.Exists(dataPath))
+            {
+                data = new LauncherData();
+                return data;
+            }
+            try
             {
                 string json = File.ReadAllText(dataPath);
                 data = JsonConvert.DeserializeObject<LauncherData>(json) ?? new LauncherData();
+                return data;
             }
-            else
+            catch (Exception ex)
             {
-                data = new LauncherData(); 
+                LauncherLogger.Error($"Error reading games.json: {ex.GetType().Name}:", true);
+                if (LauncherSettings.Settings.VerboseLogging)
+                {
+                    LauncherLogger.Write($"\n");
+                    LauncherLogger.Error(ex.ToString(), false);
+                }
+                else LauncherLogger.WriteLine("Enable verbose logging to see full exception.", true);
+
+                MessageBox.Show($"A {ex.GetType().Name} occured while reading LauncherData to games.json: " +
+                    $"{ex.Message} Check the console for more details.",
+                    "Error reading LauncherData",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return null;
             }
-            return data;
         }
+
         public static void SaveLauncherData(LauncherData data)
         {
-            string json = JsonConvert.SerializeObject(data, Formatting.Indented);
-            File.WriteAllText(GetDataPath(), json);
+            try
+            {
+                string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                File.WriteAllText(GetDataPath(), json);
+            }
+            catch(Exception ex)
+            {
+                LauncherLogger.Error($"Error writing games.json: {ex.GetType().Name}:", true);
+                if (LauncherSettings.Settings.VerboseLogging)
+                {
+                    LauncherLogger.Write($"\n");
+                    LauncherLogger.Error(ex.ToString(), false);
+                }
+                else LauncherLogger.WriteLine("Enable verbose logging to see full exception.", true);
+
+                MessageBox.Show($"A {ex.GetType().Name} occured while saving LauncherData to games.json: " +
+                    $"{ex.Message} Check the console for more details.",
+                    "Error saving LauncherData",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
     }
     public class LauncherData
