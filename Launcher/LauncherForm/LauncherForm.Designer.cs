@@ -43,6 +43,7 @@
             OpenFolderButton = new Button();
             RenameButton = new Button();
             SettingsButton = new Button();
+            SearchBox = new TextBox();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -194,11 +195,20 @@
             SettingsButton.UseVisualStyleBackColor = true;
             SettingsButton.Click += SettingsButton_Click;
             // 
+            // SearchBox
+            // 
+            SearchBox.Location = new Point(221, 2);
+            SearchBox.Name = "SearchBox";
+            SearchBox.Size = new Size(297, 23);
+            SearchBox.TabIndex = 10;
+            SearchBox.TextChanged += SearchBox_TextChanged;
+            // 
             // LauncherForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(709, 450);
+            Controls.Add(SearchBox);
             Controls.Add(SettingsButton);
             Controls.Add(RefreshList);
             Controls.Add(button3);
@@ -229,5 +239,6 @@
         private Button SettingsButton;
         private Button OpenFolderButton;
         private Button RenameButton;
+        private TextBox SearchBox;
     }
 }

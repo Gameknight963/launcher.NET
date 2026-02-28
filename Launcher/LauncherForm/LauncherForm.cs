@@ -9,6 +9,7 @@ namespace launcherdotnet
     using System.Diagnostics;
     using System.IO;
     using System.Runtime.CompilerServices;
+    using static System.Runtime.InteropServices.JavaScript.JSType;
 
     internal partial class LauncherForm : System.Windows.Forms.Form
     {
@@ -23,15 +24,15 @@ namespace launcherdotnet
             IdleInstallHint = InstallHint.Text;
 
             gamesView.SizeChanged += (sender, e) => ResizeColumns();
-            Updater.CheckForUpdates();
-        }
+            this.KeyDown += LauncherForm_KeyDown;
 
-        public void Initialize()
-        {
+            SearchBox.Focus();
             SetStatus(IdleStatus);
             SetSidebarMode(SidebarMode.Idle);
             LauncherData? data = LauncherDataManager.ReadLauncherData();
             UpdateGameList(gamesView, data);
+
+            Updater.CheckForUpdates();
         }
 
         public void SetStatus(string text)
@@ -60,6 +61,27 @@ namespace launcherdotnet
             ScrollbarHelper.Set(gamesView, ScrollbarHelper.Scrollbar.Horz, false);
 
             gamesView.Columns[1].Width = Math.Max(remaining, 230);
+        }
+
+        private void LauncherForm_KeyDown(object? sender, KeyEventArgs e)
+        {
+            // not in use rn
+        }
+
+        private void SearchBox_TextChanged(object sender, EventArgs e)
+        {
+            string query = SearchBox.Text.ToLower();
+            gamesView.Items.Clear();
+            // yes this reads it every time. could it be faster? yes. is it slow? nope its still pretty fast
+            LauncherData? data = LauncherDataManager.ReadLauncherData(); 
+            if (data == null) return;
+            List<GameInfo> g = new();
+            foreach (GameInfo game in data.Versions)
+            {
+                if (game.GameName.ToLower().Contains(query) || game.Label.ToLower().Contains(query)) 
+                    g.Add(game);
+            }
+            UpdateGameList(gamesView, new LauncherData { Versions = g});
         }
 
         public GameInfo? GetSelectedGame()
