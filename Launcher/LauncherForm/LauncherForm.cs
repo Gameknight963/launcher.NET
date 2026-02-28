@@ -19,13 +19,19 @@ namespace launcherdotnet
         public LauncherForm()
         {
             InitializeComponent();
-            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
             IdleStatus = status.Text;
             IdleInstallHint = InstallHint.Text;
-            SetStatus(IdleStatus);
-            SetSidebarMode(SidebarMode.Idle);
+
             gamesView.SizeChanged += (sender, e) => ResizeColumns();
             Updater.CheckForUpdates();
+        }
+
+        public void Initialize()
+        {
+            SetStatus(IdleStatus);
+            SetSidebarMode(SidebarMode.Idle);
+            LauncherData? data = LauncherDataManager.ReadLauncherData();
+            UpdateGameList(gamesView, data);
         }
 
         public void SetStatus(string text)
@@ -33,8 +39,9 @@ namespace launcherdotnet
             status.Text = text;
         }
 
-        public static void UpdateGameList(ListView gamesView, LauncherData data)
+        public static void UpdateGameList(ListView gamesView, LauncherData? data)
         {
+            if (data == null) return;
             gamesView.Items.Clear();
             foreach (var game in data.Versions)
             {
@@ -115,7 +122,8 @@ namespace launcherdotnet
             // legends will remember salamalonekabatrabaslatrowerebakaedro
             GameInstallForm form = new GameInstallForm();
             form.ShowDialog();
-            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
+            LauncherData? data = LauncherDataManager.ReadLauncherData();
+            UpdateGameList(gamesView, data);
         }
 
         private void gamesView_SelectedIndexChanged(object sender, EventArgs e)
