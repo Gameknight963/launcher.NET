@@ -39,7 +39,8 @@ namespace launcherdotnet
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"{ex} Check if games");
+                MessageBox.Show($"{ex.GetType().Name}: {ex.Message}. Check if games path in config.json is malformed.");
+                throw new InvalidOperationException($"Unprecedented exception {ex.GetType().Name} while trying to delete game {game.GameName}.");
             }
             Directory.Delete(game.AbsoluteRootDirectory, true);
             RemoveMissingGames();
