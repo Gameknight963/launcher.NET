@@ -10,14 +10,14 @@ namespace launcherdotnet
     public static class LauncherLogger
     {
         // assign it to a variable in case we ever want to add a new condition
-        private static bool CanWrite => LauncherSettings.Settings.VerboseLogging;
+        private static bool Verbose => LauncherSettings.Settings.VerboseLogging;
 
         public static void WriteColor(string message, 
             bool force = false, 
             ConsoleColor textColor = ConsoleColor.White, 
             ConsoleColor bgColor = ConsoleColor.Black)
         {
-            if (!(CanWrite || force)) return;
+            if (!(Verbose || force)) return;
             try
             {
                 Console.BackgroundColor = bgColor;
@@ -25,8 +25,8 @@ namespace launcherdotnet
                 Console.Write(message);
                 Console.ResetColor();
             }
-            catch (UnauthorizedAccessException) { return; }
-            catch { Console.ResetColor(); }
+            catch (UnauthorizedAccessException) { return; } // console isn't open
+            catch { Console.ResetColor(); } // something else happened
         }
         public static void WriteColorLine(string message,
             bool force = false,

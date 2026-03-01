@@ -255,7 +255,7 @@
             GithubLink.AutoSize = true;
             GithubLink.Location = new Point(3, 354);
             GithubLink.Name = "GithubLink";
-            GithubLink.Size = new Size(273, 15);
+            GithubLink.Size = new Size(272, 15);
             GithubLink.TabIndex = 8;
             GithubLink.TabStop = true;
             GithubLink.Text = "https://github.com/Gameknight963/launcher.NET";
@@ -268,7 +268,7 @@
             MadeBy.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             MadeBy.Location = new Point(3, 339);
             MadeBy.Name = "MadeBy";
-            MadeBy.Size = new Size(179, 15);
+            MadeBy.Size = new Size(178, 15);
             MadeBy.TabIndex = 6;
             MadeBy.Text = "launcher.NET by gameknight963";
             // 

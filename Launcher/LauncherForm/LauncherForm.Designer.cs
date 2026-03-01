@@ -38,13 +38,13 @@
             LaunchButton = new Button();
             DeleteButton = new Button();
             InstallHint = new Label();
-            panel1 = new Panel();
+            Panel = new Panel();
             InstallSometingButton = new Button();
             OpenFolderButton = new Button();
             RenameButton = new Button();
             SettingsButton = new Button();
             SearchBox = new TextBox();
-            panel1.SuspendLayout();
+            Panel.SuspendLayout();
             SuspendLayout();
             // 
             // status
@@ -126,7 +126,7 @@
             DeleteButton.Location = new Point(86, 153);
             DeleteButton.Name = "DeleteButton";
             DeleteButton.Size = new Size(75, 23);
-            DeleteButton.TabIndex = 0;
+            DeleteButton.TabIndex = 6;
             DeleteButton.Text = "Delete";
             DeleteButton.UseVisualStyleBackColor = true;
             DeleteButton.Click += DeleteButton_Click;
@@ -140,19 +140,19 @@
             InstallHint.TabIndex = 1;
             InstallHint.Text = "Select an instance to see more options";
             // 
-            // panel1
+            // Panel
             // 
-            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            panel1.Controls.Add(InstallSometingButton);
-            panel1.Controls.Add(InstallHint);
-            panel1.Controls.Add(OpenFolderButton);
-            panel1.Controls.Add(LaunchButton);
-            panel1.Controls.Add(RenameButton);
-            panel1.Controls.Add(DeleteButton);
-            panel1.Location = new Point(524, 27);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(173, 389);
-            panel1.TabIndex = 3;
+            Panel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            Panel.Controls.Add(InstallSometingButton);
+            Panel.Controls.Add(InstallHint);
+            Panel.Controls.Add(OpenFolderButton);
+            Panel.Controls.Add(LaunchButton);
+            Panel.Controls.Add(RenameButton);
+            Panel.Controls.Add(DeleteButton);
+            Panel.Location = new Point(524, 27);
+            Panel.Name = "Panel";
+            Panel.Size = new Size(173, 389);
+            Panel.TabIndex = 3;
             // 
             // InstallSometingButton
             // 
@@ -169,7 +169,7 @@
             OpenFolderButton.Location = new Point(5, 124);
             OpenFolderButton.Name = "OpenFolderButton";
             OpenFolderButton.Size = new Size(156, 23);
-            OpenFolderButton.TabIndex = 2;
+            OpenFolderButton.TabIndex = 4;
             OpenFolderButton.Text = "Open game folder";
             OpenFolderButton.UseVisualStyleBackColor = true;
             OpenFolderButton.Click += OpenFolderButton_Click;
@@ -179,7 +179,7 @@
             RenameButton.Location = new Point(5, 153);
             RenameButton.Name = "RenameButton";
             RenameButton.Size = new Size(75, 23);
-            RenameButton.TabIndex = 0;
+            RenameButton.TabIndex = 5;
             RenameButton.Text = "Rename";
             RenameButton.UseVisualStyleBackColor = true;
             RenameButton.Click += RenameButton_Click;
@@ -197,9 +197,9 @@
             // 
             // SearchBox
             // 
-            SearchBox.Location = new Point(221, 2);
+            SearchBox.Location = new Point(202, 2);
             SearchBox.Name = "SearchBox";
-            SearchBox.Size = new Size(297, 23);
+            SearchBox.Size = new Size(316, 23);
             SearchBox.TabIndex = 10;
             SearchBox.TextChanged += SearchBox_TextChanged;
             // 
@@ -213,12 +213,12 @@
             Controls.Add(RefreshList);
             Controls.Add(button3);
             Controls.Add(gamesView);
-            Controls.Add(panel1);
+            Controls.Add(Panel);
             Controls.Add(label1);
             Controls.Add(status);
             Name = "LauncherForm";
             Text = "launcher.net";
-            panel1.ResumeLayout(false);
+            Panel.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -234,7 +234,7 @@
         private Button LaunchButton;
         private Button DeleteButton;
         private Label InstallHint;
-        private Panel panel1;
+        private Panel Panel;
         private Button InstallSometingButton;
         private Button SettingsButton;
         private Button OpenFolderButton;

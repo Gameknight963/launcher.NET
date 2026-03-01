@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace launcherdotnet
@@ -27,6 +28,7 @@ namespace launcherdotnet
 
             LauncherDataManager.SaveLauncherData(data);
         }
+
         public static string DeleteGame(GameInfo game)
         {
             string folder = game.RelativeRootDirectory;
@@ -46,6 +48,25 @@ namespace launcherdotnet
             Directory.Delete(game.AbsoluteRootDirectory, true);
             RemoveMissingGames();
             return folder;
+        }
+
+        public static void LaunchGame(GameInfo game)
+        {
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.UseShellExecute = true;
+
+            if (game.RunWithCmd)
+            {
+                psi.FileName = "cmd.exe";
+                psi.Arguments = $"/k \"{game.AbsolutePath}\"";
+                psi.CreateNoWindow = true;
+            }
+            else
+            {
+                psi.FileName = game.AbsolutePath;
+                psi.CreateNoWindow = false;
+            }
+            Process.Start(psi);
         }
 
         public static bool RemoveMissingGames()

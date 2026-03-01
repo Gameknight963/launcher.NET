@@ -17,13 +17,6 @@ namespace launcherdotnet
 {
     public partial class SettingsForm : Form
     {
-        public class TaggedListBoxItem
-        {
-            public required string Text { get; set; }
-            public required object Tag { get; set; }
-            public override string ToString() => Text;
-        }
-
         private string _defaultSelectedHint = "";
         public SettingsForm()
         {
@@ -34,6 +27,15 @@ namespace launcherdotnet
             GamePluginsBox.MouseDown += GamePluginsBox_MouseDown;
             MLCheckbox.MouseDown += MLCheckbox_MouseDown;
             _defaultSelectedHint = SelectedHint.Text;
+            this.KeyPreview = true;
+            this.KeyDown += SettingsForm_KeyDown;
+        }
+
+        public class TaggedListBoxItem
+        {
+            public required string Text { get; set; }
+            public required object Tag { get; set; }
+            public override string ToString() => Text;
         }
 
         private void ApplySettings()
@@ -103,7 +105,7 @@ namespace launcherdotnet
         private void SetSelectedHint(string? description, string? defaultSetting = null)
         {
             if (description == null)
-            {
+            { 
                 SelectedHint.Text = _defaultSelectedHint;
                 return;
             }
@@ -120,6 +122,10 @@ namespace launcherdotnet
             SelectedHint.Text = $"{description}\n\nTarget API version: {apiVersion ?? "Not specified"}";
         }
 
+        private void SettingsForm_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape) this.Close();
+        }
         private void GeneralCheckbox_MouseDown(object? sender, MouseEventArgs e)
         {
             if (GeneralCheckbox.SelectedIndex == -1) return;
