@@ -2,6 +2,8 @@
 using Microsoft.VisualBasic;
 using MLInstallerSDK;
 using Semver;
+using System.ComponentModel;
+using System.ComponentModel.Design;
 
 namespace launcherdotnet
 {
@@ -11,8 +13,13 @@ namespace launcherdotnet
         {
             InitializeComponent();
             this.Icon = SystemIcons.Information;
+            this.KeyPreview = true;
+            this.KeyDown += GameInstallForm_KeyDown;
             Initialize();
         }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool Success { get; private set; } = false;
 
         public void Initialize()
         {
@@ -22,6 +29,11 @@ namespace launcherdotnet
             }
             if (GameDropdown.Items.Count > 0) GameDropdown.SelectedIndex = 0;
             InstallGameButton.Select();
+        }
+
+        private void GameInstallForm_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape) this.Close();
         }
 
         private void GameDropdown_SelectedIndexChanged(object sender, EventArgs e)
@@ -101,7 +113,7 @@ namespace launcherdotnet
 
             if (string.IsNullOrWhiteSpace(installed.ExePath))
             {
-                LauncherLogger.Warn("Installation returned no executable. This can be caused by" +
+                LauncherLogger.Error("Installation returned no executable. This can be caused by" +
                     "a bug in the intstaller plugin, or the plugin silently failing.");
                 MessageBox.Show("Installation failed or returned no executable.",
                     "Error",
@@ -114,6 +126,7 @@ namespace launcherdotnet
             ActivityHint.Text = "Installation complete.";
             GameService.UpsertGame(newGame);
             MessageBox.Show("Installation complete.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Success = true;
             this.Close();
         }
 

@@ -27,6 +27,8 @@ namespace launcherdotnet
             ModloaderDropdown.Items.Add("Melonloader");
             ModloaderDropdown.SelectedIndex = 0;
             this.FormClosing += ModloaderInstallForm_FormClosing;
+            this.KeyPreview = true;
+            this.KeyDown += ModloaderInstallForm_KeyDown;
             Initialize();
         }
 
@@ -62,6 +64,11 @@ namespace launcherdotnet
                 VersionDropdown.SelectedIndex = 0;
 
             InstallModloaderButton.Enabled = true;
+        }
+
+        private void ModloaderInstallForm_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape) this.Close();
         }
 
         private async void InstallModloader_Click(object sender, EventArgs e)
