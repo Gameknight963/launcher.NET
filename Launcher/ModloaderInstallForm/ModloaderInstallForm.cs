@@ -103,12 +103,18 @@ namespace launcherdotnet
                 MLVersion chosen = versions[VersionDropdown.SelectedIndex];
                 await InstallSelectedModloaderAsync(chosen, gameDir, progressBar);
             }
+            catch (Exception ex)
+            {
+                LauncherLogger.Error($"Unprecedented exception installing Melonloader:\n{ex}"); // remember when add more modloaders change this
+                MessageBox.Show($"Unprecedented exception during installation: {ex.Message}", "Installation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             finally
             {
                 _installInProgress = false;
                 InstallModloaderButton.Enabled = true;
                 ModloaderDropdown.Enabled = true;
                 VersionDropdown.Enabled = true;
+                this.Close();
             }
         }
 
