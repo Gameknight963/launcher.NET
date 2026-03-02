@@ -1,4 +1,4 @@
-Changes since the last API version (v0.5.0):
+Changes in v0.6.0 (previous version v0.5.0): 
 
 - **IGameInstaller.cs:** IGameInstaller.Install is now type ``Task<PluginGameInfo>``.  PluginGameInfo (inside PluginGameInfo.cs) is a class containing string ExePath and bool RunWithCmd, whose functionality should be self-explanatory.
 - **GameInstallerRegistry.cs (formerly PluginApi.cs):** Class PluginApi renamed to GameInstallerRegistry. This was just renamed.
@@ -49,7 +49,7 @@ namespace ClassLibrary1
     {
         public string Name => "agatrraaAAAAA";
         public string Description => "bro bro bro bro bro bro bro bro bro";
-        public global::Semver.SemVersion TargetApiVersion => new SemVersion(0, 5, 0); // v0.5.0
+        public global::Semver.SemVersion TargetApiVersion => new SemVersion(0, 6, 0); // v0.6.0
 
         public Task Initialize()
         {
@@ -74,7 +74,7 @@ namespace ClassLibrary1
     {
         public string Name => "agatrraaAAAAA";
         public string Description => "bro bro bro bro bro bro bro bro bro";
-        public global::Semver.SemVersion TargetApiVersion => new SemVersion(0, 5, 0); // v0.5.0
+        public global::Semver.SemVersion TargetApiVersion => new SemVersion(0, 6, 0);
 
         // I will get synchronous functions later
         public async Task Initialize()
@@ -109,7 +109,7 @@ PluginLogger.Msg("this message is forced to send", true);
       {
           public string Name => "agatrraaAAAAA installer";
           public string Description => "bro bro bro bro bro bro bro bro bro (slowed and reverb)";
-          public global::Semver.SemVersion TargetApiVersion => new SemVersion(0, 5, 0);
+          public global::Semver.SemVersion TargetApiVersion => new SemVersion(0, 6, 0);
   
           public async Task Initialize()
           {
