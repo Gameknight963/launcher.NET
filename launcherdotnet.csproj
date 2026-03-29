@@ -2,7 +2,7 @@
 	
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -11,7 +11,9 @@
     <Description>Lightweight universal game launcher in .net framework</Description>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	<NoWarn>$(NoWarn);NETSDK1137</NoWarn>
   </PropertyGroup>
+	
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
