@@ -13,6 +13,32 @@ namespace launcherdotnet
         [DllImport("dwmapi.dll")]
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, int dwAttribute, ref int pvAttribute, int cbAttribute);
 
+
+        public enum WindowCompositionAttribute
+        {
+            WCA_ACCENT_POLICY = 19
+        }
+
+        public enum AccentState
+        {
+            ACCENT_DISABLED = 0,
+            ACCENT_ENABLE_GRADIENT = 1,
+            ACCENT_ENABLE_TRANSPARENTGRADIENT = 2,
+            ACCENT_ENABLE_BLURBEHIND = 3,
+            ACCENT_ENABLE_ACRYLICBLURBEHIND = 4
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct WindowCompositionAttributeData
+        {
+            public WindowCompositionAttribute Attribute;
+            public IntPtr Data;
+            public int SizeOfData;
+        }
+
+        [DllImport("user32.dll")]
+        private static extern int SetWindowCompositionAttribute(IntPtr hwnd, ref WindowCompositionAttributeData data);
+
         [StructLayout(LayoutKind.Sequential)]
         public struct MARGINS
         {
@@ -21,6 +47,16 @@ namespace launcherdotnet
             public int Top;
             public int Bottom;
         }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct AccentPolicy
+        {
+            public AccentState AccentState;
+            public int AccentFlags;
+            public int GradientColor;
+            public int AnimationId;
+        }
+
 
         public static void ExtendFrame(IntPtr hwnd)
         {
@@ -62,6 +98,31 @@ namespace launcherdotnet
             int attribute = 20;
 
             DwmSetWindowAttribute(hwnd, attribute, ref useDark, sizeof(int));
+        }
+
+
+        public static void EnableBlur(IntPtr hwnd)
+        {
+            AccentPolicy accent = new AccentPolicy
+            {
+                AccentState = AccentState.ACCENT_ENABLE_BLURBEHIND
+            };
+
+            int size = Marshal.SizeOf(accent);
+
+            IntPtr ptr = Marshal.AllocHGlobal(size);
+            Marshal.StructureToPtr(accent, ptr, false);
+
+            WindowCompositionAttributeData data = new()
+            {
+                Attribute = WindowCompositionAttribute.WCA_ACCENT_POLICY,
+                Data = ptr,
+                SizeOfData = size
+            };
+
+            SetWindowCompositionAttribute(hwnd, ref data);
+
+            Marshal.FreeHGlobal(ptr);
         }
 
 

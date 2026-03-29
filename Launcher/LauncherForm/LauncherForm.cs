@@ -39,7 +39,7 @@ namespace launcherdotnet
             gamesView.DrawItem += gamesView_DrawItem;
             gamesView.DrawSubItem += gamesView_DrawSubItem;
 
-            SetLaucherFormTheme(Theme.Dark);
+            SetLaucherFormTheme(Theme.Light);
 
             Task.Run(async () =>
             {
@@ -58,12 +58,17 @@ namespace launcherdotnet
                 case Theme.Dark:
                     gamesView.OwnerDraw = true;
                     _headerStyle.ForeColor = Color.White;
-                    _headerStyle.BackColor = DarkModeMainColor;
+                    _headerStyle.BackColor = DarkMainColor;
                     break;
                 case Theme.ExtendFrame:
                     gamesView.OwnerDraw = true;
-                    _headerStyle.ForeColor = Color.Black;
-                    _headerStyle.BackColor = Color.White;
+                    _headerStyle.ForeColor = Color.White;
+                    _headerStyle.BackColor = Color.Black;
+                    break;
+                case Theme.Acrylic:
+                    gamesView.OwnerDraw = true;
+                    _headerStyle.ForeColor = Color.White;
+                    _headerStyle.BackColor = AcrylicMainColor;
                     break;
             }
         }
