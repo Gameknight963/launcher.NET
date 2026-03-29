@@ -42,9 +42,11 @@ namespace launcherdotnet
             Light,
             Dark,
             ExtendFrame,
+            Acrylic
         }
 
-        public static Color DarkModeMainColor => Color.FromArgb(30, 30, 30);
+        public static Color DarkMainColor => Color.FromArgb(30, 30, 30);
+        public static Color AcrylicMainColor => Color.FromArgb(20, 20, 30);
         public static void ApplyThemeToForm(Form form, Theme theme)
         {
             switch (theme)
@@ -58,7 +60,7 @@ namespace launcherdotnet
                     break;
                 case Theme.Dark:
                     DwmApi.EnableImmersiveDarkMode(form.Handle);
-                    SetColorRecursive(form, new ControlStyle(DarkModeMainColor), c => c is not Label);
+                    SetColorRecursive(form, new ControlStyle(DarkMainColor), c => c is not Label);
                     SetColorRecursive(form, new ControlStyle(null, Color.White), c => c is Label || c is Button);
                     break;
                 case Theme.ExtendFrame:
@@ -66,6 +68,12 @@ namespace launcherdotnet
                     DwmApi.ExtendFrame(form.Handle);
                     SetColorRecursive(form, new ControlStyle(Color.Black), c => c is not Label && c is not Button);
                     SetColorRecursive(form, new ControlStyle(null, Color.White), c => c is Label || c is Button);
+                    break;
+                case Theme.Acrylic:
+                    DwmApi.EnableImmersiveDarkMode(form.Handle);
+                    SetColorRecursive(form, new ControlStyle(AcrylicMainColor), c => c is not Label && c is not Button);
+                    SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White), c => c is Label || c is Button);
+                    DwmApi.EnableBlur(form.Handle);
                     break;
             }
         }
