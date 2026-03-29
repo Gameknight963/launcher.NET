@@ -22,5 +22,3 @@ dotnet_naming_style.underscore_camel_case_style.required_prefix = _
 
 # CS1591: Missing XML comment for publicly visible type or member
 dotnet_diagnostic.CS1591.severity = silent
-
-netsdk1137
