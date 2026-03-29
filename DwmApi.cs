@@ -56,6 +56,14 @@ namespace launcherdotnet
             DwmSetWindowAttribute(hwnd, attribute, ref useDark, sizeof(int));
         }
 
+        public static void DisableImmersiveDarkMode(IntPtr hwnd)
+        {
+            int useDark = 0;
+            int attribute = 20;
+
+            DwmSetWindowAttribute(hwnd, attribute, ref useDark, sizeof(int));
+        }
+
 
         public static void SetWindowAttribute(IntPtr hwnd, int attribute, int value)
         {
