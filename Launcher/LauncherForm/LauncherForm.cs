@@ -10,7 +10,7 @@ namespace launcherdotnet
     using System.IO;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-    using static System.Runtime.InteropServices.JavaScript.JSType;
+    using static ThemeManager;
 
     internal partial class LauncherForm : System.Windows.Forms.Form
     {
@@ -32,12 +32,65 @@ namespace launcherdotnet
             SetStatus(IdleStatus);
             SetSidebarMode(SidebarMode.Idle);
             LauncherData? data = LauncherDataManager.ReadLauncherData();
+            
             gamesView.UpdateGameList(data);
+            ResizeColumns();
+            gamesView.DrawColumnHeader += gamesView_DrawColumnHeader;
+            gamesView.DrawItem += gamesView_DrawItem;
+            gamesView.DrawSubItem += gamesView_DrawSubItem;
+
+            SetLaucherFormTheme(Theme.Light);
+
             Task.Run(async () =>
             {
                 await Updater.CheckForUpdates();
             });
+        }
 
+        void SetLaucherFormTheme(Theme theme)
+        {
+            ApplyThemeToForm(this, theme);
+            switch (theme)
+            {
+                case Theme.Light:
+                    gamesView.OwnerDraw = false;
+                    break;
+                case Theme.Dark:
+                    throw new NotImplementedException();
+                case Theme.ExtendFrame:
+                    gamesView.OwnerDraw = true;
+                    _headerStyle.ForeColor = Color.Black;
+                    _headerStyle.BackColor = Color.White;
+                    break;
+            }
+        }
+
+        private readonly ControlStyle _headerStyle = new(Color.White, Color.Black);
+        private void gamesView_DrawColumnHeader(object? sender, DrawListViewColumnHeaderEventArgs e)
+        {
+            {
+                using SolidBrush backBrush = new SolidBrush(_headerStyle.BackColor!.Value);
+                using SolidBrush foreBrush = new SolidBrush(_headerStyle.ForeColor!.Value);
+                {
+                    e.Graphics.FillRectangle(backBrush, e.Bounds);
+                    e.Graphics.DrawString(e.Header!.Text, e.Font!, foreBrush, e.Bounds);
+                }
+            }
+        }
+
+        private void gamesView_DrawItem(object? sender, DrawListViewItemEventArgs e)
+        {
+            e.DrawDefault = false;
+        }
+        private void gamesView_DrawSubItem(object? sender, DrawListViewSubItemEventArgs e)
+        {
+            Color foreColor = _headerStyle.ForeColor!.Value;
+            Color backColor = e.Item!.Selected ? SystemColors.Highlight : e.Item.BackColor;
+
+            using Brush backBrush = new SolidBrush(backColor);
+            using Brush foreBrush = new SolidBrush(foreColor);
+            e.Graphics.FillRectangle(backBrush, e.Bounds);
+            e.Graphics.DrawString(e.SubItem!.Text, e.SubItem.Font, foreBrush, e.Bounds);
         }
 
         public void SetStatus(string text)

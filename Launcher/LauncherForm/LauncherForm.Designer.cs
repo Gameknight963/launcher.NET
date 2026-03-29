@@ -51,18 +51,18 @@
             // 
             status.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             status.AutoSize = true;
-            status.Location = new Point(12, 426);
+            status.Location = new Point(14, 568);
             status.Name = "status";
-            status.Size = new Size(125, 15);
+            status.Size = new Size(160, 20);
             status.TabIndex = 2;
             status.Text = "Status will appear here";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 5);
+            label1.Location = new Point(14, 7);
             label1.Name = "label1";
-            label1.Size = new Size(103, 15);
+            label1.Size = new Size(129, 20);
             label1.TabIndex = 3;
             label1.Text = "Installed instances";
             // 
@@ -71,10 +71,11 @@
             gamesView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gamesView.Columns.AddRange(new ColumnHeader[] { LabelColumn, GameColumn });
             gamesView.FullRowSelect = true;
-            gamesView.Location = new Point(12, 27);
+            gamesView.Location = new Point(14, 36);
+            gamesView.Margin = new Padding(3, 4, 3, 4);
             gamesView.MultiSelect = false;
             gamesView.Name = "gamesView";
-            gamesView.Size = new Size(506, 389);
+            gamesView.Size = new Size(578, 517);
             gamesView.TabIndex = 4;
             gamesView.UseCompatibleStateImageBehavior = false;
             gamesView.View = View.Details;
@@ -93,9 +94,10 @@
             // button3
             // 
             button3.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button3.Location = new Point(389, 422);
+            button3.Location = new Point(445, 563);
+            button3.Margin = new Padding(3, 4, 3, 4);
             button3.Name = "button3";
-            button3.Size = new Size(129, 23);
+            button3.Size = new Size(147, 31);
             button3.TabIndex = 7;
             button3.Text = "+ Add new instance";
             button3.UseVisualStyleBackColor = true;
@@ -103,9 +105,11 @@
             // 
             // RefreshList
             // 
-            RefreshList.Location = new Point(121, 1);
+            RefreshList.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            RefreshList.Location = new Point(138, 1);
+            RefreshList.Margin = new Padding(3, 4, 3, 4);
             RefreshList.Name = "RefreshList";
-            RefreshList.Size = new Size(75, 23);
+            RefreshList.Size = new Size(86, 31);
             RefreshList.TabIndex = 8;
             RefreshList.Text = "Refresh";
             RefreshList.UseVisualStyleBackColor = true;
@@ -113,9 +117,10 @@
             // 
             // LaunchButton
             // 
-            LaunchButton.Location = new Point(5, 95);
+            LaunchButton.Location = new Point(6, 127);
+            LaunchButton.Margin = new Padding(3, 4, 3, 4);
             LaunchButton.Name = "LaunchButton";
-            LaunchButton.Size = new Size(75, 23);
+            LaunchButton.Size = new Size(86, 31);
             LaunchButton.TabIndex = 2;
             LaunchButton.Text = "Launch";
             LaunchButton.UseVisualStyleBackColor = true;
@@ -123,9 +128,10 @@
             // 
             // DeleteButton
             // 
-            DeleteButton.Location = new Point(86, 153);
+            DeleteButton.Location = new Point(98, 204);
+            DeleteButton.Margin = new Padding(3, 4, 3, 4);
             DeleteButton.Name = "DeleteButton";
-            DeleteButton.Size = new Size(75, 23);
+            DeleteButton.Size = new Size(86, 31);
             DeleteButton.TabIndex = 6;
             DeleteButton.Text = "Delete";
             DeleteButton.UseVisualStyleBackColor = true;
@@ -133,10 +139,10 @@
             // 
             // InstallHint
             // 
-            InstallHint.Location = new Point(5, 48);
-            InstallHint.Margin = new Padding(3, 2, 3, 0);
+            InstallHint.Location = new Point(6, 64);
+            InstallHint.Margin = new Padding(3, 3, 3, 0);
             InstallHint.Name = "InstallHint";
-            InstallHint.Size = new Size(156, 33);
+            InstallHint.Size = new Size(178, 44);
             InstallHint.TabIndex = 1;
             InstallHint.Text = "Select an instance to see more options";
             // 
@@ -149,16 +155,18 @@
             Panel.Controls.Add(LaunchButton);
             Panel.Controls.Add(RenameButton);
             Panel.Controls.Add(DeleteButton);
-            Panel.Location = new Point(524, 27);
+            Panel.Location = new Point(599, 36);
+            Panel.Margin = new Padding(3, 4, 3, 4);
             Panel.Name = "Panel";
-            Panel.Size = new Size(173, 389);
+            Panel.Size = new Size(198, 519);
             Panel.TabIndex = 3;
             // 
             // InstallSometingButton
             // 
-            InstallSometingButton.Location = new Point(86, 95);
+            InstallSometingButton.Location = new Point(98, 127);
+            InstallSometingButton.Margin = new Padding(3, 4, 3, 4);
             InstallSometingButton.Name = "InstallSometingButton";
-            InstallSometingButton.Size = new Size(75, 23);
+            InstallSometingButton.Size = new Size(86, 31);
             InstallSometingButton.TabIndex = 3;
             InstallSometingButton.Text = "Install...";
             InstallSometingButton.UseVisualStyleBackColor = true;
@@ -166,9 +174,10 @@
             // 
             // OpenFolderButton
             // 
-            OpenFolderButton.Location = new Point(5, 124);
+            OpenFolderButton.Location = new Point(6, 165);
+            OpenFolderButton.Margin = new Padding(3, 4, 3, 4);
             OpenFolderButton.Name = "OpenFolderButton";
-            OpenFolderButton.Size = new Size(156, 23);
+            OpenFolderButton.Size = new Size(178, 31);
             OpenFolderButton.TabIndex = 4;
             OpenFolderButton.Text = "Open game folder";
             OpenFolderButton.UseVisualStyleBackColor = true;
@@ -176,9 +185,10 @@
             // 
             // RenameButton
             // 
-            RenameButton.Location = new Point(5, 153);
+            RenameButton.Location = new Point(6, 204);
+            RenameButton.Margin = new Padding(3, 4, 3, 4);
             RenameButton.Name = "RenameButton";
-            RenameButton.Size = new Size(75, 23);
+            RenameButton.Size = new Size(86, 31);
             RenameButton.TabIndex = 5;
             RenameButton.Text = "Rename";
             RenameButton.UseVisualStyleBackColor = true;
@@ -187,9 +197,10 @@
             // SettingsButton
             // 
             SettingsButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            SettingsButton.Location = new Point(622, 422);
+            SettingsButton.Location = new Point(711, 563);
+            SettingsButton.Margin = new Padding(3, 4, 3, 4);
             SettingsButton.Name = "SettingsButton";
-            SettingsButton.Size = new Size(75, 23);
+            SettingsButton.Size = new Size(86, 31);
             SettingsButton.TabIndex = 9;
             SettingsButton.Text = "Settings";
             SettingsButton.UseVisualStyleBackColor = true;
@@ -197,17 +208,19 @@
             // 
             // SearchBox
             // 
-            SearchBox.Location = new Point(202, 2);
+            SearchBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            SearchBox.Location = new Point(231, 3);
+            SearchBox.Margin = new Padding(3, 4, 3, 4);
             SearchBox.Name = "SearchBox";
-            SearchBox.Size = new Size(316, 23);
+            SearchBox.Size = new Size(361, 27);
             SearchBox.TabIndex = 10;
             SearchBox.TextChanged += SearchBox_TextChanged;
             // 
             // LauncherForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(709, 450);
+            ClientSize = new Size(810, 600);
             Controls.Add(SearchBox);
             Controls.Add(SettingsButton);
             Controls.Add(RefreshList);
@@ -216,6 +229,7 @@
             Controls.Add(Panel);
             Controls.Add(label1);
             Controls.Add(status);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "LauncherForm";
             Text = "launcher.net";
             Panel.ResumeLayout(false);
