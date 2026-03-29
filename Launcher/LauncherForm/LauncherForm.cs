@@ -39,7 +39,8 @@ namespace launcherdotnet
             gamesView.DrawItem += gamesView_DrawItem;
             gamesView.DrawSubItem += gamesView_DrawSubItem;
 
-            SetLaucherFormTheme(Theme.Light);
+            SetLaucherFormTheme(Theme.ExtendFrame);
+            SetLaucherFormTheme(Theme.Dark);
 
             Task.Run(async () =>
             {
