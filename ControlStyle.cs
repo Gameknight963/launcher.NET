@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace launcherdotnet.Launcher
+namespace launcherdotnet
 {
     public class ControlStyle
     {
