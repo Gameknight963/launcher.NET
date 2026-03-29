@@ -33,8 +33,11 @@ namespace launcherdotnet
             SetSidebarMode(SidebarMode.Idle);
             LauncherData? data = LauncherDataManager.ReadLauncherData();
             gamesView.UpdateGameList(data);
+            Task.Run(async () =>
+            {
+                await Updater.CheckForUpdates();
+            });
 
-            Updater.CheckForUpdates();
         }
 
         public void SetStatus(string text)

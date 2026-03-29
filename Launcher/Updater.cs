@@ -32,7 +32,7 @@ namespace launcherdotnet.Launcher
             return null;
         }
 
-        public static async void CheckForUpdates()
+        public static async Task CheckForUpdates()
         {
             LauncherLogger.WriteColor($"Using version {Config.CurrentVersionString}.",
                 false, ConsoleColor.White, ConsoleColor.Black);
