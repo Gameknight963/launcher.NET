@@ -15,9 +15,9 @@ using System.Windows.Forms;
 
 namespace launcherdotnet
 {
-    public partial class SettingsForm : Form
+    public partial class SettingsForm : ThemeableForm
     {
-        private string _defaultSelectedHint = "";
+        private readonly string _defaultSelectedHint = "";
         public SettingsForm()
         {
             InitializeComponent();

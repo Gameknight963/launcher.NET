@@ -7,7 +7,7 @@ using System.ComponentModel.Design;
 
 namespace launcherdotnet
 {
-    internal partial class GameInstallForm : Form
+    internal partial class GameInstallForm : ThemeableForm
     {
         public GameInstallForm()
         {
