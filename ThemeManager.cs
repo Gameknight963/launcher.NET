@@ -63,7 +63,9 @@
             Dark,
             ExtendFrame,
             ExtendFrameDark,
-            Acrylic
+            Blur,
+            Acrylic,
+            Mica
         }
 
         public static Color DarkMainColor => Color.FromArgb(30, 30, 30);
@@ -73,42 +75,41 @@
 
         public static void ApplyThemeToForm(Form form, Theme theme)
         {
+            // don't attempt to theme comboboxes. just don't.
             switch (theme)
             {
                 case Theme.Light:
                     DwmApi.UnextendFrame(form.Handle);
                     DwmApi.DisableImmersiveDarkMode(form.Handle);
                     SetColorRecursive(form, new ControlStyle(SystemColors.Control, Color.Black), 
-                        c => c is not ListView && c is not Button && c is not TextBox);
-                    SetColorRecursive(form, new ControlStyle(Color.White, Color.Black), c => c is ListView || c is TextBox);
-                    SetColorRecursive(form, new ButtonStyle(Color.White, Color.Black, FlatStyle.Standard), c => c is Button);
+                        c => c is not ListView && c is not Button && c is not TextBox && c is not CheckedListBox && c is not ComboBox);
+                    SetColorRecursive(form, new ControlStyle(SystemColors.Window, Color.Black), c => c is ListView || c is TextBox);
+                    SetColorRecursive(form, new ButtonStyle(SystemColors.Window, Color.Black, FlatStyle.Standard), c => c is Button);
+                    SetColorRecursive(form, new ControlStyle(SystemColors.Window, Color.Black), c => c is CheckedListBox);
                     form.BackColor = SystemColors.Control;
                     break;
                 case Theme.Dark:
                     DwmApi.UnextendFrame(form.Handle);
                     DwmApi.EnableImmersiveDarkMode(form.Handle);
-                    SetColorRecursive(form, new ControlStyle(DarkMainColor), c => c is not Label);
+                    SetColorRecursive(form, new ControlStyle(DarkMainColor, Color.White), c => c is not Label && c is not Button && c is not ComboBox);
                     SetColorRecursive(form, new ControlStyle(DarkMainColor, Color.White), c => c is Label);
                     SetColorRecursive(form, new ButtonStyle(DarkModeButtonColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder), c => c is Button);
                     break;
                 case Theme.ExtendFrame:
-                    DwmApi.DisableImmersiveDarkMode(form.Handle);
-                    DwmApi.ExtendFrame(form.Handle);
-                    SetColorRecursive(form, new ControlStyle(Color.Black), c => c is not Label && c is not Button);
-                    SetColorRecursive(form, new ControlStyle(Color.Black, Color.White), c => c is Label);
-                    SetColorRecursive(form, new ButtonStyle(Color.Black, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder), c => c is Button);
-                    break;
                 case Theme.ExtendFrameDark:
-                    DwmApi.EnableImmersiveDarkMode(form.Handle);
+                    if (theme == Theme.ExtendFrame) DwmApi.DisableImmersiveDarkMode(form.Handle);
+                    else DwmApi.EnableImmersiveDarkMode(form.Handle);
                     DwmApi.ExtendFrame(form.Handle);
-                    SetColorRecursive(form, new ControlStyle(Color.Black), c => c is not Label && c is not Button);
+                    SetColorRecursive(form, new ControlStyle(Color.Black, Color.White), c => 
+                    c is not Label && c is not Button && c is not ComboBox);
                     SetColorRecursive(form, new ControlStyle(Color.Black, Color.White), c => c is Label);
                     SetColorRecursive(form, new ButtonStyle(Color.Black, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder), c => c is Button);
                     break;
                 case Theme.Acrylic:
                     DwmApi.EnableImmersiveDarkMode(form.Handle);
                     DwmApi.UnextendFrame(form.Handle);
-                    SetColorRecursive(form, new ControlStyle(AcrylicMainColor), c => c is not Label && c is not Button);
+                    SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
+                        c => c is not Label && c is not Button && c is not ComboBox);
                     SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White), c => c is Label);
                     SetColorRecursive(form, new ButtonStyle(AcrylicMainColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder), c => c is Button);
                     DwmApi.EnableBlur(form.Handle);
