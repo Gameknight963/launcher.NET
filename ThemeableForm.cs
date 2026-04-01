@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Text;
-
-namespace launcherdotnet
+﻿namespace launcherdotnet
 {
     public class ThemeableForm : Form
     {
-        private ControlStyle _headerStyle = new(Color.White, Color.Black);
+        private readonly ControlStyle _headerStyle = new();
 
         public ThemeableForm()
         {
@@ -28,6 +23,19 @@ namespace launcherdotnet
 
                 lv.DrawSubItem -= Lv_DrawSubItem;
                 lv.DrawSubItem += Lv_DrawSubItem;
+            }
+             
+            if (c is TabControl tc)
+            {
+                if (theme == ThemeManager.Theme.Light)
+                {
+                    tc.DrawMode = TabDrawMode.Normal;
+                    return;
+                }
+                tc.DrawMode = TabDrawMode.OwnerDrawFixed;
+
+                tc.DrawItem -= Tc_DrawItem;
+                tc.DrawItem += Tc_DrawItem;
             }
 
             foreach (Control child in c.Controls)
@@ -68,8 +76,8 @@ namespace launcherdotnet
 
         private void Lv_DrawColumnHeader(object? sender, DrawListViewColumnHeaderEventArgs e)
         {
-            using SolidBrush backBrush = new SolidBrush(_headerStyle.BackColor!.Value);
-            using SolidBrush foreBrush = new SolidBrush(_headerStyle.ForeColor!.Value);
+            using SolidBrush backBrush = new(_headerStyle.BackColor!.Value);
+            using SolidBrush foreBrush = new(_headerStyle.ForeColor!.Value);
             {
                 e.Graphics.FillRectangle(backBrush, e.Bounds);
                 e.Graphics.DrawString(e.Header!.Text, e.Font!, foreBrush, e.Bounds);
@@ -77,5 +85,27 @@ namespace launcherdotnet
         }
 
         private void Lv_DrawItem(object? sender, DrawListViewItemEventArgs e) => e.DrawDefault = false;
+
+        private void Tc_DrawItem(object? sender, DrawItemEventArgs e)
+        {
+            TabControl tc = (TabControl)sender!;
+            TabPage tab = tc.TabPages[e.Index];
+
+            Rectangle bounds = tc.GetTabRect(e.Index);
+
+            using SolidBrush backBrush = new(_headerStyle.BackColor!.Value);
+            {
+                e.Graphics.FillRectangle(backBrush, bounds);
+
+                TextRenderer.DrawText(
+                    e.Graphics,
+                    tab.Text,
+                    tc.Font,
+                    bounds,
+                    _headerStyle.ForeColor!.Value,
+                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter
+                );
+            }
+        }
     }
 }

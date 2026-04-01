@@ -1,4 +1,5 @@
-﻿using launcherdotnet.PluginAPI;
+﻿
+using launcherdotnet.PluginAPI;
 using Microsoft.VisualBasic;
 using MLInstallerSDK;
 using Semver;
@@ -18,7 +19,6 @@ namespace launcherdotnet
             Initialize();
         }
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool Success { get; private set; } = false;
 
         public void Initialize()
@@ -115,8 +115,8 @@ namespace launcherdotnet
             {
                 LauncherLogger.Error("Installation returned no executable. This can be caused by" +
                     "a bug in the intstaller plugin, or the plugin silently failing.");
-                MessageBox.Show("Installation failed or returned no executable.",
-                    "Error",
+                MessageBox.Show("The plugin did not return an executable.",
+                    "Installation failed",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 ActivityHint.Text = "Installation failed.";
