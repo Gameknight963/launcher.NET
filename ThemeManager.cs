@@ -65,7 +65,6 @@
             ExtendFrameDark,
             Blur,
             Acrylic,
-            Mica
         }
 
         public static Color DarkMainColor => Color.FromArgb(30, 30, 30);
@@ -105,6 +104,15 @@
                     SetColorRecursive(form, new ControlStyle(Color.Black, Color.White), c => c is Label);
                     SetColorRecursive(form, new ButtonStyle(Color.Black, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder), c => c is Button);
                     break;
+                case Theme.Blur:
+                    DwmApi.EnableImmersiveDarkMode(form.Handle);
+                    DwmApi.UnextendFrame(form.Handle);
+                    SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
+                        c => c is not Label && c is not Button && c is not ComboBox);
+                    SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White), c => c is Label);
+                    SetColorRecursive(form, new ButtonStyle(AcrylicMainColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder), c => c is Button);
+                    DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_BLURBEHIND);
+                    break;
                 case Theme.Acrylic:
                     DwmApi.EnableImmersiveDarkMode(form.Handle);
                     DwmApi.UnextendFrame(form.Handle);
@@ -112,7 +120,7 @@
                         c => c is not Label && c is not Button && c is not ComboBox);
                     SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White), c => c is Label);
                     SetColorRecursive(form, new ButtonStyle(AcrylicMainColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder), c => c is Button);
-                    DwmApi.EnableBlur(form.Handle);
+                    DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND);
                     break;
             }   
         }
