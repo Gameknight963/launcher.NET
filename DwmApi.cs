@@ -101,11 +101,11 @@ namespace launcherdotnet
         }
 
 
-        public static void EnableBlur(IntPtr hwnd)
+        public static void SetAccentState(IntPtr hwnd, AccentState accentState)
         {
             AccentPolicy accent = new AccentPolicy
             {
-                AccentState = AccentState.ACCENT_ENABLE_BLURBEHIND
+                AccentState = accentState
             };
 
             int size = Marshal.SizeOf(accent);
@@ -124,7 +124,6 @@ namespace launcherdotnet
 
             Marshal.FreeHGlobal(ptr);
         }
-
 
         public static void SetWindowAttribute(IntPtr hwnd, int attribute, int value)
         {

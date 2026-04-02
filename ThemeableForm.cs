@@ -57,6 +57,7 @@
                     _headerStyle.ForeColor = Color.White;
                     _headerStyle.BackColor = Color.Black;
                     break;
+                case ThemeManager.Theme.Blur:
                 case ThemeManager.Theme.Acrylic:
                     _headerStyle.ForeColor = Color.White;
                     _headerStyle.BackColor = ThemeManager.AcrylicMainColor;
