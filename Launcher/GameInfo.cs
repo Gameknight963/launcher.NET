@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using launcherdotnet.Launcher.Settings;
 using Newtonsoft.Json;
 
 namespace launcherdotnet

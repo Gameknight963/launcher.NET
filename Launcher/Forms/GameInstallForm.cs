@@ -1,12 +1,13 @@
-﻿
+﻿using launcherdotnet.Launcher.Settings;
 using launcherdotnet.PluginAPI;
+using launcherdotnet.Syling;
 using Microsoft.VisualBasic;
 using MLInstallerSDK;
 using Semver;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 
-namespace launcherdotnet
+namespace launcherdotnet.Launcher.Forms
 {
     internal partial class GameInstallForm : ThemeableForm
     {

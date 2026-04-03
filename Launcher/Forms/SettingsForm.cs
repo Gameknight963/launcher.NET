@@ -1,19 +1,10 @@
-﻿using launcherdotnet.Launcher;
+﻿using launcherdotnet.Launcher.Settings;
 using launcherdotnet.PluginAPI;
-using MLInstallerSDK;
+using launcherdotnet.Syling;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Windows.Forms;
 
-namespace launcherdotnet
+namespace launcherdotnet.Launcher.Forms
 {
     public partial class SettingsForm : ThemeableForm
     {

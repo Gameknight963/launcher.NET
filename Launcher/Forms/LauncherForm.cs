@@ -1,10 +1,13 @@
-namespace launcherdotnet
+using launcherdotnet.Syling;
+
+namespace launcherdotnet.Launcher.Forms
 {
-    using launcherdotnet.Launcher;
+    using launcherdotnet.Helpers;
+    using launcherdotnet.Launcher.Settings;
+    using launcherdotnet.Syling;
     using Microsoft.VisualBasic;
     using System.Diagnostics;
     using System.IO;
-    using static System.Runtime.InteropServices.JavaScript.JSType;
     using static ThemeManager;
 
     internal partial class LauncherForm : ThemeableForm
