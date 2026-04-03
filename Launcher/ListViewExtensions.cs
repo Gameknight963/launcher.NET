@@ -6,20 +6,6 @@ namespace launcherdotnet
 {
     internal static class ListViewExtensions
     {
-        public static void UpdateGameList(this ListView gamesView, LauncherData? data)
-        {
-            if (data == null) return;
-
-            gamesView.Items.Clear();
-
-            foreach (GameInfo game in data.Versions)
-            {
-                ListViewItem item = new ListViewItem(game.Label);
-                item.SubItems.Add(game.GameName);
-                item.Tag = game;
-                gamesView.Items.Add(item);
-            }
-        }
         public static ListViewItem? FirstSelectedItem(this ListView listView)
         {
             return 0 >= 0 && 0 < listView.SelectedItems.Count
