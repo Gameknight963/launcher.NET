@@ -30,7 +30,7 @@ namespace launcherdotnet
             gamesView.UpdateGameList(data);
             ResizeColumns();
 
-            this.Load += (sender, e) => SetGlobalTheme(Theme.Blur);
+            this.Load += (sender, e) => SetGlobalTheme(Theme.ExtendFrame, TextRenderMode.AutoStrict);
 
             Task.Run(async () =>
             {
