@@ -4,6 +4,7 @@ namespace launcherdotnet
     using Microsoft.VisualBasic;
     using System.Diagnostics;
     using System.IO;
+    using static System.Runtime.InteropServices.JavaScript.JSType;
     using static ThemeManager;
 
     internal partial class LauncherForm : ThemeableForm
@@ -27,7 +28,7 @@ namespace launcherdotnet
             SetSidebarMode(SidebarMode.Idle);
             LauncherData? data = LauncherDataManager.ReadLauncherData();
             
-            gamesView.UpdateGameList(data);
+            UpdateGameList(gamesView, data);
             ResizeColumns();
 
             this.Load += (sender, e) => SetGlobalTheme(Theme.ExtendFrame, TextRenderMode.AutoStrict);
@@ -43,14 +44,13 @@ namespace launcherdotnet
             status.Text = text;
         }
 
-        [Obsolete("Use the extension ListViewExtensions.UpdateGameList instead.")]
         public static void UpdateGameList(ListView gamesView, LauncherData? data)
         {
             if (data == null) return;
             gamesView.Items.Clear();
-            foreach (var game in data.Versions)
+            foreach (GameInfo game in data.Versions)
             {
-                ListViewItem item = new ListViewItem(game.Label);
+                ListViewItem item = new(game.Label);
                 item.SubItems.Add(game.GameName);
                 item.Tag = game;
                 gamesView.Items.Add(item);
@@ -88,7 +88,7 @@ namespace launcherdotnet
                 if (game.Label.ToLower().Contains(query) || game.GameName.ToLower().Contains(query)) 
                     g.Add(game);
             }
-            gamesView.UpdateGameList(new LauncherData { Versions = g});
+            UpdateGameList(gamesView, (new LauncherData { Versions = g }));
         }
 
         public GameInfo? GetSelectedGame()
@@ -119,7 +119,7 @@ namespace launcherdotnet
             LauncherLogger.WriteLine($"Deleted {deletedFolder}", true);
             SetSidebarMode(SidebarMode.Idle);
             InstallHint.Text = IdleInstallHint;
-            gamesView.UpdateGameList(LauncherDataManager.ReadLauncherData());
+            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
         }
 
         private void SetSidebarMode(SidebarMode mode)
@@ -166,7 +166,7 @@ namespace launcherdotnet
             if (string.IsNullOrWhiteSpace(result)) return;
             game.Label = result;
             GameService.UpsertGame(game);
-            gamesView.UpdateGameList(LauncherDataManager.ReadLauncherData());
+            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
         }
 
         private async void DeleteButton_Click(object sender, EventArgs e)
@@ -182,10 +182,7 @@ namespace launcherdotnet
             {
                 form.ShowDialog();
                 if (form.Success)
-                {
-                    LauncherData? data = LauncherDataManager.ReadLauncherData();
-                    gamesView.UpdateGameList(data);
-                }
+                    UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
             }
         }
 
@@ -258,7 +255,7 @@ namespace launcherdotnet
             bool focused = gamesView.Focused;
             int? index = gamesView.FirstSelectedIndex();
             Stopwatch sw = Stopwatch.StartNew();
-            gamesView.UpdateGameList(LauncherDataManager.ReadLauncherData());
+            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
             if (index != null)
             {
                 gamesView.Items[(int)index].Focused = true;
