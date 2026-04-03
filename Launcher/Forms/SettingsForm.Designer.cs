@@ -1,4 +1,4 @@
-﻿namespace launcherdotnet
+﻿namespace launcherdotnet.Launcher.Forms
 {
     partial class SettingsForm
     {

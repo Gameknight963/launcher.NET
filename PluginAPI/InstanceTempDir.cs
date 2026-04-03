@@ -1,4 +1,5 @@
-﻿using System;
+﻿using launcherdotnet.Launcher.Settings;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

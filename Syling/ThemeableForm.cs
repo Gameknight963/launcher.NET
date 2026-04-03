@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace launcherdotnet
+namespace launcherdotnet.Syling
 {
     public class ThemeableForm : Form
     {

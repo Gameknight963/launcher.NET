@@ -1,4 +1,5 @@
 ﻿using launcherdotnet.Launcher;
+using launcherdotnet.Launcher.Settings;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

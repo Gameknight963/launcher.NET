@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Launcher\GameInstallForm\GameInstallForm.cs">
+    <Compile Update="Launcher\Forms\GameInstallForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Properties\Resources.Designer.cs">

@@ -1,4 +1,5 @@
-﻿using launcherdotnet.PluginAPI;
+﻿using launcherdotnet.Launcher.Settings;
+using launcherdotnet.PluginAPI;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;

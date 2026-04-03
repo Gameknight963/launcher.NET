@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace launcherdotnet
+namespace launcherdotnet.Syling
 {
     internal static class DwmApi
     {

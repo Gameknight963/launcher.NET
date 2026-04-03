@@ -1,11 +1,7 @@
-﻿using Newtonsoft.Json;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.Versioning;
+﻿using launcherdotnet.Helpers;
+using Newtonsoft.Json;
 
-namespace launcherdotnet
+namespace launcherdotnet.Launcher.Settings
 {
     internal class LauncherSettings
     {

@@ -1,4 +1,5 @@
-﻿using Semver;
+﻿using launcherdotnet.Launcher.Settings;
+using Semver;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

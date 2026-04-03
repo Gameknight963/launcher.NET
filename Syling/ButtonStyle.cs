@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace launcherdotnet
+namespace launcherdotnet.Syling
 {
     public class ButtonStyle : ControlStyle
     {

@@ -1,6 +1,6 @@
 using launcherdotnet.Launcher;
-using launcherdotnet.PluginAPI;
-using System.Reflection;
+using launcherdotnet.Launcher.Forms;
+using launcherdotnet.Launcher.Settings;
 
 namespace launcherdotnet
 {

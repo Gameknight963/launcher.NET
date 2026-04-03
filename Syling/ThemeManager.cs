@@ -1,4 +1,4 @@
-﻿namespace launcherdotnet
+﻿namespace launcherdotnet.Syling
 {
     public class ThemeManager
     {
