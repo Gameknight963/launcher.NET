@@ -125,7 +125,7 @@
             }   
         }
 
-        public static void SetGlobalTheme(Theme theme)
+        public static void SetGlobalTheme(Theme theme, ThemeableForm.TextRenderMode? mode = null)
         {
             ActiveTheme = theme;
 
@@ -133,7 +133,7 @@
             {
                 if (form is ThemeableForm tf)
                 {
-                    tf.ApplyTheme(theme);
+                    tf.ApplyTheme(theme, mode);
                 }
             }
         }

@@ -1,13 +1,28 @@
-﻿namespace launcherdotnet
+﻿using System.ComponentModel;
+
+namespace launcherdotnet
 {
     public class ThemeableForm : Form
     {
         private readonly ControlStyle _headerStyle = new();
-        private bool _listViewUseGdiText = true;
+
+        private bool _useGdiText = true;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public ThemeManager.Theme ActiveTheme { get; set; }
+
+        public enum TextRenderMode
+        {
+            Auto,
+            AutoStrict,
+            Gdi,
+            DrawString
+        }
 
         public ThemeableForm()
         {
-            this.Load += (sender, e) => ApplyTheme(ThemeManager.ActiveTheme);
+            Load += (sender, e) => ApplyTheme(ThemeManager.ActiveTheme, TextRenderMode.Auto);
+            SetTextRenderMode(TextRenderMode.Auto);
         }
 
         private void ApplyControlTheme(Control c, ThemeManager.Theme theme)
@@ -15,8 +30,6 @@
             if (c is ListView lv)
             {
                 lv.OwnerDraw = (theme != ThemeManager.Theme.Light);
-                _listViewUseGdiText = 
-                    (theme == ThemeManager.Theme.Light) || (theme == ThemeManager.Theme.Dark);
 
                 lv.DrawColumnHeader -= Lv_DrawColumnHeader;
                 lv.DrawColumnHeader += Lv_DrawColumnHeader;
@@ -45,7 +58,23 @@
                 ApplyControlTheme(child, theme);
         }
 
-        public void ApplyTheme(ThemeManager.Theme theme)
+        public void SetTextRenderMode(TextRenderMode mode)
+        {
+            if (mode == TextRenderMode.Auto)
+                _useGdiText = !(ActiveTheme == ThemeManager.Theme.Acrylic && ActiveTheme == ThemeManager.Theme.Blur);
+
+            if (mode == TextRenderMode.AutoStrict)
+                _useGdiText = (ActiveTheme == ThemeManager.Theme.Light && ActiveTheme == ThemeManager.Theme.Dark);
+
+            if (mode == TextRenderMode.Gdi)
+                _useGdiText = true;
+
+            if (mode == TextRenderMode.DrawString)
+                _useGdiText = false;
+
+        }
+
+        public void ApplyTheme(ThemeManager.Theme theme, TextRenderMode? textMode = null)
         {
             switch (theme)
             {
@@ -66,13 +95,15 @@
                     _headerStyle.BackColor = ThemeManager.AcrylicMainColor;
                     break;
             }
+            ActiveTheme = theme;
             ApplyControlTheme(this, theme);
             ThemeManager.ApplyThemeToForm(this, theme);
+            if (textMode.HasValue) SetTextRenderMode(textMode.Value);
         }
 
         private void Lv_DrawSubItem(object? sender, DrawListViewSubItemEventArgs e)
         {
-            if (_listViewUseGdiText)
+            if (_useGdiText)
             {
                 using Brush backBrush = new SolidBrush(e.Item!.Selected ? SystemColors.Highlight : e.Item.BackColor);
                 using Brush foreBrush = new SolidBrush(_headerStyle.ForeColor!.Value);
@@ -113,7 +144,7 @@
 
         private void Lv_DrawColumnHeader(object? sender, DrawListViewColumnHeaderEventArgs e)
         {
-            if (_listViewUseGdiText)
+            if (_useGdiText)
             {
                 using SolidBrush backBrush = new(_headerStyle.BackColor!.Value);
                 using SolidBrush foreBrush = new(_headerStyle.ForeColor!.Value);
