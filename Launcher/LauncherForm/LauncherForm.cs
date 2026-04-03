@@ -1,15 +1,9 @@
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.Marshalling;
-
 namespace launcherdotnet
 {
     using launcherdotnet.Launcher;
     using Microsoft.VisualBasic;
-    using Semver;
     using System.Diagnostics;
     using System.IO;
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
     using static ThemeManager;
 
     internal partial class LauncherForm : ThemeableForm
@@ -36,7 +30,7 @@ namespace launcherdotnet
             gamesView.UpdateGameList(data);
             ResizeColumns();
 
-            this.Load += (sender, e) => SetGlobalTheme(Theme.Light);
+            this.Load += (sender, e) => SetGlobalTheme(Theme.Blur);
 
             Task.Run(async () =>
             {

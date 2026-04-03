@@ -3,6 +3,7 @@
     public class ThemeableForm : Form
     {
         private readonly ControlStyle _headerStyle = new();
+        private bool _listViewUseGdiText = true;
 
         public ThemeableForm()
         {
@@ -14,6 +15,8 @@
             if (c is ListView lv)
             {
                 lv.OwnerDraw = (theme != ThemeManager.Theme.Light);
+                _listViewUseGdiText = 
+                    (theme == ThemeManager.Theme.Light) || (theme == ThemeManager.Theme.Dark);
 
                 lv.DrawColumnHeader -= Lv_DrawColumnHeader;
                 lv.DrawColumnHeader += Lv_DrawColumnHeader;
@@ -69,21 +72,80 @@
 
         private void Lv_DrawSubItem(object? sender, DrawListViewSubItemEventArgs e)
         {
-            using Brush backBrush = new SolidBrush(e.Item!.Selected ? SystemColors.Highlight : e.Item.BackColor);
-            using Brush foreBrush = new SolidBrush(_headerStyle.ForeColor!.Value);
-            e.Graphics.FillRectangle(backBrush, e.Bounds);
-            e.Graphics.DrawString(e.SubItem!.Text, e.SubItem.Font, foreBrush, e.Bounds);
+            if (_listViewUseGdiText)
+            {
+                using Brush backBrush = new SolidBrush(e.Item!.Selected ? SystemColors.Highlight : e.Item.BackColor);
+                using Brush foreBrush = new SolidBrush(_headerStyle.ForeColor!.Value);
+                e.Graphics.FillRectangle(backBrush, e.Bounds);
+                e.Graphics.DrawString(e.SubItem!.Text, e.SubItem.Font, foreBrush, e.Bounds);
+            }
+            else
+            {
+                using Brush backBrush = new SolidBrush(e.Item!.Selected ? SystemColors.Highlight : e.Item.BackColor);
+                e.Graphics.FillRectangle(backBrush, e.Bounds);
+
+                string text = e.SubItem!.Text;
+                Font font = e.SubItem.Font;
+                Rectangle bounds = e.Bounds;
+
+                Color textColor = _headerStyle.ForeColor!.Value;
+                Color shadowColor = Color.FromArgb(120, 0, 0, 0);
+
+                TextRenderer.DrawText(
+                    e.Graphics,
+                    text,
+                    font,
+                    new Rectangle(bounds.X + 1, bounds.Y + 1, bounds.Width, bounds.Height),
+                    shadowColor,
+                    TextFormatFlags.Left
+                );
+
+                TextRenderer.DrawText(
+                    e.Graphics,
+                    text,
+                    font,
+                    bounds,
+                    textColor,
+                    TextFormatFlags.Left
+                );
+            }
         }
 
         private void Lv_DrawColumnHeader(object? sender, DrawListViewColumnHeaderEventArgs e)
         {
-            using SolidBrush backBrush = new(_headerStyle.BackColor!.Value);
-            using SolidBrush foreBrush = new(_headerStyle.ForeColor!.Value);
+            if (_listViewUseGdiText)
             {
+                using SolidBrush backBrush = new(_headerStyle.BackColor!.Value);
+                using SolidBrush foreBrush = new(_headerStyle.ForeColor!.Value);
+
                 e.Graphics.FillRectangle(backBrush, e.Bounds);
                 e.Graphics.DrawString(e.Header!.Text, e.Font!, foreBrush, e.Bounds);
             }
+            else
+            {
+                using SolidBrush backBrush = new(_headerStyle.BackColor!.Value);
+                e.Graphics.FillRectangle(backBrush, e.Bounds);
+
+                TextRenderer.DrawText(
+                    e.Graphics,
+                    e.Header!.Text,
+                    e.Font!,
+                    new Rectangle(e.Bounds.X + 1, e.Bounds.Y + 1, e.Bounds.Width, e.Bounds.Height),
+                    Color.FromArgb(120, 0, 0, 0),
+                    TextFormatFlags.Left
+                );
+
+                TextRenderer.DrawText(
+                    e.Graphics,
+                    e.Header!.Text,
+                    e.Font!,
+                    e.Bounds,
+                    _headerStyle.ForeColor!.Value,
+                    TextFormatFlags.Left
+                );
+            }
         }
+
 
         private void Lv_DrawItem(object? sender, DrawListViewItemEventArgs e) => e.DrawDefault = false;
 
