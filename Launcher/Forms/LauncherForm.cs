@@ -15,6 +15,8 @@ namespace launcherdotnet.Launcher.Forms
         public string IdleStatus;
         public string IdleInstallHint;
 
+        private LauncherData? _cachedData;
+
         public LauncherForm()
         {
             InitializeComponent();
@@ -29,9 +31,10 @@ namespace launcherdotnet.Launcher.Forms
             SearchBox.SetPlaceholder("Search by name and game...");
             SetStatus(IdleStatus);
             SetSidebarMode(SidebarMode.Idle);
-            LauncherData? data = LauncherDataManager.ReadLauncherData();
-            
-            UpdateGameList(gamesView, data);
+
+            _cachedData = LauncherDataManager.ReadLauncherData();
+            UpdateGameList(gamesView);
+
             ResizeColumns();
 
             this.Load += (sender, e) => SetGlobalTheme(Theme.ExtendFrame, TextRenderMode.AutoStrict);
@@ -47,17 +50,22 @@ namespace launcherdotnet.Launcher.Forms
             status.Text = text;
         }
 
-        public static void UpdateGameList(ListView gamesView, LauncherData? data)
+        public void UpdateGameList(ListView gamesView)
         {
-            if (data == null) return;
+            _cachedData = LauncherDataManager.ReadLauncherData();
+            if (_cachedData == null) return;
+
+            gamesView.BeginUpdate();
             gamesView.Items.Clear();
-            foreach (GameInfo game in data.Versions)
+
+            foreach (GameInfo game in _cachedData.Versions)
             {
                 ListViewItem item = new(game.Label);
                 item.SubItems.Add(game.GameName);
                 item.Tag = game;
                 gamesView.Items.Add(item);
             }
+            gamesView.EndUpdate();
         }
 
         private void ResizeColumns()
@@ -80,19 +88,33 @@ namespace launcherdotnet.Launcher.Forms
 
         private void SearchBox_TextChanged(object sender, EventArgs e)
         {
-            string query = SearchBox.Text.ToLower();
+            string query = SearchBox.Text;
+            gamesView.BeginUpdate();
             gamesView.Items.Clear();
+
             // yes this reads it every time. is it slow? yes? is it my problem? nope
-            LauncherData? data = LauncherDataManager.ReadLauncherData(); 
-            if (data == null) return;
-            List<GameInfo> g = new();
-            foreach (GameInfo game in data.Versions)
+            // ok it is now fixed :)
+            if (_cachedData == null)
             {
-                if (game.Label.ToLower().Contains(query) || game.GameName.ToLower().Contains(query)) 
-                    g.Add(game);
+                gamesView.EndUpdate();
+                return;
             }
-            UpdateGameList(gamesView, (new LauncherData { Versions = g }));
+
+            foreach (GameInfo game in _cachedData.Versions)
+            {
+                if (game.Label.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                    game.GameName.Contains(query, StringComparison.OrdinalIgnoreCase))
+                {
+                    ListViewItem item = new(game.Label);
+                    item.SubItems.Add(game.GameName);
+                    item.Tag = game;
+                    gamesView.Items.Add(item);
+                }
+            }
+
+            gamesView.EndUpdate();
         }
+
 
         public GameInfo? GetSelectedGame()
         {
@@ -122,7 +144,7 @@ namespace launcherdotnet.Launcher.Forms
             LauncherLogger.WriteLine($"Deleted {deletedFolder}", true);
             SetSidebarMode(SidebarMode.Idle);
             InstallHint.Text = IdleInstallHint;
-            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
+            UpdateGameList(gamesView);
         }
 
         private void SetSidebarMode(SidebarMode mode)
@@ -169,7 +191,7 @@ namespace launcherdotnet.Launcher.Forms
             if (string.IsNullOrWhiteSpace(result)) return;
             game.Label = result;
             GameService.UpsertGame(game);
-            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
+            UpdateGameList(gamesView);
         }
 
         private async void DeleteButton_Click(object sender, EventArgs e)
@@ -185,7 +207,7 @@ namespace launcherdotnet.Launcher.Forms
             {
                 form.ShowDialog();
                 if (form.Success)
-                    UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
+                    UpdateGameList(gamesView);
             }
         }
 
@@ -258,7 +280,7 @@ namespace launcherdotnet.Launcher.Forms
             bool focused = gamesView.Focused;
             int? index = gamesView.FirstSelectedIndex();
             Stopwatch sw = Stopwatch.StartNew();
-            UpdateGameList(gamesView, LauncherDataManager.ReadLauncherData());
+            UpdateGameList(gamesView);
             if (index != null)
             {
                 gamesView.Items[(int)index].Focused = true;
