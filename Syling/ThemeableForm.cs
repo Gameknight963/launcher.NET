@@ -7,6 +7,8 @@ namespace launcherdotnet.Syling
         private readonly ControlStyle _headerStyle = new();
 
         private bool _useGdiText = true;
+        private static bool IsDesignTime => LicenseManager.UsageMode == LicenseUsageMode.Designtime;
+
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ThemeManager.Theme ActiveTheme { get; set; }
@@ -23,12 +25,15 @@ namespace launcherdotnet.Syling
 
         public ThemeableForm()
         {
+            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+                return;
             Load += (sender, e) => ApplyTheme(ThemeManager.ActiveTheme, TextRenderMode.Auto);
             SetTextRenderMode(TextRenderMode.Auto);
         }
 
         private void ApplyControlTheme(Control c, ThemeManager.Theme theme)
         {
+            if (IsDesignTime) return;
             if (c is ListView lv)
             {
                 if (_themedControls.Add(lv))
@@ -87,6 +92,7 @@ namespace launcherdotnet.Syling
 
         public void SetTextRenderMode(TextRenderMode mode)
         {
+            if (IsDesignTime) return;
             switch (mode)
             {
                 case TextRenderMode.Auto:
@@ -109,6 +115,8 @@ namespace launcherdotnet.Syling
 
         public void ApplyTheme(ThemeManager.Theme theme, TextRenderMode? textMode = null)
         {
+            if (IsDesignTime) return;
+
             switch (theme)
             {
                 case ThemeManager.Theme.Light:
