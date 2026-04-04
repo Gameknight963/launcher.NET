@@ -231,18 +231,31 @@ namespace launcherdotnet.Syling
 
             Rectangle bounds = tc.GetTabRect(e.Index);
 
-            using (SolidBrush backBrush = new(_headerStyle.BackColor!.Value))
-            {
-                e.Graphics.FillRectangle(backBrush, bounds);
+            using SolidBrush backBrush = new(_headerStyle.BackColor!.Value);
 
-                TextRenderer.DrawText(
-                    e.Graphics,
-                    tab.Text,
-                    tc.Font,
-                    bounds,
-                    _headerStyle.ForeColor!.Value,
-                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter
+            e.Graphics.FillRectangle(backBrush, bounds);
+
+            TextRenderer.DrawText(
+                e.Graphics,
+                tab.Text,
+                tc.Font,
+                bounds,
+                _headerStyle.ForeColor!.Value,
+                TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter
+            );
+
+            if (tc.TabPages.Count > 0)
+            {
+                Rectangle lastTabRect = tc.GetTabRect(tc.TabPages.Count - 1);
+
+                Rectangle background = new Rectangle(
+                    lastTabRect.Right,
+                    0,
+                    tc.Right - lastTabRect.Right,
+                    lastTabRect.Height + 1
                 );
+
+                e.Graphics.FillRectangle(backBrush, background);
             }
         }
     }
