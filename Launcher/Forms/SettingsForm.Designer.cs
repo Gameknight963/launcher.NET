@@ -77,7 +77,7 @@
             // 
             // SettingsTabControl
             // 
-            SettingsTabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            SettingsTabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             SettingsTabControl.Controls.Add(GeneralTab);
             SettingsTabControl.Controls.Add(PluginsTab);
             SettingsTabControl.Controls.Add(ModloaderTab);
@@ -102,6 +102,7 @@
             // 
             // GeneralCheckbox
             // 
+            GeneralCheckbox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             GeneralCheckbox.FormattingEnabled = true;
             GeneralCheckbox.Items.AddRange(new object[] { "Check for launcher.net updates automatically", "Warn if update check failed", "Confirm before deleting instances", "Confirm before overwriting instances", "Run on startup" });
             GeneralCheckbox.Location = new Point(6, 6);
@@ -322,6 +323,7 @@
             // 
             // panel1
             // 
+            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             panel1.Controls.Add(DescriptionLabel);
             panel1.Controls.Add(SelectedHint);
             panel1.Location = new Point(313, 36);
@@ -355,6 +357,7 @@
             Controls.Add(panel1);
             Controls.Add(SettingsTabControl);
             Controls.Add(SaveButton);
+            ForeColor = Color.Black;
             Name = "SettingsForm";
             Text = "Settings";
             SettingsTabControl.ResumeLayout(false);
