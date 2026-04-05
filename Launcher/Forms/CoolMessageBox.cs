@@ -21,7 +21,7 @@ namespace launcherdotnet.Launcher.Forms
         {
             Button btn = new Button();
             btn.Text = text;
-            btn.Margin = new Padding(10, 10, 10, 10);
+            btn.Margin = new Padding(5, 10, 5, 10);
             btn.DialogResult = result;
             btn.AutoSize = true;
 
