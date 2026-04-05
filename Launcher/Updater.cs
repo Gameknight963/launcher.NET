@@ -1,13 +1,8 @@
 ﻿using launcherdotnet.Launcher.Settings;
 using Semver;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net.Sockets;
-using System.Reflection;
-using System.Runtime.InteropServices.Marshalling;
-using System.Text;
 using System.Text.Json.Nodes;
+using launcherdotnet.Launcher.Forms;
 
 namespace launcherdotnet.Launcher
 {
@@ -55,7 +50,8 @@ namespace launcherdotnet.Launcher
                 LauncherLogger.Warn($"An HttpRequestException occured while checking for updates. Ensure you have an Internet connection " +
                     $"and your DNS is properly configured.");
                 if (!LauncherSettings.Settings.WarnOnFailedUpdate) return;
-                MessageBox.Show("An error occured while checking for updates. Check your Interent connection.", 
+
+                CoolMessageBox.Show("An error occured while checking for updates. Check your Interent connection.", 
                     "Update check error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -63,7 +59,7 @@ namespace launcherdotnet.Launcher
             {
                 LauncherLogger.Warn($"Unprecedented exception {ex.GetType().Name} occured while checking for updates. {ex.Message}");
                 if (!LauncherSettings.Settings.WarnOnFailedUpdate) return;
-                MessageBox.Show("An unprecedented error occured while checking for updates. Check the console for more details.",
+                CoolMessageBox.Show("An unprecedented error occured while checking for updates. Check the console for more details.",
                     "Update check error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -71,14 +67,14 @@ namespace launcherdotnet.Launcher
             if (latest == null)
             {
                 LauncherLogger.Warn("The launcher.NET Github Releases API sent a response that was either invalid or contained no releases.");
-                MessageBox.Show("Github releases sent an invalid response.",
+                CoolMessageBox.Show("Github releases sent an invalid response.",
                     "Update check error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             if (latest.ComparePrecedenceTo(Config.CurrentVersion) > 0)
             {
                 LauncherLogger.WriteLine($" Update available: {latest}");
-                DialogResult result = MessageBox.Show($"New version is available: {latest}. You are currently on version {Config.CurrentVersionString}. Update?",
+                DialogResult result = CoolMessageBox.Show($"New version is available: {latest}. You are currently on version {Config.CurrentVersionString}. Update?",
                     "Update available",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);

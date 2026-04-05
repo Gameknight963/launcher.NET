@@ -1,8 +1,5 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+﻿using System.Diagnostics;
+using launcherdotnet.Launcher.Forms;
 
 namespace launcherdotnet
 {
@@ -42,7 +39,8 @@ namespace launcherdotnet
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"{ex.GetType().Name}: {ex.Message}. Check if games path in config.json is malformed.");
+
+                CoolMessageBox.Show($"{ex.GetType().Name}: {ex.Message}. Check if games path in config.json is malformed.");
                 throw new InvalidOperationException($"Unprecedented exception {ex.GetType().Name} while trying to delete game {game.GameName}.");
             }
             Directory.Delete(game.AbsoluteRootDirectory, true);

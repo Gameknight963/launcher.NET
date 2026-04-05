@@ -62,7 +62,7 @@ namespace launcherdotnet.Launcher.Forms
         {
             if (GameDropdown.SelectedItem == null)
             {
-                MessageBox.Show("Select a game.", "Invalid selection,", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                CoolMessageBox.Show("Select a game.", "Invalid selection,", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             string? result = QueryName();
@@ -102,7 +102,7 @@ namespace launcherdotnet.Launcher.Forms
             catch (Exception ex)
             {
                 LauncherLogger.Error($"Error installing game:\n{ex}");
-                MessageBox.Show($"Installation failed: {ex.Message}",
+                CoolMessageBox.Show($"Installation failed: {ex.Message}",
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -116,7 +116,7 @@ namespace launcherdotnet.Launcher.Forms
             {
                 LauncherLogger.Error("Installation returned no executable. This can be caused by" +
                     "a bug in the intstaller plugin, or the plugin silently failing.");
-                MessageBox.Show("The plugin did not return an executable.",
+                CoolMessageBox.Show("The plugin did not return an executable.",
                     "Installation failed",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -126,7 +126,7 @@ namespace launcherdotnet.Launcher.Forms
 
             ActivityHint.Text = "Installation complete.";
             GameService.UpsertGame(newGame);
-            MessageBox.Show("Installation complete.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            CoolMessageBox.Show("Installation complete.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Success = true;
             this.Close();
         }
@@ -141,7 +141,7 @@ namespace launcherdotnet.Launcher.Forms
                 return null;
             if (result != result.Trim())
             {
-                MessageBox.Show("Label must not contain trailing or leading whitespace.",
+                CoolMessageBox.Show("Label must not contain trailing or leading whitespace.",
                         "Invalid name",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);

@@ -122,7 +122,7 @@ namespace launcherdotnet.Launcher.Forms
         {
             DialogResult result = DialogResult.OK;
             if (LauncherSettings.Settings.ConfirmDelete == true)
-                result = MessageBox.Show($"Permanently delete \"{game.Label}\"?",
+                result = CoolMessageBox.Show($"Permanently delete \"{game.Label}\"?",
                     "Confirmation",
                     MessageBoxButtons.OKCancel,
                     MessageBoxIcon.Exclamation);
@@ -166,7 +166,7 @@ namespace launcherdotnet.Launcher.Forms
             catch (Exception ex)
             {
                 LauncherLogger.Error($"Failed to launch:\n{ex}");
-                MessageBox.Show($"Failed to launch game: {ex.Message} Check the console for more details.",
+                CoolMessageBox.Show($"Failed to launch game: {ex.Message} Check the console for more details.",
                     "Launch error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);

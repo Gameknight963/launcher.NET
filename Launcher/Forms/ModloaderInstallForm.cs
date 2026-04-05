@@ -45,7 +45,8 @@ namespace launcherdotnet.Launcher.Forms
             if (VersionDropdown.Items.Count == 0)
             {
                 LauncherLogger.Error("Error: No Melonloader versions were sent by the Github API.");
-                MessageBox.Show("No Melonloader versions were sent by the Github API.", "Error",
+
+                CoolMessageBox.Show("No Melonloader versions were sent by the Github API.", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -68,7 +69,7 @@ namespace launcherdotnet.Launcher.Forms
             // validate selection
             if (ModloaderDropdown.SelectedItem == null || VersionDropdown.SelectedItem == null)
             {
-                MessageBox.Show("Select a modloader and version.", "Invalid selection",
+                CoolMessageBox.Show("Select a modloader and version.", "Invalid selection",
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
@@ -81,7 +82,7 @@ namespace launcherdotnet.Launcher.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Game does not have a valid path! {ex.Message}", "Invalid operation",
+                CoolMessageBox.Show($"Game does not have a valid path! {ex.Message}", "Invalid operation",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -98,7 +99,7 @@ namespace launcherdotnet.Launcher.Forms
             catch (Exception ex)
             {
                 LauncherLogger.Error($"Unprecedented exception installing Melonloader:\n{ex}"); // remember when add more modloaders change this
-                MessageBox.Show($"Unprecedented exception during installation: {ex.Message}", "Installation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                CoolMessageBox.Show($"Unprecedented exception during installation: {ex.Message}", "Installation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -114,7 +115,7 @@ namespace launcherdotnet.Launcher.Forms
         {
             if (_installInProgress)
             {
-                MessageBox.Show("Please wait for the installation to finish.", "Installation in progress",
+                CoolMessageBox.Show("Please wait for the installation to finish.", "Installation in progress",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 e.Cancel = true;
             }
@@ -164,7 +165,7 @@ namespace launcherdotnet.Launcher.Forms
 
                 if (!downloadOk)
                 {
-                    MessageBox.Show("Download failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    CoolMessageBox.Show("Download failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 
@@ -175,12 +176,12 @@ namespace launcherdotnet.Launcher.Forms
                 progressBar.Style = ProgressBarStyle.Continuous;
                 progressBar.Value = 100;
                 ActivityHint.Text = "Installation complete.";
-                MessageBox.Show("Installation complete.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CoolMessageBox.Show("Installation complete.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
                 progressBar.Style = ProgressBarStyle.Continuous;
-                MessageBox.Show($"Installation failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                CoolMessageBox.Show($"Installation failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {

@@ -1,10 +1,6 @@
-﻿using launcherdotnet.Launcher;
-using launcherdotnet.Launcher.Settings;
+﻿using launcherdotnet.Launcher.Settings;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using launcherdotnet.Launcher.Forms;
 
 namespace launcherdotnet
 {
@@ -39,7 +35,7 @@ namespace launcherdotnet
                 }
                 else LauncherLogger.WriteLine("Enable verbose logging to see full exception.", true);
 
-                MessageBox.Show($"A {ex.GetType().Name} occured while reading LauncherData to games.json: " +
+                CoolMessageBox.Show($"A {ex.GetType().Name} occured while reading LauncherData to games.json: " +
                     $"{ex.Message} Check the console for more details.",
                     "Error reading LauncherData",
                     MessageBoxButtons.OK,
@@ -65,7 +61,7 @@ namespace launcherdotnet
                 }
                 else LauncherLogger.WriteLine("Enable verbose logging to see full exception.", true);
 
-                MessageBox.Show($"A {ex.GetType().Name} occured while saving LauncherData to games.json: " +
+                CoolMessageBox.Show($"A {ex.GetType().Name} occured while saving LauncherData to games.json: " +
                     $"{ex.Message} Check the console for more details.",
                     "Error saving LauncherData",
                     MessageBoxButtons.OK,
