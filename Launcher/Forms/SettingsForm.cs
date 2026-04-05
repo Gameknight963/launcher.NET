@@ -9,9 +9,21 @@ namespace launcherdotnet.Launcher.Forms
     public partial class SettingsForm : ThemeableForm
     {
         private readonly string _defaultSelectedHint = "";
+        private readonly RadioButton[] themeButtons;
+
         public SettingsForm()
         {
             InitializeComponent();
+
+            themeButtons = [
+                SystemThemeButton,
+                LightThemeButton,
+                DarkThemeButton,
+                ExtendedFrameThemeButton,
+                ExtendedFrameDarkThemeButton,
+                BlurThemeButton,
+                AcrylicThemeButton
+            ];
 
             _defaultSelectedHint = Hint.Text;
             ShowSettings();
@@ -55,13 +67,8 @@ namespace launcherdotnet.Launcher.Forms
             s.MLSelectStableByDefault = MLCheckbox.GetItemChecked(1);
 
             // --- Theme ---
-            if (SystemThemeButton.Checked) s.Theme = ThemeManager.Theme.System;
-            if (LightThemeButton.Checked) s.Theme = ThemeManager.Theme.Light;
-            if (DarkThemeButton.Checked) s.Theme = ThemeManager.Theme.Dark;
-            if (ExtendedFrameThemeButton.Checked) s.Theme = ThemeManager.Theme.ExtendFrame;
-            if (ExtendedFrameDarkThemeButton.Checked) s.Theme = ThemeManager.Theme.ExtendFrameDark;
-            if (BlurThemeButton.Checked) s.Theme = ThemeManager.Theme.Blur;
-            if (AcrylicThemeButton.Checked) s.Theme = ThemeManager.Theme.Acrylic;
+            s.Theme = (ThemeManager.Theme)Array.FindIndex(themeButtons, b => b.Checked);
+            s.TextRenderMode = (ThemeManager.TextRenderMode)TextModeComboBox.SelectedIndex;
 
             // --- Advanced ---
             s.OpenDebugConsole = AdvancedCheckbox.GetItemChecked(0);
@@ -71,6 +78,10 @@ namespace launcherdotnet.Launcher.Forms
             string json = JsonConvert.SerializeObject(s, Formatting.Indented);
             LauncherLogger.WriteLine("New settings saved:");
             LauncherLogger.WriteLine(json);
+
+            textModeResolvesTo2.Text = $"With the active theme {ThemeManager.ActiveTheme}, this text mode resolves to:";
+            textModeResolvesTo.Text = $"{(ThemeManager.ResolveTextRenderMode((ThemeManager.TextRenderMode)TextModeComboBox.SelectedIndex) ?
+                "TextRenderer" : "Shadow Text")}";
 
             LauncherSettings.Save();
         }
@@ -107,30 +118,8 @@ namespace launcherdotnet.Launcher.Forms
             AdvancedCheckbox.SetItemChecked(2, s.DisablePluginVersionCheck);
 
             // --- Theme ---
-            switch (s.Theme)
-            {
-                case ThemeManager.Theme.System:
-                    SystemThemeButton.Checked = true;
-                    break;
-                case ThemeManager.Theme.Light:
-                    LightThemeButton.Checked = true;
-                    break;
-                case ThemeManager.Theme.Dark:
-                    DarkThemeButton.Checked = true;
-                    break;
-                case ThemeManager.Theme.ExtendFrame:
-                    ExtendedFrameThemeButton.Checked = true;
-                    break;
-                case ThemeManager.Theme.ExtendFrameDark:
-                    ExtendedFrameDarkThemeButton.Checked = true;
-                    break;
-                case ThemeManager.Theme.Blur:
-                    BlurThemeButton.Checked = true;
-                    break;
-                case ThemeManager.Theme.Acrylic:
-                    AcrylicThemeButton.Checked = true;
-                    break;
-            }
+            themeButtons[(int)s.Theme].Checked = true;
+            TextModeComboBox.SelectedIndex = (int)s.TextRenderMode;
 
             // --- About ---
             LauncherVersionLabel.Text = $"v{Config.CurrentVersionString}";
@@ -334,5 +323,28 @@ namespace launcherdotnet.Launcher.Forms
 
         private void ExtendedFrameDarkThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Extends the titlebar into the app, " +
             "but uses dark mode titlebar");
+
+        private void TextModeComboBox_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            switch (TextModeComboBox.SelectedIndex)
+            {
+                case 0:
+                    Hint.Text = "Normal TextRenderer rendering except on Blur and Acrylic themes.";
+                    break;
+                case 1:
+                    Hint.Text = "Normal TextRenderer rendering only on Light, Dark, and System themes. This prevents " +
+                        "aliasing issues if you use DWMBlurGlass or other software that makes titlebars transparent.";
+                    break;
+                case 2:
+                    Hint.Text = "Always use TextRenderer rendering. This is the way Winforms normally looks.";
+                    break;
+                case 3:
+                    Hint.Text = "Always use shadow text custom rendering.";
+                    break;
+            }
+            textModeResolvesTo2.Text = $"With the active theme {ThemeManager.ActiveTheme}, this text mode resolves to:";
+            textModeResolvesTo.Text = $"{(ThemeManager.ResolveTextRenderMode((ThemeManager.TextRenderMode)TextModeComboBox.SelectedIndex) ?
+                "TextRenderer" : "Shadow Text")}";
+        }
     }
 }

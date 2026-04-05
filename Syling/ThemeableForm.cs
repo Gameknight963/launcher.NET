@@ -7,7 +7,7 @@ namespace launcherdotnet.Syling
     {
         private readonly ControlStyle _headerStyle = new();
 
-        private bool _useGdiText = true;
+        private bool _useTextRenderer = true;
         private static bool IsDesignTime => LicenseManager.UsageMode == LicenseUsageMode.Designtime;
 
 
@@ -18,18 +18,10 @@ namespace launcherdotnet.Syling
 
         private readonly HashSet<Control> _themedControls = new();
 
-        public enum TextRenderMode
-        {
-            Auto,
-            AutoStrict,
-            Gdi,
-            DrawString
-        }
-
         public ThemeableForm()
         {
             if (IsDesignTime) return;
-            Load += (sender, e) => ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.TextRenderMode);
+            Load += (sender, e) => ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.ActiveTextRenderMode);
         }
 
         private void ApplyControlTheme(Control c, ThemeManager.Theme theme)
@@ -91,34 +83,39 @@ namespace launcherdotnet.Syling
             base.Dispose(disposing);
         }
 
-        public void SetTextRenderMode(TextRenderMode mode)
+        public void SetTextRenderMode(ThemeManager.Theme resolvedTheme, ThemeManager.TextRenderMode mode)
         {
             if (IsDesignTime) return;
             switch (mode)
             {
-                case TextRenderMode.Auto:
-                    _useGdiText = !(ActiveTheme == ThemeManager.Theme.Acrylic || ActiveTheme == ThemeManager.Theme.Blur);
+                case ThemeManager.TextRenderMode.Auto:
+                    _useTextRenderer = !(resolvedTheme == ThemeManager.Theme.Acrylic || resolvedTheme == ThemeManager.Theme.Blur);
                     break;
 
-                case TextRenderMode.AutoStrict:
-                    _useGdiText = ActiveTheme == ThemeManager.Theme.Light || ActiveTheme == ThemeManager.Theme.Dark;
+                case ThemeManager.TextRenderMode.AutoStrict:
+                    _useTextRenderer = resolvedTheme == ThemeManager.Theme.Light || resolvedTheme == ThemeManager.Theme.Dark;
                     break;
 
-                case TextRenderMode.Gdi:
-                    _useGdiText = true;
+                case ThemeManager.TextRenderMode.TextRenderer:
+                    _useTextRenderer = true;
                     break;
 
-                case TextRenderMode.DrawString:
-                    _useGdiText = false;
+                case ThemeManager.TextRenderMode.ShadowText:
+                    _useTextRenderer = false;
                     break;
+            }
+            foreach (Control c in Controls)
+            {
+                c.Invalidate();
             }
         }
 
-        public void ApplyTheme(ThemeManager.Theme theme, TextRenderMode? textMode = null)
+        public void ApplyTheme(ThemeManager.Theme theme, ThemeManager.TextRenderMode? textMode = null)
         {
             if (IsDesignTime) return;
 
             ThemeManager.Theme resolvedTheme = ThemeManager.ResolveTheme(theme);
+
             switch (resolvedTheme)
             {
                 case ThemeManager.Theme.Light:
@@ -143,12 +140,10 @@ namespace launcherdotnet.Syling
             }
 
             ActiveTheme = theme;
+            if (textMode.HasValue) SetTextRenderMode(resolvedTheme, textMode.Value);
 
             ApplyControlTheme(this, resolvedTheme);
             ThemeManager.ApplyThemeToForm(this, resolvedTheme);
-
-            if (textMode.HasValue)
-                SetTextRenderMode(textMode.Value);
         }
 
         private void DrawShadowText(Graphics g, string text, Font font, Rectangle bounds, Color textColor)
@@ -183,7 +178,7 @@ namespace launcherdotnet.Syling
                 e.Graphics.FillRectangle(backBrush, e.Bounds);
             }
 
-            if (_useGdiText)
+            if (_useTextRenderer)
             {
                 using Brush foreBrush = new SolidBrush(_headerStyle.ForeColor!.Value);
                 e.Graphics.DrawString(e.SubItem!.Text, e.SubItem.Font, foreBrush, e.Bounds);
@@ -207,7 +202,7 @@ namespace launcherdotnet.Syling
                 e.Graphics.FillRectangle(backBrush, e.Bounds);
             }
 
-            if (_useGdiText)
+            if (_useTextRenderer)
             {
                 using Brush foreBrush = new SolidBrush(_headerStyle.ForeColor!.Value);
                 e.Graphics.DrawString(e.Header!.Text, e.Font!, foreBrush, e.Bounds);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using static launcherdotnet.Syling.ThemeableForm;
 
 namespace launcherdotnet.Syling
 {
@@ -6,7 +7,7 @@ namespace launcherdotnet.Syling
     {
         public static Theme ActiveTheme { get; private set; }
         public static Theme ResolvedTheme => ResolveTheme(ActiveTheme);
-        public static ThemeableForm.TextRenderMode TextRenderMode { get; private set; }
+        public static TextRenderMode ActiveTextRenderMode { get; private set; }
         private static bool? _cachedSystemLightTheme;
 
         public static void SetColorRecursive(Control parent, ControlStyle style, Func<Control, bool>? filter = null)
@@ -64,13 +65,21 @@ namespace launcherdotnet.Syling
 
         public enum Theme
         {
+            System,
             Light,
             Dark,
             ExtendFrame,
             ExtendFrameDark,
             Blur,
-            Acrylic,
-            System
+            Acrylic
+        }
+
+        public enum TextRenderMode
+        {
+            Auto,
+            AutoStrict,
+            TextRenderer,
+            ShadowText
         }
 
         public static Color DarkMainColor => Color.FromArgb(30, 30, 30);
@@ -191,11 +200,10 @@ namespace launcherdotnet.Syling
         }
 
 
-        public static void SetGlobalTheme(Theme theme, ThemeableForm.TextRenderMode? mode = null)
+        public static void SetGlobalTheme(Theme theme, TextRenderMode? mode = null)
         {
             ActiveTheme = theme;
-
-            if (mode.HasValue) TextRenderMode = mode.Value;
+            if (mode.HasValue) ActiveTextRenderMode = mode.Value;
 
             foreach (Form form in Application.OpenForms)
             {
@@ -204,6 +212,27 @@ namespace launcherdotnet.Syling
                     tf.ApplyTheme(theme, mode);
                 }
             }
+        }
+
+        /// <returns>True if GDI, false if DrawString</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static bool ResolveTextRenderMode(TextRenderMode mode)
+        {
+            switch (mode)
+            {
+                case TextRenderMode.Auto:
+                    return !(ActiveTheme == Theme.Acrylic || ActiveTheme == Theme.Blur);
+
+                case TextRenderMode.AutoStrict:
+                    return ActiveTheme == Theme.Light || ActiveTheme == Theme.Dark;
+
+                case TextRenderMode.TextRenderer:
+                    return true;
+
+                case TextRenderMode.ShadowText:
+                    return false;                
+            }
+            throw new InvalidOperationException();
         }
 
         public static Theme ResolveTheme(Theme theme)
