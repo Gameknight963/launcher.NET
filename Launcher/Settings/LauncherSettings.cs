@@ -32,7 +32,7 @@ namespace launcherdotnet.Launcher.Settings
                 Save();
             }
             if (Settings.OpenDebugConsole) ConsoleHelper.Show();
-            ThemeManager.SetGlobalTheme(Settings.Theme);
+            ThemeManager.SetGlobalTheme(Settings.Theme, ThemeableForm.TextRenderMode.Auto);
         }
 
         public static void Save()
@@ -40,7 +40,7 @@ namespace launcherdotnet.Launcher.Settings
             string json = JsonConvert.SerializeObject(Settings, Formatting.Indented);
             Directory.CreateDirectory(Path.GetDirectoryName(_settingsPath)!);
             File.WriteAllText(_settingsPath, json);
-            ThemeManager.SetGlobalTheme(Settings.Theme);
+            ThemeManager.SetGlobalTheme(Settings.Theme, ThemeableForm.TextRenderMode.Auto);
             try
             {
                 if (Settings.RunOnStartup)
