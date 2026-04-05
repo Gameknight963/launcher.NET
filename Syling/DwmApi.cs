@@ -42,19 +42,30 @@ namespace launcherdotnet.Syling
         [StructLayout(LayoutKind.Sequential)]
         public struct MARGINS
         {
-            public int Left;
-            public int Right;
-            public int Top;
-            public int Bottom;
+            public required int Left;
+            public required int Right;
+            public required int Top;
+            public required int Bottom;
         }
 
         [StructLayout(LayoutKind.Sequential)]
         public struct AccentPolicy
         {
-            public AccentState AccentState;
-            public int AccentFlags;
-            public int GradientColor;
-            public int AnimationId;
+            public AccentState AccentState = AccentState.ACCENT_DISABLED;
+            public int AccentFlags = 2;
+            public int GradientColor = 0x00000000;
+            public int AnimationId = 0;
+            public AccentPolicy(
+                AccentState accentState = AccentState.ACCENT_DISABLED,
+                int accentFlags = 2,
+                int gradientColor = 0x00000000,
+                int animationId = 0)
+            {
+                AccentState = accentState;
+                AccentFlags = accentFlags;
+                GradientColor = gradientColor;
+                AnimationId = animationId;
+            }
         }
 
 
@@ -105,7 +116,10 @@ namespace launcherdotnet.Syling
         {
             AccentPolicy accent = new AccentPolicy
             {
-                AccentState = accentState
+                AccentState = accentState,
+                AccentFlags = 2,
+                GradientColor = 0x00000000,
+                AnimationId = 0
             };
 
             int size = Marshal.SizeOf(accent);
