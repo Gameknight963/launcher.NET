@@ -6,8 +6,6 @@ using System.Diagnostics;
 
 namespace launcherdotnet.Launcher.Forms
 {
-    using static ThemeManager;
-
     internal partial class LauncherForm : ThemeableForm
     {
         public string IdleStatus;
@@ -32,7 +30,6 @@ namespace launcherdotnet.Launcher.Forms
 
             _cachedData = LauncherDataManager.ReadLauncherData();
             UpdateGameList(gamesView);
-
             ResizeColumns();
             Task.Run(async () => await Updater.CheckForUpdates());
         }
