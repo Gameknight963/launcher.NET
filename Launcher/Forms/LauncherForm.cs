@@ -258,10 +258,10 @@ namespace launcherdotnet.Launcher.Forms
             form.ShowDialog();
         }
 
-        private void SettingsButton_Click(object sender, EventArgs e)
+        private async void SettingsButton_Click(object sender, EventArgs e)
         {
             SettingsForm form = new SettingsForm();
-            form.ShowDialog();
+            await Task.Run(async() => form.ShowDialog());
         }
 
         private void RefreshGamesView()
