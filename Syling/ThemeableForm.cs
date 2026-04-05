@@ -104,10 +104,7 @@ namespace launcherdotnet.Syling
                     _useTextRenderer = false;
                     break;
             }
-            foreach (Control c in Controls)
-            {
-                c.Invalidate();
-            }
+            this.Refresh();
         }
 
         public void ApplyTheme(ThemeManager.Theme theme, ThemeManager.TextRenderMode? textMode = null)
