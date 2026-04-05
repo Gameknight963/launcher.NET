@@ -1,13 +1,11 @@
 using launcherdotnet.Syling;
+using launcherdotnet.Helpers;
+using launcherdotnet.Launcher.Settings;
+using Microsoft.VisualBasic;
+using System.Diagnostics;
 
 namespace launcherdotnet.Launcher.Forms
 {
-    using launcherdotnet.Helpers;
-    using launcherdotnet.Launcher.Settings;
-    using launcherdotnet.Syling;
-    using Microsoft.VisualBasic;
-    using System.Diagnostics;
-    using System.IO;
     using static ThemeManager;
 
     internal partial class LauncherForm : ThemeableForm
@@ -37,12 +35,9 @@ namespace launcherdotnet.Launcher.Forms
 
             ResizeColumns();
 
-            this.Load += (sender, e) => SetGlobalTheme(Theme.ExtendFrame, TextRenderMode.AutoStrict);
+            this.Load += (sender, e) => SetGlobalTheme(Theme.Light, TextRenderMode.AutoStrict);
 
-            Task.Run(async () =>
-            {
-                await Updater.CheckForUpdates();
-            });
+            Task.Run(async () => await Updater.CheckForUpdates());
         }
 
         public void SetStatus(string text)

@@ -12,12 +12,22 @@ namespace launcherdotnet.Launcher.Forms
         public SettingsForm()
         {
             InitializeComponent();
+
+            _defaultSelectedHint = Hint.Text;
             ShowSettings();
-            GeneralCheckbox.MouseDown += GeneralCheckbox_MouseDown;
-            AdvancedCheckbox.MouseDown += AdvancedCheckbox_MouseDown;
-            GamePluginsBox.MouseDown += GamePluginsBox_MouseDown;
-            MLCheckbox.MouseDown += MLCheckbox_MouseDown;
-            _defaultSelectedHint = SelectedHint.Text;
+
+            GeneralCheckbox.MouseDown += ShowGeneralHint;
+            GeneralCheckbox.SelectedIndexChanged += ShowGeneralHint;
+
+            AdvancedCheckbox.MouseDown += ShowAdvancedHint;
+            AdvancedCheckbox.SelectedIndexChanged += ShowAdvancedHint;
+
+            GamePluginsBox.MouseDown += ShowGamePluginsBoxHint;
+            GamePluginsBox.SelectedIndexChanged += ShowGamePluginsBoxHint;
+
+            MLCheckbox.MouseDown += ShowMLCheckboxHint;
+            MLCheckbox.SelectedIndexChanged += ShowMLCheckboxHint;
+
             this.KeyPreview = true;
             this.KeyDown += SettingsForm_KeyDown;
         }
@@ -43,6 +53,15 @@ namespace launcherdotnet.Launcher.Forms
             // --- Melonloader ---
             s.MLShowCI = MLCheckbox.GetItemChecked(0);
             s.MLSelectStableByDefault = MLCheckbox.GetItemChecked(1);
+
+            // --- Theme ---
+            if (SystemThemeButton.Checked) s.Theme = ThemeManager.Theme.System;
+            if (LightThemeButton.Checked) s.Theme = ThemeManager.Theme.Light;
+            if (DarkThemeButton.Checked) s.Theme = ThemeManager.Theme.Dark;
+            if (ExtendedFrameThemeButton.Checked) s.Theme = ThemeManager.Theme.ExtendFrame;
+            if (ExtendedFrameDarkThemeButton.Checked) s.Theme = ThemeManager.Theme.ExtendFrameDark;
+            if (BlurThemeButton.Checked) s.Theme = ThemeManager.Theme.Blur;
+            if (AcrylicThemeButton.Checked) s.Theme = ThemeManager.Theme.Acrylic;
 
             // --- Advanced ---
             s.OpenDebugConsole = AdvancedCheckbox.GetItemChecked(0);
@@ -87,37 +106,65 @@ namespace launcherdotnet.Launcher.Forms
             AdvancedCheckbox.SetItemChecked(1, s.VerboseLogging);
             AdvancedCheckbox.SetItemChecked(2, s.DisablePluginVersionCheck);
 
+            // --- Theme ---
+            switch (s.Theme)
+            {
+                case ThemeManager.Theme.System:
+                    SystemThemeButton.Checked = true;
+                    break;
+                case ThemeManager.Theme.Light:
+                    LightThemeButton.Checked = true;
+                    break;
+                case ThemeManager.Theme.Dark:
+                    DarkThemeButton.Checked = true;
+                    break;
+                case ThemeManager.Theme.ExtendFrame:
+                    ExtendedFrameThemeButton.Checked = true;
+                    break;
+                case ThemeManager.Theme.ExtendFrameDark:
+                    ExtendedFrameDarkThemeButton.Checked = true;
+                    break;
+                case ThemeManager.Theme.Blur:
+                    BlurThemeButton.Checked = true;
+                    break;
+                case ThemeManager.Theme.Acrylic:
+                    AcrylicThemeButton.Checked = true;
+                    break;
+            }
+
             // --- About ---
             LauncherVersionLabel.Text = $"v{Config.CurrentVersionString}";
             LauncherApiVersionLabel.Text = $"v{PluginAPI.LauncherApiInfo.ApiVersion.ToString()}";
+
+            SetSelectedHint(null);
         }
 
 
         private void SetSelectedHint(string? description, string? defaultSetting = null)
         {
             if (description == null)
-            { 
-                SelectedHint.Text = _defaultSelectedHint;
+            {
+                Hint.Text = _defaultSelectedHint;
                 return;
             }
-            SelectedHint.Text = $"{description}\n\nDefault: {defaultSetting ?? "Not specified"}";
+            Hint.Text = $"{description}\n\nDefault: {defaultSetting ?? "Not specified"}";
         }
 
         private void SetPluginHint(string? description, string? apiVersion = null)
         {
             if (description == null)
             {
-                SelectedHint.Text = _defaultSelectedHint;
+                Hint.Text = _defaultSelectedHint;
                 return;
             }
-            SelectedHint.Text = $"{description}\n\nTarget API version: {apiVersion ?? "Not specified"}";
+            Hint.Text = $"{description}\n\nTarget API version: {apiVersion ?? "Not specified"}";
         }
 
         private void SettingsForm_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape) this.Close();
         }
-        private void GeneralCheckbox_MouseDown(object? sender, MouseEventArgs e)
+        private void ShowGeneralHint(object? sender, EventArgs e)
         {
             if (GeneralCheckbox.SelectedIndex == -1) return;
             switch (GeneralCheckbox.SelectedIndex)
@@ -145,7 +192,7 @@ namespace launcherdotnet.Launcher.Forms
             }
         }
 
-        private void GamePluginsBox_MouseDown(object? sender, MouseEventArgs e)
+        private void ShowGamePluginsBoxHint(object? sender, EventArgs e)
         {
             if (GamePluginsBox.SelectedItems.Count == 0) return;
             TaggedListBoxItem item = (TaggedListBoxItem)GamePluginsBox.SelectedItems[0]!;
@@ -161,7 +208,7 @@ namespace launcherdotnet.Launcher.Forms
             SetPluginHint(entry.Installer.Description, entry.Installer.TargetApiVersion.ToString());
         }
 
-        private void MLCheckbox_MouseDown(object? sender, MouseEventArgs e)
+        private void ShowMLCheckboxHint(object? sender, EventArgs e)
         {
             switch (MLCheckbox.SelectedIndex)
             {
@@ -177,7 +224,7 @@ namespace launcherdotnet.Launcher.Forms
             }
         }
 
-        private void AdvancedCheckbox_MouseDown(object? sender, MouseEventArgs e)
+        private void ShowAdvancedHint(object? sender, EventArgs e)
         {
             if (AdvancedCheckbox.SelectedIndex == -1) return;
             switch (AdvancedCheckbox.SelectedIndex)
@@ -270,5 +317,22 @@ namespace launcherdotnet.Launcher.Forms
                 MessageBox.Show($"Failed to open folder: {ex.Message}");
             }
         }
+
+        private void SystemThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = "Use the theme Windows is set to.";
+
+        private void LightThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Use light theme.");
+
+        private void DarkThemeButton_CheckedChanged(object sender, EventArgs e) =>
+            Hint.Text = ("Use dark theme. Some controls, such as comboboxes, are drawn at the UxTheme layer, so they cannot be themed");
+
+        private void BlurThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Use a blurred background.");
+
+        private void AcrylicThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Use acrylic background.");
+
+        private void ExtendedFrameThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Extends the titlebar into the app. If you use something like" +
+            "DWMBlurGlass that blurs titlebars, launcher.NET will become transparent.");
+
+        private void ExtendedFrameDarkThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Extends the titlebar into the app, " +
+            "but uses dark mode titlebar");
     }
 }
