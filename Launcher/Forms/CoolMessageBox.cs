@@ -1,4 +1,5 @@
 ﻿using launcherdotnet.Syling;
+using System.Media;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -14,6 +15,18 @@ namespace launcherdotnet.Launcher.Forms
         {
             using CoolMessageBox box = new CoolMessageBox(text, caption, buttons, icon);
             return box.ShowDialog();
+        }
+
+        private Button CreateButton(string text, DialogResult result)
+        {
+            Button btn = new Button();
+            btn.Text = text;
+            btn.Margin = new Padding(10, 10, 10, 10);
+            btn.DialogResult = result;
+            btn.AutoSize = true;
+
+            buttonsPanel.Controls.Add(btn);
+            return btn;
         }
 
         public CoolMessageBox(string? text, string? caption, MessageBoxButtons buttons, MessageBoxIcon icon)
@@ -85,18 +98,24 @@ namespace launcherdotnet.Launcher.Forms
                     pictureBoxIcon.Image = SystemIcons.Question.ToBitmap();
                     break;
             }
-        }
+            switch (icon)
+            {
+                case MessageBoxIcon.Information:
+                    SystemSounds.Asterisk.Play();
+                    break;
 
-        private Button CreateButton(string text, DialogResult result)
-        {
-            Button btn = new Button();
-            btn.Text = text;
-            btn.Margin = new Padding(10,10,10,10);
-            btn.DialogResult = result;
-            btn.AutoSize = true;
+                case MessageBoxIcon.Warning:
+                    SystemSounds.Exclamation.Play();
+                    break;
 
-            buttonsPanel.Controls.Add(btn);
-            return btn;
+                case MessageBoxIcon.Error:
+                    SystemSounds.Hand.Play();
+                    break;
+
+                case MessageBoxIcon.Question:
+                    SystemSounds.Question.Play();
+                    break;
+            }
         }
     }
 }
