@@ -261,7 +261,8 @@ namespace launcherdotnet.Launcher.Forms
         private async void SettingsButton_Click(object sender, EventArgs e)
         {
             SettingsForm form = new SettingsForm();
-            await Task.Run(async() => form.ShowDialog());
+            form.StartPosition = FormStartPosition.CenterParent;
+            await Task.Run(async() => form.ShowDialog(this));
         }
 
         private void RefreshGamesView()
