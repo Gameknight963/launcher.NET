@@ -133,7 +133,7 @@ namespace launcherdotnet.Launcher.Forms
 
         private string? QueryName()
         {
-            string result = Interaction.InputBox(
+            string? result = CoolInputBox.Prompt(
                 "Enter a label for this instance:",
                 "Set Game Label",
                 "New game");
