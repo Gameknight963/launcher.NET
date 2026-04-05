@@ -116,6 +116,7 @@ namespace launcherdotnet.Syling
 
         private static void ApplyLightTheme(Form form)
         {
+            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
             DwmApi.UnextendFrame(form.Handle);
             DwmApi.DisableImmersiveDarkMode(form.Handle);
 
@@ -132,6 +133,7 @@ namespace launcherdotnet.Syling
         }
         private static void ApplyDarkTheme(Form form)
         {
+            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
             DwmApi.UnextendFrame(form.Handle);
             DwmApi.EnableImmersiveDarkMode(form.Handle);
 
@@ -144,6 +146,7 @@ namespace launcherdotnet.Syling
         }
         private static void ApplyExtendFrameTheme(Form form, bool light = true)
         {
+            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
             if (light)
                 DwmApi.DisableImmersiveDarkMode(form.Handle);
             else
