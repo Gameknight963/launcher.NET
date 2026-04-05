@@ -255,7 +255,7 @@
             // 
             textModeResolvesTo.AutoSize = true;
             textModeResolvesTo.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            textModeResolvesTo.Location = new Point(9, 311);
+            textModeResolvesTo.Location = new Point(9, 329);
             textModeResolvesTo.Name = "textModeResolvesTo";
             textModeResolvesTo.Size = new Size(39, 15);
             textModeResolvesTo.TabIndex = 6;
@@ -263,10 +263,9 @@
             // 
             // textModeResolvesTo2
             // 
-            textModeResolvesTo2.AutoSize = true;
             textModeResolvesTo2.Location = new Point(9, 296);
             textModeResolvesTo2.Name = "textModeResolvesTo2";
-            textModeResolvesTo2.Size = new Size(147, 15);
+            textModeResolvesTo2.Size = new Size(328, 33);
             textModeResolvesTo2.TabIndex = 5;
             textModeResolvesTo2.Text = "This text mode resolves to:";
             // 

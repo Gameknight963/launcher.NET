@@ -42,6 +42,11 @@ namespace launcherdotnet.Launcher.Forms
 
             this.KeyPreview = true;
             this.KeyDown += SettingsForm_KeyDown;
+
+            foreach (RadioButton btn in themeButtons)
+            {
+                btn.CheckedChanged += ThemeButton_CheckedChanged;
+            }
         }
 
         public class TaggedListBoxItem
@@ -78,10 +83,6 @@ namespace launcherdotnet.Launcher.Forms
             string json = JsonConvert.SerializeObject(s, Formatting.Indented);
             LauncherLogger.WriteLine("New settings saved:");
             LauncherLogger.WriteLine(json);
-
-            textModeResolvesTo2.Text = $"With the active theme {ThemeManager.ActiveTheme}, this text mode resolves to:";
-            textModeResolvesTo.Text = $"{(ThemeManager.ResolveTextRenderMode((ThemeManager.TextRenderMode)TextModeComboBox.SelectedIndex) ?
-                "TextRenderer" : "Shadow Text")}";
 
             LauncherSettings.Save();
         }
@@ -285,7 +286,7 @@ namespace launcherdotnet.Launcher.Forms
             }
             catch (System.Exception ex)
             {
-                CoolMessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                CoolMessageBox.Show(ex.Message, "Error opening browser", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -342,8 +343,25 @@ namespace launcherdotnet.Launcher.Forms
                     Hint.Text = "Always use shadow text custom rendering.";
                     break;
             }
-            textModeResolvesTo2.Text = $"With the active theme {ThemeManager.ActiveTheme}, this text mode resolves to:";
-            textModeResolvesTo.Text = $"{(ThemeManager.ResolveTextRenderMode((ThemeManager.TextRenderMode)TextModeComboBox.SelectedIndex) ?
+            UpdateTextRenderHint((ThemeManager.Theme)Array.FindIndex(themeButtons, b => b.Checked), (ThemeManager.TextRenderMode)TextModeComboBox.SelectedIndex);
+        }
+
+        private void ThemeButton_CheckedChanged(object? sender, EventArgs e)
+        {
+            UpdateTextRenderHint();
+        }
+
+        private void UpdateTextRenderHint(ThemeManager.Theme theme, ThemeManager.TextRenderMode mode)
+        {
+            textModeResolvesTo2.Text = $"With the selected theme {theme}, this text mode resolves to:";
+            textModeResolvesTo.Text = $"{(ThemeManager.ResolveTextRenderMode(theme, mode) ?
+                "TextRenderer" : "Shadow Text")}";
+        }
+        private void UpdateTextRenderHint()
+        {
+            ThemeManager.Theme t = (ThemeManager.Theme)Array.FindIndex(themeButtons, b => b.Checked);
+            textModeResolvesTo2.Text = $"With the selected theme {t}, this text mode resolves to:";
+            textModeResolvesTo.Text = $"{(ThemeManager.ResolveTextRenderMode(t, (ThemeManager.TextRenderMode)TextModeComboBox.SelectedIndex) ?
                 "TextRenderer" : "Shadow Text")}";
         }
     }
