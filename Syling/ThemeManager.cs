@@ -214,17 +214,18 @@ namespace launcherdotnet.Syling
             }
         }
 
-        /// <returns>True if GDI, false if DrawString</returns>
+        /// <returns>True if TextRenderer, false if ShadowText</returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public static bool ResolveTextRenderMode(TextRenderMode mode)
+        public static bool ResolveTextRenderMode(Theme theme, TextRenderMode mode)
         {
+            Theme resolvedTheme = ResolveTheme(theme);
             switch (mode)
             {
                 case TextRenderMode.Auto:
-                    return !(ActiveTheme == Theme.Acrylic || ActiveTheme == Theme.Blur);
+                    return !(resolvedTheme == Theme.Acrylic || resolvedTheme == Theme.Blur);
 
                 case TextRenderMode.AutoStrict:
-                    return ActiveTheme == Theme.Light || ActiveTheme == Theme.Dark;
+                    return resolvedTheme == Theme.Light || resolvedTheme == Theme.Dark;
 
                 case TextRenderMode.TextRenderer:
                     return true;
@@ -232,7 +233,7 @@ namespace launcherdotnet.Syling
                 case TextRenderMode.ShadowText:
                     return false;                
             }
-            throw new InvalidOperationException();
+            throw new InvalidOperationException($"The requested textrendermode is invalid: {mode}");
         }
 
         public static Theme ResolveTheme(Theme theme)
