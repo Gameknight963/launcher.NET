@@ -255,7 +255,7 @@ namespace launcherdotnet.Launcher.Forms
             try
             {
                 ApplySettings();
-                MessageBox.Show(
+                CoolMessageBox.Show(
                     "Settings applied succesfully.",
                     "Notice",
                     MessageBoxButtons.OK,
@@ -264,7 +264,7 @@ namespace launcherdotnet.Launcher.Forms
             catch (Exception ex)
             {
                 LauncherLogger.Error($"Error applying settings: {ex}");
-                MessageBox.Show(
+                CoolMessageBox.Show(
                     $"Error applying settings: {ex.GetType().Name}. The console may include additional " +
                     $"information to help resolve this error.",
                     "Error",
@@ -296,7 +296,7 @@ namespace launcherdotnet.Launcher.Forms
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                CoolMessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -314,7 +314,7 @@ namespace launcherdotnet.Launcher.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to open folder: {ex.Message}");
+                CoolMessageBox.Show($"Failed to open folder: {ex.Message}");
             }
         }
 

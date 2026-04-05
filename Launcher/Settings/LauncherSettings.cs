@@ -1,6 +1,7 @@
 ﻿using launcherdotnet.Helpers;
 using launcherdotnet.Syling;
 using Newtonsoft.Json;
+using launcherdotnet.Launcher.Forms;
 
 namespace launcherdotnet.Launcher.Settings
 {
@@ -50,7 +51,7 @@ namespace launcherdotnet.Launcher.Settings
             catch (Exception ex)
             {
                 LauncherLogger.WriteLine($"Failed to set Run on startup to {Settings.RunOnStartup}: {ex.Message}", true);
-                MessageBox.Show($"Failed to set Run on startup to {Settings.RunOnStartup}. Check the console for more details.", 
+                CoolMessageBox.Show($"Failed to set Run on startup to {Settings.RunOnStartup}. Check the console for more details.", 
                     "Error", 
                     MessageBoxButtons.OK, 
                     MessageBoxIcon.Error);
