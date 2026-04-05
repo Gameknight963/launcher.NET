@@ -54,6 +54,8 @@ namespace launcherdotnet.Launcher.Forms
             int captionWidth = TextRenderer.MeasureText(this.Text, SystemFonts.CaptionFont).Width;
             captionWidth = captionWidth == 0 ? 15 : captionWidth;
 
+            this.StartPosition = FormStartPosition.CenterParent;
+
             this.ClientSize = new Size(label.Width + label.Left + 15 + captionWidth, label.Height +
                 label.Top + buttonsPanel.Height + 30);
 
