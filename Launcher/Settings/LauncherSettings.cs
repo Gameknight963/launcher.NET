@@ -32,7 +32,7 @@ namespace launcherdotnet.Launcher.Settings
                 Save();
             }
             if (Settings.OpenDebugConsole) ConsoleHelper.Show();
-            ThemeManager.SetGlobalTheme(Settings.Theme, ThemeableForm.TextRenderMode.Auto);
+            ThemeManager.SetGlobalTheme(Settings.Theme, Settings.TextRenderMode);
         }
 
         public static void Save()
@@ -40,7 +40,7 @@ namespace launcherdotnet.Launcher.Settings
             string json = JsonConvert.SerializeObject(Settings, Formatting.Indented);
             Directory.CreateDirectory(Path.GetDirectoryName(_settingsPath)!);
             File.WriteAllText(_settingsPath, json);
-            ThemeManager.SetGlobalTheme(Settings.Theme, ThemeableForm.TextRenderMode.Auto);
+            ThemeManager.SetGlobalTheme(Settings.Theme, Settings.TextRenderMode);
             try
             {
                 if (Settings.RunOnStartup)
@@ -84,6 +84,7 @@ namespace launcherdotnet.Launcher.Settings
 
         // ===== Theme =====
         public ThemeManager.Theme Theme { get; set; } = ThemeManager.Theme.Light;
+        public ThemeManager.TextRenderMode TextRenderMode { get; set; } = ThemeManager.TextRenderMode.Auto;
 
         // ===== Advanced =====
 
