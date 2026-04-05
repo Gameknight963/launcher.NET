@@ -174,6 +174,7 @@ namespace launcherdotnet.Syling
         {
             DwmApi.EnableImmersiveDarkMode(form.Handle);
             DwmApi.UnextendFrame(form.Handle);
+            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_BLURBEHIND);
 
             SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
                 c => c is not Label && c is not Button && c is not ComboBox);
@@ -181,13 +182,12 @@ namespace launcherdotnet.Syling
                 c => c is Label);
             SetColorRecursive(form, new ButtonStyle(AcrylicMainColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
                 c => c is Button);
-
-            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_BLURBEHIND);
         }
         private static void ApplyAcrylicTheme(Form form)
         {
             DwmApi.EnableImmersiveDarkMode(form.Handle);
             DwmApi.UnextendFrame(form.Handle);
+            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND);
 
             SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
                 c => c is not Label && c is not Button && c is not ComboBox);
@@ -195,8 +195,6 @@ namespace launcherdotnet.Syling
                 c => c is Label);
             SetColorRecursive(form, new ButtonStyle(AcrylicMainColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
                 c => c is Button);
-
-            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND);
         }
 
 
