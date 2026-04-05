@@ -33,6 +33,7 @@ namespace launcherdotnet.Launcher.Forms
             textBox.Text = defaultResponse;
             TextBoxHelpers.SetPlaceholder(textBox, placeholder);
             this.StartPosition = FormStartPosition.CenterParent;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
 
             textBox.Select();
         }
