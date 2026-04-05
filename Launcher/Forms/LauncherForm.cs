@@ -176,7 +176,7 @@ namespace launcherdotnet.Launcher.Forms
 
         private void RenameGameGUI(GameInfo game)
         {
-            string result = Interaction.InputBox("Enter a new label:", "Rename", game.Label);
+            string? result = CoolInputBox.Prompt("Enter a new label:", "Rename", game.Label);
             if (string.IsNullOrWhiteSpace(result)) return;
             game.Label = result;
             GameService.UpsertGame(game);
