@@ -1,8 +1,13 @@
-﻿namespace launcherdotnet.Syling
+﻿using Microsoft.Win32;
+
+namespace launcherdotnet.Syling
 {
     public class ThemeManager
     {
         public static Theme ActiveTheme { get; private set; }
+        public static Theme ResolvedTheme => ResolveTheme(ActiveTheme);
+        public static ThemeableForm.TextRenderMode TextRenderMode { get; private set; }
+        private static bool? _cachedSystemLightTheme;
 
         public static void SetColorRecursive(Control parent, ControlStyle style, Func<Control, bool>? filter = null)
         {
@@ -65,6 +70,7 @@
             ExtendFrameDark,
             Blur,
             Acrylic,
+            System
         }
 
         public static Color DarkMainColor => Color.FromArgb(30, 30, 30);
@@ -74,60 +80,119 @@
 
         public static void ApplyThemeToForm(Form form, Theme theme)
         {
-            // don't attempt to theme comboboxes. just don't.
+            // don't attempt to theme the comboboxes. just don't.
             switch (theme)
             {
                 case Theme.Light:
-                    DwmApi.UnextendFrame(form.Handle);
-                    DwmApi.DisableImmersiveDarkMode(form.Handle);
-                    SetColorRecursive(form, new ControlStyle(SystemColors.Control, Color.Black), 
-                        c => c is not ListView && c is not Button && c is not TextBox && c is not CheckedListBox && c is not ComboBox);
-                    SetColorRecursive(form, new ControlStyle(SystemColors.Window, Color.Black), c => c is ListView || c is TextBox);
-                    SetColorRecursive(form, new ButtonStyle(SystemColors.Window, Color.Black, FlatStyle.Standard), c => c is Button);
-                    SetColorRecursive(form, new ControlStyle(SystemColors.Window, Color.Black), c => c is CheckedListBox);
-                    form.BackColor = SystemColors.Control;
-                    break;
+                    ApplyLightTheme(form);
+                    return;
+
                 case Theme.Dark:
-                    DwmApi.UnextendFrame(form.Handle);
-                    DwmApi.EnableImmersiveDarkMode(form.Handle);
-                    SetColorRecursive(form, new ControlStyle(DarkMainColor, Color.White), c => c is not Label && c is not Button && c is not ComboBox);
-                    SetColorRecursive(form, new ControlStyle(DarkMainColor, Color.White), c => c is Label);
-                    SetColorRecursive(form, new ButtonStyle(DarkModeButtonColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder), c => c is Button);
-                    break;
+                    ApplyDarkTheme(form);
+                    return;
+
                 case Theme.ExtendFrame:
                 case Theme.ExtendFrameDark:
-                    if (theme == Theme.ExtendFrame) DwmApi.DisableImmersiveDarkMode(form.Handle);
-                    else DwmApi.EnableImmersiveDarkMode(form.Handle);
-                    DwmApi.ExtendFrame(form.Handle);
-                    SetColorRecursive(form, new ControlStyle(Color.Black, Color.White), c => 
-                    c is not Label && c is not Button && c is not ComboBox);
-                    SetColorRecursive(form, new ControlStyle(Color.Black, Color.White), c => c is Label);
-                    SetColorRecursive(form, new ButtonStyle(Color.Black, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder), c => c is Button);
-                    break;
+                    ApplyExtendFrameTheme(form, theme == Theme.ExtendFrame);
+                    return;
+
                 case Theme.Blur:
-                    DwmApi.EnableImmersiveDarkMode(form.Handle);
-                    DwmApi.UnextendFrame(form.Handle);
-                    SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
-                        c => c is not Label && c is not Button && c is not ComboBox);
-                    SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White), c => c is Label);
-                    SetColorRecursive(form, new ButtonStyle(AcrylicMainColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder), c => c is Button);
-                    DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_BLURBEHIND);
-                    break;
+                    ApplyBlurTheme(form);
+                    return;
+
                 case Theme.Acrylic:
-                    DwmApi.EnableImmersiveDarkMode(form.Handle);
-                    DwmApi.UnextendFrame(form.Handle);
-                    SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
-                        c => c is not Label && c is not Button && c is not ComboBox);
-                    SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White), c => c is Label);
-                    SetColorRecursive(form, new ButtonStyle(AcrylicMainColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder), c => c is Button);
-                    DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND);
-                    break;
-            }   
+                    ApplyAcrylicTheme(form);
+                    return;
+                case Theme.System:
+                    if (IsSystemLightTheme())
+                        ApplyLightTheme(form);
+                    else
+                        ApplyDarkTheme(form);
+                    return;
+
+            }
+            throw new NotImplementedException("The requested theme is not implemented.");
         }
+
+        private static void ApplyLightTheme(Form form)
+        {
+            DwmApi.UnextendFrame(form.Handle);
+            DwmApi.DisableImmersiveDarkMode(form.Handle);
+
+            SetColorRecursive(form, new ControlStyle(SystemColors.Control, Color.Black),
+                c => c is not ListView && c is not Button && c is not TextBox && c is not CheckedListBox && c is not ComboBox);
+            SetColorRecursive(form, new ControlStyle(SystemColors.Window, Color.Black),
+                c => c is ListView || c is TextBox);
+            SetColorRecursive(form, new ButtonStyle(SystemColors.Window, Color.Black, FlatStyle.Standard),
+                c => c is Button);
+            SetColorRecursive(form, new ControlStyle(SystemColors.Window, Color.Black),
+                c => c is CheckedListBox);
+
+            form.BackColor = SystemColors.Control;
+        }
+        private static void ApplyDarkTheme(Form form)
+        {
+            DwmApi.UnextendFrame(form.Handle);
+            DwmApi.EnableImmersiveDarkMode(form.Handle);
+
+            SetColorRecursive(form, new ControlStyle(DarkMainColor, Color.White),
+                c => c is not Label && c is not Button && c is not ComboBox);
+            SetColorRecursive(form, new ControlStyle(DarkMainColor, Color.White),
+                c => c is Label);
+            SetColorRecursive(form, new ButtonStyle(DarkModeButtonColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
+                c => c is Button);
+        }
+        private static void ApplyExtendFrameTheme(Form form, bool light = true)
+        {
+            if (light)
+                DwmApi.DisableImmersiveDarkMode(form.Handle);
+            else
+                DwmApi.EnableImmersiveDarkMode(form.Handle);
+
+            DwmApi.ExtendFrame(form.Handle);
+
+            SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
+                c => c is not Label && c is not Button && c is not ComboBox);
+            SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
+                c => c is Label);
+            SetColorRecursive(form, new ButtonStyle(Color.Black, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
+                c => c is Button);
+        }
+        private static void ApplyBlurTheme(Form form)
+        {
+            DwmApi.EnableImmersiveDarkMode(form.Handle);
+            DwmApi.UnextendFrame(form.Handle);
+
+            SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
+                c => c is not Label && c is not Button && c is not ComboBox);
+            SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
+                c => c is Label);
+            SetColorRecursive(form, new ButtonStyle(AcrylicMainColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
+                c => c is Button);
+
+            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_BLURBEHIND);
+        }
+        private static void ApplyAcrylicTheme(Form form)
+        {
+            DwmApi.EnableImmersiveDarkMode(form.Handle);
+            DwmApi.UnextendFrame(form.Handle);
+
+            SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
+                c => c is not Label && c is not Button && c is not ComboBox);
+            SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
+                c => c is Label);
+            SetColorRecursive(form, new ButtonStyle(AcrylicMainColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
+                c => c is Button);
+
+            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND);
+        }
+
 
         public static void SetGlobalTheme(Theme theme, ThemeableForm.TextRenderMode? mode = null)
         {
             ActiveTheme = theme;
+
+            if (mode.HasValue) TextRenderMode = mode.Value;
 
             foreach (Form form in Application.OpenForms)
             {
@@ -136,6 +201,38 @@
                     tf.ApplyTheme(theme, mode);
                 }
             }
+        }
+
+        public static Theme ResolveTheme(Theme theme)
+        {
+            return theme switch
+            {
+                Theme.System => IsSystemLightTheme() ? Theme.Light : Theme.Dark,
+                _ => theme
+            };
+        }
+
+        /// <returns>True if light theme, false if dark theme.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static bool IsSystemLightTheme()
+        {
+            if (_cachedSystemLightTheme.HasValue)
+                return _cachedSystemLightTheme.Value;
+
+            _cachedSystemLightTheme = IsSystemLightThemeRaw();
+            return _cachedSystemLightTheme.Value;
+        }
+
+        /// <returns>True if light theme, false if dark theme.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        private static bool IsSystemLightThemeRaw()
+        {
+            object? value = Registry.GetValue(
+                @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize",
+                "AppsUseLightTheme",
+                1) ?? 
+                throw new InvalidOperationException("Failed to read system theme from registry (AppsUseLightTheme). The value was not found.");
+            return (int)value == 1;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using launcherdotnet.Helpers;
+using launcherdotnet.Syling;
 using Newtonsoft.Json;
 
 namespace launcherdotnet.Launcher.Settings
@@ -7,7 +8,6 @@ namespace launcherdotnet.Launcher.Settings
     {
         private static readonly string _baseDir = Config.BaseDir;
         private static readonly string _settingsPath = Path.Combine(_baseDir, "settings.json");
-        private const string KeyName = "Launcher.NET";
 
         public static string ToAbsolutePath(string path) => 
             Path.IsPathRooted(path) ? path : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
@@ -37,6 +37,7 @@ namespace launcherdotnet.Launcher.Settings
             string json = JsonConvert.SerializeObject(Settings, Formatting.Indented);
             Directory.CreateDirectory(Path.GetDirectoryName(_settingsPath)!);
             File.WriteAllText(_settingsPath, json);
+            ThemeManager.SetGlobalTheme(Settings.Theme);
             try
             {
                 if (Settings.RunOnStartup)
@@ -77,6 +78,9 @@ namespace launcherdotnet.Launcher.Settings
 
         public bool MLShowCI { get; set; } = true;
         public bool MLSelectStableByDefault { get; set; } = true;
+
+        // ===== Theme =====
+        public ThemeManager.Theme Theme { get; set; } = ThemeManager.Theme.Light;
 
         // ===== Advanced =====
 

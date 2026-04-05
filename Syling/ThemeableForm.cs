@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Globalization;
 
 namespace launcherdotnet.Syling
 {
@@ -12,6 +13,8 @@ namespace launcherdotnet.Syling
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ThemeManager.Theme ActiveTheme { get; set; }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public ThemeManager.Theme ResolvedTheme => ThemeManager.ResolveTheme(ActiveTheme);
 
         private readonly HashSet<Control> _themedControls = new();
 
@@ -25,10 +28,8 @@ namespace launcherdotnet.Syling
 
         public ThemeableForm()
         {
-            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
-                return;
-            Load += (sender, e) => ApplyTheme(ThemeManager.ActiveTheme, TextRenderMode.Auto);
-            SetTextRenderMode(TextRenderMode.Auto);
+            if (IsDesignTime) return;
+            Load += (sender, e) => ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.TextRenderMode);
         }
 
         private void ApplyControlTheme(Control c, ThemeManager.Theme theme)
@@ -117,7 +118,8 @@ namespace launcherdotnet.Syling
         {
             if (IsDesignTime) return;
 
-            switch (theme)
+            ThemeManager.Theme resolvedTheme = ThemeManager.ResolveTheme(theme);
+            switch (resolvedTheme)
             {
                 case ThemeManager.Theme.Light:
                     break;
@@ -142,8 +144,8 @@ namespace launcherdotnet.Syling
 
             ActiveTheme = theme;
 
-            ApplyControlTheme(this, theme);
-            ThemeManager.ApplyThemeToForm(this, theme);
+            ApplyControlTheme(this, resolvedTheme);
+            ThemeManager.ApplyThemeToForm(this, resolvedTheme);
 
             if (textMode.HasValue)
                 SetTextRenderMode(textMode.Value);

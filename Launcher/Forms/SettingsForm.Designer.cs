@@ -42,6 +42,16 @@
             MLCheckbox = new CheckedListBox();
             AdvancedTab = new TabPage();
             AdvancedCheckbox = new CheckedListBox();
+            ThemeTab = new TabPage();
+            ThemeHint = new Label();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            SystemThemeButton = new RadioButton();
+            LightThemeButton = new RadioButton();
+            DarkThemeButton = new RadioButton();
+            BlurThemeButton = new RadioButton();
+            AcrylicThemeButton = new RadioButton();
+            ExtendedFrameThemeButton = new RadioButton();
+            ExtendedFrameDarkThemeButton = new RadioButton();
             AboutTab = new TabPage();
             license1 = new Label();
             linkLabel1 = new LinkLabel();
@@ -54,12 +64,14 @@
             LauncherApiLabel = new Label();
             panel1 = new Panel();
             DescriptionLabel = new Label();
-            SelectedHint = new Label();
+            Hint = new Label();
             SettingsTabControl.SuspendLayout();
             GeneralTab.SuspendLayout();
             PluginsTab.SuspendLayout();
             ModloaderTab.SuspendLayout();
             AdvancedTab.SuspendLayout();
+            ThemeTab.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
             AboutTab.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -67,7 +79,7 @@
             // SaveButton
             // 
             SaveButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            SaveButton.Location = new Point(425, 415);
+            SaveButton.Location = new Point(477, 415);
             SaveButton.Name = "SaveButton";
             SaveButton.Size = new Size(75, 23);
             SaveButton.TabIndex = 4;
@@ -82,11 +94,12 @@
             SettingsTabControl.Controls.Add(PluginsTab);
             SettingsTabControl.Controls.Add(ModloaderTab);
             SettingsTabControl.Controls.Add(AdvancedTab);
+            SettingsTabControl.Controls.Add(ThemeTab);
             SettingsTabControl.Controls.Add(AboutTab);
             SettingsTabControl.Location = new Point(12, 12);
             SettingsTabControl.Name = "SettingsTabControl";
             SettingsTabControl.SelectedIndex = 0;
-            SettingsTabControl.Size = new Size(299, 406);
+            SettingsTabControl.Size = new Size(351, 406);
             SettingsTabControl.TabIndex = 5;
             // 
             // GeneralTab
@@ -95,7 +108,7 @@
             GeneralTab.Location = new Point(4, 24);
             GeneralTab.Name = "GeneralTab";
             GeneralTab.Padding = new Padding(3);
-            GeneralTab.Size = new Size(291, 378);
+            GeneralTab.Size = new Size(343, 378);
             GeneralTab.TabIndex = 0;
             GeneralTab.Text = "General";
             GeneralTab.UseVisualStyleBackColor = true;
@@ -107,7 +120,7 @@
             GeneralCheckbox.Items.AddRange(new object[] { "Check for launcher.net updates automatically", "Warn if update check failed", "Confirm before deleting instances", "Confirm before overwriting instances", "Run on startup" });
             GeneralCheckbox.Location = new Point(6, 6);
             GeneralCheckbox.Name = "GeneralCheckbox";
-            GeneralCheckbox.Size = new Size(279, 364);
+            GeneralCheckbox.Size = new Size(331, 364);
             GeneralCheckbox.TabIndex = 0;
             // 
             // PluginsTab
@@ -120,17 +133,18 @@
             PluginsTab.Controls.Add(MirrorsHint);
             PluginsTab.Location = new Point(4, 24);
             PluginsTab.Name = "PluginsTab";
-            PluginsTab.Size = new Size(291, 378);
+            PluginsTab.Size = new Size(343, 378);
             PluginsTab.TabIndex = 2;
             PluginsTab.Text = "Plugins";
             PluginsTab.UseVisualStyleBackColor = true;
             // 
             // GamePluginsBox
             // 
+            GamePluginsBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             GamePluginsBox.FormattingEnabled = true;
             GamePluginsBox.Location = new Point(0, 83);
             GamePluginsBox.Name = "GamePluginsBox";
-            GamePluginsBox.Size = new Size(285, 274);
+            GamePluginsBox.Size = new Size(340, 274);
             GamePluginsBox.TabIndex = 7;
             GamePluginsBox.SelectedIndexChanged += GamePluginsBox_SelectedIndexChanged;
             // 
@@ -146,7 +160,8 @@
             // 
             // button1
             // 
-            button1.Location = new Point(142, 58);
+            button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button1.Location = new Point(197, 58);
             button1.Name = "button1";
             button1.Size = new Size(143, 23);
             button1.TabIndex = 5;
@@ -177,18 +192,19 @@
             ModloaderTab.Location = new Point(4, 24);
             ModloaderTab.Name = "ModloaderTab";
             ModloaderTab.Padding = new Padding(3);
-            ModloaderTab.Size = new Size(291, 378);
+            ModloaderTab.Size = new Size(343, 378);
             ModloaderTab.TabIndex = 1;
             ModloaderTab.Text = "Melonloader";
             ModloaderTab.UseVisualStyleBackColor = true;
             // 
             // MLCheckbox
             // 
+            MLCheckbox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             MLCheckbox.FormattingEnabled = true;
             MLCheckbox.Items.AddRange(new object[] { "Enable CI releases", "Prefer stable releases" });
             MLCheckbox.Location = new Point(6, 6);
             MLCheckbox.Name = "MLCheckbox";
-            MLCheckbox.Size = new Size(279, 364);
+            MLCheckbox.Size = new Size(331, 364);
             MLCheckbox.TabIndex = 0;
             // 
             // AdvancedTab
@@ -196,19 +212,148 @@
             AdvancedTab.Controls.Add(AdvancedCheckbox);
             AdvancedTab.Location = new Point(4, 24);
             AdvancedTab.Name = "AdvancedTab";
-            AdvancedTab.Size = new Size(291, 378);
+            AdvancedTab.Size = new Size(343, 378);
             AdvancedTab.TabIndex = 3;
             AdvancedTab.Text = "Advanced";
             AdvancedTab.UseVisualStyleBackColor = true;
             // 
             // AdvancedCheckbox
             // 
+            AdvancedCheckbox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             AdvancedCheckbox.FormattingEnabled = true;
             AdvancedCheckbox.Items.AddRange(new object[] { "Show debug console", "Enable verbose logging", "Disable plugin version check" });
             AdvancedCheckbox.Location = new Point(3, 3);
             AdvancedCheckbox.Name = "AdvancedCheckbox";
-            AdvancedCheckbox.Size = new Size(285, 58);
+            AdvancedCheckbox.Size = new Size(337, 58);
             AdvancedCheckbox.TabIndex = 0;
+            // 
+            // ThemeTab
+            // 
+            ThemeTab.Controls.Add(ThemeHint);
+            ThemeTab.Controls.Add(flowLayoutPanel1);
+            ThemeTab.Location = new Point(4, 24);
+            ThemeTab.Name = "ThemeTab";
+            ThemeTab.Padding = new Padding(3);
+            ThemeTab.Size = new Size(343, 378);
+            ThemeTab.TabIndex = 5;
+            ThemeTab.Text = "Themes";
+            ThemeTab.UseVisualStyleBackColor = true;
+            // 
+            // ThemeHint
+            // 
+            ThemeHint.Location = new Point(6, 6);
+            ThemeHint.Margin = new Padding(3, 3, 3, 0);
+            ThemeHint.Name = "ThemeHint";
+            ThemeHint.Size = new Size(331, 36);
+            ThemeHint.TabIndex = 1;
+            ThemeHint.Text = "launcher.NET has multiple themes you can choose from. Pick the one that best suits you.\r\n";
+            // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.Controls.Add(SystemThemeButton);
+            flowLayoutPanel1.Controls.Add(LightThemeButton);
+            flowLayoutPanel1.Controls.Add(DarkThemeButton);
+            flowLayoutPanel1.Controls.Add(BlurThemeButton);
+            flowLayoutPanel1.Controls.Add(AcrylicThemeButton);
+            flowLayoutPanel1.Controls.Add(ExtendedFrameThemeButton);
+            flowLayoutPanel1.Controls.Add(ExtendedFrameDarkThemeButton);
+            flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
+            flowLayoutPanel1.Location = new Point(6, 42);
+            flowLayoutPanel1.Margin = new Padding(3, 0, 3, 3);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(186, 141);
+            flowLayoutPanel1.TabIndex = 0;
+            // 
+            // SystemThemeButton
+            // 
+            SystemThemeButton.AutoSize = true;
+            SystemThemeButton.Location = new Point(3, 0);
+            SystemThemeButton.Margin = new Padding(3, 0, 3, 0);
+            SystemThemeButton.Name = "SystemThemeButton";
+            SystemThemeButton.Size = new Size(63, 19);
+            SystemThemeButton.TabIndex = 0;
+            SystemThemeButton.TabStop = true;
+            SystemThemeButton.Text = "System";
+            SystemThemeButton.UseVisualStyleBackColor = true;
+            SystemThemeButton.CheckedChanged += SystemThemeButton_CheckedChanged;
+            // 
+            // LightThemeButton
+            // 
+            LightThemeButton.AutoSize = true;
+            LightThemeButton.Location = new Point(3, 19);
+            LightThemeButton.Margin = new Padding(3, 0, 3, 0);
+            LightThemeButton.Name = "LightThemeButton";
+            LightThemeButton.Size = new Size(52, 19);
+            LightThemeButton.TabIndex = 0;
+            LightThemeButton.TabStop = true;
+            LightThemeButton.Text = "Light";
+            LightThemeButton.UseVisualStyleBackColor = true;
+            LightThemeButton.CheckedChanged += LightThemeButton_CheckedChanged;
+            // 
+            // DarkThemeButton
+            // 
+            DarkThemeButton.AutoSize = true;
+            DarkThemeButton.Location = new Point(3, 38);
+            DarkThemeButton.Margin = new Padding(3, 0, 3, 0);
+            DarkThemeButton.Name = "DarkThemeButton";
+            DarkThemeButton.Size = new Size(49, 19);
+            DarkThemeButton.TabIndex = 0;
+            DarkThemeButton.TabStop = true;
+            DarkThemeButton.Text = "Dark";
+            DarkThemeButton.UseVisualStyleBackColor = true;
+            DarkThemeButton.CheckedChanged += DarkThemeButton_CheckedChanged;
+            // 
+            // BlurThemeButton
+            // 
+            BlurThemeButton.AutoSize = true;
+            BlurThemeButton.Location = new Point(3, 57);
+            BlurThemeButton.Margin = new Padding(3, 0, 3, 0);
+            BlurThemeButton.Name = "BlurThemeButton";
+            BlurThemeButton.Size = new Size(130, 19);
+            BlurThemeButton.TabIndex = 0;
+            BlurThemeButton.TabStop = true;
+            BlurThemeButton.Text = "Blurred background";
+            BlurThemeButton.UseVisualStyleBackColor = true;
+            BlurThemeButton.CheckedChanged += BlurThemeButton_CheckedChanged;
+            // 
+            // AcrylicThemeButton
+            // 
+            AcrylicThemeButton.AutoSize = true;
+            AcrylicThemeButton.Location = new Point(3, 76);
+            AcrylicThemeButton.Margin = new Padding(3, 0, 3, 0);
+            AcrylicThemeButton.Name = "AcrylicThemeButton";
+            AcrylicThemeButton.Size = new Size(61, 19);
+            AcrylicThemeButton.TabIndex = 0;
+            AcrylicThemeButton.TabStop = true;
+            AcrylicThemeButton.Text = "Acrylic";
+            AcrylicThemeButton.UseVisualStyleBackColor = true;
+            AcrylicThemeButton.CheckedChanged += AcrylicThemeButton_CheckedChanged;
+            // 
+            // ExtendedFrameThemeButton
+            // 
+            ExtendedFrameThemeButton.AutoSize = true;
+            ExtendedFrameThemeButton.Location = new Point(3, 95);
+            ExtendedFrameThemeButton.Margin = new Padding(3, 0, 3, 0);
+            ExtendedFrameThemeButton.Name = "ExtendedFrameThemeButton";
+            ExtendedFrameThemeButton.Size = new Size(108, 19);
+            ExtendedFrameThemeButton.TabIndex = 0;
+            ExtendedFrameThemeButton.TabStop = true;
+            ExtendedFrameThemeButton.Text = "Extended frame";
+            ExtendedFrameThemeButton.UseVisualStyleBackColor = true;
+            ExtendedFrameThemeButton.CheckedChanged += ExtendedFrameThemeButton_CheckedChanged;
+            // 
+            // ExtendedFrameDarkThemeButton
+            // 
+            ExtendedFrameDarkThemeButton.AutoSize = true;
+            ExtendedFrameDarkThemeButton.Location = new Point(3, 114);
+            ExtendedFrameDarkThemeButton.Margin = new Padding(3, 0, 3, 0);
+            ExtendedFrameDarkThemeButton.Name = "ExtendedFrameDarkThemeButton";
+            ExtendedFrameDarkThemeButton.Size = new Size(142, 19);
+            ExtendedFrameDarkThemeButton.TabIndex = 0;
+            ExtendedFrameDarkThemeButton.TabStop = true;
+            ExtendedFrameDarkThemeButton.Text = "Extended frame (dark)";
+            ExtendedFrameDarkThemeButton.UseVisualStyleBackColor = true;
+            ExtendedFrameDarkThemeButton.CheckedChanged += ExtendedFrameDarkThemeButton_CheckedChanged;
             // 
             // AboutTab
             // 
@@ -224,7 +369,7 @@
             AboutTab.Location = new Point(4, 24);
             AboutTab.Name = "AboutTab";
             AboutTab.Padding = new Padding(3);
-            AboutTab.Size = new Size(291, 378);
+            AboutTab.Size = new Size(343, 378);
             AboutTab.TabIndex = 4;
             AboutTab.Text = "About";
             AboutTab.UseVisualStyleBackColor = true;
@@ -325,8 +470,8 @@
             // 
             panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             panel1.Controls.Add(DescriptionLabel);
-            panel1.Controls.Add(SelectedHint);
-            panel1.Location = new Point(313, 36);
+            panel1.Controls.Add(Hint);
+            panel1.Location = new Point(365, 36);
             panel1.Name = "panel1";
             panel1.Size = new Size(187, 369);
             panel1.TabIndex = 6;
@@ -341,19 +486,19 @@
             DescriptionLabel.TabIndex = 1;
             DescriptionLabel.Text = "Description:";
             // 
-            // SelectedHint
+            // Hint
             // 
-            SelectedHint.Location = new Point(0, 45);
-            SelectedHint.Name = "SelectedHint";
-            SelectedHint.Size = new Size(180, 319);
-            SelectedHint.TabIndex = 0;
-            SelectedHint.Text = "Select a setting for more information on what it does.";
+            Hint.Location = new Point(0, 45);
+            Hint.Name = "Hint";
+            Hint.Size = new Size(180, 319);
+            Hint.TabIndex = 0;
+            Hint.Text = "Select a setting for more information on what it does.";
             // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(510, 450);
+            ClientSize = new Size(562, 450);
             Controls.Add(panel1);
             Controls.Add(SettingsTabControl);
             Controls.Add(SaveButton);
@@ -366,6 +511,9 @@
             PluginsTab.PerformLayout();
             ModloaderTab.ResumeLayout(false);
             AdvancedTab.ResumeLayout(false);
+            ThemeTab.ResumeLayout(false);
+            flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
             AboutTab.ResumeLayout(false);
             AboutTab.PerformLayout();
             panel1.ResumeLayout(false);
@@ -382,7 +530,7 @@
         private TabPage AdvancedTab;
         private CheckedListBox AdvancedCheckbox;
         private Panel panel1;
-        private Label SelectedHint;
+        private Label Hint;
         private CheckedListBox GeneralCheckbox;
         private Label MirrorsHint;
         private CheckedListBox MLCheckbox;
@@ -401,5 +549,15 @@
         private Label MadeBy;
         private Label license1;
         private LinkLabel linkLabel1;
+        private TabPage ThemeTab;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private RadioButton SystemThemeButton;
+        private RadioButton LightThemeButton;
+        private Label ThemeHint;
+        private RadioButton DarkThemeButton;
+        private RadioButton BlurThemeButton;
+        private RadioButton AcrylicThemeButton;
+        private RadioButton ExtendedFrameThemeButton;
+        private RadioButton ExtendedFrameDarkThemeButton;
     }
 }
