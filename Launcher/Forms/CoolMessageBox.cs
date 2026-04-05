@@ -36,6 +36,16 @@ namespace launcherdotnet.Launcher.Forms
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             pictureBoxIcon.Image = SystemIcons.Information.ToBitmap();
 
+            if (this.ResolvedTheme == ThemeManager.Theme.Light)
+            {
+                this.Shown += (s, e) =>
+                {
+                    ThemeManager.SetColorRecursive(this, new ControlStyle(SystemColors.Window), c => c is not Panel);
+                    buttonsPanel.BackColor = SystemColors.Control;
+                    this.BackColor = SystemColors.Window;
+                };
+            }
+
             int lineHeight = TextRenderer.MeasureText("A", label.Font).Height;
             if (text != null) label.Text = text;
             if (TextRenderer.MeasureText(label.Text, label.Font).Width > label.Width)
@@ -45,7 +55,7 @@ namespace launcherdotnet.Launcher.Forms
             captionWidth = captionWidth == 0 ? 15 : captionWidth;
 
             this.ClientSize = new Size(label.Width + label.Left + 15 + captionWidth, label.Height +
-                label.Top + buttonsPanel.Height + 15);
+                label.Top + buttonsPanel.Height + 30);
 
             switch (buttons)
             {
