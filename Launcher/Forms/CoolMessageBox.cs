@@ -40,7 +40,10 @@ namespace launcherdotnet.Launcher.Forms
             if (TextRenderer.MeasureText(label.Text, label.Font).Width > label.Width)
                 label.Top -= lineHeight;
 
-            this.ClientSize = new Size(label.Width + label.Left + 15, label.Height +
+            int captionWidth = TextRenderer.MeasureText(this.Text, SystemFonts.CaptionFont).Width;
+            captionWidth = captionWidth == 0 ? 15 : captionWidth;
+
+            this.ClientSize = new Size(label.Width + label.Left + 15 + captionWidth, label.Height +
                 label.Top + buttonsPanel.Height + 15);
 
             switch (buttons)
