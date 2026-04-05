@@ -33,6 +33,7 @@ namespace launcherdotnet.Launcher.Forms
         {
             InitializeComponent();
             this.Text = caption;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
             pictureBoxIcon.Image = SystemIcons.Information.ToBitmap();
 
             int lineHeight = TextRenderer.MeasureText("A", label.Font).Height;
