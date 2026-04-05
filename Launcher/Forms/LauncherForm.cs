@@ -34,9 +34,6 @@ namespace launcherdotnet.Launcher.Forms
             UpdateGameList(gamesView);
 
             ResizeColumns();
-
-            this.Load += (sender, e) => SetGlobalTheme(Theme.Light, TextRenderMode.AutoStrict);
-
             Task.Run(async () => await Updater.CheckForUpdates());
         }
 

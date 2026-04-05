@@ -31,6 +31,7 @@ namespace launcherdotnet.Launcher.Settings
                 Save();
             }
             if (Settings.OpenDebugConsole) ConsoleHelper.Show();
+            ThemeManager.SetGlobalTheme(Settings.Theme);
         }
 
         public static void Save()
