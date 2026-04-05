@@ -30,6 +30,7 @@ namespace launcherdotnet.Launcher.Settings
                 Settings = new LauncherSettings();
                 Save();
             }
+            if (Settings.OpenDebugConsole) ConsoleHelper.Show();
         }
 
         public static void Save()

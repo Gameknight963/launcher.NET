@@ -16,10 +16,6 @@ namespace launcherdotnet
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             LauncherSettings.Load();
-            if (LauncherSettings.Settings.OpenDebugConsole)
-            {
-                ConsoleHelper.Show();
-            }
             LauncherLogger.WriteLine("Hello world!", true);
             LauncherLogger.WriteLine("Vesbose logging is enabled.");
             PluginManager.LoadPlugins(Config.PluginsDir);
