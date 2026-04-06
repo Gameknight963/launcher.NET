@@ -103,7 +103,6 @@
             // 
             // RefreshList
             // 
-            RefreshList.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             RefreshList.Location = new Point(121, 1);
             RefreshList.Name = "RefreshList";
             RefreshList.Size = new Size(75, 23);
