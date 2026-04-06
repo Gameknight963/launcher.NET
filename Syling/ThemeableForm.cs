@@ -26,6 +26,7 @@ namespace launcherdotnet.Syling
 
         private void ApplyControlTheme(Control c, ThemeManager.Theme theme)
         {
+            ThemeManager.Theme resolvedTheme = ThemeManager.ResolveTheme(theme);
             if (IsDesignTime) return;
             if (c is ListView lv)
             {
@@ -36,7 +37,7 @@ namespace launcherdotnet.Syling
                     lv.DrawSubItem += Lv_DrawSubItem;
                 }
 
-                lv.OwnerDraw = (theme != ThemeManager.Theme.Light);
+                lv.OwnerDraw = (resolvedTheme != ThemeManager.Theme.Light);
             }
 
             if (c is TabControl tc)
@@ -46,7 +47,7 @@ namespace launcherdotnet.Syling
                     tc.DrawItem += Tc_DrawItem;
                 }
 
-                if (theme == ThemeManager.Theme.Light)
+                if (resolvedTheme == ThemeManager.Theme.Light)
                 {
                     tc.DrawMode = TabDrawMode.Normal;
                     return;

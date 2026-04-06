@@ -94,33 +94,34 @@ namespace launcherdotnet.Syling
             {
                 case Theme.Light:
                     ApplyLightTheme(form);
-                    return;
+                    break;
 
                 case Theme.Dark:
                     ApplyDarkTheme(form);
-                    return;
+                    break;
 
                 case Theme.ExtendFrame:
                 case Theme.ExtendFrameDark:
                     ApplyExtendFrameTheme(form, theme == Theme.ExtendFrame);
-                    return;
+                    break;
 
                 case Theme.Blur:
                     ApplyBlurTheme(form);
-                    return;
+                    break;
 
                 case Theme.Acrylic:
                     ApplyAcrylicTheme(form);
-                    return;
+                    break;
                 case Theme.System:
                     if (IsSystemLightTheme())
                         ApplyLightTheme(form);
                     else
                         ApplyDarkTheme(form);
-                    return;
-
+                    break;
+                default:
+                    throw new NotImplementedException("The requested theme is not implemented.");
             }
-            throw new NotImplementedException("The requested theme is not implemented.");
+            form.Refresh();
         }
 
         private static void ApplyLightTheme(Form form)
