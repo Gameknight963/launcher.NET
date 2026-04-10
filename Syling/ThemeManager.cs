@@ -173,7 +173,7 @@ namespace launcherdotnet.Syling
         }
         private static void ApplyBlurTheme(Form form)
         {
-            DwmApi.EnableImmersiveDarkMode(form.Handle);
+            DwmApi.DisableImmersiveDarkMode(form.Handle);
             DwmApi.UnextendFrame(form.Handle);
             DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_BLURBEHIND);
 
