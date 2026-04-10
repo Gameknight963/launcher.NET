@@ -121,6 +121,11 @@ namespace launcherdotnet.Syling
                 GradientColor = 0x00000000,
                 AnimationId = 0
             };
+            
+            if (accentState == AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND)
+            {
+                accent.GradientColor = 0x66000000;
+            }
 
             int size = Marshal.SizeOf(accent);
 
