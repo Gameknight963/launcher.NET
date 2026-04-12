@@ -21,6 +21,7 @@ namespace launcherdotnet.Launcher.Forms
             this.FormClosing += ModloaderInstallForm_FormClosing;
             this.KeyPreview = true;
             this.KeyDown += ModloaderInstallForm_KeyDown;
+            this.StartPosition = FormStartPosition.CenterParent;
             Initialize();
         }
 
