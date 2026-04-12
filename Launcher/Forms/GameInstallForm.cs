@@ -17,6 +17,7 @@ namespace launcherdotnet.Launcher.Forms
             this.Icon = SystemIcons.Information;
             this.KeyPreview = true;
             this.KeyDown += GameInstallForm_KeyDown;
+            this.StartPosition = FormStartPosition.CenterParent;
             Initialize();
         }
 

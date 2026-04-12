@@ -42,6 +42,7 @@ namespace launcherdotnet.Launcher.Forms
 
             this.KeyPreview = true;
             this.KeyDown += SettingsForm_KeyDown;
+            this.StartPosition = FormStartPosition.CenterParent;
 
             foreach (RadioButton btn in themeButtons)
             {
