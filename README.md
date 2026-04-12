@@ -2,9 +2,9 @@
 
 A lightweight game launcher capable of playing **any** game, through the power of plugins. 
 
-<img width="725" height="489" alt="launcherdotnet_Jjlpgl8Mfb" src="https://github.com/user-attachments/assets/b4e48baf-08ac-4050-8139-d0184529c5ef" />
-
-Shown: Windows 10 with [Aero10](https://www.deviantart.com/vaporvance/art/Aero10-Vista-Seven-909711949) theme, _not_ windows 7. Windows 7 compatability not guranteed. Good luck getting .NET 10 running.
+<img width="711" height="476" alt="image" src="https://github.com/user-attachments/assets/452da1c3-e411-42ac-86ba-8c095e1122ee" />
+<br>
+It still looks good even though its winforms
 
 ### but how??
 
@@ -21,13 +21,12 @@ Instead of implementing installation a million times for a million games, launch
 ## Usage
 ### Adding an instance
 
-Click "+ Add new Instance" and follow the instructions.
+Click "+ Add new Instance," select a game and version and click Install. You will be prompted to type a name.
 
 ### Installing mods
 
-Melonloader, a Unity modloader, is the only modloader currently integrated into launcher.NET. To install it, click 'Install..." on the left panel with an instance selected, and follow the instructions.
-
-Next, select your instance and click "open game folder." Note that the installer does not create the Mods folder for you. Create the Mods folder, and put any mods in there.
+Melonloader, a Unity modloader, is the only modloader currently integrated into launcher.NET. To install it, click 'Modify..." on the left panel with an instance selected, select a Melonloader version and click install.
+> Note that the installer does not create the Mods folder for you. Create the Mods folder, and put any mods in there.
 
 ### Configuring it to your liking
 Click "settings." Descriptions of what each setting does are included on the right panel of the settings menu.
@@ -45,11 +44,49 @@ see [PLUGINS.MD](https://github.com/Gameknight963/launcher.NET/blob/main/PLUGINS
 
 ## Screenshots
 
-<img width="526" height="489" alt="launcherdotnet_iBvbmKe2Cb" src="https://github.com/user-attachments/assets/cfc0b90c-51a3-4979-912d-f820d69ade5a" />
+**Light:**
 
-<img width="725" height="489" alt="launcherdotnet_IgWOlE3189" src="https://github.com/user-attachments/assets/a8aa6b16-25ca-4a80-9604-cf6cf6afe951" />
+<img width="711" height="481" alt="launcherdotnet_VNUgVsfIAu" src="https://github.com/user-attachments/assets/689b0d08-f9f4-4ce4-b7e9-8d28e22226b1" />
 
-(screenshots are out of date, but I couldn't care less lol)
+**Dark:**
+
+<img width="711" height="481" alt="launcherdotnet_fXFJpTfPN3" src="https://github.com/user-attachments/assets/9fa9ddab-912e-432c-a063-0b7fc9de26e7" />
+
+**Blurred background:**
+
+<img width="711" height="481" alt="launcherdotnet_QHOQR7jgXj" src="https://github.com/user-attachments/assets/83317718-c57f-4125-8f9a-0d002ffa61b1" />
+
+**Acrylic:**
+
+<img width="725" height="488" alt="explorer_bx8k88Rmd7" src="https://github.com/user-attachments/assets/4334934c-8eb2-438f-a69a-3613790af3d2" />
+
+**Extend frame (dark):** (oops the mouse got in the screenshot and i dont want to take it again)
+
+<img width="711" height="481" alt="launcherdotnet_n2zwcfoXwV" src="https://github.com/user-attachments/assets/04330f9a-417d-4902-9a94-ca15b70c4f5f" />
+
+Extend frame (light mode) does not currently work properly without external software (DWMBlurGlass).
+
+### With DWMBlurGlass installed
+
+**Extend frame:**
+
+<img width="711" height="477" alt="launcherdotnet_W0lpRX6wEs" src="https://github.com/user-attachments/assets/3fa827c6-5c15-45d0-b3c8-4814f0af590a" />
+
+**Extend frame (dark):**
+
+<img width="711" height="476" alt="launcherdotnet_yQkKNYxFww" src="https://github.com/user-attachments/assets/bd16804d-8ff7-4b9e-8a3f-7de8fa1f85f4" />
+
+_My settings: blur radius 4, light mode titlebar ``#6478B9FF``, dark mode titlebar ``#98010015``_
+
+_DWMBlurGlass is awesome_
+
+By the way, themes still apply to Messageboxes and Inputboxes:
+
+<img width="469" height="167" alt="image" src="https://github.com/user-attachments/assets/6f845eb7-696f-4e8c-b177-73d465f09d72" />
+<br>
+<img width="304" height="148" alt="image" src="https://github.com/user-attachments/assets/11b41abb-ca0c-43e0-93e1-0983aab32baf" />
+
+I reimplemented Messagebox and Inputbox in Winforms to acheive this
 
 ### Source of "Hello World" plugin
 https://github.com/Gameknight963/launcher.NET-hello-world-plugin
