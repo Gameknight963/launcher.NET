@@ -40,7 +40,10 @@ namespace launcherdotnet.Launcher.Forms
         {
             GameInfo game = ExtractGameInfo();
             if (!game.IsValid(out string reason))
+            {
                 CoolMessageBox.Show(reason, "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             EditedGameInfo = game;
             DialogResult = DialogResult.OK;
             Close();
