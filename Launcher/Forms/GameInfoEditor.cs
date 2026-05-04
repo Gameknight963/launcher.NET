@@ -20,6 +20,7 @@ namespace launcherdotnet.Launcher.Forms
             AcceptButton = okButton;
             CancelButton = cancelButton;
             labelBox.Select();
+            this.StartPosition = FormStartPosition.CenterParent;
         }
 
         private GameInfo ExtractGameInfo()
