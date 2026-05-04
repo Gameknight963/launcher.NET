@@ -25,31 +25,59 @@ namespace launcherdotnet.Launcher
             {
                 string exeFull = Path.GetFullPath(Path.Combine(Config.BaseDir, RelativePath));
                 string rootFull = Path.GetFullPath(Path.Combine(Config.BaseDir, RelativeRootDirectory));
-                return exeFull.StartsWith(Config.BaseDir, StringComparison.OrdinalIgnoreCase);
+                return exeFull.StartsWith(Config.BaseDir) && rootFull.StartsWith(Config.BaseDir);
             }
         }
-        public void EnsurePathsValid()
+        public bool IsValid(out string reason)
         {
+            // Label cannot be empty
+            if (string.IsNullOrWhiteSpace(Label))
+            {
+                reason = "Label cannot be empty.";
+                return false;
+            }
             // Path cannot be empty
             if (string.IsNullOrWhiteSpace(RelativePath))
-                throw new InvalidOperationException("RelativePath is empty.");
-
+            {
+                reason = "RelativePath cannot be empty.";
+                return false;
+            }
             if (string.IsNullOrWhiteSpace(RelativeRootDirectory))
-                throw new InvalidOperationException("RelativeRootDirectory is empty.");
-
+            {
+                reason = "RelativeRootDirectory cannot be empty.";
+                return false;
+            }
+            // Relative paths cannot be absolute paths
+            if (Path.IsPathRooted(RelativePath))
+            {
+                reason = "RelativePath cannot be an absolute path.";
+                return false;
+            }
+            if (Path.IsPathRooted(RelativeRootDirectory))
+            {
+                reason = "RelativeRootDirectory cannot be an absolute path.";
+                return false;
+            }
             // Cannot escape launcher root
             if (!AbsolutePath.StartsWith(Config.BaseDir, StringComparison.OrdinalIgnoreCase))
-                throw new InvalidOperationException($"FullPath '{AbsolutePath}' is outside of launcher root.");
-
+            {
+                reason = $"AbsolutePath '{AbsolutePath}' is outside of launcher root.";
+                return false;
+            }
             if (!AbsoluteRootDirectory.StartsWith(Config.BaseDir, StringComparison.OrdinalIgnoreCase))
-                throw new InvalidOperationException($"FullRootDirectory '{AbsoluteRootDirectory}' is outside of launcher root.");
+            {
+                reason = $"AbsoluteRootDirectory '{AbsoluteRootDirectory}' is outside of launcher root.";
+                return false;
+            }
 
-            // relative paths cannot be absolute paths
-            if (Path.IsPathRooted(RelativePath))
-                throw new InvalidOperationException("RelativePath cannot be an absolute path.");
+            reason = "";
+            return true;
+        }
 
-            if (Path.IsPathRooted(RelativeRootDirectory))
-                throw new InvalidOperationException("RelativeRootDirectory cannot be an absolute path.");
+        public void EnsurePathsValid()
+        {
+            if (!IsValid(out string reason))
+                throw new InvalidOperationException(reason);
         }
     }
 }
