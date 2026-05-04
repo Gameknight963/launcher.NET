@@ -364,6 +364,7 @@ namespace launcherdotnet.Launcher.Forms
             {
                 // we know its not null since the dialogresult is ok
                 GameService.UpsertGame(editor.EditedGameInfo!);
+                RefreshGamesView();
             }
         }
     }
