@@ -19,6 +19,7 @@ namespace launcherdotnet.Launcher.Forms
             guidLabel.Text = game.Id;
             AcceptButton = okButton;
             CancelButton = cancelButton;
+            labelBox.Select();
         }
 
         private GameInfo ExtractGameInfo()
