@@ -8,7 +8,7 @@ namespace launcherdotnet.Launcher
         public string Label { get; set; } = "";
         public string RelativePath { get; set; } = "";
         public string RelativeRootDirectory { get; set; } = "";
-        public string GameName { get; set; } = "Unspecified";
+        public string GameName { get; set; } = "";
         public bool RunWithCmd { get; set; } = false;
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string? ThunderstoreCommunitySlug { get; set; } = null;
