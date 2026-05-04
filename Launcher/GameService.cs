@@ -3,7 +3,7 @@ using launcherdotnet.Launcher.Forms;
 
 namespace launcherdotnet.Launcher
 {
-    internal class GameService
+    public class GameService
     {
         public static void UpsertGame(GameInfo game)
         {
