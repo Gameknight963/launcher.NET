@@ -11,6 +11,9 @@ namespace launcherdotnet
         public string GameName { get; set; } = "Unspecified";
         public bool RunWithCmd { get; set; } = false;
         public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string? ThunderstoreCommunitySlug { get; set; } = null;
+        [JsonIgnore]
+        public bool HasThunderstoreIntegration => ThunderstoreCommunitySlug != null;
         [JsonIgnore]
         public string AbsolutePath => Path.Combine(Config.BaseDir, RelativePath);
         [JsonIgnore]
