@@ -64,17 +64,17 @@
             // labelBox
             // 
             labelBox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            labelBox.Location = new Point(175, 3);
+            labelBox.Location = new Point(123, 3);
             labelBox.Name = "labelBox";
-            labelBox.Size = new Size(166, 23);
+            labelBox.Size = new Size(218, 23);
             labelBox.TabIndex = 1;
             // 
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(labelOfTheGameLabel, 0, 0);
             tableLayoutPanel1.Controls.Add(labelBox, 1, 0);
             tableLayoutPanel1.Controls.Add(nameBox, 1, 1);
@@ -93,9 +93,9 @@
             // nameBox
             // 
             nameBox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            nameBox.Location = new Point(175, 31);
+            nameBox.Location = new Point(123, 31);
             nameBox.Name = "nameBox";
-            nameBox.Size = new Size(166, 23);
+            nameBox.Size = new Size(218, 23);
             nameBox.TabIndex = 1;
             // 
             // gameNameLabel
@@ -125,26 +125,26 @@
             // thunderstoreSlugBox
             // 
             thunderstoreSlugBox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            thunderstoreSlugBox.Location = new Point(175, 59);
+            thunderstoreSlugBox.Location = new Point(123, 59);
             thunderstoreSlugBox.Name = "thunderstoreSlugBox";
-            thunderstoreSlugBox.Size = new Size(166, 23);
+            thunderstoreSlugBox.Size = new Size(218, 23);
             thunderstoreSlugBox.TabIndex = 1;
             // 
             // tableLayoutPanel2
             // 
             tableLayoutPanel2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tableLayoutPanel2.ColumnCount = 2;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel2.Controls.Add(exeLabel, 0, 0);
             tableLayoutPanel2.Controls.Add(gameExeBox, 1, 0);
             tableLayoutPanel2.Controls.Add(gameRootDirBox, 1, 1);
             tableLayoutPanel2.Controls.Add(rootDirLabel, 0, 1);
-            tableLayoutPanel2.Location = new Point(12, 103);
+            tableLayoutPanel2.Location = new Point(12, 101);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 2;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.Size = new Size(344, 57);
             tableLayoutPanel2.TabIndex = 2;
             // 
@@ -163,17 +163,17 @@
             // gameExeBox
             // 
             gameExeBox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            gameExeBox.Location = new Point(175, 3);
+            gameExeBox.Location = new Point(123, 3);
             gameExeBox.Name = "gameExeBox";
-            gameExeBox.Size = new Size(166, 23);
+            gameExeBox.Size = new Size(218, 23);
             gameExeBox.TabIndex = 1;
             // 
             // gameRootDirBox
             // 
             gameRootDirBox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            gameRootDirBox.Location = new Point(175, 31);
+            gameRootDirBox.Location = new Point(123, 31);
             gameRootDirBox.Name = "gameRootDirBox";
-            gameRootDirBox.Size = new Size(166, 23);
+            gameRootDirBox.Size = new Size(218, 23);
             gameRootDirBox.TabIndex = 1;
             // 
             // rootDirLabel
@@ -191,7 +191,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(13, 170);
+            label2.Location = new Point(18, 168);
             label2.Name = "label2";
             label2.Size = new Size(21, 15);
             label2.TabIndex = 4;
@@ -200,7 +200,7 @@
             // guidLabel
             // 
             guidLabel.AutoSize = true;
-            guidLabel.Location = new Point(40, 170);
+            guidLabel.Location = new Point(45, 168);
             guidLabel.Name = "guidLabel";
             guidLabel.Size = new Size(117, 15);
             guidLabel.TabIndex = 4;
@@ -209,7 +209,7 @@
             // copyGUIDButton
             // 
             copyGUIDButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            copyGUIDButton.Location = new Point(278, 166);
+            copyGUIDButton.Location = new Point(278, 164);
             copyGUIDButton.Name = "copyGUIDButton";
             copyGUIDButton.Size = new Size(75, 23);
             copyGUIDButton.TabIndex = 5;
