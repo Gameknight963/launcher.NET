@@ -193,14 +193,14 @@
             label2.AutoSize = true;
             label2.Location = new Point(13, 170);
             label2.Name = "label2";
-            label2.Size = new Size(37, 15);
+            label2.Size = new Size(21, 15);
             label2.TabIndex = 4;
-            label2.Text = "GUID:";
+            label2.Text = "ID:";
             // 
             // guidLabel
             // 
             guidLabel.AutoSize = true;
-            guidLabel.Location = new Point(56, 170);
+            guidLabel.Location = new Point(40, 170);
             guidLabel.Name = "guidLabel";
             guidLabel.Size = new Size(117, 15);
             guidLabel.TabIndex = 4;
@@ -215,6 +215,7 @@
             copyGUIDButton.TabIndex = 5;
             copyGUIDButton.Text = "Copy GUID";
             copyGUIDButton.UseVisualStyleBackColor = true;
+            copyGUIDButton.Click += copyGUIDButton_Click;
             // 
             // okButton
             // 
@@ -236,7 +237,7 @@
             cancelButton.TabIndex = 6;
             cancelButton.Text = "Cancel";
             cancelButton.UseVisualStyleBackColor = true;
-            cancelButton.Click += this.cancelButton_Click;
+            cancelButton.Click += cancelButton_Click;
             // 
             // GameInfoEditor
             // 
@@ -252,7 +253,6 @@
             Controls.Add(tableLayoutPanel1);
             ForeColor = Color.Black;
             Name = "GameInfoEditor";
-            Text = "Game Info Editor";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             tableLayoutPanel2.ResumeLayout(false);
