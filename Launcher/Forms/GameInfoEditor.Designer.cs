@@ -253,6 +253,7 @@
             Controls.Add(tableLayoutPanel1);
             ForeColor = Color.Black;
             Name = "GameInfoEditor";
+            Text = "Game Info Editor";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             tableLayoutPanel2.ResumeLayout(false);
