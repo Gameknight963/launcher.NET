@@ -145,6 +145,7 @@ namespace launcherdotnet.Launcher.Forms
                     OpenFolderButton.Visible = false;
                     RenameButton.Visible = false;
                     InstallSometingButton.Visible = false;
+                    editGameInfoButton.Visible = false;
                     break;
 
                 case SidebarMode.GameSelected:
@@ -153,6 +154,7 @@ namespace launcherdotnet.Launcher.Forms
                     OpenFolderButton.Visible = true;
                     RenameButton.Visible = true;
                     InstallSometingButton.Visible = true;
+                    editGameInfoButton.Visible = true;
                     break;
             }
         }
@@ -225,7 +227,7 @@ namespace launcherdotnet.Launcher.Forms
         {
             RefreshGamesView();
         }
-         
+
         private void LaunchButton_Click(object sender, EventArgs e)
         {
             GameInfo? game = GetSelectedGame();
@@ -261,7 +263,7 @@ namespace launcherdotnet.Launcher.Forms
         {
             SettingsForm form = new SettingsForm();
             form.StartPosition = FormStartPosition.CenterParent;
-            await Task.Run(async() => form.ShowDialog(this));
+            await Task.Run(async () => form.ShowDialog(this));
         }
 
         private void RefreshGamesView()
@@ -347,8 +349,21 @@ namespace launcherdotnet.Launcher.Forms
                 e.SuppressKeyPress = true;
                 bool empty = SearchBox.TextLength == 0;
                 SearchBox.Clear();
-                if(!empty) RefreshGamesView();
+                if (!empty) RefreshGamesView();
                 gamesView.Focus();
+            }
+        }
+
+        private void editGameInfo(object sender, EventArgs e)
+        {
+            GameInfo? currentGame = GetSelectedGame();
+            if (currentGame == null) return;
+            GameInfoEditor editor = new(currentGame);
+            editor.ShowDialog();
+            if (editor.DialogResult == DialogResult.OK)
+            {
+                // we know its not null since the dialogresult is ok
+                GameService.UpsertGame(editor.EditedGameInfo!);
             }
         }
     }
