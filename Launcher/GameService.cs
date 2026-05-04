@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using launcherdotnet.Launcher.Forms;
 
-namespace launcherdotnet
+namespace launcherdotnet.Launcher
 {
     internal class GameService
     {
