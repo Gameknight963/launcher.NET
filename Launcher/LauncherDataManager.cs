@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using launcherdotnet.Launcher.Forms;
 
-namespace launcherdotnet
+namespace launcherdotnet.Launcher
 {
     internal class LauncherDataManager
     {

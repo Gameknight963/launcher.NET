@@ -1,7 +1,7 @@
 ﻿using launcherdotnet.Launcher.Settings;
 using Newtonsoft.Json;
 
-namespace launcherdotnet
+namespace launcherdotnet.Launcher
 {
     public class GameInfo
     {
