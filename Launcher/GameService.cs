@@ -17,6 +17,8 @@ namespace launcherdotnet.Launcher
                 existing.Label = game.Label;
                 existing.RelativePath = game.RelativePath;
                 existing.RunWithCmd = game.RunWithCmd;
+                existing.GameName = game.GameName;
+                existing.ThunderstoreCommunitySlug = game.ThunderstoreCommunitySlug;
             }
             else
             {
