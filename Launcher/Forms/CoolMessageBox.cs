@@ -1,4 +1,4 @@
-﻿using launcherdotnet.Syling;
+﻿using launcherdotnet.Styling;
 using System.Media;
 
 namespace launcherdotnet.Launcher.Forms
