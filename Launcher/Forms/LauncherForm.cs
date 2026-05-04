@@ -1,4 +1,4 @@
-using launcherdotnet.Syling;
+using launcherdotnet.Styling;
 using launcherdotnet.Helpers;
 using launcherdotnet.Launcher.Settings;
 using Microsoft.VisualBasic;

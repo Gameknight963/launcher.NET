@@ -1,5 +1,5 @@
 ﻿using launcherdotnet.Helpers;
-using launcherdotnet.Syling;
+using launcherdotnet.Styling;
 
 namespace launcherdotnet.Launcher.Forms
 {

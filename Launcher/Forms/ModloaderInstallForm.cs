@@ -1,5 +1,5 @@
 ﻿using launcherdotnet.Launcher.Settings;
-using launcherdotnet.Syling;
+using launcherdotnet.Styling;
 using MLInstallerSDK;
 using System.Data;
 using System.IO.Compression;
