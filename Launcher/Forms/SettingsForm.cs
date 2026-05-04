@@ -1,6 +1,6 @@
 ﻿using launcherdotnet.Launcher.Settings;
 using launcherdotnet.PluginAPI;
-using launcherdotnet.Syling;
+using launcherdotnet.Styling;
 using Newtonsoft.Json;
 using System.Diagnostics;
 
