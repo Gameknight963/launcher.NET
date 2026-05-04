@@ -1,7 +1,6 @@
 using launcherdotnet.Styling;
 using launcherdotnet.Helpers;
 using launcherdotnet.Launcher.Settings;
-using Microsoft.VisualBasic;
 using System.Diagnostics;
 
 namespace launcherdotnet.Launcher.Forms
