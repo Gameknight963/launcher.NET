@@ -17,11 +17,12 @@ namespace launcherdotnet.Launcher.Forms
             gameExeBox.Text = game.RelativePath;
             gameRootDirBox.Text = game.RelativeRootDirectory;
             guidLabel.Text = game.Id;
+            AcceptButton = okButton;
+            CancelButton = cancelButton;
         }
 
         private GameInfo ExtractGameInfo()
         {
-            MessageBox.Show(nameBox.Text);
             return new GameInfo()
             {
                 Label = labelBox.Text,
