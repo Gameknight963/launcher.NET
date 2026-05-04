@@ -44,6 +44,7 @@
             RenameButton = new Button();
             SettingsButton = new Button();
             SearchBox = new TextBox();
+            editGameInfoButton = new Button();
             Panel.SuspendLayout();
             SuspendLayout();
             // 
@@ -143,6 +144,7 @@
             // Panel
             // 
             Panel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            Panel.Controls.Add(editGameInfoButton);
             Panel.Controls.Add(InstallSometingButton);
             Panel.Controls.Add(InstallHint);
             Panel.Controls.Add(OpenFolderButton);
@@ -204,6 +206,16 @@
             SearchBox.TabIndex = 10;
             SearchBox.TextChanged += SearchBox_TextChanged;
             // 
+            // editGameInfoButton
+            // 
+            editGameInfoButton.Location = new Point(5, 182);
+            editGameInfoButton.Name = "editGameInfoButton";
+            editGameInfoButton.Size = new Size(156, 23);
+            editGameInfoButton.TabIndex = 7;
+            editGameInfoButton.Text = "Edit Game Info";
+            editGameInfoButton.UseVisualStyleBackColor = true;
+            editGameInfoButton.Click += editGameInfo;
+            // 
             // LauncherForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -242,5 +254,6 @@
         private Button OpenFolderButton;
         private Button RenameButton;
         private TextBox SearchBox;
+        private Button editGameInfoButton;
     }
 }

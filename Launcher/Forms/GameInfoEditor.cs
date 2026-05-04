@@ -21,6 +21,7 @@ namespace launcherdotnet.Launcher.Forms
 
         private GameInfo ExtractGameInfo()
         {
+            MessageBox.Show(nameBox.Text);
             return new GameInfo()
             {
                 Label = labelBox.Text,
@@ -28,6 +29,7 @@ namespace launcherdotnet.Launcher.Forms
                 ThunderstoreCommunitySlug = thunderstoreSlugBox.Text,
                 RelativePath = gameExeBox.Text,
                 RelativeRootDirectory = gameRootDirBox.Text,
+                Id = guidLabel.Text
             };
         }
 
