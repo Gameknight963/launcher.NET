@@ -26,6 +26,20 @@ namespace launcherdotnet.Thunderstore
             return result ?? [];
         }
 
+        public static async Task<List<ThunderstorePackage>?> GetPackagesPageAsync(string communitySlug, int page = 1)
+        {
+            string url = $"{BaseUrl}/api/experimental/package/?community={communitySlug}&page={page}";
+            LauncherLogger.WriteLine($"Fetching page: {url}");
+            string json = await _http.GetStringAsync(url);
+            LauncherLogger.WriteLine($"Got response, length: {json.Length}");
+            ThunderstorePaginatedResponse? resp = JsonConvert.DeserializeObject<ThunderstorePaginatedResponse>(json);
+            if (resp == null)
+                LauncherLogger.WriteLine("Deserialization returned null.");
+            else
+                LauncherLogger.WriteLine($"Got {resp.Results.Count} packages, next: {resp.Next ?? "none"}");
+            return resp?.Results;
+        }
+
         public static async Task DownloadModAsync(ThunderstoreVersion version, string modsDirectory)
         {
             using InstanceTempDir temp = new();
