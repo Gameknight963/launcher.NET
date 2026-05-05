@@ -39,12 +39,13 @@
             DeleteButton = new Button();
             InstallHint = new Label();
             Panel = new Panel();
+            editGameInfoButton = new Button();
             InstallSometingButton = new Button();
             OpenFolderButton = new Button();
             RenameButton = new Button();
             SettingsButton = new Button();
             SearchBox = new TextBox();
-            editGameInfoButton = new Button();
+            installModsButton = new Button();
             Panel.SuspendLayout();
             SuspendLayout();
             // 
@@ -144,6 +145,7 @@
             // Panel
             // 
             Panel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            Panel.Controls.Add(installModsButton);
             Panel.Controls.Add(editGameInfoButton);
             Panel.Controls.Add(InstallSometingButton);
             Panel.Controls.Add(InstallHint);
@@ -155,6 +157,16 @@
             Panel.Name = "Panel";
             Panel.Size = new Size(173, 389);
             Panel.TabIndex = 3;
+            // 
+            // editGameInfoButton
+            // 
+            editGameInfoButton.Location = new Point(5, 182);
+            editGameInfoButton.Name = "editGameInfoButton";
+            editGameInfoButton.Size = new Size(156, 23);
+            editGameInfoButton.TabIndex = 7;
+            editGameInfoButton.Text = "Edit Game Info";
+            editGameInfoButton.UseVisualStyleBackColor = true;
+            editGameInfoButton.Click += editGameInfo;
             // 
             // InstallSometingButton
             // 
@@ -206,15 +218,15 @@
             SearchBox.TabIndex = 10;
             SearchBox.TextChanged += SearchBox_TextChanged;
             // 
-            // editGameInfoButton
+            // installModsButton
             // 
-            editGameInfoButton.Location = new Point(5, 182);
-            editGameInfoButton.Name = "editGameInfoButton";
-            editGameInfoButton.Size = new Size(156, 23);
-            editGameInfoButton.TabIndex = 7;
-            editGameInfoButton.Text = "Edit Game Info";
-            editGameInfoButton.UseVisualStyleBackColor = true;
-            editGameInfoButton.Click += editGameInfo;
+            installModsButton.Location = new Point(5, 229);
+            installModsButton.Name = "installModsButton";
+            installModsButton.Size = new Size(156, 23);
+            installModsButton.TabIndex = 8;
+            installModsButton.Text = "Install mods";
+            installModsButton.UseVisualStyleBackColor = true;
+            installModsButton.Click += installModsButton_Click;
             // 
             // LauncherForm
             // 
@@ -255,5 +267,6 @@
         private Button RenameButton;
         private TextBox SearchBox;
         private Button editGameInfoButton;
+        private Button installModsButton;
     }
 }

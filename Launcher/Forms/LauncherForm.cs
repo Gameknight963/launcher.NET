@@ -146,6 +146,7 @@ namespace launcherdotnet.Launcher.Forms
                     RenameButton.Visible = false;
                     InstallSometingButton.Visible = false;
                     editGameInfoButton.Visible = false;
+                    installModsButton.Visible = false;
                     break;
 
                 case SidebarMode.GameSelected:
@@ -155,6 +156,7 @@ namespace launcherdotnet.Launcher.Forms
                     RenameButton.Visible = true;
                     InstallSometingButton.Visible = true;
                     editGameInfoButton.Visible = true;
+                    installModsButton.Visible = true;
                     break;
             }
         }
@@ -366,6 +368,12 @@ namespace launcherdotnet.Launcher.Forms
                 GameService.UpsertGame(editor.EditedGameInfo!);
                 RefreshGamesView();
             }
+        }
+
+        private void installModsButton_Click(object sender, EventArgs e)
+        {
+            ThunderstoreModBrowser browser = new(GetSelectedGame()!);
+            browser.ShowDialog();
         }
     }
 }

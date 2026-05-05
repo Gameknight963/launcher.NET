@@ -30,6 +30,7 @@
         {
             tableLayoutPanel1 = new TableLayoutPanel();
             modsLv = new ListView();
+            nameColumn = new ColumnHeader();
             descriptionRtb = new RichTextBox();
             okButton = new Button();
             cancelButton = new Button();
@@ -53,11 +54,20 @@
             // modsLv
             // 
             modsLv.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            modsLv.Columns.AddRange(new ColumnHeader[] { nameColumn });
+            modsLv.FullRowSelect = true;
+            modsLv.HeaderStyle = ColumnHeaderStyle.None;
             modsLv.Location = new Point(3, 3);
             modsLv.Name = "modsLv";
             modsLv.Size = new Size(280, 360);
             modsLv.TabIndex = 0;
             modsLv.UseCompatibleStateImageBehavior = false;
+            modsLv.View = View.Details;
+            // 
+            // nameColumn
+            // 
+            nameColumn.Text = "Name";
+            nameColumn.Width = 276;
             // 
             // descriptionRtb
             // 
@@ -95,6 +105,7 @@
             Controls.Add(cancelButton);
             Controls.Add(okButton);
             Controls.Add(tableLayoutPanel1);
+            ForeColor = Color.Black;
             Name = "ThunderstoreModBrowser";
             Text = "ThunderstoreModBrowser";
             tableLayoutPanel1.ResumeLayout(false);
@@ -108,5 +119,6 @@
         private RichTextBox descriptionRtb;
         private Button okButton;
         private Button cancelButton;
+        private ColumnHeader nameColumn;
     }
 }
