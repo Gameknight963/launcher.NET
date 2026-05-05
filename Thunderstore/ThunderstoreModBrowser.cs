@@ -44,10 +44,13 @@ namespace launcherdotnet.Launcher.Forms
         {
             if (_currentChunk >= _chunkUrls.Count) return;
             _isLoading = true;
+            int topIndex = modsLv.TopItem?.Index ?? 0;
             List<ThunderstorePackageSlim> packages = await ThunderstoreClient.GetPackageListChunkAsync(_chunkUrls[_currentChunk]);
             _currentChunk++;
             _packages.AddRange(packages);
             modsLv.VirtualListSize = _packages.Count;
+            if (topIndex < _packages.Count)
+                modsLv.TopItem = modsLv.Items[topIndex];
             _isLoading = false;
         }
 
