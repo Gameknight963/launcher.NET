@@ -12,6 +12,7 @@ namespace launcherdotnet.Launcher.Forms
         private bool _isLoading = false;
         private readonly string _slug;
         private readonly Dictionary<int, List<ThunderstoreVersion>> _versionCache = [];
+        private readonly Dictionary<int, string> _readmeCache = [];
 
         public ThunderstoreModBrowser(GameInfo game)
         {
@@ -72,40 +73,61 @@ namespace launcherdotnet.Launcher.Forms
 
         private async void modsLv_SelectedIndexChanged(object sender, EventArgs e)
         {
-            UseWaitCursor = true;
-            versionsCb.Items.Clear();
-
             if (modsLv.SelectedIndices.Count == 0)
             {
-                UseWaitCursor = false;
+                versionsCb.Items.Clear();
+                descriptionRtb.Clear(); // Clear text when nothing is selected
                 return;
             }
 
+            UseWaitCursor = true;
             int index = modsLv.SelectedIndices[0];
+            ThunderstorePackageSlim slim = _packages[index];
 
-            if (!_versionCache.TryGetValue(index, out List<ThunderstoreVersion>? versions))
+            try
             {
-                ThunderstorePackageSlim slim = _packages[index];
-
-                ThunderstorePackage? full = await slim.FetchFullPackageAsync();
-                if (full is null)
+                if (!_versionCache.TryGetValue(index, out List<ThunderstoreVersion>? versions))
                 {
-                    LauncherLogger.Warn($"Package null, skipping...");
-                    UseWaitCursor = false;
-                    return;
+                    ThunderstorePackage? full = await slim.FetchFullPackageAsync();
+                    if (full is null)
+                    {
+                        LauncherLogger.Warn($"Package null, skipping...");
+                        return;
+                    }
+
+                    versions = await full.FetchVersionsAsync(_slug);
+                    _versionCache[index] = versions;
                 }
 
-                versions = await full.FetchVersionsAsync(_slug);
-                _versionCache[index] = versions;
-            }
+                versionsCb.Items.Clear();
+                foreach (ThunderstoreVersion v in versions)
+                {
+                    versionsCb.Items.Add(v.VersionNumber);
+                }
+                if (versionsCb.Items.Count > 0) versionsCb.SelectedIndex = 0;
 
-            foreach (ThunderstoreVersion v in versions)
+
+                if (!_readmeCache.TryGetValue(index, out string? readmeContent))
+                {
+                    ThunderstorePackage? full = await slim.FetchFullPackageAsync();
+
+                    if (full != null)
+                    {
+                        readmeContent = await ThunderstoreClient.GetPackageReadmeAsync(full);
+                        _readmeCache[index] = readmeContent;
+                    }
+                }
+
+                descriptionRtb.Text = readmeContent ?? "Readme not found.";
+            }
+            catch (Exception ex)
             {
-                versionsCb.Items.Add(v.VersionNumber);
+                LauncherLogger.Error($"Error loading mod details: {ex.Message}");
             }
-
-            versionsCb.SelectedIndex = 0;
-            UseWaitCursor = false;
+            finally
+            {
+                UseWaitCursor = false;
+            }
         }
     }
 }
