@@ -21,5 +21,8 @@
                 IconUrl = package.LatestVersion?.Icon
             };
         }
+
+        public async Task<ThunderstorePackage?> FetchFullPackageAsync()
+            => await ThunderstoreClient.GetPackageAsync(Owner, Name);
     }
 }
