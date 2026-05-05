@@ -11,6 +11,7 @@ namespace launcherdotnet.Launcher.Forms
         private int _currentChunk = 0;
         private bool _isLoading = false;
         private readonly string _slug;
+        private readonly Dictionary<int, List<ThunderstoreVersion>> _versionCache = [];
 
         public ThunderstoreModBrowser(GameInfo game)
         {
@@ -73,19 +74,36 @@ namespace launcherdotnet.Launcher.Forms
         {
             UseWaitCursor = true;
             versionsCb.Items.Clear();
-            if (modsLv.SelectedIndices.Count == 0) return;
-            ThunderstorePackage? selectedPackageFull = await _packages[modsLv.SelectedIndices[0]].FetchFullPackageAsync();
-            if (selectedPackageFull is null)
+
+            if (modsLv.SelectedIndices.Count == 0)
             {
-                LauncherLogger.Warn($"Selected package '{modsLv.SelectedItems[0].Text}' null, skipping UI update...");
                 UseWaitCursor = false;
                 return;
             }
-            List<ThunderstoreVersion> versions = await selectedPackageFull.FetchVersionsAsync(_slug);
+
+            int index = modsLv.SelectedIndices[0];
+
+            if (!_versionCache.TryGetValue(index, out List<ThunderstoreVersion>? versions))
+            {
+                ThunderstorePackageSlim slim = _packages[index];
+
+                ThunderstorePackage? full = await slim.FetchFullPackageAsync();
+                if (full is null)
+                {
+                    LauncherLogger.Warn($"Package null, skipping...");
+                    UseWaitCursor = false;
+                    return;
+                }
+
+                versions = await full.FetchVersionsAsync(_slug);
+                _versionCache[index] = versions;
+            }
+
             foreach (ThunderstoreVersion v in versions)
             {
                 versionsCb.Items.Add(v.VersionNumber);
             }
+
             versionsCb.SelectedIndex = 0;
             UseWaitCursor = false;
         }
