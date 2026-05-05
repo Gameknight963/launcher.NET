@@ -9,6 +9,7 @@ namespace launcherdotnet.Launcher.Forms
         private List<string> _chunkUrls = [];
         private int _currentChunk = 0;
         private bool _isLoading = false;
+        private string? slug;
 
         public ThunderstoreModBrowser(GameInfo game)
         {
@@ -18,7 +19,7 @@ namespace launcherdotnet.Launcher.Forms
             modsLv.VirtualMode = true;
             modsLv.RetrieveVirtualItem += ModsLv_RetrieveVirtualItem;
             UpdateModsLv(game);
-
+            slug = game.ThunderstoreCommunitySlug;
             FormClosed += (s, e) =>
             {
                 modsLv.VirtualListSize = 0;
@@ -68,17 +69,23 @@ namespace launcherdotnet.Launcher.Forms
 
         private async void modsLv_SelectedIndexChanged(object sender, EventArgs e)
         {
-        //    if (modsLv.SelectedIndices.Count == 0) return;
-        //    ThunderstorePackage? selectedPackageFull = await _packages[modsLv.SelectedIndices[0]].FetchFullPackageAsync();
-        //    if (selectedPackageFull is null)
-        //    {
-        //        LauncherLogger.WriteLine("is null");
-        //        return;
-        //    }
-        //    foreach (ThunderstoreVersion v in selectedPackageFull.Versions)
-        //    {
-        //        LauncherLogger.WriteLine(v.VersionNumber);
-        //    }
+            if (modsLv.SelectedIndices.Count == 0) return;
+            ThunderstorePackage? selectedPackageFull = await _packages[modsLv.SelectedIndices[0]].FetchFullPackageAsync();
+            if (selectedPackageFull is null)
+            {
+                LauncherLogger.WriteLine("is null");
+                return;
+            }
+            if (slug is null)
+            {
+                LauncherLogger.WriteLine("no slug");
+                return;
+            }
+            List<ThunderstoreVersion> versions = await selectedPackageFull.FetchVersionsAsync(slug);
+            foreach (ThunderstoreVersion v in versions)
+            {
+                LauncherLogger.WriteLine(v.VersionNumber);
+            }
         }
     }
 }

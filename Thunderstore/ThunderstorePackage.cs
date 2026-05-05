@@ -28,5 +28,16 @@ namespace launcherdotnet.Thunderstore
         public int TotalDownloads { get; set; }
         [JsonProperty("latest")]
         public ThunderstoreVersion? Latest { get; set; }
+        /// <summary>
+        /// Uuid4 may not be included depending on which endpoint you call
+        /// </summary>
+        [JsonProperty("uuid4")]
+        public string? Uuid4 { get; set; }
+
+        public async Task<List<ThunderstoreVersion>> FetchVersionsAsync(string communitySlug)
+        {
+            if (Uuid4 is null) throw new InvalidOperationException("Uuid4 must not be null to fetch versions.");
+            return await ThunderstoreClient.GetPackageVersionsAsync(communitySlug, Uuid4);
+        }
     }
 }

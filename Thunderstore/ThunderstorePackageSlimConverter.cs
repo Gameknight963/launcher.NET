@@ -40,6 +40,7 @@ namespace launcherdotnet.Thunderstore
                         case "owner": slim.Owner = reader.Value as string ?? ""; break;
                         case "is_deprecated": slim.IsDeprecated = reader.Value is bool b && b; break;
                         case "latest": inLatest = true; break;
+                        case "uuid4": slim.Uuid4 = reader.Value as string ?? ""; break;
                         default: reader.Skip(); break;
                     }
                 }
