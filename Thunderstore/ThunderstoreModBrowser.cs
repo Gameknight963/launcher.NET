@@ -68,17 +68,17 @@ namespace launcherdotnet.Launcher.Forms
 
         private async void modsLv_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if (modsLv.SelectedIndices.Count == 0) return;
-            //ThunderstorePackage? selectedPackageFull = await _packages[modsLv.SelectedIndices[0]].FetchFullPackageAsync();
-            //if (selectedPackageFull is null)
-            //{
-            //    LauncherLogger.WriteLine("is null");
-            //    return;
-            //}
-            //foreach (ThunderstoreVersion v in selectedPackageFull.Versions)
-            //{
-            //    LauncherLogger.WriteLine(v.VersionNumber);
-            //}
+        //    if (modsLv.SelectedIndices.Count == 0) return;
+        //    ThunderstorePackage? selectedPackageFull = await _packages[modsLv.SelectedIndices[0]].FetchFullPackageAsync();
+        //    if (selectedPackageFull is null)
+        //    {
+        //        LauncherLogger.WriteLine("is null");
+        //        return;
+        //    }
+        //    foreach (ThunderstoreVersion v in selectedPackageFull.Versions)
+        //    {
+        //        LauncherLogger.WriteLine(v.VersionNumber);
+        //    }
         }
     }
 }

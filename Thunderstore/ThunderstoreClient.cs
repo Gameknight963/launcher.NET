@@ -9,23 +9,6 @@ namespace launcherdotnet.Thunderstore
         private static readonly HttpClient _http = new();
         public const string BaseUrl = "https://thunderstore.io";
 
-        public static async Task<List<ThunderstorePackage>> GetPackagesAsync(string communitySlug)
-        {
-            string url = $"{BaseUrl}/c/{communitySlug}/api/v1/package/";
-            LauncherLogger.WriteLine($"Fetching packages from {url}");
-            string json = await _http.GetStringAsync(url);
-            LauncherLogger.WriteLine($"Got response, length: {json.Length}");
-            LauncherLogger.WriteLine($"First 500 chars: {json[..Math.Min(500, json.Length)]}");
-            List<ThunderstorePackage>? result = JsonConvert.DeserializeObject<List<ThunderstorePackage>>(json);
-            LauncherLogger.WriteLine($"Deserialized {result?.Count ?? 0} packages", true);
-            if (result?.Count > 0)
-            {
-                LauncherLogger.WriteLine($"First package name: '{result[0].Name}'");
-                LauncherLogger.WriteLine($"First package versions: {result[0].Versions.Count}");
-            }
-            return result ?? [];
-        }
-
         public static async Task<ThunderstorePackage?> GetPackageAsync(string owner, string name)
         {
             string url = $"{BaseUrl}/api/experimental/package/{owner}/{name}/";
