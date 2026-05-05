@@ -45,6 +45,7 @@
             copyGUIDButton = new Button();
             okButton = new Button();
             cancelButton = new Button();
+            runsWithCmdCheck = new CheckBox();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -191,7 +192,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(18, 168);
+            label2.Location = new Point(18, 193);
             label2.Name = "label2";
             label2.Size = new Size(21, 15);
             label2.TabIndex = 4;
@@ -200,7 +201,7 @@
             // guidLabel
             // 
             guidLabel.AutoSize = true;
-            guidLabel.Location = new Point(45, 168);
+            guidLabel.Location = new Point(45, 193);
             guidLabel.Name = "guidLabel";
             guidLabel.Size = new Size(117, 15);
             guidLabel.TabIndex = 4;
@@ -209,7 +210,7 @@
             // copyGUIDButton
             // 
             copyGUIDButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            copyGUIDButton.Location = new Point(278, 164);
+            copyGUIDButton.Location = new Point(278, 189);
             copyGUIDButton.Name = "copyGUIDButton";
             copyGUIDButton.Size = new Size(75, 23);
             copyGUIDButton.TabIndex = 5;
@@ -220,7 +221,7 @@
             // okButton
             // 
             okButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            okButton.Location = new Point(278, 218);
+            okButton.Location = new Point(278, 249);
             okButton.Name = "okButton";
             okButton.Size = new Size(75, 23);
             okButton.TabIndex = 6;
@@ -231,7 +232,7 @@
             // cancelButton
             // 
             cancelButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            cancelButton.Location = new Point(197, 218);
+            cancelButton.Location = new Point(197, 249);
             cancelButton.Name = "cancelButton";
             cancelButton.Size = new Size(75, 23);
             cancelButton.TabIndex = 6;
@@ -239,11 +240,22 @@
             cancelButton.UseVisualStyleBackColor = true;
             cancelButton.Click += cancelButton_Click;
             // 
+            // runsWithCmdCheck
+            // 
+            runsWithCmdCheck.AutoSize = true;
+            runsWithCmdCheck.Location = new Point(19, 164);
+            runsWithCmdCheck.Name = "runsWithCmdCheck";
+            runsWithCmdCheck.Size = new Size(108, 19);
+            runsWithCmdCheck.TabIndex = 7;
+            runsWithCmdCheck.Text = "Runs with CMD";
+            runsWithCmdCheck.UseVisualStyleBackColor = true;
+            // 
             // GameInfoEditor
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(370, 253);
+            ClientSize = new Size(370, 284);
+            Controls.Add(runsWithCmdCheck);
             Controls.Add(cancelButton);
             Controls.Add(okButton);
             Controls.Add(copyGUIDButton);
@@ -282,5 +294,6 @@
         private Button copyGUIDButton;
         private Button okButton;
         private Button cancelButton;
+        private CheckBox runsWithCmdCheck;
     }
 }
