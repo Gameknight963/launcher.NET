@@ -26,18 +26,33 @@ namespace launcherdotnet.Thunderstore
             return result ?? [];
         }
 
-        public static async Task<List<ThunderstorePackage>?> GetPackagesPageAsync(string communitySlug, int page = 1)
+        public static async Task<List<string>> GetPackageListIndexAsync(string communitySlug)
         {
-            string url = $"{BaseUrl}/api/experimental/package/?community={communitySlug}&page={page}";
-            LauncherLogger.WriteLine($"Fetching page: {url}");
-            string json = await _http.GetStringAsync(url);
-            LauncherLogger.WriteLine($"Got response, length: {json.Length}");
-            ThunderstorePaginatedResponse? resp = JsonConvert.DeserializeObject<ThunderstorePaginatedResponse>(json);
-            if (resp == null)
-                LauncherLogger.WriteLine("Deserialization returned null.");
-            else
-                LauncherLogger.WriteLine($"Got {resp.Results.Count} packages, next: {resp.Next ?? "none"}");
-            return resp?.Results;
+            string url = $"{BaseUrl}/c/{communitySlug}/api/v1/package-listing-index/";
+            LauncherLogger.WriteLine($"Fetching package list index: {url}");
+            byte[] compressed = await _http.GetByteArrayAsync(url);
+            string json = DecompressGzip(compressed);
+            List<string>? chunkUrls = JsonConvert.DeserializeObject<List<string>>(json);
+            LauncherLogger.WriteLine($"Got {chunkUrls?.Count ?? 0} chunk URLs");
+            return chunkUrls ?? [];
+        }
+
+        public static async Task<List<ThunderstorePackage>> GetPackageListChunkAsync(string chunkUrl)
+        {
+            LauncherLogger.WriteLine($"Fetching chunk: {chunkUrl}");
+            byte[] compressed = await _http.GetByteArrayAsync(chunkUrl);
+            string json = DecompressGzip(compressed);
+            List<ThunderstorePackage>? packages = JsonConvert.DeserializeObject<List<ThunderstorePackage>>(json);
+            LauncherLogger.WriteLine($"Got {packages?.Count ?? 0} packages from chunk");
+            return packages ?? [];
+        }
+
+        private static string DecompressGzip(byte[] compressed)
+        {
+            using MemoryStream inputStream = new(compressed);
+            using GZipStream gzipStream = new(inputStream, CompressionMode.Decompress);
+            using StreamReader reader = new(gzipStream);
+            return reader.ReadToEnd();
         }
 
         public static async Task DownloadModAsync(ThunderstoreVersion version, string modsDirectory)
