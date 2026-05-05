@@ -12,8 +12,18 @@ namespace launcherdotnet.Thunderstore
         public static async Task<List<ThunderstorePackage>> GetPackagesAsync(string communitySlug)
         {
             string url = $"{BaseUrl}/c/{communitySlug}/api/v1/package/";
+            LauncherLogger.WriteLine($"Fetching packages from {url}");
             string json = await _http.GetStringAsync(url);
-            return JsonConvert.DeserializeObject<List<ThunderstorePackage>>(json) ?? [];
+            LauncherLogger.WriteLine($"Got response, length: {json.Length}");
+            LauncherLogger.WriteLine($"First 500 chars: {json[..Math.Min(500, json.Length)]}");
+            List<ThunderstorePackage>? result = JsonConvert.DeserializeObject<List<ThunderstorePackage>>(json);
+            LauncherLogger.WriteLine($"Deserialized {result?.Count ?? 0} packages", true);
+            if (result?.Count > 0)
+            {
+                LauncherLogger.WriteLine($"First package name: '{result[0].Name}'");
+                LauncherLogger.WriteLine($"First package versions: {result[0].Versions.Count}");
+            }
+            return result ?? [];
         }
 
         public static async Task DownloadModAsync(ThunderstoreVersion version, string modsDirectory)
