@@ -17,6 +17,8 @@ namespace launcherdotnet.Launcher.Forms
             gameExeBox.Text = game.RelativePath;
             gameRootDirBox.Text = game.RelativeRootDirectory;
             guidLabel.Text = game.Id;
+            runsWithCmdCheck.Checked = game.RunWithCmd;
+
             AcceptButton = okButton;
             CancelButton = cancelButton;
             labelBox.Select();
@@ -32,7 +34,8 @@ namespace launcherdotnet.Launcher.Forms
                 ThunderstoreCommunitySlug = thunderstoreSlugBox.Text,
                 RelativePath = gameExeBox.Text,
                 RelativeRootDirectory = gameRootDirBox.Text,
-                Id = guidLabel.Text
+                Id = guidLabel.Text,
+                RunWithCmd = runsWithCmdCheck.Checked
             };
         }
 
