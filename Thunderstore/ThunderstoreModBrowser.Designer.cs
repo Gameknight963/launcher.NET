@@ -34,6 +34,9 @@
             descriptionRtb = new RichTextBox();
             okButton = new Button();
             cancelButton = new Button();
+            versionsCb = new ComboBox();
+            vesionSelectedLabel = new Label();
+            button1 = new Button();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -58,6 +61,7 @@
             modsLv.FullRowSelect = true;
             modsLv.HeaderStyle = ColumnHeaderStyle.None;
             modsLv.Location = new Point(3, 3);
+            modsLv.MultiSelect = false;
             modsLv.Name = "modsLv";
             modsLv.Size = new Size(280, 360);
             modsLv.TabIndex = 0;
@@ -82,7 +86,8 @@
             // 
             // okButton
             // 
-            okButton.Location = new Point(506, 415);
+            okButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            okButton.Location = new Point(506, 449);
             okButton.Name = "okButton";
             okButton.Size = new Size(75, 23);
             okButton.TabIndex = 1;
@@ -91,18 +96,48 @@
             // 
             // cancelButton
             // 
-            cancelButton.Location = new Point(425, 415);
+            cancelButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            cancelButton.Location = new Point(425, 449);
             cancelButton.Name = "cancelButton";
             cancelButton.Size = new Size(75, 23);
             cancelButton.TabIndex = 2;
             cancelButton.Text = "Cancel";
             cancelButton.UseVisualStyleBackColor = true;
             // 
+            // versionsCb
+            // 
+            versionsCb.FormattingEnabled = true;
+            versionsCb.Location = new Point(402, 384);
+            versionsCb.Name = "versionsCb";
+            versionsCb.Size = new Size(179, 23);
+            versionsCb.TabIndex = 3;
+            // 
+            // vesionSelectedLabel
+            // 
+            vesionSelectedLabel.AutoSize = true;
+            vesionSelectedLabel.Location = new Point(301, 387);
+            vesionSelectedLabel.Name = "vesionSelectedLabel";
+            vesionSelectedLabel.Size = new Size(95, 15);
+            vesionSelectedLabel.TabIndex = 4;
+            vesionSelectedLabel.Text = "Version Selected:";
+            // 
+            // button1
+            // 
+            button1.Location = new Point(402, 413);
+            button1.Name = "button1";
+            button1.Size = new Size(179, 23);
+            button1.TabIndex = 5;
+            button1.Text = "Select mod for download";
+            button1.UseVisualStyleBackColor = true;
+            // 
             // ThunderstoreModBrowser
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(596, 450);
+            ClientSize = new Size(596, 484);
+            Controls.Add(button1);
+            Controls.Add(vesionSelectedLabel);
+            Controls.Add(versionsCb);
             Controls.Add(cancelButton);
             Controls.Add(okButton);
             Controls.Add(tableLayoutPanel1);
@@ -111,6 +146,7 @@
             Text = "ThunderstoreModBrowser";
             tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -121,5 +157,8 @@
         private Button okButton;
         private Button cancelButton;
         private ColumnHeader nameColumn;
+        private ComboBox versionsCb;
+        private Label vesionSelectedLabel;
+        private Button button1;
     }
 }

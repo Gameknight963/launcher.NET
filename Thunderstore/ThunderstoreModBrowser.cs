@@ -1,5 +1,6 @@
 ﻿using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
+using System.Security.Policy;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -9,7 +10,7 @@ namespace launcherdotnet.Launcher.Forms
         private List<string> _chunkUrls = [];
         private int _currentChunk = 0;
         private bool _isLoading = false;
-        private string? slug;
+        private readonly string _slug;
 
         public ThunderstoreModBrowser(GameInfo game)
         {
@@ -19,7 +20,8 @@ namespace launcherdotnet.Launcher.Forms
             modsLv.VirtualMode = true;
             modsLv.RetrieveVirtualItem += ModsLv_RetrieveVirtualItem;
             UpdateModsLv(game);
-            slug = game.ThunderstoreCommunitySlug;
+            _slug = game.ThunderstoreCommunitySlug ?? 
+                throw new InvalidOperationException("Game has no thunderstore slug");
             FormClosed += (s, e) =>
             {
                 modsLv.VirtualListSize = 0;
@@ -69,23 +71,23 @@ namespace launcherdotnet.Launcher.Forms
 
         private async void modsLv_SelectedIndexChanged(object sender, EventArgs e)
         {
+            UseWaitCursor = true;
+            versionsCb.Items.Clear();
             if (modsLv.SelectedIndices.Count == 0) return;
             ThunderstorePackage? selectedPackageFull = await _packages[modsLv.SelectedIndices[0]].FetchFullPackageAsync();
             if (selectedPackageFull is null)
             {
-                LauncherLogger.WriteLine("is null");
+                LauncherLogger.Warn($"Selected package '{modsLv.SelectedItems[0].Text}' null, skipping UI update...");
+                UseWaitCursor = false;
                 return;
             }
-            if (slug is null)
-            {
-                LauncherLogger.WriteLine("no slug");
-                return;
-            }
-            List<ThunderstoreVersion> versions = await selectedPackageFull.FetchVersionsAsync(slug);
+            List<ThunderstoreVersion> versions = await selectedPackageFull.FetchVersionsAsync(_slug);
             foreach (ThunderstoreVersion v in versions)
             {
-                LauncherLogger.WriteLine(v.VersionNumber);
+                versionsCb.Items.Add(v.VersionNumber);
             }
+            versionsCb.SelectedIndex = 0;
+            UseWaitCursor = false;
         }
     }
 }
