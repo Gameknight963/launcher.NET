@@ -40,15 +40,15 @@ namespace launcherdotnet.Thunderstore
         public static async Task<List<ThunderstorePackageSlim>> GetPackageListChunkAsync(string chunkUrl)
         {
             LauncherLogger.WriteLine($"Fetching chunk: {chunkUrl}");
-            byte[] compressed = await _http.GetByteArrayAsync(chunkUrl);
-            using MemoryStream inputStream = new(compressed);
-            using GZipStream gzipStream = new(inputStream, CompressionMode.Decompress);
+            using Stream compressed = await _http.GetStreamAsync(chunkUrl);
+            using GZipStream gzipStream = new(compressed, CompressionMode.Decompress);
             using StreamReader streamReader = new(gzipStream);
             using JsonTextReader jsonReader = new(streamReader);
             JsonSerializer serializer = new();
-            List<ThunderstorePackage>? packages = serializer.Deserialize<List<ThunderstorePackage>>(jsonReader);
+            serializer.Converters.Add(new ThunderstorePackageSlimConverter());
+            List<ThunderstorePackageSlim>? packages = serializer.Deserialize<List<ThunderstorePackageSlim>>(jsonReader);
             LauncherLogger.WriteLine($"Got {packages?.Count ?? 0} packages from chunk");
-            return packages?.Select(ThunderstorePackageSlim.FromPackage).ToList() ?? [];
+            return packages ?? [];
         }
 
         private static string DecompressGzip(byte[] compressed)
