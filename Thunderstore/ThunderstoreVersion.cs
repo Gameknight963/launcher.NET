@@ -12,5 +12,7 @@ namespace launcherdotnet.Thunderstore
         public long FileSize { get; set; }
         [JsonProperty("dependencies")]
         public List<string> Dependencies { get; set; } = [];
+        [JsonProperty("icon")]
+        public string Icon { get; set; } = "";
     }
 }

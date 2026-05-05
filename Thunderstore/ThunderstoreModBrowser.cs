@@ -1,11 +1,11 @@
 ﻿using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
-using launcherdotnet.Helpers;
+
 namespace launcherdotnet.Launcher.Forms
 {
     public partial class ThunderstoreModBrowser : ThemeableForm
     {
-        private List<ThunderstorePackage> _packages = [];
+        private List<ThunderstorePackageSlim> _packages = [];
         private List<string> _chunkUrls = [];
         private int _currentChunk = 0;
         private bool _isLoading = false;
@@ -39,7 +39,7 @@ namespace launcherdotnet.Launcher.Forms
         {
             if (_currentChunk >= _chunkUrls.Count) return;
             _isLoading = true;
-            List<ThunderstorePackage> packages = await ThunderstoreClient.GetPackageListChunkAsync(_chunkUrls[_currentChunk]);
+            List<ThunderstorePackageSlim> packages = await ThunderstoreClient.GetPackageListChunkAsync(_chunkUrls[_currentChunk]);
             _currentChunk++;
             _packages.AddRange(packages);
             modsLv.VirtualListSize = _packages.Count;
