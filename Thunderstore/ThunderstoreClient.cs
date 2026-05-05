@@ -45,11 +45,14 @@ namespace launcherdotnet.Thunderstore
             return versionsToken.ToObject<List<ThunderstoreVersion>>() ?? [];
         }
 
-        public static Task<string> GetPackageReadmeAsync(ThunderstorePackage pkg)
+        public static async Task<string> GetPackageReadmeAsync(ThunderstorePackage pkg)
         {
-            if (pkg.Latest is null) throw new InvalidOperationException("Unable to fetch readme of a package that does not have a latest release");
-            string readmeApiUrl = $"https://thunderstore.io/api/experimental/package/{pkg.Namespace}/{pkg.Name}/{pkg.Latest.VersionNumber}/readme/";
-            return _http.GetStringAsync(readmeApiUrl);
+            if (pkg.Latest is null) throw new InvalidOperationException(
+                "Unable to fetch readme of a package that does not have a latest release");
+            string url = $"https://thunderstore.io/api/experimental/package/" +
+                $"{pkg.Namespace}/{pkg.Name}/{pkg.Latest.VersionNumber}/readme/";
+            string json = await _http.GetStringAsync(url);
+            return JObject.Parse(json)["markdown"]?.ToString() ?? "";
         }
 
         public static async Task<List<string>> GetPackageListIndexAsync(string communitySlug)
