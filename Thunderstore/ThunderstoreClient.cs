@@ -1,5 +1,6 @@
 ﻿using launcherdotnet.PluginAPI;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.IO.Compression;
 
 namespace launcherdotnet.Thunderstore
@@ -9,6 +10,9 @@ namespace launcherdotnet.Thunderstore
         private static readonly HttpClient _http = new();
         public const string BaseUrl = "https://thunderstore.io";
 
+        /// <summary>
+        /// This endpoint will not include the Uuid4 of the package.
+        /// </summary>
         public static async Task<ThunderstorePackage?> GetPackageAsync(string owner, string name)
         {
             string url = $"{BaseUrl}/api/experimental/package/{owner}/{name}/";
@@ -16,8 +20,29 @@ namespace launcherdotnet.Thunderstore
             using Stream stream = await _http.GetStreamAsync(url);
             using StreamReader streamReader = new(stream);
             using JsonTextReader jsonReader = new(streamReader);
+
             JsonSerializer serializer = new();
             return serializer.Deserialize<ThunderstorePackage>(jsonReader);
+        }
+
+        public static async Task<List<ThunderstoreVersion>> GetPackageVersionsAsync(string communitySlug, string uuid4)
+        {
+            string url = $"{BaseUrl}/c/{communitySlug}/api/v1/package/{uuid4}/";
+            LauncherLogger.WriteLine($"Fetching versions: {url}");
+
+            using Stream stream = await _http.GetStreamAsync(url);
+            using StreamReader streamReader = new(stream);
+            using JsonTextReader jsonReader = new(streamReader);
+
+            JsonSerializer serializer = new();
+
+            JObject? obj = serializer.Deserialize<JObject>(jsonReader);
+            if (obj == null) return [];
+
+            JToken? versionsToken = obj["versions"];
+            if (versionsToken == null) return [];
+
+            return versionsToken.ToObject<List<ThunderstoreVersion>>() ?? [];
         }
 
         public static async Task<List<string>> GetPackageListIndexAsync(string communitySlug)
