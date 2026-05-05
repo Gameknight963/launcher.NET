@@ -26,6 +26,17 @@ namespace launcherdotnet.Thunderstore
             return result ?? [];
         }
 
+        public static async Task<ThunderstorePackage?> GetPackageAsync(string owner, string name)
+        {
+            string url = $"{BaseUrl}/api/experimental/package/{owner}/{name}/";
+            LauncherLogger.WriteLine($"Fetching package: {url}");
+            using Stream stream = await _http.GetStreamAsync(url);
+            using StreamReader streamReader = new(stream);
+            using JsonTextReader jsonReader = new(streamReader);
+            JsonSerializer serializer = new();
+            return serializer.Deserialize<ThunderstorePackage>(jsonReader);
+        }
+
         public static async Task<List<string>> GetPackageListIndexAsync(string communitySlug)
         {
             string url = $"{BaseUrl}/c/{communitySlug}/api/v1/package-listing-index/";

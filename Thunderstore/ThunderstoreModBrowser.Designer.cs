@@ -63,6 +63,7 @@
             modsLv.TabIndex = 0;
             modsLv.UseCompatibleStateImageBehavior = false;
             modsLv.View = View.Details;
+            modsLv.SelectedIndexChanged += modsLv_SelectedIndexChanged;
             // 
             // nameColumn
             // 

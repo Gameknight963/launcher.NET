@@ -31,8 +31,13 @@ namespace launcherdotnet.Launcher.Forms
         private void ModsLv_RetrieveVirtualItem(object? sender, RetrieveVirtualItemEventArgs e)
         {
             e.Item = new ListViewItem(_packages[e.ItemIndex].Name);
-            if (!_isLoading && _currentChunk < _chunkUrls.Count && e.ItemIndex >= _packages.Count - 5)
-                _ = LoadNextChunk();
+            if (!_isLoading && _currentChunk < _chunkUrls.Count && e.ItemIndex == _packages.Count - 1)
+            {
+                int visibleCount = modsLv.ClientSize.Height / (modsLv.GetItemRect(0).Height);
+                int topIndex = modsLv.TopItem?.Index ?? 0;
+                if (topIndex + visibleCount >= _packages.Count - 10)
+                    _ = LoadNextChunk();
+            }
         }
 
         private async Task LoadNextChunk()
@@ -56,6 +61,21 @@ namespace launcherdotnet.Launcher.Forms
             if (_chunkUrls.Count > 0)
                 await LoadNextChunk();
             UseWaitCursor = false;
+        }
+
+        private async void modsLv_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //if (modsLv.SelectedIndices.Count == 0) return;
+            //ThunderstorePackage? selectedPackageFull = await _packages[modsLv.SelectedIndices[0]].FetchFullPackageAsync();
+            //if (selectedPackageFull is null)
+            //{
+            //    LauncherLogger.WriteLine("is null");
+            //    return;
+            //}
+            //foreach (ThunderstoreVersion v in selectedPackageFull.Versions)
+            //{
+            //    LauncherLogger.WriteLine(v.VersionNumber);
+            //}
         }
     }
 }
