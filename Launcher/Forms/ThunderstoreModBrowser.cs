@@ -23,6 +23,8 @@ namespace launcherdotnet.Launcher.Forms
             {
                 modsLv.VirtualListSize = 0;
                 _packages = [];
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             };
         }
 
