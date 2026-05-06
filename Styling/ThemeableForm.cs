@@ -22,7 +22,7 @@ namespace launcherdotnet.Styling
             Load += (sender, e) => ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.ActiveTextRenderMode);
         }
 
-        public virtual void OnThemeWasApplied() { }
+        protected virtual void OnThemeWasApplied() { }
 
         private void ApplyControlTheme(Control c, ThemeManager.Theme theme)
         {
