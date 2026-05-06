@@ -1,4 +1,4 @@
-﻿namespace launcherdotnet.Launcher.Forms
+﻿namespace launcherdotnet.Launcher.Forms.Thunderstore
 {
     partial class ThunderstoreModBrowser
     {
