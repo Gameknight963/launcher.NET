@@ -1,4 +1,7 @@
-﻿namespace launcherdotnet.Launcher.Forms.Thunderstore
+﻿using TheArtOfDev.HtmlRenderer;
+using TheArtOfDev.HtmlRenderer.WinForms;
+
+namespace launcherdotnet.Launcher.Forms.Thunderstore
 {
     partial class ThunderstoreModBrowser
     {
@@ -31,7 +34,7 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             modsLv = new ListView();
             nameColumn = new ColumnHeader();
-            descriptionBrowser = new WebBrowser();
+            descriptionPanel = new HtmlPanel();
             okButton = new Button();
             cancelButton = new Button();
             versionsCb = new ComboBox();
@@ -47,7 +50,7 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 286F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(modsLv, 0, 0);
-            tableLayoutPanel1.Controls.Add(descriptionBrowser, 1, 0);
+            tableLayoutPanel1.Controls.Add(descriptionPanel, 1, 0);
             tableLayoutPanel1.Location = new Point(12, 12);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
@@ -75,13 +78,13 @@
             nameColumn.Text = "Name";
             nameColumn.Width = 276;
             // 
-            // descriptionBrowser
+            // descriptionPanel
             // 
-            descriptionBrowser.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            descriptionBrowser.Location = new Point(289, 3);
-            descriptionBrowser.Name = "descriptionBrowser";
-            descriptionBrowser.Size = new Size(280, 360);
-            descriptionBrowser.TabIndex = 1;
+            descriptionPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            descriptionPanel.Location = new Point(289, 3);
+            descriptionPanel.Name = "descriptionPanel";
+            descriptionPanel.Size = new Size(280, 360);
+            descriptionPanel.TabIndex = 1;
             // 
             // okButton
             // 
@@ -155,7 +158,7 @@
 
         private TableLayoutPanel tableLayoutPanel1;
         private ListView modsLv;
-        private WebBrowser descriptionBrowser;
+        private HtmlPanel descriptionPanel;
         private Button okButton;
         private Button cancelButton;
         private ColumnHeader nameColumn;
