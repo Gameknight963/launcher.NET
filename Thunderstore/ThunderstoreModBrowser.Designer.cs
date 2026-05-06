@@ -42,15 +42,16 @@
             // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 286F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(modsLv, 0, 0);
             tableLayoutPanel1.Controls.Add(descriptionRtb, 1, 0);
             tableLayoutPanel1.Location = new Point(12, 12);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Size = new Size(572, 366);
             tableLayoutPanel1.TabIndex = 0;
             // 
@@ -106,6 +107,7 @@
             // 
             // versionsCb
             // 
+            versionsCb.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             versionsCb.FormattingEnabled = true;
             versionsCb.Location = new Point(402, 384);
             versionsCb.Name = "versionsCb";
@@ -114,6 +116,7 @@
             // 
             // vesionSelectedLabel
             // 
+            vesionSelectedLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             vesionSelectedLabel.AutoSize = true;
             vesionSelectedLabel.Location = new Point(301, 387);
             vesionSelectedLabel.Name = "vesionSelectedLabel";
@@ -123,6 +126,7 @@
             // 
             // button1
             // 
+            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             button1.Location = new Point(402, 413);
             button1.Name = "button1";
             button1.Size = new Size(179, 23);
