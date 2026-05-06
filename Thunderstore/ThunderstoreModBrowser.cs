@@ -2,6 +2,7 @@
 using launcherdotnet.Thunderstore;
 using Markdig;
 using MarkdigExtensions.RtfRenderer;
+using System.Linq.Expressions;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -24,8 +25,10 @@ namespace launcherdotnet.Launcher.Forms
             modsLv.VirtualMode = true;
             modsLv.RetrieveVirtualItem += ModsLv_RetrieveVirtualItem;
             _convertMarkdownToRtf = convertMarkdown;
+            descriptionRtb.KeyDown += (s, e) => e.SuppressKeyPress = true;
+            descriptionRtb.KeyPress += (s, e) => e.Handled = true;
             UpdateModsLv(game);
-            _slug = game.ThunderstoreCommunitySlug ?? 
+            _slug = game.ThunderstoreCommunitySlug ??
                 throw new InvalidOperationException("Game has no thunderstore slug");
             FormClosed += (s, e) =>
             {
