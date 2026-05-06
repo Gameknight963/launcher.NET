@@ -1,8 +1,9 @@
 ﻿using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
 using Markdig;
-using System.Configuration;
+using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
+using Svg;
 
 namespace launcherdotnet.Launcher.Forms.Thunderstore
 {
@@ -33,6 +34,21 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                 _packages = [];
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
+            };
+
+            descriptionPanel.ImageLoad += async (sender, args) =>
+            {
+                if (Path.GetExtension(args.Src)?.Equals(".svg", StringComparison.OrdinalIgnoreCase) == true
+                    || args.Src.Contains("shields.io"))
+                {
+                    args.Handled = true;
+                    byte[] data = await ThunderstoreClient.Http.GetByteArrayAsync(args.Src);
+                    using MemoryStream ms = new(data);
+                    SvgDocument svgDoc = SvgDocument.Open<SvgDocument>(ms);
+                    Bitmap svgImg = new((int)svgDoc.Width, (int)svgDoc.Height, PixelFormat.Format32bppArgb);
+                    svgDoc.Draw(svgImg);
+                    args.Callback(svgImg);
+                }
             };
         }
 
