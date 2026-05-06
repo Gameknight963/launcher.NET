@@ -1,6 +1,7 @@
 ﻿using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
 using Markdig;
+using System.Text.RegularExpressions;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -30,6 +31,17 @@ namespace launcherdotnet.Launcher.Forms
                 _packages = [];
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
+            };
+
+            descriptionBrowser.Navigating += (s, e) =>
+            {
+                if (e.Url is null || e.Url.ToString() == "about:blank") return;
+                e.Cancel = true;
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = e.Url.ToString(),
+                    UseShellExecute = true
+                });
             };
         }
 
@@ -124,8 +136,12 @@ namespace launcherdotnet.Launcher.Forms
                 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
                 <style>
                 body {{ font-family: Segoe UI, sans-serif; font-size: 13px; }}
-                img {{ max-width: 280px !important; height: auto !important; }}
-                </style></head><body>{Markdown.ToHtml(readmeContent)}</body></html>";
+                img {{ max-width: 280px !important; height: auto !important; cursor: pointer; }}
+                </style>
+                <script>function imgClick(url) {{ window.external.OnImageClicked(url); }}</script>
+                </head><body>{Markdown.ToHtml(readmeContent)}</body></html>";
+            html = Regex.Replace(html, "<img ", "<img onclick='imgClick(this.src)' ");
+            descriptionBrowser.ObjectForScripting = new BrowserScriptHelper();
             descriptionBrowser.DocumentText = html;
             UseWaitCursor = false;
         }
