@@ -9,7 +9,6 @@ namespace launcherdotnet.Styling
         private bool _useTextRenderer = true;
         private static bool IsDesignTime => LicenseManager.UsageMode == LicenseUsageMode.Designtime;
 
-
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ThemeManager.Theme ActiveTheme { get; set; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -22,6 +21,8 @@ namespace launcherdotnet.Styling
             if (IsDesignTime) return;
             Load += (sender, e) => ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.ActiveTextRenderMode);
         }
+
+        public virtual void OnThemeWasApplied() { }
 
         private void ApplyControlTheme(Control c, ThemeManager.Theme theme)
         {
@@ -141,6 +142,7 @@ namespace launcherdotnet.Styling
 
             ApplyControlTheme(this, resolvedTheme);
             ThemeManager.ApplyThemeToForm(this, resolvedTheme);
+            OnThemeWasApplied();
         }
 
         private void DrawShadowText(Graphics g, string text, Font font, Rectangle bounds, Color textColor)
