@@ -45,6 +45,15 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             };
         }
 
+        [System.Runtime.InteropServices.ComVisible(true)]
+        public class BrowserScriptHelper
+        {
+            public void OnImageClicked(string url)
+            {
+                LauncherLogger.WriteLine($"Image clicked: {url}");
+            }
+        }
+
         private void ModsLv_RetrieveVirtualItem(object? sender, RetrieveVirtualItemEventArgs e)
         {
             e.Item = new ListViewItem(_packages[e.ItemIndex].Name);
