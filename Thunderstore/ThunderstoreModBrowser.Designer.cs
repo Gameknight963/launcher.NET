@@ -147,7 +147,7 @@
             Controls.Add(tableLayoutPanel1);
             ForeColor = Color.Black;
             Name = "ThunderstoreModBrowser";
-            Text = "ThunderstoreModBrowser";
+            Text = "Thunderstore Mod Browser";
             tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
