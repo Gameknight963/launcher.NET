@@ -120,9 +120,11 @@ namespace launcherdotnet.Launcher.Forms
                 UseWaitCursor = false;
                 return;
             }
-            string html = $@"<html><head><style>
+            string html = $@"<html><head>
+                <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+                <style>
                 body {{ font-family: Segoe UI, sans-serif; font-size: 13px; }}
-                img {{ max-width: 100%; height: auto; }}
+                img {{ max-width: 280px !important; height: auto !important; }}
                 </style></head><body>{Markdown.ToHtml(readmeContent)}</body></html>";
             descriptionBrowser.DocumentText = html;
             UseWaitCursor = false;
