@@ -1,6 +1,7 @@
 ﻿using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
-using System.Security.Policy;
+using Markdig;
+using MarkdigExtensions.RtfRenderer;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -13,14 +14,16 @@ namespace launcherdotnet.Launcher.Forms
         private readonly string _slug;
         private readonly Dictionary<int, List<ThunderstoreVersion>> _versionCache = [];
         private readonly Dictionary<int, string> _readmeCache = [];
+        private bool _convertMarkdownToRtf = false;
 
-        public ThunderstoreModBrowser(GameInfo game)
+        public ThunderstoreModBrowser(GameInfo game, bool convertMarkdown = true)
         {
             InitializeComponent();
             CancelButton = cancelButton;
             AcceptButton = okButton;
             modsLv.VirtualMode = true;
             modsLv.RetrieveVirtualItem += ModsLv_RetrieveVirtualItem;
+            _convertMarkdownToRtf = convertMarkdown;
             UpdateModsLv(game);
             _slug = game.ThunderstoreCommunitySlug ?? 
                 throw new InvalidOperationException("Game has no thunderstore slug");
@@ -76,58 +79,64 @@ namespace launcherdotnet.Launcher.Forms
             if (modsLv.SelectedIndices.Count == 0)
             {
                 versionsCb.Items.Clear();
-                descriptionRtb.Clear(); // Clear text when nothing is selected
+                descriptionRtb.Clear();
                 return;
             }
 
             UseWaitCursor = true;
             int index = modsLv.SelectedIndices[0];
             ThunderstorePackageSlim slim = _packages[index];
-
-            try
+            if (!_versionCache.TryGetValue(index, out List<ThunderstoreVersion>? versions))
             {
-                if (!_versionCache.TryGetValue(index, out List<ThunderstoreVersion>? versions))
+                ThunderstorePackage? full = await slim.FetchFullPackageAsync();
+                if (full is null)
                 {
-                    ThunderstorePackage? full = await slim.FetchFullPackageAsync();
-                    if (full is null)
-                    {
-                        LauncherLogger.Warn($"Package null, skipping...");
-                        return;
-                    }
-
-                    versions = await full.FetchVersionsAsync(_slug);
-                    _versionCache[index] = versions;
+                    LauncherLogger.Warn($"Package null, skipping...");
+                    return;
                 }
 
-                versionsCb.Items.Clear();
-                foreach (ThunderstoreVersion v in versions)
-                {
-                    versionsCb.Items.Add(v.VersionNumber);
-                }
-                if (versionsCb.Items.Count > 0) versionsCb.SelectedIndex = 0;
-
-
-                if (!_readmeCache.TryGetValue(index, out string? readmeContent))
-                {
-                    ThunderstorePackage? full = await slim.FetchFullPackageAsync();
-
-                    if (full != null)
-                    {
-                        readmeContent = await ThunderstoreClient.GetPackageReadmeAsync(full);
-                        _readmeCache[index] = readmeContent;
-                    }
-                }
-
-                descriptionRtb.Text = readmeContent ?? "Readme not found.";
+                versions = await full.FetchVersionsAsync(_slug);
+                _versionCache[index] = versions;
             }
-            catch (Exception ex)
+
+            versionsCb.Items.Clear();
+            foreach (ThunderstoreVersion v in versions)
             {
-                LauncherLogger.Error($"Error loading mod details: {ex.Message}");
+                versionsCb.Items.Add(v.VersionNumber);
             }
-            finally
+            if (versionsCb.Items.Count > 0) versionsCb.SelectedIndex = 0;
+
+
+            if (!_readmeCache.TryGetValue(index, out string? readmeContent))
             {
-                UseWaitCursor = false;
+                ThunderstorePackage? full = await slim.FetchFullPackageAsync();
+
+                if (full != null)
+                {
+                    readmeContent = await ThunderstoreClient.GetPackageReadmeAsync(full);
+                    _readmeCache[index] = readmeContent;
+                }
             }
+            if (readmeContent == null)
+            {
+                descriptionRtb.Text = "Readme not found.";
+                return;
+            }
+            if (_convertMarkdownToRtf)
+            {
+                MarkdownPipeline pipeline = new MarkdownPipelineBuilder().Build();
+                StringWriter writer = new();
+                RtfRenderer renderer = new(writer);
+                renderer.StartDocument();
+                Markdown.Convert(readmeContent, renderer, pipeline);
+                renderer.CloseDocument();
+                descriptionRtb.Rtf = writer.ToString();
+            }
+            else
+            {
+                descriptionRtb.Text = readmeContent;
+            }
+            UseWaitCursor = false;
         }
     }
 }

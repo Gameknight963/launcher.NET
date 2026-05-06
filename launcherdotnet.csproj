@@ -16,6 +16,7 @@
 	
 
   <ItemGroup>
+    <PackageReference Include="MarkdigExtensions.RtfRenderer" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Semver" Version="3.0.0" />
   </ItemGroup>
