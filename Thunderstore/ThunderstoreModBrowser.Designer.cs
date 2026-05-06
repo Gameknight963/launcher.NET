@@ -31,7 +31,7 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             modsLv = new ListView();
             nameColumn = new ColumnHeader();
-            descriptionRtb = new RichTextBox();
+            descriptionBrowser = new WebBrowser();
             okButton = new Button();
             cancelButton = new Button();
             versionsCb = new ComboBox();
@@ -47,7 +47,7 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 286F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(modsLv, 0, 0);
-            tableLayoutPanel1.Controls.Add(descriptionRtb, 1, 0);
+            tableLayoutPanel1.Controls.Add(descriptionBrowser, 1, 0);
             tableLayoutPanel1.Location = new Point(12, 12);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
@@ -75,15 +75,13 @@
             nameColumn.Text = "Name";
             nameColumn.Width = 276;
             // 
-            // descriptionRtb
+            // descriptionBrowser
             // 
-            descriptionRtb.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            descriptionRtb.Location = new Point(289, 3);
-            descriptionRtb.Name = "descriptionRtb";
-            descriptionRtb.ReadOnly = true;
-            descriptionRtb.Size = new Size(280, 360);
-            descriptionRtb.TabIndex = 1;
-            descriptionRtb.Text = "";
+            descriptionBrowser.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            descriptionBrowser.Location = new Point(289, 3);
+            descriptionBrowser.Name = "descriptionBrowser";
+            descriptionBrowser.Size = new Size(280, 360);
+            descriptionBrowser.TabIndex = 1;
             // 
             // okButton
             // 
@@ -157,7 +155,7 @@
 
         private TableLayoutPanel tableLayoutPanel1;
         private ListView modsLv;
-        private RichTextBox descriptionRtb;
+        private WebBrowser descriptionBrowser;
         private Button okButton;
         private Button cancelButton;
         private ColumnHeader nameColumn;
