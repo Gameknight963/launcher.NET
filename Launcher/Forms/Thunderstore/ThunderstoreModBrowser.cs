@@ -3,7 +3,7 @@ using launcherdotnet.Thunderstore;
 using Markdig;
 using System.Text.RegularExpressions;
 
-namespace launcherdotnet.Launcher.Forms
+namespace launcherdotnet.Launcher.Forms.Thunderstore
 {
     public partial class ThunderstoreModBrowser : ThemeableForm
     {

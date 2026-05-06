@@ -2,6 +2,7 @@ using launcherdotnet.Styling;
 using launcherdotnet.Helpers;
 using launcherdotnet.Launcher.Settings;
 using System.Diagnostics;
+using launcherdotnet.Launcher.Forms.Thunderstore;
 
 namespace launcherdotnet.Launcher.Forms
 {

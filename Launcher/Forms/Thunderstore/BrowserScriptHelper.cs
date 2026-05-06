@@ -1,4 +1,4 @@
-﻿namespace launcherdotnet.Thunderstore
+﻿namespace launcherdotnet.Launcher.Forms.Thunderstore
 {
     [System.Runtime.InteropServices.ComVisible(true)]
     public class BrowserScriptHelper
