@@ -34,27 +34,6 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             };
-
-            descriptionBrowser.Navigating += (s, e) =>
-            {
-                if (e.Url is null || e.Url.ToString() == "about:blank") return;
-                e.Cancel = true;
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = e.Url.ToString(),
-                    UseShellExecute = true
-                });
-            };
-        }
-
-        [System.Runtime.InteropServices.ComVisible(true)]
-        public class BrowserScriptHelper
-        {
-            public void OnImageClicked(string url, int width, int height)
-            {
-                LauncherLogger.WriteLine($"Image clicked: {url}");
-                BigImageViewer.Show(url, width, height);
-            }
         }
 
         private void ModsLv_RetrieveVirtualItem(object? sender, RetrieveVirtualItemEventArgs e)
@@ -100,10 +79,10 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             if (modsLv.SelectedIndices.Count == 0)
             {
                 versionsCb.Items.Clear();
-                descriptionBrowser.DocumentText = "";
+                descriptionPanel.Text = "";
                 return;
             }
-            descriptionBrowser.DocumentText =
+            descriptionPanel.Text =
         $"<html><body style='background:{ColorTranslator.ToHtml(BackColor)};color:white;font-family:Segoe UI'>Loading...</body></html>";
 
             UseWaitCursor = true;
@@ -142,12 +121,11 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
 
             if (readmeContent == null)
             {
-                descriptionBrowser.DocumentText = "<p>Readme not found.</p>";
+                descriptionPanel.Text = "<p>Readme not found.</p>";
                 UseWaitCursor = false;
                 return;
             }
             UpdateBrowserReadme(readmeContent);
-            descriptionBrowser.ObjectForScripting = new BrowserScriptHelper();
             UseWaitCursor = false;
         }
 
@@ -159,7 +137,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             string html = $@"<html><head>
                 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
                 <style>
-                body {{ font-family: Segoe UI, sans-serif; font-size: 13px; background-color: {bg}; color: {fg}; }}
+                body {{ font-family: Segoe UI, sans-serif; font-size: 13px; color: {fg}; }}
                 img {{ max-width: 280px !important; height: auto !important; cursor: pointer; }}
                 </style>
                 <script>
@@ -167,7 +145,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                 </script>
                 </head><body>{Markdown.ToHtml(_currentReadme)}</body></html>";
             html = Regex.Replace(html, "<img ", "<img onclick='imgClick(this.src, this.naturalWidth, this.naturalHeight)' ");
-            descriptionBrowser.DocumentText = html;
+            descriptionPanel.Text = html;
         }
 
         protected override void OnThemeWasApplied()
