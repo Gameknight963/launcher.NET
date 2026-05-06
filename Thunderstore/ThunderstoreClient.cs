@@ -7,7 +7,7 @@ namespace launcherdotnet.Thunderstore
 {
     public static class ThunderstoreClient
     {
-        private static readonly HttpClient _http = new();
+        public static readonly HttpClient Http = new();
         public const string BaseUrl = "https://thunderstore.io";
 
         /// <summary>
@@ -17,7 +17,7 @@ namespace launcherdotnet.Thunderstore
         {
             string url = $"{BaseUrl}/api/experimental/package/{owner}/{name}/";
             LauncherLogger.WriteLine($"Fetching package: {url}");
-            using Stream stream = await _http.GetStreamAsync(url);
+            using Stream stream = await Http.GetStreamAsync(url);
             using StreamReader streamReader = new(stream);
             using JsonTextReader jsonReader = new(streamReader);
 
@@ -30,7 +30,7 @@ namespace launcherdotnet.Thunderstore
             string url = $"{BaseUrl}/c/{communitySlug}/api/v1/package/{uuid4}/";
             LauncherLogger.WriteLine($"Fetching versions: {url}");
 
-            using Stream stream = await _http.GetStreamAsync(url);
+            using Stream stream = await Http.GetStreamAsync(url);
             using StreamReader streamReader = new(stream);
             using JsonTextReader jsonReader = new(streamReader);
 
@@ -51,7 +51,7 @@ namespace launcherdotnet.Thunderstore
                 "Unable to fetch readme of a package that does not have a latest release");
             string url = $"https://thunderstore.io/api/experimental/package/" +
                 $"{pkg.Namespace}/{pkg.Name}/{pkg.Latest.VersionNumber}/readme/";
-            string json = await _http.GetStringAsync(url);
+            string json = await Http.GetStringAsync(url);
             return JObject.Parse(json)["markdown"]?.ToString() ?? "";
         }
 
@@ -59,7 +59,7 @@ namespace launcherdotnet.Thunderstore
         {
             string url = $"{BaseUrl}/c/{communitySlug}/api/v1/package-listing-index/";
             LauncherLogger.WriteLine($"Fetching package list index: {url}");
-            byte[] compressed = await _http.GetByteArrayAsync(url);
+            byte[] compressed = await Http.GetByteArrayAsync(url);
             string json = DecompressGzip(compressed);
             List<string>? chunkUrls = JsonConvert.DeserializeObject<List<string>>(json);
             LauncherLogger.WriteLine($"Got {chunkUrls?.Count ?? 0} chunk URLs");
@@ -69,7 +69,7 @@ namespace launcherdotnet.Thunderstore
         public static async Task<List<ThunderstorePackageSlim>> GetPackageListChunkAsync(string chunkUrl)
         {
             LauncherLogger.WriteLine($"Fetching chunk: {chunkUrl}");
-            using Stream compressed = await _http.GetStreamAsync(chunkUrl);
+            using Stream compressed = await Http.GetStreamAsync(chunkUrl);
             using GZipStream gzipStream = new(compressed, CompressionMode.Decompress);
             using StreamReader streamReader = new(gzipStream);
             using JsonTextReader jsonReader = new(streamReader);
@@ -93,7 +93,7 @@ namespace launcherdotnet.Thunderstore
             using InstanceTempDir temp = new();
             string zipPath = Path.Combine(temp.Path, "mod.zip");
 
-            byte[] data = await _http.GetByteArrayAsync(version.DownloadUrl);
+            byte[] data = await Http.GetByteArrayAsync(version.DownloadUrl);
             await File.WriteAllBytesAsync(zipPath, data);
 
             using ZipArchive zip = ZipFile.OpenRead(zipPath);
