@@ -1,8 +1,6 @@
 ﻿using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
 using Markdig;
-using MarkdigExtensions.RtfRenderer;
-using System.Linq.Expressions;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -15,18 +13,14 @@ namespace launcherdotnet.Launcher.Forms
         private readonly string _slug;
         private readonly Dictionary<int, List<ThunderstoreVersion>> _versionCache = [];
         private readonly Dictionary<int, string> _readmeCache = [];
-        private bool _convertMarkdownToRtf = false;
 
-        public ThunderstoreModBrowser(GameInfo game, bool convertMarkdown = true)
+        public ThunderstoreModBrowser(GameInfo game)
         {
             InitializeComponent();
             CancelButton = cancelButton;
             AcceptButton = okButton;
             modsLv.VirtualMode = true;
             modsLv.RetrieveVirtualItem += ModsLv_RetrieveVirtualItem;
-            _convertMarkdownToRtf = convertMarkdown;
-            descriptionRtb.KeyDown += (s, e) => e.SuppressKeyPress = true;
-            descriptionRtb.KeyPress += (s, e) => e.Handled = true;
             UpdateModsLv(game);
             _slug = game.ThunderstoreCommunitySlug ??
                 throw new InvalidOperationException("Game has no thunderstore slug");
@@ -82,63 +76,55 @@ namespace launcherdotnet.Launcher.Forms
             if (modsLv.SelectedIndices.Count == 0)
             {
                 versionsCb.Items.Clear();
-                descriptionRtb.Clear();
+                descriptionBrowser.DocumentText = "";
                 return;
             }
 
             UseWaitCursor = true;
             int index = modsLv.SelectedIndices[0];
             ThunderstorePackageSlim slim = _packages[index];
+
+            ThunderstorePackage? full = null;
+
             if (!_versionCache.TryGetValue(index, out List<ThunderstoreVersion>? versions))
             {
-                ThunderstorePackage? full = await slim.FetchFullPackageAsync();
+                full = await slim.FetchFullPackageAsync();
                 if (full is null)
                 {
-                    LauncherLogger.Warn($"Package null, skipping...");
+                    LauncherLogger.Warn("Package null, skipping...");
+                    UseWaitCursor = false;
                     return;
                 }
-
                 versions = await full.FetchVersionsAsync(_slug);
                 _versionCache[index] = versions;
             }
 
             versionsCb.Items.Clear();
             foreach (ThunderstoreVersion v in versions)
-            {
                 versionsCb.Items.Add(v.VersionNumber);
-            }
             if (versionsCb.Items.Count > 0) versionsCb.SelectedIndex = 0;
-
 
             if (!_readmeCache.TryGetValue(index, out string? readmeContent))
             {
-                ThunderstorePackage? full = await slim.FetchFullPackageAsync();
-
+                full ??= await slim.FetchFullPackageAsync();
                 if (full != null)
                 {
                     readmeContent = await ThunderstoreClient.GetPackageReadmeAsync(full);
                     _readmeCache[index] = readmeContent;
                 }
             }
+
             if (readmeContent == null)
             {
-                descriptionRtb.Text = "Readme not found.";
+                descriptionBrowser.DocumentText = "<p>Readme not found.</p>";
+                UseWaitCursor = false;
                 return;
             }
-            if (_convertMarkdownToRtf)
-            {
-                MarkdownPipeline pipeline = new MarkdownPipelineBuilder().Build();
-                StringWriter writer = new();
-                RtfRenderer renderer = new(writer);
-                renderer.StartDocument();
-                Markdown.Convert(readmeContent, renderer, pipeline);
-                renderer.CloseDocument();
-                descriptionRtb.Rtf = writer.ToString();
-            }
-            else
-            {
-                descriptionRtb.Text = readmeContent;
-            }
+            string html = $@"<html><head><style>
+                body {{ font-family: Segoe UI, sans-serif; font-size: 13px; }}
+                img {{ max-width: 100%; height: auto; }}
+                </style></head><body>{Markdown.ToHtml(readmeContent)}</body></html>";
+            descriptionBrowser.DocumentText = html;
             UseWaitCursor = false;
         }
     }
