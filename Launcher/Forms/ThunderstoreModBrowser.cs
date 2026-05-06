@@ -1,6 +1,7 @@
 ﻿using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
 using Markdig;
+using System.Configuration;
 using System.Text.RegularExpressions;
 
 namespace launcherdotnet.Launcher.Forms.Thunderstore
@@ -14,6 +15,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         private readonly string _slug;
         private readonly Dictionary<int, List<ThunderstoreVersion>> _versionCache = [];
         private readonly Dictionary<int, string> _readmeCache = [];
+        private string? _currentReadme;
 
         public ThunderstoreModBrowser(GameInfo game)
         {
@@ -48,9 +50,10 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         [System.Runtime.InteropServices.ComVisible(true)]
         public class BrowserScriptHelper
         {
-            public void OnImageClicked(string url)
+            public void OnImageClicked(string url, int width, int height)
             {
                 LauncherLogger.WriteLine($"Image clicked: {url}");
+                BigImageViewer.Show(url, width, height);
             }
         }
 
@@ -100,6 +103,8 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                 descriptionBrowser.DocumentText = "";
                 return;
             }
+            descriptionBrowser.DocumentText =
+        $"<html><body style='background:{ColorTranslator.ToHtml(BackColor)};color:white;font-family:Segoe UI'>Loading...</body></html>";
 
             UseWaitCursor = true;
             int index = modsLv.SelectedIndices[0];
@@ -141,18 +146,33 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                 UseWaitCursor = false;
                 return;
             }
+            UpdateBrowserReadme(readmeContent);
+            descriptionBrowser.ObjectForScripting = new BrowserScriptHelper();
+            UseWaitCursor = false;
+        }
+
+        private void UpdateBrowserReadme(string readmeContent)
+        {
+            _currentReadme = readmeContent;
+            string bg = ColorTranslator.ToHtml(BackColor);
+            string fg = ColorTranslator.ToHtml(ForeColor);
             string html = $@"<html><head>
                 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
                 <style>
-                body {{ font-family: Segoe UI, sans-serif; font-size: 13px; }}
+                body {{ font-family: Segoe UI, sans-serif; font-size: 13px; background-color: {bg}; color: {fg}; }}
                 img {{ max-width: 280px !important; height: auto !important; cursor: pointer; }}
                 </style>
-                <script>function imgClick(url) {{ window.external.OnImageClicked(url); }}</script>
-                </head><body>{Markdown.ToHtml(readmeContent)}</body></html>";
-            html = Regex.Replace(html, "<img ", "<img onclick='imgClick(this.src)' ");
-            descriptionBrowser.ObjectForScripting = new BrowserScriptHelper();
+                <script>
+                function imgClick(url, w, h) {{ window.external.OnImageClicked(url, w, h); }}
+                </script>
+                </head><body>{Markdown.ToHtml(_currentReadme)}</body></html>";
+            html = Regex.Replace(html, "<img ", "<img onclick='imgClick(this.src, this.naturalWidth, this.naturalHeight)' ");
             descriptionBrowser.DocumentText = html;
-            UseWaitCursor = false;
+        }
+
+        protected override void OnThemeWasApplied()
+        {
+            if (_currentReadme != null) UpdateBrowserReadme(_currentReadme);
         }
     }
 }
