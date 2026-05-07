@@ -4,28 +4,30 @@ namespace launcherdotnet.Launcher.Forms
 {
     public partial class BigImageViewer : ThemeableForm
     {
-        public BigImageViewer(string url)
+        public BigImageViewer(string url, int? width = null, int? height = null)
         {
             InitializeComponent();
+            StartPosition = FormStartPosition.CenterParent;
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.LoadAsync(url);
             CancelButton = button1;
             pictureBox1.LoadCompleted += (s, e) =>
             {
                 if (e.Error != null) return;
+                if (width != null && height != null)
+                {
+                    Width = width.Value;
+                    Height = height.Value;
+                    return;
+                }
                 if (pictureBox1.Image != null)
-                    ClientSize = new Size(pictureBox1.Image.Width, pictureBox1.Image.Height);
+                {
+                    float aspectRatio = (float)pictureBox1.Image.Width / pictureBox1.Image.Height;
+                    int w = Math.Clamp(pictureBox1.Image.Width, 500, 1000);
+                    int h = (int)(w / aspectRatio);
+                    ClientSize = new Size(w, h);
+                }
             };
-        }
-
-        public BigImageViewer(string url, int width, int height)
-        {
-            InitializeComponent();
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.LoadAsync(url);
-            CancelButton = button1;
-            Width = width;
-            Height = height;
         }
 
         public static void Show(string url)
