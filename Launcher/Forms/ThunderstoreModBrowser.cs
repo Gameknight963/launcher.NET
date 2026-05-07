@@ -172,13 +172,15 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         {
             _currentReadme = readmeContent;
             string fg = ColorTranslator.ToHtml(ForeColor);
+            string bg = ColorTranslator.ToHtml(BackColor);
+            string thBg = ColorTranslator.ToHtml(ControlPaint.Light(BackColor, 0.1f));
             string html = $@"<html><head>
                 <style>
                 body {{ font-family: Segoe UI, sans-serif; font-size: 13px; color: {fg}; }}
                 img {{ max-width: 280px !important; height: auto !important; cursor: pointer; }}
                 table {{ border-collapse: collapse; margin: 8px 0; }}
                 th, td {{ border: 1px solid #aaa; padding: 4px 10px; }}
-                th {{ font-weight: bold; background-color: #e8e8e8; }}
+                th {{ font-weight: bold; background-color: {thBg}; }}
                 </style>
                 </head><body>{Markdown.ToHtml(_currentReadme, _pipeline)}</body></html>";
             html = Regex.Replace(html, """<img\s+src="([^"]+)"([^>]*)>""", """<a href="img:$1"><img src="$1"$2></a>""");
