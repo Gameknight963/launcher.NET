@@ -1,7 +1,7 @@
 ﻿using TheArtOfDev.HtmlRenderer;
 using TheArtOfDev.HtmlRenderer.WinForms;
 
-namespace launcherdotnet.Launcher.Forms.Thunderstore
+namespace launcherdotnet.Launcher.Forms
 {
     partial class ThunderstoreModBrowser
     {

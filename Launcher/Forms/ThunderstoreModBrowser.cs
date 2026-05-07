@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
 using Svg;
 
-namespace launcherdotnet.Launcher.Forms.Thunderstore
+namespace launcherdotnet.Launcher.Forms
 {
     public partial class ThunderstoreModBrowser : ThemeableForm
     {
@@ -27,15 +27,6 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             InitializeComponent();
             CancelButton = cancelButton;
             AcceptButton = okButton;
-            descriptionPanel.LinkClicked += (sender, e) =>
-            {
-                if (e.Link.StartsWith("img:"))
-                {
-                    e.Handled = true;
-                    string url = e.Link.Substring(4);
-                    BigImageViewer.Show(url);
-                }
-            };
             modsLv.VirtualMode = true;
             modsLv.RetrieveVirtualItem += ModsLv_RetrieveVirtualItem;
             UpdateModsLv(game);
@@ -172,17 +163,23 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         {
             _currentReadme = readmeContent;
             string fg = ColorTranslator.ToHtml(ForeColor);
-            string bg = ColorTranslator.ToHtml(BackColor);
-            string thBg = ColorTranslator.ToHtml(ControlPaint.Light(BackColor, 0.1f));
+            string raisedBg = ColorTranslator.ToHtml(ControlPaint.Light(BackColor, 0.1f));
+            string body = Markdown.ToHtml(_currentReadme, _pipeline);
+            body = Regex.Replace(body, @"\n</code>", "</code>");
             string html = $@"<html><head>
                 <style>
-                body {{ font-family: Segoe UI, sans-serif; font-size: 13px; color: {fg}; }}
-                img {{ max-width: 280px !important; height: auto !important; cursor: pointer; }}
-                table {{ border-collapse: collapse; margin: 8px 0; }}
-                th, td {{ border: 1px solid #aaa; padding: 4px 10px; }}
-                th {{ font-weight: bold; background-color: {thBg}; }}
+                    body {{ font-family: Segoe UI, sans-serif; font-size: 13px; color: {fg}; margin: 8px; }}
+                    img {{ max-width: 280px !important; height: auto !important; cursor: pointer; }}
+                    table {{ border-collapse: collapse; margin: 8px 0; }}
+                    th, td {{ border: 1px solid #aaa; padding: 4px 10px; }}
+                    th {{ font-weight: bold; background-color: {raisedBg}; }}
+                    code {{ font-family: Consolas, monospace; font-size: 12px; background-color: {raisedBg}; padding: 1px 4px; }}
+                    pre {{ background-color: {raisedBg}; padding: 10px 12px; overflow-x: auto; }}
+                    pre code {{ background-color: transparent; padding: 0; }}
+                    * {{ margin-top: 0; }}
+                    p:last-child, pre:last-child {{ margin-bottom: 0; }}
                 </style>
-                </head><body>{Markdown.ToHtml(_currentReadme, _pipeline)}</body></html>";
+                </head><body>{body}</body></html>";
             html = Regex.Replace(html, """<img\s+src="([^"]+)"([^>]*)>""", """<a href="img:$1"><img src="$1"$2></a>""");
             descriptionPanel.Text = html;
         }
