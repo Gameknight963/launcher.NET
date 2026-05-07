@@ -18,6 +18,10 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         private readonly Dictionary<int, string> _readmeCache = [];
         private string? _currentReadme;
 
+        private static readonly MarkdownPipeline _pipeline = new MarkdownPipelineBuilder()
+            .UseAdvancedExtensions()
+            .Build();
+
         public ThunderstoreModBrowser(GameInfo game)
         {
             InitializeComponent();
@@ -148,19 +152,19 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         private void UpdateBrowserReadme(string readmeContent)
         {
             _currentReadme = readmeContent;
-            string bg = ColorTranslator.ToHtml(BackColor);
             string fg = ColorTranslator.ToHtml(ForeColor);
             string html = $@"<html><head>
-                <meta http-equiv='X-UA-Compatible' content='IE=edge'>
                 <style>
                 body {{ font-family: Segoe UI, sans-serif; font-size: 13px; color: {fg}; }}
                 img {{ max-width: 280px !important; height: auto !important; cursor: pointer; }}
+                table {{ border-collapse: collapse; margin: 8px 0; }}
+                th, td {{ border: 1px solid #aaa; padding: 4px 10px; }}
+                th {{ font-weight: bold; background-color: #e8e8e8; }}
                 </style>
                 <script>
                 function imgClick(url, w, h) {{ window.external.OnImageClicked(url, w, h); }}
                 </script>
-                </head><body>{Markdown.ToHtml(_currentReadme)}</body></html>";
-            html = Regex.Replace(html, "<img ", "<img onclick='imgClick(this.src, this.naturalWidth, this.naturalHeight)' ");
+                </head><body>{Markdown.ToHtml(_currentReadme, _pipeline)}</body></html>";
             descriptionPanel.Text = html;
         }
 
