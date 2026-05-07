@@ -56,7 +56,6 @@ namespace launcherdotnet.Launcher.Forms
             };
             descriptionPanel.LinkClicked += (sender, e) =>
             {
-                LauncherLogger.WriteLine($"LinkClicked: {e.Link}");
                 if (e.Link.StartsWith("img:"))
                 {
                     e.Handled = true;
