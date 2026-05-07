@@ -27,6 +27,15 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             InitializeComponent();
             CancelButton = cancelButton;
             AcceptButton = okButton;
+            descriptionPanel.LinkClicked += (sender, e) =>
+            {
+                if (e.Link.StartsWith("img:"))
+                {
+                    e.Handled = true;
+                    string url = e.Link.Substring(4);
+                    BigImageViewer.Show(url);
+                }
+            };
             modsLv.VirtualMode = true;
             modsLv.RetrieveVirtualItem += ModsLv_RetrieveVirtualItem;
             UpdateModsLv(game);
@@ -52,6 +61,16 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                     Bitmap svgImg = new((int)svgDoc.Width, (int)svgDoc.Height, PixelFormat.Format32bppArgb);
                     svgDoc.Draw(svgImg);
                     args.Callback(svgImg);
+                }
+            };
+            descriptionPanel.LinkClicked += (sender, e) =>
+            {
+                LauncherLogger.WriteLine($"LinkClicked: {e.Link}");
+                if (e.Link.StartsWith("img:"))
+                {
+                    e.Handled = true;
+                    string url = e.Link[4..];
+                    BigImageViewer.Show(url);
                 }
             };
         }
@@ -161,10 +180,8 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                 th, td {{ border: 1px solid #aaa; padding: 4px 10px; }}
                 th {{ font-weight: bold; background-color: #e8e8e8; }}
                 </style>
-                <script>
-                function imgClick(url, w, h) {{ window.external.OnImageClicked(url, w, h); }}
-                </script>
                 </head><body>{Markdown.ToHtml(_currentReadme, _pipeline)}</body></html>";
+            html = Regex.Replace(html, """<img\s+src="([^"]+)"([^>]*)>""", """<a href="img:$1"><img src="$1"$2></a>""");
             descriptionPanel.Text = html;
         }
 
