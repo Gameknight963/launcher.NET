@@ -11,8 +11,7 @@
     <Description>Lightweight universal game launcher in .net framework</Description>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-	<NoWarn>$(NoWarn);NETSDK1137</NoWarn>
-	<NoWarn>NU1701</NoWarn>
+	<NoWarn>$(NoWarn);NU1701;NETSDK1137;</NoWarn>
   </PropertyGroup>
 	
 

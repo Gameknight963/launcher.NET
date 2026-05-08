@@ -39,8 +39,10 @@ namespace launcherdotnet.Launcher.Forms
             cancelButton = new Button();
             versionsCb = new ComboBox();
             vesionSelectedLabel = new Label();
-            button1 = new Button();
+            downloadBtn = new Button();
+            downloadPnl = new Panel();
             tableLayoutPanel1.SuspendLayout();
+            downloadPnl.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -81,25 +83,29 @@ namespace launcherdotnet.Launcher.Forms
             // descriptionPanel
             // 
             descriptionPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            descriptionPanel.AutoScroll = true;
+            descriptionPanel.BackColor = SystemColors.Window;
+            descriptionPanel.BaseStylesheet = null;
             descriptionPanel.Location = new Point(289, 3);
             descriptionPanel.Name = "descriptionPanel";
             descriptionPanel.Size = new Size(280, 360);
             descriptionPanel.TabIndex = 1;
+            descriptionPanel.Text = null;
             // 
             // okButton
             // 
             okButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            okButton.Location = new Point(506, 449);
+            okButton.Location = new Point(436, 449);
             okButton.Name = "okButton";
-            okButton.Size = new Size(75, 23);
+            okButton.Size = new Size(145, 23);
             okButton.TabIndex = 1;
-            okButton.Text = "OK";
+            okButton.Text = "Review and Confirm";
             okButton.UseVisualStyleBackColor = true;
             // 
             // cancelButton
             // 
             cancelButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            cancelButton.Location = new Point(425, 449);
+            cancelButton.Location = new Point(355, 449);
             cancelButton.Name = "cancelButton";
             cancelButton.Size = new Size(75, 23);
             cancelButton.TabIndex = 2;
@@ -110,7 +116,8 @@ namespace launcherdotnet.Launcher.Forms
             // 
             versionsCb.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             versionsCb.FormattingEnabled = true;
-            versionsCb.Location = new Point(402, 384);
+            versionsCb.Location = new Point(108, 3);
+            versionsCb.Margin = new Padding(3, 3, 0, 3);
             versionsCb.Name = "versionsCb";
             versionsCb.Size = new Size(179, 23);
             versionsCb.TabIndex = 3;
@@ -119,30 +126,42 @@ namespace launcherdotnet.Launcher.Forms
             // 
             vesionSelectedLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             vesionSelectedLabel.AutoSize = true;
-            vesionSelectedLabel.Location = new Point(301, 387);
+            vesionSelectedLabel.Location = new Point(7, 6);
+            vesionSelectedLabel.Margin = new Padding(3);
             vesionSelectedLabel.Name = "vesionSelectedLabel";
             vesionSelectedLabel.Size = new Size(95, 15);
             vesionSelectedLabel.TabIndex = 4;
             vesionSelectedLabel.Text = "Version Selected:";
             // 
-            // button1
+            // downloadBtn
             // 
-            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button1.Location = new Point(402, 413);
-            button1.Name = "button1";
-            button1.Size = new Size(179, 23);
-            button1.TabIndex = 5;
-            button1.Text = "Select mod for download";
-            button1.UseVisualStyleBackColor = true;
+            downloadBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            downloadBtn.Location = new Point(108, 32);
+            downloadBtn.Margin = new Padding(3, 3, 0, 3);
+            downloadBtn.Name = "downloadBtn";
+            downloadBtn.Size = new Size(179, 23);
+            downloadBtn.TabIndex = 5;
+            downloadBtn.Text = "Select mod for download";
+            downloadBtn.UseVisualStyleBackColor = true;
+            downloadBtn.Click += downloadBtn_Click;
+            // 
+            // downloadPnl
+            // 
+            downloadPnl.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            downloadPnl.Controls.Add(versionsCb);
+            downloadPnl.Controls.Add(downloadBtn);
+            downloadPnl.Controls.Add(vesionSelectedLabel);
+            downloadPnl.Location = new Point(294, 385);
+            downloadPnl.Name = "downloadPnl";
+            downloadPnl.Size = new Size(290, 58);
+            downloadPnl.TabIndex = 6;
             // 
             // ThunderstoreModBrowser
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(596, 484);
-            Controls.Add(button1);
-            Controls.Add(vesionSelectedLabel);
-            Controls.Add(versionsCb);
+            Controls.Add(downloadPnl);
             Controls.Add(cancelButton);
             Controls.Add(okButton);
             Controls.Add(tableLayoutPanel1);
@@ -150,8 +169,9 @@ namespace launcherdotnet.Launcher.Forms
             Name = "ThunderstoreModBrowser";
             Text = "Thunderstore Mod Browser";
             tableLayoutPanel1.ResumeLayout(false);
+            downloadPnl.ResumeLayout(false);
+            downloadPnl.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -164,6 +184,7 @@ namespace launcherdotnet.Launcher.Forms
         private ColumnHeader nameColumn;
         private ComboBox versionsCb;
         private Label vesionSelectedLabel;
-        private Button button1;
+        private Button downloadBtn;
+        private Panel downloadPnl;
     }
 }
