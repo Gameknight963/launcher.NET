@@ -1,9 +1,15 @@
-﻿using launcherdotnet.Styling;
+﻿using launcherdotnet.Helpers; 
+using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
 using Markdig;
-using System.Drawing.Imaging;
-using System.Text.RegularExpressions;
 using Svg;
+using System;
+using System.Drawing.Imaging;
+using System.Drawing.Printing;
+using System.IO.Packaging;
+using System.Linq;
+using System.Text.RegularExpressions;
+using static System.Windows.Forms.AxHost;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -17,6 +23,8 @@ namespace launcherdotnet.Launcher.Forms
         private readonly Dictionary<int, List<ThunderstoreVersion>> _versionCache = [];
         private readonly Dictionary<int, string> _readmeCache = [];
         private string? _currentReadme;
+
+        private HashSet<ThunderstorePackageInstallContext> _selectedForInstall = [];
 
         private static readonly MarkdownPipeline _pipeline = new MarkdownPipelineBuilder()
             .UseAdvancedExtensions()
@@ -94,6 +102,7 @@ namespace launcherdotnet.Launcher.Forms
         async void UpdateModsLv(GameInfo game)
         {
             if (game.ThunderstoreCommunitySlug is not string slug) return;
+            downloadPnl.Visible = false;
             _packages = [];
             _currentChunk = 0;
             UseWaitCursor = true;
@@ -101,18 +110,21 @@ namespace launcherdotnet.Launcher.Forms
             if (_chunkUrls.Count > 0)
                 await LoadNextChunk();
             UseWaitCursor = false;
+            downloadPnl.Visible = true;
+            modsLv.Items[0].Selected = true;
         }
 
         private async void modsLv_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (modsLv.SelectedIndices.Count == 0)
             {
+                downloadPnl.Visible = false;
                 versionsCb.Items.Clear();
                 descriptionPanel.Text = "";
                 return;
             }
             descriptionPanel.Text =
-        $"<html><body style='background:{ColorTranslator.ToHtml(BackColor)};color:white;font-family:Segoe UI'>Loading...</body></html>";
+                $"<html><body style='background:{ColorTranslator.ToHtml(BackColor)};color:white;font-family:Segoe UI'>Loading...</body></html>";
 
             UseWaitCursor = true;
             int index = modsLv.SelectedIndices[0];
@@ -154,11 +166,13 @@ namespace launcherdotnet.Launcher.Forms
                 UseWaitCursor = false;
                 return;
             }
-            UpdateBrowserReadme(readmeContent);
+            UpdateReadme(readmeContent);
+            downloadPnl.Visible = true;
+            SetDownloadPanelBasedOnContext();
             UseWaitCursor = false;
         }
 
-        private void UpdateBrowserReadme(string readmeContent)
+        private void UpdateReadme(string readmeContent)
         {
             _currentReadme = readmeContent;
             string fg = ColorTranslator.ToHtml(ForeColor);
@@ -185,7 +199,39 @@ namespace launcherdotnet.Launcher.Forms
 
         protected override void OnThemeWasApplied()
         {
-            if (_currentReadme != null) UpdateBrowserReadme(_currentReadme);
+            if (_currentReadme != null) UpdateReadme(_currentReadme);
+        }
+
+        private ThunderstorePackageInstallContext? GetSelectedInstallContext()
+        {
+            if (versionsCb.SelectedItem == null || modsLv.SelectedIndices.Count == 0) return null;
+            ThunderstorePackageSlim package = _packages[modsLv.SelectedIndices[0]];
+            return new(package.Name, package.DownloadUrl!, versionsCb.SelectedItem.ToString()!);
+        }
+
+        private void SetDownloadPanelBasedOnContext()
+        {
+            if (versionsCb.SelectedItem == null || modsLv.SelectedIndices.Count == 0) return;
+            ThunderstorePackageInstallContext? context = GetSelectedInstallContext();
+            if (context == null) return;
+            bool contains = _selectedForInstall.Contains(context);
+            if (!contains)
+                _selectedForInstall.Remove(context);
+            downloadBtn.Text = contains ? "Deselect mod for download" : "Select mod for download";
+        }
+
+        private void AddSelectedContext()
+        {
+            ThunderstorePackageInstallContext? context = GetSelectedInstallContext();
+            if (context == null) return;
+            bool added = _selectedForInstall.Add(context);
+            if (!added) _selectedForInstall.Remove(context);
+            downloadBtn.Text = added ? "Deselect mod for download" : "Select mod for download";
+        }
+
+        private void downloadBtn_Click(object sender, EventArgs e)
+        {
+            AddSelectedContext();
         }
     }
 }
