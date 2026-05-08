@@ -1,15 +1,10 @@
-﻿using launcherdotnet.Helpers; 
-using launcherdotnet.Styling;
+﻿using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
 using Markdig;
+using Markdown.ColorCode;
 using Svg;
-using System;
 using System.Drawing.Imaging;
-using System.Drawing.Printing;
-using System.IO.Packaging;
-using System.Linq;
 using System.Text.RegularExpressions;
-using static System.Windows.Forms.AxHost;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -28,6 +23,7 @@ namespace launcherdotnet.Launcher.Forms
 
         private static readonly MarkdownPipeline _pipeline = new MarkdownPipelineBuilder()
             .UseAdvancedExtensions()
+            .UseColorCode()
             .Build();
 
         public ThunderstoreModBrowser(GameInfo game)
@@ -177,7 +173,7 @@ namespace launcherdotnet.Launcher.Forms
             _currentReadme = readmeContent;
             string fg = ColorTranslator.ToHtml(ForeColor);
             string raisedBg = ColorTranslator.ToHtml(ControlPaint.Light(BackColor, 0.1f));
-            string body = Markdown.ToHtml(_currentReadme, _pipeline);
+            string body = Markdig.Markdown.ToHtml(_currentReadme, _pipeline);
             body = Regex.Replace(body, @"\n</code>", "</code>");
             string html = $@"<html><head>
                 <style>
