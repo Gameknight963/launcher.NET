@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO.Compression;
+using System.Text.Json.Serialization;
 
 namespace launcherdotnet.Thunderstore
 {
@@ -23,6 +24,17 @@ namespace launcherdotnet.Thunderstore
 
             JsonSerializer serializer = new();
             return serializer.Deserialize<ThunderstorePackage>(jsonReader);
+        }
+
+        public static async Task<ThunderstoreVersion?> GetPackageVersionAsync(string owner, string name, string version)
+        {
+            string url = $"{BaseUrl}/api/experimental/package/{owner}/{name}/{version}/";
+            LauncherLogger.WriteLine($"Fetching package version: {url}");
+            using Stream stream = await Http.GetStreamAsync(url);
+            using StreamReader streamReader = new(stream);
+            using JsonTextReader jsonReader = new(streamReader);
+            JsonSerializer serializer = new();
+            return serializer.Deserialize<ThunderstoreVersion>(jsonReader);
         }
 
         public static async Task<List<ThunderstoreVersion>> GetPackageVersionsAsync(string communitySlug, string uuid4)
@@ -69,6 +81,7 @@ namespace launcherdotnet.Thunderstore
         public static async Task<List<ThunderstorePackageSlim>> GetPackageListChunkAsync(string chunkUrl)
         {
             LauncherLogger.WriteLine($"Fetching chunk: {chunkUrl}");
+
             using Stream compressed = await Http.GetStreamAsync(chunkUrl);
             using GZipStream gzipStream = new(compressed, CompressionMode.Decompress);
             using StreamReader streamReader = new(gzipStream);

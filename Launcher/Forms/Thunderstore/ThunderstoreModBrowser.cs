@@ -1,10 +1,12 @@
-﻿using launcherdotnet.Styling;
+﻿using launcherdotnet.Launcher.Forms.Thunderstore;
+using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
 using Markdig;
 using Markdown.ColorCode;
 using Svg;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -202,7 +204,7 @@ namespace launcherdotnet.Launcher.Forms
         {
             if (versionsCb.SelectedItem == null || modsLv.SelectedIndices.Count == 0) return null;
             ThunderstorePackageSlim package = _packages[modsLv.SelectedIndices[0]];
-            return new(package.Name, package.DownloadUrl!, versionsCb.SelectedItem.ToString()!);
+            return ThunderstorePackageInstallContext.FromPackageSlim(package, versionsCb.SelectedItem.ToString()!);
         }
 
         private void SetDownloadPanelBasedOnContext()
@@ -228,6 +230,27 @@ namespace launcherdotnet.Launcher.Forms
         private void downloadBtn_Click(object sender, EventArgs e)
         {
             AddSelectedContext();
+        }
+
+        private async void okButton_Click(object sender, EventArgs e)
+        {
+            List<string> strings = [];
+            HashSet<ThunderstoreVersion> deps = [];
+            foreach (ThunderstorePackageInstallContext p in _selectedForInstall)
+            {
+                strings.Add(p.Name);
+
+                ThunderstoreVersion? v = await p.FetchThunderstoreVersionAsync();
+                if (v is null)
+                {
+                    LauncherLogger.Warn($"Unable to fetch version object for {p.Name}");
+                    return;
+                }
+                List<ThunderstoreVersion> dependencies = await v.FetchDependenciesAsync();
+                foreach (ThunderstoreVersion dep in dependencies) deps.Add(dep);
+            }
+            DialogResult result = new ReviewAndConfirm(strings, deps.Count).ShowDialog();
+            if (result != DialogResult.OK) return;
         }
     }
 }
