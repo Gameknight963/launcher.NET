@@ -101,6 +101,7 @@ namespace launcherdotnet.Launcher.Forms
             okButton.TabIndex = 1;
             okButton.Text = "Review and Confirm";
             okButton.UseVisualStyleBackColor = true;
+            okButton.Click += okButton_Click;
             // 
             // cancelButton
             // 
