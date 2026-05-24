@@ -203,8 +203,13 @@ namespace launcherdotnet.Launcher.Forms
         private ThunderstorePackageInstallContext? GetSelectedInstallContext()
         {
             if (versionsCb.SelectedItem == null || modsLv.SelectedIndices.Count == 0) return null;
-            ThunderstorePackageSlim package = _packages[modsLv.SelectedIndices[0]];
-            return ThunderstorePackageInstallContext.FromPackageSlim(package, versionsCb.SelectedItem.ToString()!);
+            int index = modsLv.SelectedIndices[0];
+            ThunderstorePackageSlim slim = _packages[index];
+            string selectedVersion = versionsCb.SelectedItem.ToString()!;
+            if (!_versionCache.TryGetValue(index, out List<ThunderstoreVersion>? versions)) return null;
+            ThunderstoreVersion? version = versions.FirstOrDefault(v => v.VersionNumber == selectedVersion);
+            if (version == null) return null;
+            return new ThunderstorePackageInstallContext(slim.Name, version.DownloadUrl, selectedVersion, slim.Owner);
         }
 
         private void SetDownloadPanelBasedOnContext()
