@@ -92,5 +92,6 @@ namespace launcherdotnet.Launcher.Settings
         public bool VerboseLogging { get; set; } = false;
         public bool DisablePluginVersionCheck { get; set; } = false;
         public bool DisablePathChecks { get; set; } = false;
+        public bool DisableIPv6 { get; set; } = false;
     }
 }

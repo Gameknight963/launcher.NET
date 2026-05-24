@@ -138,12 +138,12 @@ namespace launcherdotnet.Launcher.Forms
                     progressBar.Style = ProgressBarStyle.Continuous;
                     progressBar.Value = 0;
                     switchedToPercent = true;
-                    ActivityHint.Text = "Downloading...";
+                    activityHint.Text = "Downloading...";
                 }
 
                 int value = Math.Min(100, Math.Max(0, (int)percent));
                 progressBar.Value = value;
-                ActivityHint.Text = $"Downloading... {percent:0.0}%";
+                activityHint.Text = $"Downloading... {percent:0.0}%";
             });
 
             Installer.Log = msg => LauncherLogger.WriteLine(msg);
@@ -154,8 +154,8 @@ namespace launcherdotnet.Launcher.Forms
 
             try
             {
-                ActivityHint.Visible = true;
-                ActivityHint.Text = "Preparing download... This may take a while.";
+                activityHint.Visible = true;
+                activityHint.Text = "Preparing download... This may take a while.";
                 progressBar.Style = ProgressBarStyle.Marquee;
 
                 bool downloadOk = await Installer.DownloadVersionAsync(
@@ -170,13 +170,13 @@ namespace launcherdotnet.Launcher.Forms
                     return;
                 }
                 
-                ActivityHint.Text = "Extracting...";
+                activityHint.Text = "Extracting...";
                 Directory.CreateDirectory(installDir);
                 ZipFile.ExtractToDirectory(tempZip, installDir, true);
 
                 progressBar.Style = ProgressBarStyle.Continuous;
                 progressBar.Value = 100;
-                ActivityHint.Text = "Installation complete.";
+                activityHint.Text = "Installation complete.";
                 CoolMessageBox.Show("Installation complete.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
