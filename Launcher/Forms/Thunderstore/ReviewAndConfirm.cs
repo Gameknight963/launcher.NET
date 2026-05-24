@@ -28,9 +28,20 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             StartPosition = FormStartPosition.CenterParent;
             CancelButton = cancelButton;
             AcceptButton = okButton;
+            okButton.Click += (s, e) =>
+            {
+                DialogResult = DialogResult.OK;
+                Close();
+            };
+            cancelButton.Click += (s, e) =>
+            {
+                DialogResult = DialogResult.Cancel;
+                Close();
+            };
             foreach (string s in mods)
-                modsLb.Items.Add((s, false));
-            label1.Text = dependenciesAmount.ToString();
+                modsLb.Items.Add(s);
+            label1.Text = $"{mods.Count()} mod(s) selected for download:";
+            label2.Text = $"{dependenciesAmount} dependencies are hidden";
         }
     }
 }

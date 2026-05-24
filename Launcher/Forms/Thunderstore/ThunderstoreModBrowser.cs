@@ -1,12 +1,14 @@
 ﻿using launcherdotnet.Launcher.Forms.Thunderstore;
+using launcherdotnet.Networking;
 using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
 using Markdig;
 using Markdown.ColorCode;
 using Svg;
 using System.Drawing.Imaging;
-using System.Text.RegularExpressions;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -20,8 +22,9 @@ namespace launcherdotnet.Launcher.Forms
         private readonly Dictionary<int, List<ThunderstoreVersion>> _versionCache = [];
         private readonly Dictionary<int, string> _readmeCache = [];
         private string? _currentReadme;
+        private GameInfo _game;
 
-        private HashSet<ThunderstorePackageInstallContext> _selectedForInstall = [];
+        private readonly HashSet<ThunderstorePackageInstallContext> _selectedForInstall = [];
 
         private static readonly MarkdownPipeline _pipeline = new MarkdownPipelineBuilder()
             .UseAdvancedExtensions()
@@ -31,8 +34,10 @@ namespace launcherdotnet.Launcher.Forms
         public ThunderstoreModBrowser(GameInfo game)
         {
             InitializeComponent();
+            _game = game;
             CancelButton = cancelButton;
             AcceptButton = okButton;
+            StartPosition = FormStartPosition.CenterParent;
             modsLv.VirtualMode = true;
             modsLv.RetrieveVirtualItem += ModsLv_RetrieveVirtualItem;
             UpdateModsLv(game);
@@ -52,7 +57,7 @@ namespace launcherdotnet.Launcher.Forms
                     || args.Src.Contains("shields.io"))
                 {
                     args.Handled = true;
-                    byte[] data = await ThunderstoreClient.Http.GetByteArrayAsync(args.Src);
+                    byte[] data = await LauncherHttp.Client.GetByteArrayAsync(args.Src);
                     using MemoryStream ms = new(data);
                     SvgDocument svgDoc = SvgDocument.Open<SvgDocument>(ms);
                     Bitmap svgImg = new((int)svgDoc.Width, (int)svgDoc.Height, PixelFormat.Format32bppArgb);
@@ -88,6 +93,7 @@ namespace launcherdotnet.Launcher.Forms
             if (_currentChunk >= _chunkUrls.Count) return;
             _isLoading = true;
             int topIndex = modsLv.TopItem?.Index ?? 0;
+            LauncherLogger.WriteLine($"Fetching chunk {_currentChunk}");
             List<ThunderstorePackageSlim> packages = await ThunderstoreClient.GetPackageListChunkAsync(_chunkUrls[_currentChunk]);
             _currentChunk++;
             _packages.AddRange(packages);
@@ -110,6 +116,7 @@ namespace launcherdotnet.Launcher.Forms
             UseWaitCursor = false;
             downloadPnl.Visible = true;
             modsLv.Items[0].Selected = true;
+            LauncherLogger.WriteLine("Done with initial modlist fetch");
         }
 
         private async void modsLv_SelectedIndexChanged(object sender, EventArgs e)
@@ -168,6 +175,7 @@ namespace launcherdotnet.Launcher.Forms
             downloadPnl.Visible = true;
             SetDownloadPanelBasedOnContext();
             UseWaitCursor = false;
+            LauncherLogger.WriteLine($"Done fetching info for {slim.Name}");
         }
 
         private void UpdateReadme(string readmeContent)
@@ -239,23 +247,30 @@ namespace launcherdotnet.Launcher.Forms
 
         private async void okButton_Click(object sender, EventArgs e)
         {
-            List<string> strings = [];
+            UseWaitCursor = true;
+            List<string> names = [];
+            HashSet<ThunderstoreVersion> pkgs = [];
             HashSet<ThunderstoreVersion> deps = [];
             foreach (ThunderstorePackageInstallContext p in _selectedForInstall)
             {
-                strings.Add(p.Name);
+                names.Add(p.Name);
 
+                LauncherLogger.WriteLine($"Fetching version object for {p.Name}");
                 ThunderstoreVersion? v = await p.FetchThunderstoreVersionAsync();
                 if (v is null)
                 {
-                    LauncherLogger.Warn($"Unable to fetch version object for {p.Name}");
+                    LauncherLogger.Error($"Unable to fetch version object for {p.Name}. Cancelling");
                     return;
                 }
+                pkgs.Add(v);
                 List<ThunderstoreVersion> dependencies = await v.FetchDependenciesAsync();
                 foreach (ThunderstoreVersion dep in dependencies) deps.Add(dep);
             }
-            DialogResult result = new ReviewAndConfirm(strings, deps.Count).ShowDialog();
+            UseWaitCursor = false;
+            DialogResult result = new ReviewAndConfirm(names, deps.Count).ShowDialog();
             if (result != DialogResult.OK) return;
+
+            new ThunderstoreModInstaller(_game, pkgs, deps).ShowDialog();
         }
     }
 }

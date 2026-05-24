@@ -34,7 +34,7 @@
             VersionDropdown = new ComboBox();
             InstallModloaderButton = new Button();
             progressBar = new ProgressBar();
-            ActivityHint = new Label();
+            activityHint = new Label();
             SuspendLayout();
             // 
             // ModloaderDropdown
@@ -88,28 +88,29 @@
             progressBar.Size = new Size(439, 23);
             progressBar.TabIndex = 4;
             // 
-            // ActivityHint
+            // activityHint
             // 
-            ActivityHint.AutoSize = true;
-            ActivityHint.Location = new Point(41, 187);
-            ActivityHint.Name = "ActivityHint";
-            ActivityHint.Size = new Size(167, 15);
-            ActivityHint.TabIndex = 6;
-            ActivityHint.Text = "Installation hint will show here";
-            ActivityHint.Visible = false;
+            activityHint.AutoSize = true;
+            activityHint.Location = new Point(41, 187);
+            activityHint.Name = "activityHint";
+            activityHint.Size = new Size(167, 15);
+            activityHint.TabIndex = 6;
+            activityHint.Text = "Installation hint will show here";
+            activityHint.Visible = false;
             // 
             // ModloaderInstallForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(517, 214);
-            Controls.Add(ActivityHint);
+            Controls.Add(activityHint);
             Controls.Add(progressBar);
             Controls.Add(InstallModloaderButton);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(VersionDropdown);
             Controls.Add(ModloaderDropdown);
+            ForeColor = Color.Black;
             Name = "ModloaderInstallForm";
             Text = "Installation";
             ResumeLayout(false);
@@ -124,6 +125,6 @@
         private ComboBox VersionDropdown;
         private Button InstallModloaderButton;
         private ProgressBar progressBar;
-        private Label ActivityHint;
+        private Label activityHint;
     }
 }
