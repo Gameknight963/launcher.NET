@@ -59,8 +59,9 @@
             ClientSize = new Size(718, 450);
             Controls.Add(button1);
             Controls.Add(pictureBox1);
+            ForeColor = Color.Black;
             Name = "BigImageViewer";
-            Text = "BigImageViewer";
+            Text = "Big Image Viewer";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }

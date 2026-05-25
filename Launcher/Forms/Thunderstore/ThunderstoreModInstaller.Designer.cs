@@ -43,7 +43,6 @@
             activityHint.Size = new Size(167, 15);
             activityHint.TabIndex = 7;
             activityHint.Text = "Installation hint will show here";
-            activityHint.Visible = true;
             // 
             // progressBar
             // 
@@ -82,7 +81,7 @@
             Controls.Add(activityHint);
             ForeColor = Color.Black;
             Name = "ThunderstoreModInstaller";
-            Text = "Mod installation";
+            Text = "Mod Installation";
             ResumeLayout(false);
             PerformLayout();
         }
