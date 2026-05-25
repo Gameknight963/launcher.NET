@@ -92,9 +92,11 @@ Sometimes there are files that are created at runtime, that weren't installed wi
 
 You can click "Clean untracked files" to get rid of some of them:
 
-<img width="408" height="656" alt="image" src="https://github.com/user-attachments/assets/54350a0b-4a63-4c0f-9d0e-7a1e5d7e66bf" />
+<img width="508" height="630" alt="image" src="https://github.com/user-attachments/assets/3b505819-d42d-4959-bb67-6c68ad625d61" />
 
 This menu will also appear once you've uninstalled every mod.
+
+As you can see it currently includes a lot of runtime generated Melonloader files. This will be fixed in the future.
 
 ### Configuring it to your liking
 Click "settings." Descriptions of what each setting does are included on the right panel of the settings menu.
