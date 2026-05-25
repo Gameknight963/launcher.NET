@@ -11,6 +11,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         public ThunderstoreModInstaller(GameInfo game, IEnumerable<ThunderstoreVersion> pkgs, IEnumerable<ThunderstoreVersion> deps)
         {
             InitializeComponent();
+            progressBar.Maximum = pkgs.Count() + deps.Count();
             _ = Install(game, pkgs, deps);
         }
 
@@ -34,6 +35,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                 activityHint.Text = $"Installing package {i} out of {pkgs.Count()}";
                 await InstallPackage(pkg, game);
                 i++;
+                progressBar.Value = i;
             }
             i = 0;
             foreach (ThunderstoreVersion dep in deps)
@@ -41,6 +43,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                 activityHint.Text = $"Installing dependency {i} out of {deps.Count()}";
                 await InstallPackage(dep, game);
                 i++;
+                progressBar.Value = i;
             }
             WriteLog("All done.");
             Close();
