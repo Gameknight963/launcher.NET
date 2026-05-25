@@ -145,7 +145,6 @@ namespace launcherdotnet.Launcher.Forms
                     LaunchButton.Visible = false;
                     OpenFolderButton.Visible = false;
                     RenameButton.Visible = false;
-                    InstallSometingButton.Visible = false;
                     editGameInfoButton.Visible = false;
                     installModsButton.Visible = false;
                     break;
@@ -155,7 +154,6 @@ namespace launcherdotnet.Launcher.Forms
                     LaunchButton.Visible = true;
                     OpenFolderButton.Visible = true;
                     RenameButton.Visible = true;
-                    InstallSometingButton.Visible = true;
                     editGameInfoButton.Visible = true;
                     installModsButton.Visible = true;
                     break;
@@ -252,14 +250,6 @@ namespace launcherdotnet.Launcher.Forms
         {
             GameInfo? game = GetSelectedGame();
             if (game != null) RenameGameGUI(game);
-        }
-
-        private void InstallSometingButton_Click(object sender, EventArgs e)
-        {
-            GameInfo? game = GetSelectedGame();
-            if (game == null) return;
-            ModloaderInstallForm form = new ModloaderInstallForm(game);
-            form.ShowDialog();
         }
 
         private async void SettingsButton_Click(object sender, EventArgs e)

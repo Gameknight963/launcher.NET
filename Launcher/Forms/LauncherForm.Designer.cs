@@ -41,7 +41,6 @@
             Panel = new Panel();
             installModsButton = new Button();
             editGameInfoButton = new Button();
-            InstallSometingButton = new Button();
             OpenFolderButton = new Button();
             RenameButton = new Button();
             SettingsButton = new Button();
@@ -117,9 +116,9 @@
             // 
             LaunchButton.Location = new Point(5, 95);
             LaunchButton.Name = "LaunchButton";
-            LaunchButton.Size = new Size(75, 23);
+            LaunchButton.Size = new Size(156, 23);
             LaunchButton.TabIndex = 2;
-            LaunchButton.Text = "Launch";
+            LaunchButton.Text = "▶ Launch";
             LaunchButton.UseVisualStyleBackColor = true;
             LaunchButton.Click += LaunchButton_Click;
             // 
@@ -147,7 +146,6 @@
             Panel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             Panel.Controls.Add(installModsButton);
             Panel.Controls.Add(editGameInfoButton);
-            Panel.Controls.Add(InstallSometingButton);
             Panel.Controls.Add(InstallHint);
             Panel.Controls.Add(OpenFolderButton);
             Panel.Controls.Add(LaunchButton);
@@ -177,16 +175,6 @@
             editGameInfoButton.Text = "Edit Game Info";
             editGameInfoButton.UseVisualStyleBackColor = true;
             editGameInfoButton.Click += editGameInfo;
-            // 
-            // InstallSometingButton
-            // 
-            InstallSometingButton.Location = new Point(86, 95);
-            InstallSometingButton.Name = "InstallSometingButton";
-            InstallSometingButton.Size = new Size(75, 23);
-            InstallSometingButton.TabIndex = 3;
-            InstallSometingButton.Text = "Modify...";
-            InstallSometingButton.UseVisualStyleBackColor = true;
-            InstallSometingButton.Click += InstallSometingButton_Click;
             // 
             // OpenFolderButton
             // 
@@ -261,7 +249,6 @@
         private Button DeleteButton;
         private Label InstallHint;
         private Panel Panel;
-        private Button InstallSometingButton;
         private Button SettingsButton;
         private Button OpenFolderButton;
         private Button RenameButton;
