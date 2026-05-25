@@ -61,34 +61,6 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             };
         }
 
-        async Task DownloadWithProgressAsync(string url, string destination)
-        {
-            using HttpResponseMessage response =
-                await LauncherHttp.Client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
-            response.EnsureSuccessStatusCode();
-            long total = response.Content.Headers.ContentLength ?? -1;
-            using Stream input = await response.Content.ReadAsStreamAsync();
-
-            using FileStream output = new(
-                destination,
-                FileMode.Create,
-                FileAccess.Write,
-                FileShare.None,
-                81920,
-                true);
-
-            byte[] buffer = new byte[81920];
-            long downloaded = 0;
-            int read;
-            while ((read = await input.ReadAsync(buffer)) > 0)
-            {
-                await output.WriteAsync(buffer.AsMemory(0, read));
-                downloaded += read;
-                if (total > 0)
-                    downloadProgressBar.Value = (int)(downloaded * 100 / total);
-            }
-        }
-
         async Task Install(GameInfo game, IEnumerable<ThunderstoreVersion> pkgs, IEnumerable<ThunderstoreVersion> deps)
         {
             progressBar.Maximum = pkgs.Count() + deps.Count();
