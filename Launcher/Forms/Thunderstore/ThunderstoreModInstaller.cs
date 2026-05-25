@@ -56,7 +56,8 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                 Owner = pkg.Namespace ?? "",
                 Version = pkg.VersionNumber,
                 Files = extractedFiles,
-                IsDependency = isDependency
+                IsDependency = isDependency,
+                Dependencies = pkg.Dependencies
             };
         }
 
