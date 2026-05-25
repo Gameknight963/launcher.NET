@@ -46,6 +46,7 @@
             okButton = new Button();
             cancelButton = new Button();
             runsWithCmdCheck = new CheckBox();
+            baselineButton = new Button();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -118,7 +119,7 @@
             thunderstoreSlugLabel.Location = new Point(6, 62);
             thunderstoreSlugLabel.Margin = new Padding(6);
             thunderstoreSlugLabel.Name = "thunderstoreSlugLabel";
-            thunderstoreSlugLabel.Size = new Size(104, 17);
+            thunderstoreSlugLabel.Size = new Size(103, 17);
             thunderstoreSlugLabel.TabIndex = 0;
             thunderstoreSlugLabel.Text = "Thunderstore Slug";
             thunderstoreSlugLabel.TextAlign = ContentAlignment.MiddleLeft;
@@ -156,7 +157,7 @@
             exeLabel.Location = new Point(6, 6);
             exeLabel.Margin = new Padding(6);
             exeLabel.Name = "exeLabel";
-            exeLabel.Size = new Size(63, 16);
+            exeLabel.Size = new Size(64, 16);
             exeLabel.TabIndex = 0;
             exeLabel.Text = "Executable";
             exeLabel.TextAlign = ContentAlignment.MiddleLeft;
@@ -192,16 +193,16 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(18, 193);
+            label2.Location = new Point(16, 193);
             label2.Name = "label2";
-            label2.Size = new Size(21, 15);
+            label2.Size = new Size(37, 15);
             label2.TabIndex = 4;
-            label2.Text = "ID:";
+            label2.Text = "GUID:";
             // 
             // guidLabel
             // 
             guidLabel.AutoSize = true;
-            guidLabel.Location = new Point(45, 193);
+            guidLabel.Location = new Point(61, 193);
             guidLabel.Name = "guidLabel";
             guidLabel.Size = new Size(117, 15);
             guidLabel.TabIndex = 4;
@@ -221,7 +222,7 @@
             // okButton
             // 
             okButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            okButton.Location = new Point(278, 249);
+            okButton.Location = new Point(278, 257);
             okButton.Name = "okButton";
             okButton.Size = new Size(75, 23);
             okButton.TabIndex = 6;
@@ -232,7 +233,7 @@
             // cancelButton
             // 
             cancelButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            cancelButton.Location = new Point(197, 249);
+            cancelButton.Location = new Point(197, 257);
             cancelButton.Name = "cancelButton";
             cancelButton.Size = new Size(75, 23);
             cancelButton.TabIndex = 6;
@@ -250,11 +251,23 @@
             runsWithCmdCheck.Text = "Runs with CMD";
             runsWithCmdCheck.UseVisualStyleBackColor = true;
             // 
+            // baselineButton
+            // 
+            baselineButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            baselineButton.Location = new Point(12, 257);
+            baselineButton.Name = "baselineButton";
+            baselineButton.Size = new Size(138, 23);
+            baselineButton.TabIndex = 8;
+            baselineButton.Text = "Recalculate baseline";
+            baselineButton.UseVisualStyleBackColor = true;
+            baselineButton.Click += baselineButton_Click;
+            // 
             // GameInfoEditor
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(370, 284);
+            ClientSize = new Size(370, 292);
+            Controls.Add(baselineButton);
             Controls.Add(runsWithCmdCheck);
             Controls.Add(cancelButton);
             Controls.Add(okButton);
@@ -294,5 +307,6 @@
         private Button okButton;
         private Button cancelButton;
         private CheckBox runsWithCmdCheck;
+        private Button baselineButton;
     }
 }
