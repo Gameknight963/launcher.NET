@@ -44,11 +44,12 @@ namespace launcherdotnet.Launcher
             HashSet<string> knownFiles = InstalledMods
                 .SelectMany(m => m.Files)
                 .Concat(BaselineFiles ?? [])
-                .ToHashSet();
+                .Select(f => f.Replace('\\', '/'))
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
             return Directory.GetFiles(gameRootDirectory, "*", SearchOption.AllDirectories)
-                .Select(f => Path.GetRelativePath(gameRootDirectory, f))
-                .Where(f => !knownFiles.Contains(f) && f != FileName)
+                .Select(f => Path.GetRelativePath(gameRootDirectory, f).Replace('\\', '/'))
+                .Where(f => !knownFiles.Contains(f) && f != FileName.Replace('\\', '/'))
                 .ToList();
         }
     }
