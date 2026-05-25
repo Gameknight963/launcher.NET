@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Reflection;
+using launcherdotnet.PluginAPI;
 
 namespace launcherdotnet.Launcher
 {
-    using System.Reflection;
-    using launcherdotnet.PluginAPI;
 
     internal static class PluginManager
     {
