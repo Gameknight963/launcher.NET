@@ -7,11 +7,25 @@ making mod management easy.
 <br>
 It still looks good even though its winforms
 
+### launcher.net vs prism launcher
+
+<img width="593" height="33" alt="image" src="https://github.com/user-attachments/assets/08510937-598f-4bed-85c8-0a0bfedc6ac6" />
+<br>
+<img width="600" height="35" alt="image" src="https://github.com/user-attachments/assets/afe0c9c1-35f6-4074-ada5-224599658116" />
+
+Don't get me wrong I still love prism launcher, it's just here to give you a sense of scale. launcher.net will be 
+incapable of launching Minecraft for the forseeable future, it is hypothetically possible though.
+
+<img width="606" height="33" alt="image" src="https://github.com/user-attachments/assets/8242e95b-36e0-4605-a68a-f0b85759d775" />
+
+optimization is a dead art to some holy. anyway moving on
+
 ## Features
  - Modular plugin system
  - Thunderstore API integration
  - Create multiple instances
  - Mod managment
+ - Low RAM and CPU usage
  - Dependency management
  - Themable to light mode, dark mode, and other themes
 
