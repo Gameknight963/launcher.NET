@@ -80,6 +80,7 @@ namespace launcherdotnet.Launcher.Forms
             s.OpenDebugConsole = AdvancedCheckbox.GetItemChecked(0);
             s.VerboseLogging = AdvancedCheckbox.GetItemChecked(1);
             s.DisablePluginVersionCheck = AdvancedCheckbox.GetItemChecked(2);
+            s.DisableIPv6 = AdvancedCheckbox.GetItemChecked(3);
 
             string json = JsonConvert.SerializeObject(s, Formatting.Indented);
             LauncherLogger.WriteLine("New settings saved:");
@@ -118,6 +119,7 @@ namespace launcherdotnet.Launcher.Forms
             AdvancedCheckbox.SetItemChecked(0, s.OpenDebugConsole);
             AdvancedCheckbox.SetItemChecked(1, s.VerboseLogging);
             AdvancedCheckbox.SetItemChecked(2, s.DisablePluginVersionCheck);
+            AdvancedCheckbox.SetItemChecked(3, s.DisableIPv6);
 
             // --- Theme ---
             themeButtons[(int)s.Theme].Checked = true;
