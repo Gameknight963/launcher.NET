@@ -1,7 +1,5 @@
 ﻿using launcherdotnet.Launcher.Settings;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace launcherdotnet.PluginAPI
 {
@@ -16,9 +14,5 @@ namespace launcherdotnet.PluginAPI
         /// The games directory
         /// </summary>
         public static string GamesDir => Config.GamesDir;
-        /// <summary>
-        /// User agent for plugins to use when making requests to APIs
-        /// </summary>
-        public static readonly string UserAgent = "launcher.NET";
     }
 }
