@@ -1,14 +1,30 @@
 # launcher.NET
 
-A lightweight game launcher capable of playing **any** game, through the power of plugins. 
+A lightweight game launcher capable of playing **any** game, through the power of plugins. It also has complete Thunderstore integration,
+making mod management easy.
 
-<img width="711" height="476" alt="image" src="https://github.com/user-attachments/assets/452da1c3-e411-42ac-86ba-8c095e1122ee" />
+<img width="715" height="508" alt="launcherdotnet_QKwqSGktTu" src="https://github.com/user-attachments/assets/259e2a73-083d-451b-b6b8-cd949609bcbc" />
 <br>
 It still looks good even though its winforms
+
+## Features
+ - Modular plugin system
+ - Thunderstore API integration
+ - Create multiple instances
+ - Mod managment
+ - Dependency management
+ - Themable to light mode, dark mode, and other themes
+
+## Planned features
+ - Automatic Melonloader development enviornment setup
+ - Removing restrictions on games outside launcher root
+ - Saving space via mod profiles instead of duplicating game installations
 
 ### but how??
 
 Instead of implementing installation a million times for a million games, launcher.NET uses 'plugins,' which are dll files that get loaded containing implementations for installing games. As of such, it doesn't currently come with much functionality. You'll need to either script plugins to install games, or find them online. However, this system makes it fully modular.
+
+Preinstalled plugins are planned in the next few releases.
 
 ## Installation
 
@@ -16,7 +32,7 @@ Instead of implementing installation a million times for a million games, launch
 
 2. Extract it whever you want, and run ``launcherdotnet.exe``.
  
-3. You're done! Add shortcuts to your Start menu as you like.
+That's literally it it's just a zip. An installer is not planned. Put it somewhere nice and add a shortcut to the start menu.
 
 ## Usage
 ### Adding an instance
@@ -25,8 +41,46 @@ Click "+ Add new Instance," select a game and version and click Install. You wil
 
 ### Installing mods
 
-Melonloader, a Unity modloader, is the only modloader currently integrated into launcher.NET. To install it, click 'Modify..." on the left panel with an instance selected, select a Melonloader version and click install.
-> Note that the installer does not create the Mods folder for you. Create the Mods folder, and put any mods in there.
+Click "Manage Mods" in order to see your modlist.
+
+<img width="448" height="481" alt="image" src="https://github.com/user-attachments/assets/b951ab00-201f-4b63-90d0-81c86e98c444" />
+
+From here you can add or delete mods. launcher.net will manage dependencies for you.
+
+To get more mods from Thunderstore, click "Get more mods" (who would've thought) to bring up the Thunderstore Mod Browser.
+
+<img width="817" height="515" alt="image" src="https://github.com/user-attachments/assets/ddfbe056-f386-40a0-b85a-01382dc806ac" />
+
+From here you can select which mods you would like to install. Dependencies will be automatically installed. Once you press "Review and Confirm," 
+you will be able to see all the mods you have selected:
+
+<img width="359" height="475" alt="image" src="https://github.com/user-attachments/assets/9821a2cd-85f8-47bd-b4ce-25417f10299c" />
+
+If your game does not have a Thunderstore slug, you can set one in the Game Info Editor:
+
+<img width="371" height="361" alt="image" src="https://github.com/user-attachments/assets/433e03e2-a1dc-462a-ad16-c453b21a6bbc" />
+
+To find the slug, take the last part from the community link:
+
+https://thunderstore.io/c/{slug}/
+
+For example, for Repo's community link:
+
+https://thunderstore.io/c/repo/
+
+it would be "repo".
+
+(launcher.net is not affiliated with any of these links)
+
+### Removing untracked files
+
+Sometimes there are files that are created at runtime, that weren't installed with the game or any mods.
+
+You can click "Clean untracked files" to get rid of some of them:
+
+<img width="408" height="656" alt="image" src="https://github.com/user-attachments/assets/54350a0b-4a63-4c0f-9d0e-7a1e5d7e66bf" />
+
+This menu will also appear once you've uninstalled every mod.
 
 ### Configuring it to your liking
 Click "settings." Descriptions of what each setting does are included on the right panel of the settings menu.
@@ -35,50 +89,49 @@ Click "settings." Descriptions of what each setting does are included on the rig
 
 In the "plugins" tab of the settings menu, click "open plugins folder." Drag any plugins into here.
 
-**WARNING**
-
-Plugins have FULL ACCESS to your PC when running, as any other program would! Use plugins with caution. I was planning to use CasCore for security, but it really doesn't make sense to try to stop a program with Internet access from doing bad things. Even without internet if it uses Http to get access to Docker its over.
+> [!WARNING]
+> Plugins have FULL ACCESS to your PC when running, as any other program would! Use plugins with caution.
+> I was planning to use CasCore for security, but it really doesn't make sense to try to stop a program with Internet access from doing bad things. Same as modloaders, in general they don't have any security on the mods they load.
 
 ## Developing plugins
 see [PLUGINS.MD](https://github.com/Gameknight963/launcher.NET/blob/main/PLUGINS.md)
 
 ## Screenshots
 
-**Light:**
+#### Light
 
-<img width="711" height="481" alt="launcherdotnet_VNUgVsfIAu" src="https://github.com/user-attachments/assets/689b0d08-f9f4-4ce4-b7e9-8d28e22226b1" />
+<img width="711" height="481" alt="image" src="https://github.com/user-attachments/assets/dc5ebd17-e4a0-4ef3-a169-ed355149983d" />
 
-**Dark:**
+#### Dark
 
-<img width="711" height="481" alt="launcherdotnet_fXFJpTfPN3" src="https://github.com/user-attachments/assets/9fa9ddab-912e-432c-a063-0b7fc9de26e7" />
+<img width="711" height="481" alt="image" src="https://github.com/user-attachments/assets/fbc81937-3ed7-4def-bca2-9ff4eece81aa" />
 
-**Blurred background:**
+#### Blurred Background
 
-<img width="711" height="481" alt="launcherdotnet_QHOQR7jgXj" src="https://github.com/user-attachments/assets/83317718-c57f-4125-8f9a-0d002ffa61b1" />
+<img width="711" height="481" alt="image" src="https://github.com/user-attachments/assets/e0c21a65-7ee1-4849-a3a4-2fe93591ae7f" />
 
-**Acrylic:**
+#### Acrylic
 
-<img width="725" height="488" alt="explorer_bx8k88Rmd7" src="https://github.com/user-attachments/assets/4334934c-8eb2-438f-a69a-3613790af3d2" />
+<img width="711" height="481" alt="image" src="https://github.com/user-attachments/assets/7aa56f23-f191-4e78-89ea-8ad24f4b1d3e" />
 
-**Extend frame (dark):** (oops the mouse got in the screenshot and i dont want to take it again)
+#### Extended frame (dark)
 
-<img width="711" height="481" alt="launcherdotnet_n2zwcfoXwV" src="https://github.com/user-attachments/assets/04330f9a-417d-4902-9a94-ca15b70c4f5f" />
+<img width="725" height="488" alt="image" src="https://github.com/user-attachments/assets/bbe09315-bc76-44e6-9ade-3925c05871fe" />
 
-Extend frame (light mode) does not currently work properly without external software (DWMBlurGlass).
+#### Issues with extended frame (light)
 
-### With DWMBlurGlass installed
+Using this theme causes the text to become invisisble. It's because I don't fully understand the dwmextendframeintoclientarea method
+and black text gets rendered as invisible. So I just opted to set the text to white
 
-**Extend frame:**
+<img width="578" height="488" alt="image" src="https://github.com/user-attachments/assets/b5696318-8a21-4185-80a4-09a9c929a080" />
 
-<img width="711" height="477" alt="launcherdotnet_W0lpRX6wEs" src="https://github.com/user-attachments/assets/3fa827c6-5c15-45d0-b3c8-4814f0af590a" />
+### With DWMBlurGlassInstalled
 
-**Extend frame (dark):**
+#### Extended frame
 
-<img width="711" height="476" alt="launcherdotnet_yQkKNYxFww" src="https://github.com/user-attachments/assets/bd16804d-8ff7-4b9e-8a3f-7de8fa1f85f4" />
+<img width="725" height="488" alt="image" src="https://github.com/user-attachments/assets/f658e9b6-db08-455f-ac96-3b9a785e09b1" />
 
-_My settings: blur radius 4, light mode titlebar ``#6478B9FF``, dark mode titlebar ``#98010015``_
-
-_DWMBlurGlass is awesome_
+Color will vary based on your settings.
 
 By the way, themes still apply to Messageboxes and Inputboxes:
 
@@ -91,6 +144,4 @@ I reimplemented Messagebox and Inputbox in Winforms to acheive this
 ### Source of "Hello World" plugin
 https://github.com/Gameknight963/launcher.NET-hello-world-plugin
 
-#### What is MLInstaller.SDK.dll?
-
-It's a little open-source program I wrote to assist with fetching and downloading Melonloader versions. [View it's source code here](https://github.com/Gameknight963/MLInstaller.SDK)
+(this plugin will probably be moved to the source soon)
