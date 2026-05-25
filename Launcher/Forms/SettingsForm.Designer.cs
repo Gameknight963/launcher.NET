@@ -227,10 +227,10 @@
             // 
             AdvancedCheckbox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             AdvancedCheckbox.FormattingEnabled = true;
-            AdvancedCheckbox.Items.AddRange(new object[] { "Show debug console", "Enable verbose logging", "Disable plugin version check" });
+            AdvancedCheckbox.Items.AddRange(new object[] { "Show debug console", "Enable verbose logging", "Disable plugin version check", "Disable IPv6 (requires restart)" });
             AdvancedCheckbox.Location = new Point(3, 3);
             AdvancedCheckbox.Name = "AdvancedCheckbox";
-            AdvancedCheckbox.Size = new Size(337, 58);
+            AdvancedCheckbox.Size = new Size(337, 76);
             AdvancedCheckbox.TabIndex = 0;
             // 
             // ThemeTab
