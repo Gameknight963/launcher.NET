@@ -1,6 +1,7 @@
 ﻿using launcherdotnet.Styling;
 using System.ComponentModel;
 using System.Xml.Linq;
+using static System.Windows.Forms.AxHost;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -8,7 +9,8 @@ namespace launcherdotnet.Launcher.Forms
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public GameInfo? EditedGameInfo { get; set; }
-        private GameInfo _game;
+        private readonly GameInfo _game;
+        private GameModState _state;
 
         public GameInfoEditor(GameInfo game)
         {
@@ -21,6 +23,9 @@ namespace launcherdotnet.Launcher.Forms
             gameRootDirBox.Text = game.RelativeRootDirectory;
             guidLabel.Text = game.Id;
             runsWithCmdCheck.Checked = game.RunWithCmd;
+
+            _state = GameModState.Load(game.AbsoluteRootDirectory);
+            baselineFilesAmountLabel.Text = $"{_state.BaselineFiles?.Count ?? 0} file(s) in baseline";
 
             AcceptButton = okButton;
             CancelButton = cancelButton;
@@ -75,19 +80,15 @@ namespace launcherdotnet.Launcher.Forms
                 MessageBoxButtons.OKCancel,
                 MessageBoxIcon.Warning) != DialogResult.OK) return;
 
-            GameModState state = GameModState.Load(_game.AbsoluteRootDirectory);
-            HashSet<string> modFiles = state.InstalledMods
+            HashSet<string> modFiles = _state.InstalledMods
                 .SelectMany(m => m.Files)
                 .ToHashSet();
 
             string[] allFiles = Directory.GetFiles(_game.AbsoluteRootDirectory, "*", SearchOption.AllDirectories);
-            state.BaselineFiles = allFiles
-                .Select(f => Path.GetRelativePath(_game.AbsoluteRootDirectory, f))
-                .Where(f => !modFiles.Contains(f))
-                .ToList();
+            _state.TakeBaseline(_game.AbsoluteRootDirectory, f => !modFiles.Contains(f));
 
-            state.Save(_game.AbsoluteRootDirectory);
-            LauncherLogger.WriteLine($"Recalculated baseline: {state.BaselineFiles.Count} files");
+            _state.Save(_game.AbsoluteRootDirectory);
+            LauncherLogger.WriteLine($"Recalculated baseline: {_state.BaselineFiles?.Count ?? 0} files");
             CoolMessageBox.Show("Baseline recalculated successfully.", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }

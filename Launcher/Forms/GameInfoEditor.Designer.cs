@@ -47,6 +47,7 @@
             cancelButton = new Button();
             runsWithCmdCheck = new CheckBox();
             baselineButton = new Button();
+            baselineFilesAmountLabel = new Label();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -222,7 +223,7 @@
             // okButton
             // 
             okButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            okButton.Location = new Point(278, 257);
+            okButton.Location = new Point(278, 295);
             okButton.Name = "okButton";
             okButton.Size = new Size(75, 23);
             okButton.TabIndex = 6;
@@ -233,7 +234,7 @@
             // cancelButton
             // 
             cancelButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            cancelButton.Location = new Point(197, 257);
+            cancelButton.Location = new Point(197, 295);
             cancelButton.Name = "cancelButton";
             cancelButton.Size = new Size(75, 23);
             cancelButton.TabIndex = 6;
@@ -254,7 +255,7 @@
             // baselineButton
             // 
             baselineButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            baselineButton.Location = new Point(12, 257);
+            baselineButton.Location = new Point(215, 218);
             baselineButton.Name = "baselineButton";
             baselineButton.Size = new Size(138, 23);
             baselineButton.TabIndex = 8;
@@ -262,11 +263,21 @@
             baselineButton.UseVisualStyleBackColor = true;
             baselineButton.Click += baselineButton_Click;
             // 
+            // baselineFilesAmountLabel
+            // 
+            baselineFilesAmountLabel.AutoSize = true;
+            baselineFilesAmountLabel.Location = new Point(16, 222);
+            baselineFilesAmountLabel.Name = "baselineFilesAmountLabel";
+            baselineFilesAmountLabel.Size = new Size(110, 15);
+            baselineFilesAmountLabel.TabIndex = 9;
+            baselineFilesAmountLabel.Text = "72 file(s) in baseline";
+            // 
             // GameInfoEditor
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(370, 292);
+            ClientSize = new Size(370, 330);
+            Controls.Add(baselineFilesAmountLabel);
             Controls.Add(baselineButton);
             Controls.Add(runsWithCmdCheck);
             Controls.Add(cancelButton);
@@ -308,5 +319,6 @@
         private Button cancelButton;
         private CheckBox runsWithCmdCheck;
         private Button baselineButton;
+        private Label baselineFilesAmountLabel;
     }
 }
