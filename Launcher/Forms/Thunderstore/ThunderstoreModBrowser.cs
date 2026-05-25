@@ -331,6 +331,7 @@ namespace launcherdotnet.Launcher.Forms
                 return;
 
             new ThunderstoreModInstaller(_game, pkgs, deps).ShowDialog();
+            Close();
         }
     }
 }
