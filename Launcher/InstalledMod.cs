@@ -14,6 +14,8 @@ namespace launcherdotnet.Launcher
         public List<string> Files { get; set; } = [];
         [JsonProperty("isDependency")]
         public bool IsDependency { get; set; }
+        [JsonProperty("dependencies")]
+        public List<string> Dependencies { get; set; } = [];
         [JsonProperty("installedAt")]
         public DateTime InstalledAt { get; set; } = DateTime.UtcNow;
     }
