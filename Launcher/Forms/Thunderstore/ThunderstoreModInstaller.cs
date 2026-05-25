@@ -28,15 +28,37 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             }
         }
 
-        async Task InstallPackage(ThunderstoreVersion pkg, GameInfo game)
+        async Task<InstalledMod> InstallPackage(ThunderstoreVersion pkg, GameInfo game, bool isDependency)
         {
             WriteLog($"Downloading {pkg.DownloadUrl}...");
+            byte[] data = await LauncherHttp.Client.GetByteArrayAsync(pkg.DownloadUrl);
+            WriteLog($"Download complete, extracting...");
             using InstanceTempDir temp = new();
-            string zipPath = Path.Combine(temp.Path, "pkg.zip");
-            await DownloadWithProgressAsync(pkg.DownloadUrl, zipPath);
-            WriteLog("Download complete, extracting...");
-            ZipFile.ExtractToDirectory(zipPath, game.AbsoluteRootDirectory, overwriteFiles: true);
-            WriteLog("Extracted.");
+            string zipPath = Path.Combine(temp.Path, "mod.zip");
+            await File.WriteAllBytesAsync(zipPath, data);
+
+            List<string> extractedFiles = [];
+            using (ZipArchive archive = ZipFile.OpenRead(zipPath))
+            {
+                foreach (ZipArchiveEntry entry in archive.Entries)
+                {
+                    if (string.IsNullOrEmpty(entry.Name)) continue; // skip directories
+                    string destPath = Path.Combine(game.AbsoluteRootDirectory, entry.FullName);
+                    Directory.CreateDirectory(Path.GetDirectoryName(destPath)!);
+                    entry.ExtractToFile(destPath, overwrite: true);
+                    extractedFiles.Add(entry.FullName);
+                }
+            }
+
+            WriteLog($"Extracted {extractedFiles.Count} files.");
+            return new InstalledMod
+            {
+                Name = pkg.Name ?? "",
+                Owner = pkg.Namespace ?? "",
+                Version = pkg.VersionNumber,
+                Files = extractedFiles,
+                IsDependency = isDependency
+            };
         }
 
         async Task DownloadWithProgressAsync(string url, string destination)
@@ -70,12 +92,13 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         async Task Install(GameInfo game, IEnumerable<ThunderstoreVersion> pkgs, IEnumerable<ThunderstoreVersion> deps)
         {
             progressBar.Maximum = pkgs.Count() + deps.Count();
+            List<InstalledMod> installed = [];
             int i = 0;
             int j = 0;
             foreach (ThunderstoreVersion pkg in pkgs)
             {
-                activityHint.Text = $"Installing package {i+1} out of {pkgs.Count()}";
-                await InstallPackage(pkg, game);
+                activityHint.Text = $"Installing package {i + 1} out of {pkgs.Count()}";
+                installed.Add(await InstallPackage(pkg, game, false));
                 i++;
                 j++;
                 progressBar.Value = j;
@@ -83,8 +106,8 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             i = 0;
             foreach (ThunderstoreVersion dep in deps)
             {
-                activityHint.Text = $"Installing dependency {i+1} out of {deps.Count()}";
-                await InstallPackage(dep, game);
+                activityHint.Text = $"Installing dependency {i + 1} out of {deps.Count()}";
+                installed.Add(await InstallPackage(dep, game, true));
                 i++;
                 j++;
                 progressBar.Value = j;
@@ -93,6 +116,17 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             DeleteIgnoreExt(Path.Combine(game.AbsoluteRootDirectory, "manifest"));
             DeleteIgnoreExt(Path.Combine(game.AbsoluteRootDirectory, "icon"));
             DeleteIgnoreExt(Path.Combine(game.AbsoluteRootDirectory, "README"));
+
+            WriteLog("Updating manifest...");
+            ModManifest manifest = ModManifest.Load(game.AbsoluteRootDirectory);
+            foreach (InstalledMod mod in installed)
+            {
+                // replace existing entry if already installed
+                manifest.InstalledMods.RemoveAll(m => m.Name == mod.Name && m.Owner == mod.Owner);
+                manifest.InstalledMods.Add(mod);
+            }
+            manifest.Save(game.AbsoluteRootDirectory);
+
             WriteLog("All done.");
             Close();
         }
