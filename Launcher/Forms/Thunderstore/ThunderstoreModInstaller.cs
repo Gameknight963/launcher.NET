@@ -2,6 +2,7 @@
 using launcherdotnet.PluginAPI;
 using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
+using Svg;
 using System.IO.Compression;
 
 namespace launcherdotnet.Launcher.Forms.Thunderstore
@@ -11,8 +12,20 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         public ThunderstoreModInstaller(GameInfo game, IEnumerable<ThunderstoreVersion> pkgs, IEnumerable<ThunderstoreVersion> deps)
         {
             InitializeComponent();
+            logBox.DeselectAll();
             IEnumerable<ThunderstoreVersion> dedupedDeps = deps.Where(d => !pkgs.Any(p => p == d));
             _ = Install(game, pkgs, dedupedDeps);
+        }
+
+        void DeleteIgnoreExt(string path)
+        {
+            string[] filesToDelete = Directory.GetFiles(Path.GetDirectoryName(path)!, $"{Path.GetFileNameWithoutExtension(path)}.*");
+
+            foreach (string f in filesToDelete)
+            {
+                File.Delete(f);
+                WriteLog($"Deleted {Path.GetFileName(f)}");
+            }
         }
 
         async Task InstallPackage(ThunderstoreVersion pkg, GameInfo game)
@@ -76,6 +89,10 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                 j++;
                 progressBar.Value = j;
             }
+            WriteLog("Removing leftover package metadata");
+            DeleteIgnoreExt(Path.Combine(game.AbsoluteRootDirectory, "manifest"));
+            DeleteIgnoreExt(Path.Combine(game.AbsoluteRootDirectory, "icon"));
+            DeleteIgnoreExt(Path.Combine(game.AbsoluteRootDirectory, "README"));
             WriteLog("All done.");
             Close();
         }
