@@ -5,7 +5,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
 {
     public partial class GameModManager : ThemeableForm
     {
-        GameModState _manifest;
+        GameModState _state;
         readonly GameInfo _game;
 
         public GameModManager(GameInfo game)
@@ -18,7 +18,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             modsLv.SizeChanged += (sender, e) => ResizeColumns();
             CancelButton = closeButton;
 
-            _manifest = GameModState.Load(game.AbsoluteRootDirectory);
+            _state = GameModState.Load(game.AbsoluteRootDirectory);
             _game = game;
 
             RefreshList();
@@ -27,7 +27,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         private void RefreshList()
         {
             modsLv.Items.Clear();
-            foreach (InstalledMod mod in _manifest.InstalledMods)
+            foreach (InstalledMod mod in _state.InstalledMods)
             {
                 ListViewItem item = new(mod.Name);
                 item.SubItems.Add(mod.Version);
@@ -53,7 +53,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         {
             ThunderstoreModBrowser browser = new(_game);
             browser.ShowDialog();
-            _manifest = GameModState.Load(_game.AbsoluteRootDirectory);
+            _state = GameModState.Load(_game.AbsoluteRootDirectory);
             RefreshList();
         }
 
@@ -68,7 +68,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             string names = string.Join(Environment.NewLine, selected.Select(m => m.Name));
 
             // warn if other mods depend on what we're removing
-            List<InstalledMod> dependents = _manifest.InstalledMods
+            List<InstalledMod> dependents = _state.InstalledMods
                 .Except(selected)
                 .Where(m => m.Dependencies.Any(d => selected.Any(s => d.StartsWith($"{s.Owner}-{s.Name}-"))))
                 .ToList();
@@ -92,12 +92,12 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                 MessageBoxIcon.Question) != DialogResult.OK) return;
 
             // find orphaned dependencies after removal
-            HashSet<string> stillRequired = _manifest.InstalledMods
+            HashSet<string> stillRequired = _state.InstalledMods
                 .Except(selected)
                 .SelectMany(m => m.Dependencies)
                 .ToHashSet();
 
-            List<InstalledMod> orphans = _manifest.InstalledMods
+            List<InstalledMod> orphans = _state.InstalledMods
                 .Except(selected)
                 .Where(m => m.IsDependency && !stillRequired.Any(d => d.StartsWith($"{m.Owner}-{m.Name}-")))
                 .ToList();
@@ -131,11 +131,37 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                         LauncherLogger.Warn($"File not found, skipping: {path}");
                     }
                 }
-                _manifest.InstalledMods.Remove(mod);
+                _state.InstalledMods.Remove(mod);
                 LauncherLogger.WriteLine($"Removed {mod.Name} from manifest");
             }
 
-            _manifest.Save(_game.AbsoluteRootDirectory);
+            if (_state.HasBaseline)
+            {
+                List<string> untracked = _state.GetUntrackedFiles(_game.AbsoluteRootDirectory);
+                if (untracked.Count > 0)
+                {
+                    string untrackedNames = string.Join(Environment.NewLine, untracked);
+                    if (CoolMessageBox.Show(
+                        $"The following files were not present in the baseline snapshot and are not tracked by any installed mod. " +
+                        $"They may be leftover files or generated at runtime by a mod.\n" +
+                        $"launcher.net does not know whether it is safe to delete them.\n" +
+                        $"{untrackedNames}\n\nWould you like to delete them?",
+                        "Untracked Files",
+                        MessageBoxButtons.OKCancel,
+                        MessageBoxIcon.Question) == DialogResult.OK)
+                    {
+                        foreach (string file in untracked)
+                        {
+                            string fullPath = Path.Combine(_game.AbsoluteRootDirectory, file);
+                            if (File.Exists(fullPath))
+                                File.Delete(fullPath);
+                            LauncherLogger.WriteLine($"Deleted untracked file: {file}");
+                        }
+                    }
+                }
+            }
+
+            _state.Save(_game.AbsoluteRootDirectory);
             LauncherLogger.WriteLine("Manifest saved.");
             RefreshList();
         }
