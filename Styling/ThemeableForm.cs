@@ -4,7 +4,7 @@ namespace launcherdotnet.Styling
 {
     public class ThemeableForm : Form
     {
-        private readonly ControlStyle _headerStyle = new();
+        protected readonly ControlStyle _headerStyle = new();
 
         private bool _useTextRenderer = true;
         private static bool IsDesignTime => LicenseManager.UsageMode == LicenseUsageMode.Designtime;
