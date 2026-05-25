@@ -120,7 +120,7 @@
             Controls.Add(modsLv);
             ForeColor = Color.Black;
             Name = "GameModManager";
-            Text = "Manage mods";
+            Text = "Manage Mods";
             ResumeLayout(false);
         }
 

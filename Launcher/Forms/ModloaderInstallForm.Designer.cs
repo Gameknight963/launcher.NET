@@ -112,7 +112,7 @@
             Controls.Add(ModloaderDropdown);
             ForeColor = Color.Black;
             Name = "ModloaderInstallForm";
-            Text = "Installation";
+            Text = "Modloader Installation";
             ResumeLayout(false);
             PerformLayout();
         }

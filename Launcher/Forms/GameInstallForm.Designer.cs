@@ -111,8 +111,9 @@
             Controls.Add(label1);
             Controls.Add(VersionDropdown);
             Controls.Add(GameDropdown);
+            ForeColor = Color.Black;
             Name = "GameInstallForm";
-            Text = "Installation";
+            Text = "Game Installation";
             ResumeLayout(false);
             PerformLayout();
         }

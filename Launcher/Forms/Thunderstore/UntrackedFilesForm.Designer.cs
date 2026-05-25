@@ -97,7 +97,7 @@
             Controls.Add(filesClb);
             ForeColor = Color.Black;
             Name = "UntrackedFilesForm";
-            Text = "Manage untracked files";
+            Text = "Manage Untracked Files";
             ResumeLayout(false);
         }
 
