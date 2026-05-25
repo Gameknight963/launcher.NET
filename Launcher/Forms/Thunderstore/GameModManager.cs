@@ -135,35 +135,46 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                 LauncherLogger.WriteLine($"Removed {mod.Name} from manifest");
             }
 
-            if (_state.HasBaseline)
-            {
-                List<string> untracked = _state.GetUntrackedFiles(_game.AbsoluteRootDirectory);
-                if (untracked.Count > 0)
-                {
-                    string untrackedNames = string.Join(Environment.NewLine, untracked);
-                    if (CoolMessageBox.Show(
-                        $"The following files were not present in the baseline snapshot and are not tracked by any installed mod. " +
-                        $"They may be leftover files or generated at runtime by a mod.\n" +
-                        $"launcher.net does not know whether it is safe to delete them.\n" +
-                        $"{untrackedNames}\n\nWould you like to delete them?",
-                        "Untracked Files",
-                        MessageBoxButtons.OKCancel,
-                        MessageBoxIcon.Question) == DialogResult.OK)
-                    {
-                        foreach (string file in untracked)
-                        {
-                            string fullPath = Path.Combine(_game.AbsoluteRootDirectory, file);
-                            if (File.Exists(fullPath))
-                                File.Delete(fullPath);
-                            LauncherLogger.WriteLine($"Deleted untracked file: {file}");
-                        }
-                    }
-                }
-            }
+            if (_state.InstalledMods.Count == 0 && _state.HasBaseline)
+                CleanUpUntrackedFiles();
 
             _state.Save(_game.AbsoluteRootDirectory);
             LauncherLogger.WriteLine("Manifest saved.");
             RefreshList();
+        }
+
+        private void CleanUpUntrackedFiles()
+        {
+            List<string> untracked = _state.GetUntrackedFiles(_game.AbsoluteRootDirectory);
+            if (untracked.Count == 0)
+            {
+                CoolMessageBox.Show("No untracked files found.", "Clean Up", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            UntrackedFilesForm form = new(untracked);
+            if (form.ShowDialog() != DialogResult.OK) return;
+            foreach (string file in form.SelectedForDeletion)
+            {
+                string fullPath = Path.Combine(_game.AbsoluteRootDirectory, file);
+                if (File.Exists(fullPath))
+                {
+                    File.Delete(fullPath);
+                    LauncherLogger.WriteLine($"Deleted untracked file: {file}");
+                }
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (!_state.HasBaseline)
+            {
+                CoolMessageBox.Show("No baseline snapshot exists for this game. Use the GameInfo editor to recalculate one.",
+                    "No Baseline",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+            CleanUpUntrackedFiles();
         }
     }
 }
