@@ -172,7 +172,7 @@ namespace launcherdotnet.Styling
         }
         private static void ApplyBlurTheme(Form form)
         {
-            DwmApi.DisableImmersiveDarkMode(form.Handle);
+            DwmApi.EnableImmersiveDarkMode(form.Handle);
             DwmApi.UnextendFrame(form.Handle);
             DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_BLURBEHIND);
 
