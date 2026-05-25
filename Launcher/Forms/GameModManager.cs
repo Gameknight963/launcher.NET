@@ -5,7 +5,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
 {
     public partial class GameModManager : ThemeableForm
     {
-        ModManifest _manifest;
+        GameModState _manifest;
         readonly GameInfo _game;
 
         public GameModManager(GameInfo game)
@@ -18,7 +18,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             modsLv.SizeChanged += (sender, e) => ResizeColumns();
             CancelButton = closeButton;
 
-            _manifest = ModManifest.Load(game.AbsoluteRootDirectory);
+            _manifest = GameModState.Load(game.AbsoluteRootDirectory);
             _game = game;
 
             RefreshList();
@@ -53,7 +53,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         {
             ThunderstoreModBrowser browser = new(_game);
             browser.ShowDialog();
-            _manifest = ModManifest.Load(_game.AbsoluteRootDirectory);
+            _manifest = GameModState.Load(_game.AbsoluteRootDirectory);
             RefreshList();
         }
 

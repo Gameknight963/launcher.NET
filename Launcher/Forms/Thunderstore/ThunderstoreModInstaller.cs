@@ -125,7 +125,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             DeleteIgnoreExt(Path.Combine(game.AbsoluteRootDirectory, "README"));
 
             WriteLog("Updating manifest...");
-            ModManifest manifest = ModManifest.Load(game.AbsoluteRootDirectory);
+            GameModState manifest = GameModState.Load(game.AbsoluteRootDirectory);
             foreach (InstalledMod mod in installed)
             {
                 // replace existing entry if already installed
