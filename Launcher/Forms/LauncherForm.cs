@@ -31,7 +31,7 @@ namespace launcherdotnet.Launcher.Forms
             _cachedData = LauncherDataManager.ReadLauncherData();
             UpdateGameList(gamesView);
             ResizeColumns();
-            Task.Run(async () => await Updater.CheckForUpdates());
+            Task.Run(async () => Updater.CheckForUpdates());
         }
 
         public void SetStatus(string text)
