@@ -3,6 +3,7 @@ using launcherdotnet.PluginAPI;
 using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
 using System.IO.Compression;
+using static System.Windows.Forms.AxHost;
 
 namespace launcherdotnet.Launcher.Forms.Thunderstore
 {
@@ -98,7 +99,21 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
 
         async Task Install(GameInfo game, IEnumerable<ThunderstoreVersion> pkgs, IEnumerable<ThunderstoreVersion> deps)
         {
-            progressBar.Maximum = pkgs.Count() + deps.Count();
+            GameModState state = GameModState.Load(game.AbsoluteRootDirectory);
+            HashSet<string> installedVersions = state.InstalledMods
+            .Select(m => $"{m.Owner}-{m.Name}-{m.Version}")
+            .ToHashSet();
+
+            bool IsAlreadyInstalled(ThunderstoreVersion v) =>
+                installedVersions.Contains($"{v.Namespace}-{v.Name}-{v.VersionNumber}");
+
+            foreach (ThunderstoreVersion skipped in pkgs.Where(IsAlreadyInstalled))
+                WriteLog($"Skipping {skipped.Name} v{skipped.VersionNumber} (already installed)");
+
+            List<ThunderstoreVersion> pkgsList = pkgs.Where(p => !IsAlreadyInstalled(p)).ToList();
+            List<ThunderstoreVersion> depsList = deps.Where(d => !IsAlreadyInstalled(d)).ToList();
+
+            progressBar.Maximum = pkgsList.Count + depsList.Count;
             List<InstalledMod> installed = [];
             int i = 0;
             int j = 0;
