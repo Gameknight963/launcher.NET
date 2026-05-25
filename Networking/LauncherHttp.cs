@@ -37,7 +37,7 @@ namespace launcherdotnet.Networking
 
         public static async Task TestAsync()
         {
-            string host = "example.com";
+            string host = "https://www.google.com/generate_204";
             Stopwatch dnsTimer = Stopwatch.StartNew();
             _ = await Dns.GetHostAddressesAsync(host);
             dnsTimer.Stop();
