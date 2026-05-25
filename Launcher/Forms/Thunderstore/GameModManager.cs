@@ -1,4 +1,5 @@
 ﻿using launcherdotnet.Helpers;
+using launcherdotnet.Launcher.Settings;
 using launcherdotnet.Styling;
 
 namespace launcherdotnet.Launcher.Forms.Thunderstore
@@ -11,6 +12,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         public GameModManager(GameInfo game)
         {
             InitializeComponent();
+            Icon = Config.AppIcon;
             StartPosition = FormStartPosition.CenterParent;
             uninstallButton.Enabled = false;
 

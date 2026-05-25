@@ -1,4 +1,5 @@
-﻿using launcherdotnet.Styling;
+﻿using launcherdotnet.Launcher.Settings;
+using launcherdotnet.Styling;
 
 namespace launcherdotnet.Launcher.Forms.Thunderstore
 {
@@ -10,6 +11,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         public UntrackedFilesForm(List<string> files)
         {
             InitializeComponent();
+            Icon = Config.AppIcon;
             StartPosition = FormStartPosition.CenterParent;
             AcceptButton = okButton;
             okButton.DialogResult = DialogResult.OK;

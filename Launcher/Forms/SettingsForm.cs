@@ -14,6 +14,7 @@ namespace launcherdotnet.Launcher.Forms
         public SettingsForm()
         {
             InitializeComponent();
+            Icon = Config.AppIcon;
 
             themeButtons = [
                 SystemThemeButton,

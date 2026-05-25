@@ -16,6 +16,7 @@ namespace launcherdotnet.Launcher.Forms
         public LauncherForm()
         {
             InitializeComponent();
+            Icon = Config.AppIcon;
             IdleStatus = status.Text;
             IdleInstallHint = InstallHint.Text;
 

@@ -1,4 +1,5 @@
-﻿using launcherdotnet.Styling;
+﻿using launcherdotnet.Launcher.Settings;
+using launcherdotnet.Styling;
 
 namespace launcherdotnet.Launcher.Forms.Thunderstore
 {
@@ -9,6 +10,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         public ReviewAndConfirm(IEnumerable<string> mods, int dependenciesAmount)
         {
             InitializeComponent();
+            Icon = SystemIcons.Information;
             StartPosition = FormStartPosition.CenterParent;
             CancelButton = cancelButton;
             AcceptButton = okButton;
