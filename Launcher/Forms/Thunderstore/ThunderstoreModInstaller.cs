@@ -100,6 +100,8 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         void WriteLog(string text)
         {
             logBox.Text += $"{text}\r\n";
+            logBox.SelectionStart = logBox.TextLength;
+            logBox.ScrollToCaret();
             LauncherLogger.WriteLine(text);
         }
     }
