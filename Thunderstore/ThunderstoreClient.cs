@@ -12,7 +12,7 @@ namespace launcherdotnet.Thunderstore
     public static class ThunderstoreClient
     {
         public const string BaseUrl = "https://thunderstore.io";
-        private static HttpClient _http = LauncherHttp.Client;
+        private static readonly HttpClient _http = LauncherHttp.Client;
 
         /// <summary>
         /// This endpoint will not include the Uuid4 of the package.
