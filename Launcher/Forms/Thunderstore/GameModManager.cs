@@ -51,6 +51,13 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
 
         private void installModsButton_Click(object sender, EventArgs e)
         {
+            if (_game.ThunderstoreCommunitySlug == null)
+            {
+                CoolMessageBox.Show("This game does not have a Thunderstore slug. " +
+                    "Set one in the Game Properties Editor.", "No Thunderstore Slug",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             ThunderstoreModBrowser browser = new(_game);
             browser.ShowDialog();
             _state = GameModState.Load(_game.AbsoluteRootDirectory);
