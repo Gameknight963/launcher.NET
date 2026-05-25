@@ -35,6 +35,7 @@
             uninstallButton = new Button();
             closeButton = new Button();
             installModsButton = new Button();
+            button1 = new Button();
             SuspendLayout();
             // 
             // modsLv
@@ -44,7 +45,7 @@
             modsLv.FullRowSelect = true;
             modsLv.Location = new Point(12, 12);
             modsLv.Name = "modsLv";
-            modsLv.Size = new Size(402, 399);
+            modsLv.Size = new Size(422, 399);
             modsLv.TabIndex = 0;
             modsLv.UseCompatibleStateImageBehavior = false;
             modsLv.View = View.Details;
@@ -53,7 +54,7 @@
             // nameColumn
             // 
             nameColumn.Text = "Name";
-            nameColumn.Width = 200;
+            nameColumn.Width = 220;
             // 
             // versionColumn
             // 
@@ -68,7 +69,7 @@
             // uninstallButton
             // 
             uninstallButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            uninstallButton.Location = new Point(258, 417);
+            uninstallButton.Location = new Point(278, 417);
             uninstallButton.Name = "uninstallButton";
             uninstallButton.Size = new Size(75, 23);
             uninstallButton.TabIndex = 2;
@@ -79,7 +80,7 @@
             // closeButton
             // 
             closeButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            closeButton.Location = new Point(339, 417);
+            closeButton.Location = new Point(359, 417);
             closeButton.Name = "closeButton";
             closeButton.Size = new Size(75, 23);
             closeButton.TabIndex = 2;
@@ -97,11 +98,22 @@
             installModsButton.UseVisualStyleBackColor = true;
             installModsButton.Click += installModsButton_Click;
             // 
+            // button1
+            // 
+            button1.Location = new Point(124, 417);
+            button1.Name = "button1";
+            button1.Size = new Size(134, 23);
+            button1.TabIndex = 3;
+            button1.Text = "Clean untracked files";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // GameModManager
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(426, 450);
+            ClientSize = new Size(446, 450);
+            Controls.Add(button1);
             Controls.Add(closeButton);
             Controls.Add(installModsButton);
             Controls.Add(uninstallButton);
@@ -121,5 +133,6 @@
         private Button uninstallButton;
         private Button closeButton;
         private Button installModsButton;
+        private Button button1;
     }
 }
