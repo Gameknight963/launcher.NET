@@ -1,4 +1,5 @@
-﻿using launcherdotnet.Styling;
+﻿using launcherdotnet.Launcher.Settings;
+using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
 
 namespace launcherdotnet.Launcher.Forms.Thunderstore
@@ -8,6 +9,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         public ThunderstoreModInstaller(GameInfo game, IEnumerable<ThunderstoreVersion> pkgs, IEnumerable<ThunderstoreVersion> deps)
         {
             InitializeComponent();
+            Icon = Config.AppIcon;
             logBox.DeselectAll();
             IEnumerable<ThunderstoreVersion> dedupedDeps = deps.Where(d => !pkgs.Any(p => p == d));
             _ = Install(game, pkgs, dedupedDeps);

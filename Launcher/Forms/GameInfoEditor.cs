@@ -1,4 +1,5 @@
-﻿using launcherdotnet.Styling;
+﻿using launcherdotnet.Launcher.Settings;
+using launcherdotnet.Styling;
 using System.ComponentModel;
 using System.Xml.Linq;
 using static System.Windows.Forms.AxHost;
@@ -15,6 +16,7 @@ namespace launcherdotnet.Launcher.Forms
         public GameInfoEditor(GameInfo game)
         {
             InitializeComponent();
+            Icon = Config.AppIcon;
             _game = game;
             labelBox.Text = game.Label;
             nameBox.Text = game.GameName;

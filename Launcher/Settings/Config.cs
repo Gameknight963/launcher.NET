@@ -1,12 +1,9 @@
 ﻿using Semver;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace launcherdotnet.Launcher.Settings
 {
-    internal static class Config
+    public static class Config
     {
         public static readonly string BaseDir = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory);
         public static readonly string TempDir = Path.Combine(BaseDir, "temp");
@@ -23,11 +20,19 @@ namespace launcherdotnet.Launcher.Settings
         public static readonly string RelesesPage = $"https://github.com/{RepoOwner}/{RepoName}/releases";
         public static readonly string GithubPage = $"https://github.com/{RepoOwner}/{RepoName}";
 
+        public static readonly Icon AppIcon;
 
         public static string? CurrentVersionString => Assembly.GetExecutingAssembly().
             GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.
             InformationalVersion
             .Split('+')[0];
         public static SemVersion CurrentVersion => SemVersion.Parse(CurrentVersionString!);
+
+        static Config()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            using Stream stream = assembly.GetManifestResourceStream("launcherdotnet.icon.ico")!;
+            AppIcon = new Icon(stream);
+        }
     }
 }

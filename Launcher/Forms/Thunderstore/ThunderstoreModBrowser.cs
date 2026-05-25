@@ -1,4 +1,5 @@
 ﻿using launcherdotnet.Launcher.Forms.Thunderstore;
+using launcherdotnet.Launcher.Settings;
 using launcherdotnet.Networking;
 using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
@@ -32,6 +33,7 @@ namespace launcherdotnet.Launcher.Forms
         public ThunderstoreModBrowser(GameInfo game)
         {
             InitializeComponent();
+            Icon = Config.AppIcon;
             _game = game;
             okButton.Enabled = false;
             CancelButton = cancelButton;
