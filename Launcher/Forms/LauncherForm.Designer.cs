@@ -39,13 +39,13 @@
             DeleteButton = new Button();
             InstallHint = new Label();
             Panel = new Panel();
+            installModsButton = new Button();
             editGameInfoButton = new Button();
             InstallSometingButton = new Button();
             OpenFolderButton = new Button();
             RenameButton = new Button();
             SettingsButton = new Button();
             SearchBox = new TextBox();
-            installModsButton = new Button();
             Panel.SuspendLayout();
             SuspendLayout();
             // 
@@ -158,6 +158,16 @@
             Panel.Size = new Size(173, 389);
             Panel.TabIndex = 3;
             // 
+            // installModsButton
+            // 
+            installModsButton.Location = new Point(5, 229);
+            installModsButton.Name = "installModsButton";
+            installModsButton.Size = new Size(156, 23);
+            installModsButton.TabIndex = 8;
+            installModsButton.Text = "Mange mods";
+            installModsButton.UseVisualStyleBackColor = true;
+            installModsButton.Click += installModsButton_Click;
+            // 
             // editGameInfoButton
             // 
             editGameInfoButton.Location = new Point(5, 182);
@@ -217,16 +227,6 @@
             SearchBox.Size = new Size(316, 23);
             SearchBox.TabIndex = 10;
             SearchBox.TextChanged += SearchBox_TextChanged;
-            // 
-            // installModsButton
-            // 
-            installModsButton.Location = new Point(5, 229);
-            installModsButton.Name = "installModsButton";
-            installModsButton.Size = new Size(156, 23);
-            installModsButton.TabIndex = 8;
-            installModsButton.Text = "Install mods";
-            installModsButton.UseVisualStyleBackColor = true;
-            installModsButton.Click += installModsButton_Click;
             // 
             // LauncherForm
             // 

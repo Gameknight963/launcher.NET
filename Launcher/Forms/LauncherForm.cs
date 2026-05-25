@@ -2,6 +2,7 @@ using launcherdotnet.Styling;
 using launcherdotnet.Helpers;
 using launcherdotnet.Launcher.Settings;
 using System.Diagnostics;
+using launcherdotnet.Launcher.Forms.Thunderstore;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -372,8 +373,7 @@ namespace launcherdotnet.Launcher.Forms
 
         private void installModsButton_Click(object sender, EventArgs e)
         {
-            ThunderstoreModBrowser browser = new(GetSelectedGame()!);
-            browser.ShowDialog();
+            new GameModManager(GetSelectedGame()!).ShowDialog();
         }
     }
 }
