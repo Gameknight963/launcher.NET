@@ -4,9 +4,9 @@ using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
 using Markdig;
 using Markdown.ColorCode;
+using Semver;
 using Svg;
 using System.Drawing.Imaging;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace launcherdotnet.Launcher.Forms
@@ -21,7 +21,7 @@ namespace launcherdotnet.Launcher.Forms
         private readonly Dictionary<int, List<ThunderstoreVersion>> _versionCache = [];
         private readonly Dictionary<int, string> _readmeCache = [];
         private string? _currentReadme;
-        private GameInfo _game;
+        private readonly GameInfo _game;
 
         private readonly HashSet<ThunderstorePackageInstallContext> _selectedForInstall = [];
 
@@ -34,6 +34,7 @@ namespace launcherdotnet.Launcher.Forms
         {
             InitializeComponent();
             _game = game;
+            okButton.Enabled = false;
             CancelButton = cancelButton;
             AcceptButton = okButton;
             StartPosition = FormStartPosition.CenterParent;
@@ -237,6 +238,7 @@ namespace launcherdotnet.Launcher.Forms
             bool added = _selectedForInstall.Add(context);
             if (!added) _selectedForInstall.Remove(context);
             downloadBtn.Text = added ? "Deselect mod for download" : "Select mod for download";
+            okButton.Enabled = _selectedForInstall.Count > 0;
         }
 
         private void downloadBtn_Click(object sender, EventArgs e)
@@ -247,62 +249,85 @@ namespace launcherdotnet.Launcher.Forms
         private async void okButton_Click(object sender, EventArgs e)
         {
             UseWaitCursor = true;
-            List<string> pkgsNames = [];
-            Dictionary<string, string> depsNames = [];
-            HashSet<ThunderstoreVersion> pkgs = [];
-            HashSet<ThunderstoreVersion> deps = [];
-            Dictionary<string, HashSet<string>> depVersions = [];
+            okButton.Enabled = false;
+
+            List<ThunderstoreVersion> pkgs = [];
+            // name -> (version object, display label)
+            Dictionary<string, (ThunderstoreVersion Version, string Label)> depsMap = [];
+
+            // fetch version objects and resolve dependencies for each selected package
             foreach (ThunderstorePackageInstallContext p in _selectedForInstall)
             {
                 LauncherLogger.WriteLine($"Fetching version object for {p.Name}");
-
                 ThunderstoreVersion? v = await p.FetchThunderstoreVersionAsync();
                 if (v is null)
                 {
                     LauncherLogger.Error($"Unable to fetch version object for {p.Name}. Cancelling");
+                    UseWaitCursor = false;
+                    okButton.Enabled = true;
                     return;
                 }
-
-                pkgsNames.Add($"{p.Name} v{v.VersionNumber}");
                 pkgs.Add(v);
 
                 foreach (ThunderstoreVersion dep in await v.FetchDependenciesAsync())
                 {
-                    deps.Add(dep);
-
-                    if (!depVersions.TryGetValue(dep.Name, out HashSet<string>? versions))
+                    if (depsMap.TryGetValue(dep.Name, out (ThunderstoreVersion Version, string Label) existing))
                     {
-                        versions = [];
-                        depVersions[dep.Name] = versions;
-                    }
-                    depsNames[dep.Name] =
-                        depsNames.ContainsKey(dep.Name)
-                            ? " (dependency of multiple packages)"
-                            : $" (dependency of {p.Name})";
+                        // same version required by multiple packages, no conflict
+                        if (existing.Version.VersionNumber == dep.VersionNumber)
+                            continue;
 
-                    versions.Add(dep.VersionNumber);
+                        // different versions required, so pick the latest and warn the user
+                        SemVersion existingVer = SemVersion.Parse(existing.Version.VersionNumber, SemVersionStyles.Any);
+                        SemVersion newVer = SemVersion.Parse(dep.VersionNumber, SemVersionStyles.Any);
+                        int cmp = SemVersion.ComparePrecedence(newVer, existingVer);
+                        ThunderstoreVersion winner = cmp > 0 ? dep : existing.Version;
+                        depsMap[dep.Name] = (winner, $" {winner.VersionNumber} (dependency of multiple packages)");
+                        CoolMessageBox.Show(
+                            $"Dependency version conflict for {dep.Name}:\n" +
+                            $"Required {existing.Version.VersionNumber} and {dep.VersionNumber}\n" +
+                            $"Automatically selecting {winner.VersionNumber}.",
+                            "Dependency conflict",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+                    }
+                    else
+                    {
+                        depsMap[dep.Name] = (dep, $" {dep.VersionNumber} (dependency of {p.Name})");
+                    }
                 }
             }
-            UseWaitCursor = false;
-            List<string> depsStrings = deps.Select(d => $"{d.Name} v{d.VersionNumber}{depsNames[d.Name]}").ToList();
 
-            List<string> conflicts =
-                depVersions
-                    .Where(x => x.Value.Count > 1)
-                    .Select(x => $"{x.Key}: {string.Join(", ", x.Value)}")
-                    .ToList();
-            if (conflicts.Count > 0)
+            // remove deps that the user explicitly selected, but warn if versions differ
+            HashSet<string> selectedNames = pkgs.Select(p => p.Name).ToHashSet();
+            foreach (string name in selectedNames)
             {
-                CoolMessageBox.Show("Multiple packages requested different dependency versions:" +
-                    $"\n{string.Join(Environment.NewLine, conflicts)}" +
-                    $"Continuing will automatically select the latest versions.",
-                    "Dependency conflict",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+                if (depsMap.TryGetValue(name, out (ThunderstoreVersion Version, string Label) existing))
+                {
+                    ThunderstoreVersion selectedPkg = pkgs.First(p => p.Name == name);
+                    if (existing.Version.VersionNumber != selectedPkg.VersionNumber)
+                    {
+                        CoolMessageBox.Show(
+                            $"Dependency version conflict for {name}:\n" +
+                            $"Required {existing.Version.VersionNumber} but you selected {selectedPkg.VersionNumber}.\n" +
+                            $"Using your selected version.",
+                            "Dependency conflict",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Asterisk);
+                    }
+                    depsMap.Remove(name);
+                }
             }
-            if (new ReviewAndConfirm(
-                pkgsNames.Concat(depsNames.Select(x => $"{x.Key}{x.Value}")),
-                deps.Count).ShowDialog() != DialogResult.OK)
+
+            List<ThunderstoreVersion> deps = depsMap.Values.Select(x => x.Version).ToList();
+
+            UseWaitCursor = false;
+            okButton.Enabled = true;
+
+            List<string> pkgStrings = pkgs.Select(p => $"{p.Name} v{p.VersionNumber}").ToList();
+            List<string> depStrings = depsMap.Values.Select(x => $"{x.Version.Name} v{x.Version.VersionNumber}{x.Label}").ToList();
+
+            if (new ReviewAndConfirm(pkgStrings.Concat(depStrings), deps.Count).ShowDialog() != DialogResult.OK)
                 return;
 
             new ThunderstoreModInstaller(_game, pkgs, deps).ShowDialog();
