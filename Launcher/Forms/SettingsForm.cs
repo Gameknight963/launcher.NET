@@ -237,8 +237,7 @@ namespace launcherdotnet.Launcher.Forms
                         "Disabled");
                     break;
                 case 3:
-                    SetSelectedHint("If enabled, launcher.net will not prevent plugins from installing outside of " +
-                        "launcher.NET's's root folder.",
+                    SetSelectedHint("If enabled, launcher.NET will not allow IPv6 connections.",
                         "Disabled");
                     break;
             }
