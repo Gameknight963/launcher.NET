@@ -2,7 +2,6 @@
 using launcherdotnet.PluginAPI;
 using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
-using Svg;
 using System.IO.Compression;
 
 namespace launcherdotnet.Launcher.Forms.Thunderstore
@@ -30,19 +29,19 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
 
         async Task<InstalledMod> InstallPackage(ThunderstoreVersion pkg, GameInfo game, bool isDependency)
         {
+            downloadProgressBar.Value = 0;
             WriteLog($"Downloading {pkg.DownloadUrl}...");
-            byte[] data = await LauncherHttp.Client.GetByteArrayAsync(pkg.DownloadUrl);
-            WriteLog($"Download complete, extracting...");
             using InstanceTempDir temp = new();
             string zipPath = Path.Combine(temp.Path, "mod.zip");
-            await File.WriteAllBytesAsync(zipPath, data);
+            await DownloadWithProgressAsync(pkg.DownloadUrl, zipPath);
+            WriteLog($"Download complete, extracting...");
 
             List<string> extractedFiles = [];
             using (ZipArchive archive = ZipFile.OpenRead(zipPath))
             {
                 foreach (ZipArchiveEntry entry in archive.Entries)
                 {
-                    if (string.IsNullOrEmpty(entry.Name)) continue; // skip directories
+                    if (string.IsNullOrEmpty(entry.Name)) continue;
                     string destPath = Path.Combine(game.AbsoluteRootDirectory, entry.FullName);
                     Directory.CreateDirectory(Path.GetDirectoryName(destPath)!);
                     entry.ExtractToFile(destPath, overwrite: true);
@@ -59,6 +58,37 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                 Files = extractedFiles,
                 IsDependency = isDependency
             };
+        }
+
+        async Task DownloadWithProgressAsync(string url, string destination)
+        {
+            using HttpResponseMessage response =
+                await LauncherHttp.Client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+            long total = response.Content.Headers.ContentLength ?? -1;
+            using Stream input = await response.Content.ReadAsStreamAsync();
+
+            using FileStream output = new(
+                destination,
+                FileMode.Create,
+                FileAccess.Write,
+                FileShare.None,
+                81920,
+                true);
+
+            byte[] buffer = new byte[81920];
+            long downloaded = 0;
+            int read;
+            while ((read = await input.ReadAsync(buffer)) > 0)
+            {
+                await output.WriteAsync(buffer.AsMemory(0, read));
+                downloaded += read;
+                if (total > 0)
+                {
+                    downloadProgressBar.Value = downloadProgressBar.Maximum;
+                    downloadProgressBar.Value = (int)(downloaded * 100 / total);
+                }
+            }
         }
 
         async Task Install(GameInfo game, IEnumerable<ThunderstoreVersion> pkgs, IEnumerable<ThunderstoreVersion> deps)
