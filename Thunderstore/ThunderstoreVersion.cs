@@ -14,6 +14,8 @@ namespace launcherdotnet.Thunderstore
         public List<string> Dependencies { get; set; } = [];
         [JsonProperty("icon")]
         public string Icon { get; set; } = "";
+        [JsonProperty("name")]
+        public string Name { get; set; } = "";
 
         public async Task<List<ThunderstoreVersion>> FetchDependenciesAsync()
         {

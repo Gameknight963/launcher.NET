@@ -6,9 +6,8 @@ using Markdig;
 using Markdown.ColorCode;
 using Svg;
 using System.Drawing.Imaging;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -248,27 +247,63 @@ namespace launcherdotnet.Launcher.Forms
         private async void okButton_Click(object sender, EventArgs e)
         {
             UseWaitCursor = true;
-            List<string> names = [];
+            List<string> pkgsNames = [];
+            Dictionary<string, string> depsNames = [];
             HashSet<ThunderstoreVersion> pkgs = [];
             HashSet<ThunderstoreVersion> deps = [];
+            Dictionary<string, HashSet<string>> depVersions = [];
             foreach (ThunderstorePackageInstallContext p in _selectedForInstall)
             {
-                names.Add(p.Name);
-
                 LauncherLogger.WriteLine($"Fetching version object for {p.Name}");
+
                 ThunderstoreVersion? v = await p.FetchThunderstoreVersionAsync();
                 if (v is null)
                 {
                     LauncherLogger.Error($"Unable to fetch version object for {p.Name}. Cancelling");
                     return;
                 }
+
+                pkgsNames.Add($"{p.Name} v{v.VersionNumber}");
                 pkgs.Add(v);
-                List<ThunderstoreVersion> dependencies = await v.FetchDependenciesAsync();
-                foreach (ThunderstoreVersion dep in dependencies) deps.Add(dep);
+
+                foreach (ThunderstoreVersion dep in await v.FetchDependenciesAsync())
+                {
+                    deps.Add(dep);
+
+                    if (!depVersions.TryGetValue(dep.Name, out HashSet<string>? versions))
+                    {
+                        versions = [];
+                        depVersions[dep.Name] = versions;
+                    }
+                    depsNames[dep.Name] =
+                        depsNames.ContainsKey(dep.Name)
+                            ? " (dependency of multiple packages)"
+                            : $" (dependency of {p.Name})";
+
+                    versions.Add(dep.VersionNumber);
+                }
             }
             UseWaitCursor = false;
-            DialogResult result = new ReviewAndConfirm(names, deps.Count).ShowDialog();
-            if (result != DialogResult.OK) return;
+            List<string> depsStrings = deps.Select(d => $"{d.Name} v{d.VersionNumber}{depsNames[d.Name]}").ToList();
+
+            List<string> conflicts =
+                depVersions
+                    .Where(x => x.Value.Count > 1)
+                    .Select(x => $"{x.Key}: {string.Join(", ", x.Value)}")
+                    .ToList();
+            if (conflicts.Count > 0)
+            {
+                CoolMessageBox.Show("Multiple packages requested different dependency versions:" +
+                    $"\n{string.Join(Environment.NewLine, conflicts)}" +
+                    $"Continuing will automatically select the latest versions.",
+                    "Dependency conflict",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            if (new ReviewAndConfirm(
+                pkgsNames.Concat(depsNames.Select(x => $"{x.Key}{x.Value}")),
+                deps.Count).ShowDialog() != DialogResult.OK)
+                return;
 
             new ThunderstoreModInstaller(_game, pkgs, deps).ShowDialog();
         }
