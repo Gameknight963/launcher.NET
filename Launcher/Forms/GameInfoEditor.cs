@@ -1,5 +1,6 @@
 ﻿using launcherdotnet.Styling;
 using System.ComponentModel;
+using System.Xml.Linq;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -7,10 +8,12 @@ namespace launcherdotnet.Launcher.Forms
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public GameInfo? EditedGameInfo { get; set; }
+        private GameInfo _game;
 
         public GameInfoEditor(GameInfo game)
         {
             InitializeComponent();
+            _game = game;
             labelBox.Text = game.Label;
             nameBox.Text = game.GameName;
             thunderstoreSlugBox.Text = game.ThunderstoreCommunitySlug;
@@ -61,6 +64,31 @@ namespace launcherdotnet.Launcher.Forms
         private void copyGUIDButton_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(guidLabel.Text);
+        }
+
+        private void baselineButton_Click(object sender, EventArgs e)
+        {
+            if (CoolMessageBox.Show(
+                "This will mark all files not belonging to a tracked mod as vanilla game files.\n" +
+                "Any previously recorded baseline will be overwritten.\n\nContinue?",
+                "Recalculate Baseline",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Warning) != DialogResult.OK) return;
+
+            GameModState state = GameModState.Load(_game.AbsoluteRootDirectory);
+            HashSet<string> modFiles = state.InstalledMods
+                .SelectMany(m => m.Files)
+                .ToHashSet();
+
+            string[] allFiles = Directory.GetFiles(_game.AbsoluteRootDirectory, "*", SearchOption.AllDirectories);
+            state.BaselineFiles = allFiles
+                .Select(f => Path.GetRelativePath(_game.AbsoluteRootDirectory, f))
+                .Where(f => !modFiles.Contains(f))
+                .ToList();
+
+            state.Save(_game.AbsoluteRootDirectory);
+            LauncherLogger.WriteLine($"Recalculated baseline: {state.BaselineFiles.Count} files");
+            CoolMessageBox.Show("Baseline recalculated successfully.", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
