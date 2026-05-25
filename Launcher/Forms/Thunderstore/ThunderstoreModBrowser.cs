@@ -23,7 +23,7 @@ namespace launcherdotnet.Launcher.Forms
         private string? _currentReadme;
         private readonly GameInfo _game;
 
-        private readonly HashSet<ThunderstorePackageInstallContext> _selectedForInstall = [];
+        private readonly HashSet<ThunderstoreVersion> _selectedForInstall = [];
 
         private static readonly MarkdownPipeline _pipeline = new MarkdownPipelineBuilder()
             .UseAdvancedExtensions()
@@ -208,35 +208,30 @@ namespace launcherdotnet.Launcher.Forms
             if (_currentReadme != null) UpdateReadme(_currentReadme);
         }
 
-        private ThunderstorePackageInstallContext? GetSelectedInstallContext()
+        private ThunderstoreVersion? GetSelectedVersion()
         {
             if (versionsCb.SelectedItem == null || modsLv.SelectedIndices.Count == 0) return null;
             int index = modsLv.SelectedIndices[0];
-            ThunderstorePackageSlim slim = _packages[index];
             string selectedVersion = versionsCb.SelectedItem.ToString()!;
             if (!_versionCache.TryGetValue(index, out List<ThunderstoreVersion>? versions)) return null;
-            ThunderstoreVersion? version = versions.FirstOrDefault(v => v.VersionNumber == selectedVersion);
-            if (version == null) return null;
-            return new ThunderstorePackageInstallContext(slim.Name, version.DownloadUrl, selectedVersion, slim.Owner);
+            return versions.FirstOrDefault(v => v.VersionNumber == selectedVersion);
         }
 
         private void SetDownloadPanelBasedOnContext()
         {
             if (versionsCb.SelectedItem == null || modsLv.SelectedIndices.Count == 0) return;
-            ThunderstorePackageInstallContext? context = GetSelectedInstallContext();
-            if (context == null) return;
-            bool contains = _selectedForInstall.Contains(context);
-            if (!contains)
-                _selectedForInstall.Remove(context);
+            ThunderstoreVersion? version = GetSelectedVersion();
+            if (version == null) return;
+            bool contains = _selectedForInstall.Contains(version);
             downloadBtn.Text = contains ? "Deselect mod for download" : "Select mod for download";
         }
 
         private void AddSelectedContext()
         {
-            ThunderstorePackageInstallContext? context = GetSelectedInstallContext();
-            if (context == null) return;
-            bool added = _selectedForInstall.Add(context);
-            if (!added) _selectedForInstall.Remove(context);
+            ThunderstoreVersion? version = GetSelectedVersion();
+            if (version == null) return;
+            bool added = _selectedForInstall.Add(version);
+            if (!added) _selectedForInstall.Remove(version);
             downloadBtn.Text = added ? "Deselect mod for download" : "Select mod for download";
             okButton.Enabled = _selectedForInstall.Count > 0;
         }
@@ -251,24 +246,14 @@ namespace launcherdotnet.Launcher.Forms
             UseWaitCursor = true;
             okButton.Enabled = false;
 
-            List<ThunderstoreVersion> pkgs = [];
+            List<ThunderstoreVersion> pkgs = [.. _selectedForInstall];
             // name -> (version object, display label)
             Dictionary<string, (ThunderstoreVersion Version, string Label)> depsMap = [];
 
-            // fetch version objects and resolve dependencies for each selected package
-            foreach (ThunderstorePackageInstallContext p in _selectedForInstall)
+            // fetch and resolve dependencies for each selected package
+            foreach (ThunderstoreVersion v in pkgs)
             {
-                LauncherLogger.WriteLine($"Fetching version object for {p.Name}");
-                ThunderstoreVersion? v = await p.FetchThunderstoreVersionAsync();
-                if (v is null)
-                {
-                    LauncherLogger.Error($"Unable to fetch version object for {p.Name}. Cancelling");
-                    UseWaitCursor = false;
-                    okButton.Enabled = true;
-                    return;
-                }
-                pkgs.Add(v);
-
+                LauncherLogger.WriteLine($"Fetching dependencies for {v.Name}");
                 foreach (ThunderstoreVersion dep in await v.FetchDependenciesAsync())
                 {
                     if (depsMap.TryGetValue(dep.Name, out (ThunderstoreVersion Version, string Label) existing))
@@ -293,7 +278,7 @@ namespace launcherdotnet.Launcher.Forms
                     }
                     else
                     {
-                        depsMap[dep.Name] = (dep, $" {dep.VersionNumber} (dependency of {p.Name})");
+                        depsMap[dep.Name] = (dep, $" {dep.VersionNumber} (dependency of {v.Name})");
                     }
                 }
             }
