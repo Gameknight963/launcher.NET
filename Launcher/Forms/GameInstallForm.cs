@@ -1,11 +1,6 @@
 ﻿using launcherdotnet.Launcher.Settings;
 using launcherdotnet.PluginAPI;
 using launcherdotnet.Styling;
-using Microsoft.VisualBasic;
-using MLInstallerSDK;
-using Semver;
-using System.ComponentModel;
-using System.ComponentModel.Design;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -27,7 +22,7 @@ namespace launcherdotnet.Launcher.Forms
         {
             foreach (GameInstallPluginEntry entry in GameInstallerRegistry.GameInstallPlugins)
             {
-                int index = GameDropdown.Items.Add(new GamesListItem { Text = entry.Installer.GameName, Tag = entry });
+                GameDropdown.Items.Add(new GamesListItem { Text = entry.Installer.GameName, Tag = entry });
             }
             if (GameDropdown.Items.Count > 0) GameDropdown.SelectedIndex = 0;
             InstallGameButton.Select();
@@ -127,6 +122,9 @@ namespace launcherdotnet.Launcher.Forms
 
             ActivityHint.Text = "Installation complete.";
             GameService.UpsertGame(newGame);
+            GameModState state = new();
+            state.TakeBaseline(installDir);
+            state.Save(installDir);
             CoolMessageBox.Show("Installation complete.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Success = true;
             this.Close();
