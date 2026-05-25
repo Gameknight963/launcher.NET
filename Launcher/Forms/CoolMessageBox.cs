@@ -5,7 +5,8 @@ namespace launcherdotnet.Launcher.Forms
 {
     public partial class CoolMessageBox : ThemeableForm
     {
-        List<Button> formButtons = new List<Button>();
+        readonly List<Button> _formButtons = new List<Button>();
+        string _clipboardText;
 
         public static DialogResult Show(
             string? text = null,
@@ -32,15 +33,24 @@ namespace launcherdotnet.Launcher.Forms
         public CoolMessageBox(string? text, string? caption, MessageBoxButtons buttons, MessageBoxIcon icon)
         {
             InitializeComponent();
+            _clipboardText =
+                "---------------------------\r\n" +
+                caption + "\r\n" +
+                "---------------------------\r\n" +
+                text + "\r\n" +
+                "---------------------------\r\n" +
+                (buttons == MessageBoxButtons.OK ? "OK" :
+                 buttons == MessageBoxButtons.OKCancel ? "OK    Cancel" :
+                 buttons == MessageBoxButtons.YesNo ? "Yes    No" :
+                 buttons == MessageBoxButtons.YesNoCancel ? "Yes    No    Cancel" :
+                 buttons == MessageBoxButtons.RetryCancel ? "Retry    Cancel" :
+                 buttons == MessageBoxButtons.AbortRetryIgnore ? "Abort    Retry    Ignore" :
+                 "OK") +
+                "\r\n---------------------------";
+
             this.Text = caption;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             pictureBoxIcon.Image = SystemIcons.Information.ToBitmap();
-
-
-            if (ThemeManager.ResolvedTheme == ThemeManager.Theme.Light)
-            {
-
-            }
 
             int lineHeight = TextRenderer.MeasureText("A", label.Font).Height;
             if (text != null) label.Text = text;
@@ -58,34 +68,34 @@ namespace launcherdotnet.Launcher.Forms
             switch (buttons)
             {
                 case MessageBoxButtons.OK:
-                    formButtons.Add(CreateButton("OK", DialogResult.OK));
+                    _formButtons.Add(CreateButton("OK", DialogResult.OK));
                     break;
 
                 case MessageBoxButtons.OKCancel:
-                    formButtons.Add(CreateButton("OK", DialogResult.OK));
-                    formButtons.Add(CreateButton("Cancel", DialogResult.Cancel));
+                    _formButtons.Add(CreateButton("OK", DialogResult.OK));
+                    _formButtons.Add(CreateButton("Cancel", DialogResult.Cancel));
                     break;
 
                 case MessageBoxButtons.YesNo:
-                    formButtons.Add(CreateButton("Yes", DialogResult.Yes));
-                    formButtons.Add(CreateButton("No", DialogResult.No));
+                    _formButtons.Add(CreateButton("Yes", DialogResult.Yes));
+                    _formButtons.Add(CreateButton("No", DialogResult.No));
                     break;
 
                 case MessageBoxButtons.YesNoCancel:
-                    formButtons.Add(CreateButton("Yes", DialogResult.Yes));
-                    formButtons.Add(CreateButton("No", DialogResult.No));
-                    formButtons.Add(CreateButton("Cancel", DialogResult.Cancel));
+                    _formButtons.Add(CreateButton("Yes", DialogResult.Yes));
+                    _formButtons.Add(CreateButton("No", DialogResult.No));
+                    _formButtons.Add(CreateButton("Cancel", DialogResult.Cancel));
                     break;
 
                 case MessageBoxButtons.RetryCancel:
-                    formButtons.Add(CreateButton("Retry", DialogResult.Retry));
-                    formButtons.Add(CreateButton("Cancel", DialogResult.Cancel));
+                    _formButtons.Add(CreateButton("Retry", DialogResult.Retry));
+                    _formButtons.Add(CreateButton("Cancel", DialogResult.Cancel));
                     break;
 
                 case MessageBoxButtons.AbortRetryIgnore:
-                    formButtons.Add(CreateButton("Abort", DialogResult.Abort));
-                    formButtons.Add(CreateButton("Retry", DialogResult.Retry));
-                    formButtons.Add(CreateButton("Ignore", DialogResult.Ignore));
+                    _formButtons.Add(CreateButton("Abort", DialogResult.Abort));
+                    _formButtons.Add(CreateButton("Retry", DialogResult.Retry));
+                    _formButtons.Add(CreateButton("Ignore", DialogResult.Ignore));
                     break;
             }
             switch (icon)
@@ -128,6 +138,17 @@ namespace launcherdotnet.Launcher.Forms
                     SystemSounds.Question.Play();
                     break;
             }
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.C))
+            {
+                Clipboard.SetText(_clipboardText);
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }
