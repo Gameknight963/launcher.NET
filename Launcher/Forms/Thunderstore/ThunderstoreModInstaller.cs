@@ -49,6 +49,10 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                 }
             }
 
+            extractedFiles.RemoveAll(file => Path.GetFileNameWithoutExtension(file) == "manifest");
+            extractedFiles.RemoveAll(file => Path.GetFileNameWithoutExtension(file) == "icon");
+            extractedFiles.RemoveAll(file => Path.GetFileNameWithoutExtension(file) == "README");
+
             WriteLog($"Extracted {extractedFiles.Count} files.");
             return new InstalledMod
             {
