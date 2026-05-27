@@ -9,21 +9,22 @@ namespace launcherdotnet.Launcher.Forms
     public partial class SettingsForm : ThemeableForm
     {
         private readonly string _defaultSelectedHint = "";
-        private readonly RadioButton[] themeButtons;
+        private readonly RadioButton[] _themeButtons;
 
         public SettingsForm()
         {
             InitializeComponent();
             Icon = Config.AppIcon;
 
-            themeButtons = [
-                SystemThemeButton,
-                LightThemeButton,
-                DarkThemeButton,
-                ExtendedFrameThemeButton,
-                ExtendedFrameDarkThemeButton,
-                BlurThemeButton,
-                AcrylicThemeButton
+            _themeButtons = [
+                systemThemeButton,
+                lightThemeButton,
+                darkThemeButton,
+                extendedFrameThemeButton,
+                extendedFrameDarkThemeButton,
+                blurThemeButton,
+                acrylicThemeButton,
+                transparentGradientButton
             ];
 
             _defaultSelectedHint = Hint.Text;
@@ -53,7 +54,7 @@ namespace launcherdotnet.Launcher.Forms
             public override string ToString() => Text;
         }
 
-        private void ApplySettings()
+        private bool ApplySettings()
         {
             LauncherSettings s = LauncherSettings.Settings;
 
@@ -69,7 +70,14 @@ namespace launcherdotnet.Launcher.Forms
             s.MLSelectStableByDefault = MLCheckbox.GetItemChecked(1);
 
             // --- Theme ---
-            s.Theme = (ThemeManager.Theme)Array.FindIndex(themeButtons, b => b.Checked);
+            s.Theme = (ThemeManager.Theme)Array.FindIndex(_themeButtons, b => b.Checked);
+            if (!int.TryParse(gradientColorBox.Text, out int color))
+            {
+                CoolMessageBox.Show($"Ivalid integer: {gradientColorBox.Text}", "Invalid input");
+                return false;
+            }
+
+            s.GradientColor = color;
 
             // --- Advanced ---
             s.OpenDebugConsole = AdvancedCheckbox.GetItemChecked(0);
@@ -82,6 +90,7 @@ namespace launcherdotnet.Launcher.Forms
             LauncherLogger.WriteLine(json);
 
             LauncherSettings.Save();
+            return true;
         }
 
         private void ShowSettings()
@@ -104,7 +113,7 @@ namespace launcherdotnet.Launcher.Forms
                 GamePluginsBox.Items.Add(item);
             }
 
-            PluginsTabApiVersionLabel.Text = $"launcher.NET plugin API v{LauncherApiInfo.ApiVersion}";
+            PluginsTabApiVersionLabel.Text = $"launcher.net plugin API v{LauncherApiInfo.ApiVersion}";
 
             // --- MelonLoader ---
             MLCheckbox.SetItemChecked(0, s.MLShowCI);
@@ -117,11 +126,12 @@ namespace launcherdotnet.Launcher.Forms
             AdvancedCheckbox.SetItemChecked(3, s.DisableIPv6);
 
             // --- Theme ---
-            themeButtons[(int)s.Theme].Checked = true;
+            _themeButtons[(int)s.Theme].Checked = true;
+            gradientColorBox.Text = s.GradientColor.ToString();
 
             // --- About ---
             LauncherVersionLabel.Text = $"v{Config.CurrentVersionString}";
-            LauncherApiVersionLabel.Text = $"v{PluginAPI.LauncherApiInfo.ApiVersion.ToString()}";
+            LauncherApiVersionLabel.Text = $"v{LauncherApiInfo.ApiVersion}";
 
             SetSelectedHint(null);
         }
@@ -157,23 +167,23 @@ namespace launcherdotnet.Launcher.Forms
             switch (GeneralCheckbox.SelectedIndex)
             {
                 case 0:
-                    SetSelectedHint("If enabled, launcher.NET will notify you if an update is available.",
+                    SetSelectedHint("If enabled, launcher.net will notify you if an update is available.",
                         "Disabled");
                     break;
                 case 1:
-                    SetSelectedHint("If enabled, launcher.NET will not display a dialog if an update check has failed. " +
+                    SetSelectedHint("If enabled, launcher.net will not display a dialog if an update check has failed. " +
                         "There will still be a warning in the console, if the console is enabled.", "Enabled");
                     break;
                 case 2:
-                    SetSelectedHint("If enabled, launcher.NET will ask you for confirmation before it tries to delete an instance.",
+                    SetSelectedHint("If enabled, launcher.net will ask you for confirmation before it tries to delete an instance.",
                         "Enabled");
                     break;
                 case 3:
-                    SetSelectedHint("If enabled, launcher.NET will ask you for confirmation when it tries to overwrite an instance.",
+                    SetSelectedHint("If enabled, launcher.net will ask you for confirmation when it tries to overwrite an instance.",
                         "Enabled");
                     break;
                 case 4:
-                    SetSelectedHint("If enabled, launcher.NET will run when your computer turns on.",
+                    SetSelectedHint("If enabled, launcher.net will run when your computer turns on.",
                         "Disabled");
                     break;
             }
@@ -225,12 +235,12 @@ namespace launcherdotnet.Launcher.Forms
                         "Disabled");
                     break;
                 case 2:
-                    SetSelectedHint("If enabled, launcher.NET will load plugins even if the major " +
+                    SetSelectedHint("If enabled, launcher.net will load plugins even if the major " +
                         "versions of the target API don't match.",
                         "Disabled");
                     break;
                 case 3:
-                    SetSelectedHint("If enabled, launcher.NET will not allow IPv6 connections.",
+                    SetSelectedHint("If enabled, launcher.net will not allow IPv6 connections.",
                         "Disabled");
                     break;
             }
@@ -240,7 +250,7 @@ namespace launcherdotnet.Launcher.Forms
         {
             try
             {
-                ApplySettings();
+                if (!ApplySettings()) return;
                 CoolMessageBox.Show(
                     "Settings applied succesfully.",
                     "Notice",
@@ -280,7 +290,7 @@ namespace launcherdotnet.Launcher.Forms
                 };
                 Process.Start(psi);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 CoolMessageBox.Show(ex.Message, "Error opening browser", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -321,5 +331,15 @@ namespace launcherdotnet.Launcher.Forms
         private void ExtendedFrameDarkThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Extends the titlebar into the app, " +
             "but uses dark mode titlebar");
 
+        private void TransparentGradientButton_CheckedChanged(object sender, EventArgs e) => Hint.Text =
+            ("Clear background with no blur.");
+
+        private void colorButton_Click(object sender, EventArgs e)
+        {
+            Color? result = int.TryParse(gradientColorBox.Text, out int value) ? Color.FromArgb(value) : null;
+            CoolColorPicker dialog = new(result);
+            if (dialog.ShowDialog() == DialogResult.OK)
+                gradientColorBox.Text = dialog.ResultColor!.Value.ToArgb().ToString();
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace launcherdotnet.Styling
         public ThemeableForm()
         {
             if (IsDesignTime) return;
-            Load += (sender, e) => ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.ActiveTextRenderMode);
+            Load += (sender, e) => ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.ActiveTextRenderMode, ThemeManager.ActiveGradientColor);
         }
 
         protected virtual void OnThemeWasApplied() { }
@@ -108,7 +108,7 @@ namespace launcherdotnet.Styling
             this.Refresh();
         }
 
-        public void ApplyTheme(ThemeManager.Theme theme, ThemeManager.TextRenderMode? textMode = null)
+        public void ApplyTheme(ThemeManager.Theme theme, ThemeManager.TextRenderMode? textMode = null, int? gradientColor = null)
         {
             if (IsDesignTime) return;
 
@@ -132,6 +132,7 @@ namespace launcherdotnet.Styling
 
                 case ThemeManager.Theme.Blur:
                 case ThemeManager.Theme.Acrylic:
+                case ThemeManager.Theme.TransparentGradient:
                     _headerStyle.ForeColor = Color.White;
                     _headerStyle.BackColor = ThemeManager.AcrylicMainColor;
                     break;
@@ -141,7 +142,7 @@ namespace launcherdotnet.Styling
             if (textMode.HasValue) SetTextRenderMode(resolvedTheme, textMode.Value);
 
             ApplyControlTheme(this, resolvedTheme);
-            ThemeManager.ApplyThemeToForm(this, resolvedTheme);
+            ThemeManager.ApplyThemeToForm(this, resolvedTheme, gradientColor);
             OnThemeWasApplied();
         }
 

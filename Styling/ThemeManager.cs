@@ -7,6 +7,7 @@ namespace launcherdotnet.Styling
         public static Theme ActiveTheme { get; private set; }
         public static Theme ResolvedTheme => ResolveTheme(ActiveTheme);
         public static TextRenderMode ActiveTextRenderMode { get; private set; }
+        public static int ActiveGradientColor { get; private set; }
         private static bool? _cachedSystemLightTheme;
 
         public static void SetColorRecursive(Control parent, ControlStyle style, Func<Control, bool>? filter = null)
@@ -215,16 +216,17 @@ namespace launcherdotnet.Styling
         }
 
 
-        public static void SetGlobalTheme(Theme theme, TextRenderMode? mode = null)
+        public static void SetGlobalTheme(Theme theme, TextRenderMode? mode = null, int? gradientColor = null)
         {
             ActiveTheme = theme;
+            ActiveGradientColor = gradientColor ?? 0x66000000;
             if (mode.HasValue) ActiveTextRenderMode = mode.Value;
 
             foreach (Form form in Application.OpenForms)
             {
                 if (form is ThemeableForm tf)
                 {
-                    tf.ApplyTheme(theme, mode);
+                    tf.ApplyTheme(theme, mode, ActiveGradientColor);
                 }
             }
         }
