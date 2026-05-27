@@ -10,9 +10,7 @@ namespace launcherdotnet.Launcher
     {
         public static async Task<SemVersion?> GetLatestVersionAsync()
         {
-            using HttpClient http = new HttpClient();
-            http.DefaultRequestHeaders.Add("User-Agent", "launcher.net");
-            string response = await http.GetStringAsync(LauncherConstants.ReleasesAPIUrl);
+            string response = await Networking.LauncherHttp.Client.GetStringAsync(LauncherConstants.ReleasesAPIUrl);
 
             JsonNode? json = JsonNode.Parse(response);
             if (json is null || json.AsArray().Count == 0)
