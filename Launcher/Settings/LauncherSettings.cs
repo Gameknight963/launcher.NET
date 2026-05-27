@@ -21,18 +21,12 @@ namespace launcherdotnet.Launcher.Settings
                 Save();
                 return;
             }
-            try
-            {
-                string json = File.ReadAllText(_settingsPath);
-                Settings = JsonConvert.DeserializeObject<LauncherSettings>(json) ?? new LauncherSettings();
-            }
-            catch
-            {
-                Settings = new LauncherSettings();
-                Save();
-            }
+
+            string json = File.ReadAllText(_settingsPath);
+            Settings = JsonConvert.DeserializeObject<LauncherSettings>(json) ?? new LauncherSettings();
+
             if (Settings.OpenDebugConsole) ConsoleHelper.Show();
-            ThemeManager.SetGlobalTheme(Settings.Theme, Settings.TextRenderMode);
+            ThemeManager.SetGlobalTheme(Settings.Theme, Settings.TextRenderMode, Settings.GradientColor);
         }
 
         public static void Save()
@@ -40,7 +34,7 @@ namespace launcherdotnet.Launcher.Settings
             string json = JsonConvert.SerializeObject(Settings, Formatting.Indented);
             Directory.CreateDirectory(Path.GetDirectoryName(_settingsPath)!);
             File.WriteAllText(_settingsPath, json);
-            ThemeManager.SetGlobalTheme(Settings.Theme, Settings.TextRenderMode);
+            ThemeManager.SetGlobalTheme(Settings.Theme, Settings.TextRenderMode, Settings.GradientColor);
             try
             {
                 if (Settings.RunOnStartup)
@@ -50,8 +44,8 @@ namespace launcherdotnet.Launcher.Settings
             }
             catch (Exception ex)
             {
-                LauncherLogger.WriteLine($"Failed to set Run on startup to {Settings.RunOnStartup}: {ex.Message}", true);
-                CoolMessageBox.Show($"Failed to set Run on startup to {Settings.RunOnStartup}. Check the console for more details.", 
+                LauncherLogger.WriteLine($"Failed to {(Settings.RunOnStartup ? "enable Run On Startup" : "disable Run on Startup")}: {ex.Message}", true);
+                CoolMessageBox.Show($"Failed to {(Settings.RunOnStartup ? "enable Run On Startup" : "disable Run on Startup")}", 
                     "Error", 
                     MessageBoxButtons.OK, 
                     MessageBoxIcon.Error);
@@ -84,6 +78,7 @@ namespace launcherdotnet.Launcher.Settings
 
         // ===== Theme =====
         public ThemeManager.Theme Theme { get; set; } = ThemeManager.Theme.Light;
+        public int GradientColor { get; set; } = 0x66000000;
         public ThemeManager.TextRenderMode TextRenderMode { get; set; } = ThemeManager.TextRenderMode.ShadowText;
 
         // ===== Advanced =====

@@ -1,4 +1,6 @@
-﻿namespace launcherdotnet.Launcher.Forms
+﻿using Cyotek.Windows.Forms;
+
+namespace launcherdotnet.Launcher.Forms
 {
     partial class SettingsForm
     {
@@ -43,16 +45,21 @@
             AdvancedTab = new TabPage();
             AdvancedCheckbox = new CheckedListBox();
             ThemeTab = new TabPage();
+            colorButton = new Button();
+            gradientColorBox = new TextBox();
+            label3 = new Label();
             label4 = new Label();
+            label1 = new Label();
             ThemeHint = new Label();
             flowLayoutPanel1 = new FlowLayoutPanel();
-            SystemThemeButton = new RadioButton();
-            LightThemeButton = new RadioButton();
-            DarkThemeButton = new RadioButton();
-            BlurThemeButton = new RadioButton();
-            AcrylicThemeButton = new RadioButton();
-            ExtendedFrameThemeButton = new RadioButton();
-            ExtendedFrameDarkThemeButton = new RadioButton();
+            systemThemeButton = new RadioButton();
+            lightThemeButton = new RadioButton();
+            darkThemeButton = new RadioButton();
+            blurThemeButton = new RadioButton();
+            acrylicThemeButton = new RadioButton();
+            extendedFrameThemeButton = new RadioButton();
+            extendedFrameDarkThemeButton = new RadioButton();
+            transparentGradientButton = new RadioButton();
             AboutTab = new TabPage();
             license1 = new Label();
             linkLabel1 = new LinkLabel();
@@ -134,7 +141,7 @@
             PluginsTab.Controls.Add(MirrorsHint);
             PluginsTab.Location = new Point(4, 24);
             PluginsTab.Name = "PluginsTab";
-            PluginsTab.Size = new Size(343, 378);
+            PluginsTab.Size = new Size(192, 72);
             PluginsTab.TabIndex = 2;
             PluginsTab.Text = "Plugins";
             PluginsTab.UseVisualStyleBackColor = true;
@@ -145,7 +152,7 @@
             GamePluginsBox.FormattingEnabled = true;
             GamePluginsBox.Location = new Point(0, 83);
             GamePluginsBox.Name = "GamePluginsBox";
-            GamePluginsBox.Size = new Size(340, 274);
+            GamePluginsBox.Size = new Size(285, 4);
             GamePluginsBox.TabIndex = 7;
             GamePluginsBox.SelectedIndexChanged += GamePluginsBox_SelectedIndexChanged;
             // 
@@ -153,7 +160,7 @@
             // 
             PluginsTabApiVersionLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             PluginsTabApiVersionLabel.AutoSize = true;
-            PluginsTabApiVersionLabel.Location = new Point(3, 360);
+            PluginsTabApiVersionLabel.Location = new Point(3, 63);
             PluginsTabApiVersionLabel.Name = "PluginsTabApiVersionLabel";
             PluginsTabApiVersionLabel.Size = new Size(102, 15);
             PluginsTabApiVersionLabel.TabIndex = 6;
@@ -162,7 +169,7 @@
             // button1
             // 
             button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button1.Location = new Point(197, 58);
+            button1.Location = new Point(142, 58);
             button1.Name = "button1";
             button1.Size = new Size(143, 23);
             button1.TabIndex = 5;
@@ -193,7 +200,7 @@
             ModloaderTab.Location = new Point(4, 24);
             ModloaderTab.Name = "ModloaderTab";
             ModloaderTab.Padding = new Padding(3);
-            ModloaderTab.Size = new Size(343, 378);
+            ModloaderTab.Size = new Size(192, 72);
             ModloaderTab.TabIndex = 1;
             ModloaderTab.Text = "Melonloader";
             ModloaderTab.UseVisualStyleBackColor = true;
@@ -205,7 +212,7 @@
             MLCheckbox.Items.AddRange(new object[] { "Enable CI releases", "Prefer stable releases" });
             MLCheckbox.Location = new Point(6, 6);
             MLCheckbox.Name = "MLCheckbox";
-            MLCheckbox.Size = new Size(331, 364);
+            MLCheckbox.Size = new Size(180, 58);
             MLCheckbox.TabIndex = 0;
             // 
             // AdvancedTab
@@ -213,7 +220,7 @@
             AdvancedTab.Controls.Add(AdvancedCheckbox);
             AdvancedTab.Location = new Point(4, 24);
             AdvancedTab.Name = "AdvancedTab";
-            AdvancedTab.Size = new Size(343, 378);
+            AdvancedTab.Size = new Size(192, 72);
             AdvancedTab.TabIndex = 3;
             AdvancedTab.Text = "Advanced";
             AdvancedTab.UseVisualStyleBackColor = true;
@@ -225,12 +232,16 @@
             AdvancedCheckbox.Items.AddRange(new object[] { "Show debug console", "Enable verbose logging", "Disable plugin version check", "Disable IPv6 (requires restart)" });
             AdvancedCheckbox.Location = new Point(3, 3);
             AdvancedCheckbox.Name = "AdvancedCheckbox";
-            AdvancedCheckbox.Size = new Size(337, 76);
+            AdvancedCheckbox.Size = new Size(186, 76);
             AdvancedCheckbox.TabIndex = 0;
             // 
             // ThemeTab
             // 
+            ThemeTab.Controls.Add(colorButton);
+            ThemeTab.Controls.Add(gradientColorBox);
+            ThemeTab.Controls.Add(label3);
             ThemeTab.Controls.Add(label4);
+            ThemeTab.Controls.Add(label1);
             ThemeTab.Controls.Add(ThemeHint);
             ThemeTab.Controls.Add(flowLayoutPanel1);
             ThemeTab.Location = new Point(4, 24);
@@ -241,6 +252,35 @@
             ThemeTab.Text = "Themes";
             ThemeTab.UseVisualStyleBackColor = true;
             // 
+            // colorButton
+            // 
+            colorButton.Location = new Point(145, 279);
+            colorButton.Name = "colorButton";
+            colorButton.Size = new Size(86, 23);
+            colorButton.TabIndex = 6;
+            colorButton.Text = "Pick a color";
+            colorButton.UseVisualStyleBackColor = true;
+            colorButton.Click += colorButton_Click;
+            // 
+            // gradientColorBox
+            // 
+            gradientColorBox.Location = new Point(6, 280);
+            gradientColorBox.Name = "gradientColorBox";
+            gradientColorBox.PlaceholderText = "0x66000000";
+            gradientColorBox.Size = new Size(133, 23);
+            gradientColorBox.TabIndex = 5;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Location = new Point(6, 262);
+            label3.Margin = new Padding(3, 3, 3, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(82, 15);
+            label3.TabIndex = 4;
+            label3.Text = "Gradient color";
+            // 
             // label4
             // 
             label4.AutoSize = true;
@@ -250,6 +290,15 @@
             label4.Size = new Size(44, 15);
             label4.TabIndex = 4;
             label4.Text = "Theme";
+            // 
+            // label1
+            // 
+            label1.Location = new Point(6, 223);
+            label1.Margin = new Padding(3, 3, 3, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(331, 36);
+            label1.TabIndex = 1;
+            label1.Text = "The background color of transparent themes is determined by the gradient color. Change it here.";
             // 
             // ThemeHint
             // 
@@ -262,110 +311,124 @@
             // 
             // flowLayoutPanel1
             // 
-            flowLayoutPanel1.Controls.Add(SystemThemeButton);
-            flowLayoutPanel1.Controls.Add(LightThemeButton);
-            flowLayoutPanel1.Controls.Add(DarkThemeButton);
-            flowLayoutPanel1.Controls.Add(BlurThemeButton);
-            flowLayoutPanel1.Controls.Add(AcrylicThemeButton);
-            flowLayoutPanel1.Controls.Add(ExtendedFrameThemeButton);
-            flowLayoutPanel1.Controls.Add(ExtendedFrameDarkThemeButton);
+            flowLayoutPanel1.Controls.Add(systemThemeButton);
+            flowLayoutPanel1.Controls.Add(lightThemeButton);
+            flowLayoutPanel1.Controls.Add(darkThemeButton);
+            flowLayoutPanel1.Controls.Add(blurThemeButton);
+            flowLayoutPanel1.Controls.Add(acrylicThemeButton);
+            flowLayoutPanel1.Controls.Add(extendedFrameThemeButton);
+            flowLayoutPanel1.Controls.Add(extendedFrameDarkThemeButton);
+            flowLayoutPanel1.Controls.Add(transparentGradientButton);
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(6, 57);
             flowLayoutPanel1.Margin = new Padding(3, 0, 3, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(186, 141);
+            flowLayoutPanel1.Size = new Size(186, 162);
             flowLayoutPanel1.TabIndex = 0;
             // 
-            // SystemThemeButton
+            // systemThemeButton
             // 
-            SystemThemeButton.AutoSize = true;
-            SystemThemeButton.Location = new Point(3, 0);
-            SystemThemeButton.Margin = new Padding(3, 0, 3, 0);
-            SystemThemeButton.Name = "SystemThemeButton";
-            SystemThemeButton.Size = new Size(63, 19);
-            SystemThemeButton.TabIndex = 0;
-            SystemThemeButton.TabStop = true;
-            SystemThemeButton.Text = "System";
-            SystemThemeButton.UseVisualStyleBackColor = true;
-            SystemThemeButton.CheckedChanged += SystemThemeButton_CheckedChanged;
+            systemThemeButton.AutoSize = true;
+            systemThemeButton.Location = new Point(3, 0);
+            systemThemeButton.Margin = new Padding(3, 0, 3, 0);
+            systemThemeButton.Name = "systemThemeButton";
+            systemThemeButton.Size = new Size(63, 19);
+            systemThemeButton.TabIndex = 0;
+            systemThemeButton.TabStop = true;
+            systemThemeButton.Text = "System";
+            systemThemeButton.UseVisualStyleBackColor = true;
+            systemThemeButton.CheckedChanged += SystemThemeButton_CheckedChanged;
             // 
-            // LightThemeButton
+            // lightThemeButton
             // 
-            LightThemeButton.AutoSize = true;
-            LightThemeButton.Location = new Point(3, 19);
-            LightThemeButton.Margin = new Padding(3, 0, 3, 0);
-            LightThemeButton.Name = "LightThemeButton";
-            LightThemeButton.Size = new Size(52, 19);
-            LightThemeButton.TabIndex = 0;
-            LightThemeButton.TabStop = true;
-            LightThemeButton.Text = "Light";
-            LightThemeButton.UseVisualStyleBackColor = true;
-            LightThemeButton.CheckedChanged += LightThemeButton_CheckedChanged;
+            lightThemeButton.AutoSize = true;
+            lightThemeButton.Location = new Point(3, 19);
+            lightThemeButton.Margin = new Padding(3, 0, 3, 0);
+            lightThemeButton.Name = "lightThemeButton";
+            lightThemeButton.Size = new Size(52, 19);
+            lightThemeButton.TabIndex = 0;
+            lightThemeButton.TabStop = true;
+            lightThemeButton.Text = "Light";
+            lightThemeButton.UseVisualStyleBackColor = true;
+            lightThemeButton.CheckedChanged += LightThemeButton_CheckedChanged;
             // 
-            // DarkThemeButton
+            // darkThemeButton
             // 
-            DarkThemeButton.AutoSize = true;
-            DarkThemeButton.Location = new Point(3, 38);
-            DarkThemeButton.Margin = new Padding(3, 0, 3, 0);
-            DarkThemeButton.Name = "DarkThemeButton";
-            DarkThemeButton.Size = new Size(49, 19);
-            DarkThemeButton.TabIndex = 0;
-            DarkThemeButton.TabStop = true;
-            DarkThemeButton.Text = "Dark";
-            DarkThemeButton.UseVisualStyleBackColor = true;
-            DarkThemeButton.CheckedChanged += DarkThemeButton_CheckedChanged;
+            darkThemeButton.AutoSize = true;
+            darkThemeButton.Location = new Point(3, 38);
+            darkThemeButton.Margin = new Padding(3, 0, 3, 0);
+            darkThemeButton.Name = "darkThemeButton";
+            darkThemeButton.Size = new Size(49, 19);
+            darkThemeButton.TabIndex = 0;
+            darkThemeButton.TabStop = true;
+            darkThemeButton.Text = "Dark";
+            darkThemeButton.UseVisualStyleBackColor = true;
+            darkThemeButton.CheckedChanged += DarkThemeButton_CheckedChanged;
             // 
-            // BlurThemeButton
+            // blurThemeButton
             // 
-            BlurThemeButton.AutoSize = true;
-            BlurThemeButton.Location = new Point(3, 57);
-            BlurThemeButton.Margin = new Padding(3, 0, 3, 0);
-            BlurThemeButton.Name = "BlurThemeButton";
-            BlurThemeButton.Size = new Size(130, 19);
-            BlurThemeButton.TabIndex = 0;
-            BlurThemeButton.TabStop = true;
-            BlurThemeButton.Text = "Blurred background";
-            BlurThemeButton.UseVisualStyleBackColor = true;
-            BlurThemeButton.CheckedChanged += BlurThemeButton_CheckedChanged;
+            blurThemeButton.AutoSize = true;
+            blurThemeButton.Location = new Point(3, 57);
+            blurThemeButton.Margin = new Padding(3, 0, 3, 0);
+            blurThemeButton.Name = "blurThemeButton";
+            blurThemeButton.Size = new Size(130, 19);
+            blurThemeButton.TabIndex = 0;
+            blurThemeButton.TabStop = true;
+            blurThemeButton.Text = "Blurred background";
+            blurThemeButton.UseVisualStyleBackColor = true;
+            blurThemeButton.CheckedChanged += BlurThemeButton_CheckedChanged;
             // 
-            // AcrylicThemeButton
+            // acrylicThemeButton
             // 
-            AcrylicThemeButton.AutoSize = true;
-            AcrylicThemeButton.Location = new Point(3, 76);
-            AcrylicThemeButton.Margin = new Padding(3, 0, 3, 0);
-            AcrylicThemeButton.Name = "AcrylicThemeButton";
-            AcrylicThemeButton.Size = new Size(61, 19);
-            AcrylicThemeButton.TabIndex = 0;
-            AcrylicThemeButton.TabStop = true;
-            AcrylicThemeButton.Text = "Acrylic";
-            AcrylicThemeButton.UseVisualStyleBackColor = true;
-            AcrylicThemeButton.CheckedChanged += AcrylicThemeButton_CheckedChanged;
+            acrylicThemeButton.AutoSize = true;
+            acrylicThemeButton.Location = new Point(3, 76);
+            acrylicThemeButton.Margin = new Padding(3, 0, 3, 0);
+            acrylicThemeButton.Name = "acrylicThemeButton";
+            acrylicThemeButton.Size = new Size(61, 19);
+            acrylicThemeButton.TabIndex = 0;
+            acrylicThemeButton.TabStop = true;
+            acrylicThemeButton.Text = "Acrylic";
+            acrylicThemeButton.UseVisualStyleBackColor = true;
+            acrylicThemeButton.CheckedChanged += AcrylicThemeButton_CheckedChanged;
             // 
-            // ExtendedFrameThemeButton
+            // extendedFrameThemeButton
             // 
-            ExtendedFrameThemeButton.AutoSize = true;
-            ExtendedFrameThemeButton.Location = new Point(3, 95);
-            ExtendedFrameThemeButton.Margin = new Padding(3, 0, 3, 0);
-            ExtendedFrameThemeButton.Name = "ExtendedFrameThemeButton";
-            ExtendedFrameThemeButton.Size = new Size(107, 19);
-            ExtendedFrameThemeButton.TabIndex = 0;
-            ExtendedFrameThemeButton.TabStop = true;
-            ExtendedFrameThemeButton.Text = "Extended frame";
-            ExtendedFrameThemeButton.UseVisualStyleBackColor = true;
-            ExtendedFrameThemeButton.CheckedChanged += ExtendedFrameThemeButton_CheckedChanged;
+            extendedFrameThemeButton.AutoSize = true;
+            extendedFrameThemeButton.Location = new Point(3, 95);
+            extendedFrameThemeButton.Margin = new Padding(3, 0, 3, 0);
+            extendedFrameThemeButton.Name = "extendedFrameThemeButton";
+            extendedFrameThemeButton.Size = new Size(107, 19);
+            extendedFrameThemeButton.TabIndex = 0;
+            extendedFrameThemeButton.TabStop = true;
+            extendedFrameThemeButton.Text = "Extended frame";
+            extendedFrameThemeButton.UseVisualStyleBackColor = true;
+            extendedFrameThemeButton.CheckedChanged += ExtendedFrameThemeButton_CheckedChanged;
             // 
-            // ExtendedFrameDarkThemeButton
+            // extendedFrameDarkThemeButton
             // 
-            ExtendedFrameDarkThemeButton.AutoSize = true;
-            ExtendedFrameDarkThemeButton.Location = new Point(3, 114);
-            ExtendedFrameDarkThemeButton.Margin = new Padding(3, 0, 3, 0);
-            ExtendedFrameDarkThemeButton.Name = "ExtendedFrameDarkThemeButton";
-            ExtendedFrameDarkThemeButton.Size = new Size(141, 19);
-            ExtendedFrameDarkThemeButton.TabIndex = 0;
-            ExtendedFrameDarkThemeButton.TabStop = true;
-            ExtendedFrameDarkThemeButton.Text = "Extended frame (dark)";
-            ExtendedFrameDarkThemeButton.UseVisualStyleBackColor = true;
-            ExtendedFrameDarkThemeButton.CheckedChanged += ExtendedFrameDarkThemeButton_CheckedChanged;
+            extendedFrameDarkThemeButton.AutoSize = true;
+            extendedFrameDarkThemeButton.Location = new Point(3, 114);
+            extendedFrameDarkThemeButton.Margin = new Padding(3, 0, 3, 0);
+            extendedFrameDarkThemeButton.Name = "extendedFrameDarkThemeButton";
+            extendedFrameDarkThemeButton.Size = new Size(141, 19);
+            extendedFrameDarkThemeButton.TabIndex = 0;
+            extendedFrameDarkThemeButton.TabStop = true;
+            extendedFrameDarkThemeButton.Text = "Extended frame (dark)";
+            extendedFrameDarkThemeButton.UseVisualStyleBackColor = true;
+            extendedFrameDarkThemeButton.CheckedChanged += ExtendedFrameDarkThemeButton_CheckedChanged;
+            // 
+            // transparentGradientButton
+            // 
+            transparentGradientButton.AutoSize = true;
+            transparentGradientButton.Location = new Point(3, 133);
+            transparentGradientButton.Margin = new Padding(3, 0, 3, 0);
+            transparentGradientButton.Name = "transparentGradientButton";
+            transparentGradientButton.Size = new Size(134, 19);
+            transparentGradientButton.TabIndex = 1;
+            transparentGradientButton.TabStop = true;
+            transparentGradientButton.Text = "Transparent gradient";
+            transparentGradientButton.UseVisualStyleBackColor = true;
+            transparentGradientButton.CheckedChanged += TransparentGradientButton_CheckedChanged;
             // 
             // AboutTab
             // 
@@ -381,7 +444,7 @@
             AboutTab.Location = new Point(4, 24);
             AboutTab.Name = "AboutTab";
             AboutTab.Padding = new Padding(3);
-            AboutTab.Size = new Size(343, 378);
+            AboutTab.Size = new Size(192, 72);
             AboutTab.TabIndex = 4;
             AboutTab.Text = "About";
             AboutTab.UseVisualStyleBackColor = true;
@@ -389,7 +452,7 @@
             // license1
             // 
             license1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            license1.Location = new Point(3, 253);
+            license1.Location = new Point(3, -53);
             license1.Name = "license1";
             license1.Size = new Size(251, 60);
             license1.TabIndex = 9;
@@ -399,7 +462,7 @@
             // 
             linkLabel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(3, 313);
+            linkLabel1.Location = new Point(3, 7);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(251, 15);
             linkLabel1.TabIndex = 8;
@@ -411,7 +474,7 @@
             // 
             GithubLink.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             GithubLink.AutoSize = true;
-            GithubLink.Location = new Point(3, 354);
+            GithubLink.Location = new Point(3, 48);
             GithubLink.Name = "GithubLink";
             GithubLink.Size = new Size(273, 15);
             GithubLink.TabIndex = 8;
@@ -424,7 +487,7 @@
             MadeBy.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             MadeBy.AutoSize = true;
             MadeBy.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            MadeBy.Location = new Point(3, 339);
+            MadeBy.Location = new Point(3, 33);
             MadeBy.Name = "MadeBy";
             MadeBy.Size = new Size(179, 15);
             MadeBy.TabIndex = 6;
@@ -564,14 +627,19 @@
         private LinkLabel linkLabel1;
         private TabPage ThemeTab;
         private FlowLayoutPanel flowLayoutPanel1;
-        private RadioButton SystemThemeButton;
-        private RadioButton LightThemeButton;
+        private RadioButton systemThemeButton;
+        private RadioButton lightThemeButton;
         private Label ThemeHint;
-        private RadioButton DarkThemeButton;
-        private RadioButton BlurThemeButton;
-        private RadioButton AcrylicThemeButton;
-        private RadioButton ExtendedFrameThemeButton;
-        private RadioButton ExtendedFrameDarkThemeButton;
+        private RadioButton darkThemeButton;
+        private RadioButton blurThemeButton;
+        private RadioButton acrylicThemeButton;
+        private RadioButton extendedFrameThemeButton;
+        private RadioButton extendedFrameDarkThemeButton;
         private Label label4;
+        private RadioButton transparentGradientButton;
+        private TextBox gradientColorBox;
+        private Label label1;
+        private Label label3;
+        private Button colorButton;
     }
 }
