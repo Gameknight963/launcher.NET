@@ -71,11 +71,6 @@ namespace launcherdotnet.Launcher.Settings
         public bool ConfirmOverwrite { get; set; } = true;
         public bool RunOnStartup { get; set; } = false;
 
-        // ===== Melonloader =====
-
-        public bool MLShowCI { get; set; } = true;
-        public bool MLSelectStableByDefault { get; set; } = true;
-
         // ===== Theme =====
         public ThemeManager.Theme Theme { get; set; } = ThemeManager.Theme.Light;
         public int GradientColor { get; set; } = 0x66000000;

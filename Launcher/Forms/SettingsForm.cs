@@ -39,9 +39,6 @@ namespace launcherdotnet.Launcher.Forms
             GamePluginsBox.MouseDown += ShowGamePluginsBoxHint;
             GamePluginsBox.SelectedIndexChanged += ShowGamePluginsBoxHint;
 
-            MLCheckbox.MouseDown += ShowMLCheckboxHint;
-            MLCheckbox.SelectedIndexChanged += ShowMLCheckboxHint;
-
             this.KeyPreview = true;
             this.KeyDown += SettingsForm_KeyDown;
             this.StartPosition = FormStartPosition.CenterParent;
@@ -64,10 +61,6 @@ namespace launcherdotnet.Launcher.Forms
             s.ConfirmDelete = GeneralCheckbox.GetItemChecked(2);
             s.ConfirmOverwrite = GeneralCheckbox.GetItemChecked(3);
             s.RunOnStartup = GeneralCheckbox.GetItemChecked(4);
-
-            // --- Melonloader ---
-            s.MLShowCI = MLCheckbox.GetItemChecked(0);
-            s.MLSelectStableByDefault = MLCheckbox.GetItemChecked(1);
 
             // --- Theme ---
             s.Theme = (ThemeManager.Theme)Array.FindIndex(_themeButtons, b => b.Checked);
@@ -114,10 +107,6 @@ namespace launcherdotnet.Launcher.Forms
             }
 
             PluginsTabApiVersionLabel.Text = $"launcher.net plugin API v{LauncherApiInfo.ApiVersion}";
-
-            // --- MelonLoader ---
-            MLCheckbox.SetItemChecked(0, s.MLShowCI);
-            MLCheckbox.SetItemChecked(1, s.MLSelectStableByDefault);
 
             // --- Advanced ---
             AdvancedCheckbox.SetItemChecked(0, s.OpenDebugConsole);
@@ -203,22 +192,6 @@ namespace launcherdotnet.Launcher.Forms
             TaggedListBoxItem item = (TaggedListBoxItem)GamePluginsBox.SelectedItems[0]!;
             GameInstallPluginEntry entry = (GameInstallPluginEntry)item.Tag!;
             SetPluginHint(entry.Installer.Description, entry.Installer.TargetApiVersion.ToString());
-        }
-
-        private void ShowMLCheckboxHint(object? sender, EventArgs e)
-        {
-            switch (MLCheckbox.SelectedIndex)
-            {
-                case 0:
-                    SetSelectedHint("If enabled, bleeding edge builds will appear in the download list.\n" +
-                        "These builds may be unstable, but contain the newest features and bugfixes.",
-                        "Enabled");
-                    break;
-                case 1:
-                    SetSelectedHint("If enabled, the latest stable version will be automatically selected, rather than the latest CI build.",
-                        "Enabled");
-                    break;
-            }
         }
 
         private void ShowAdvancedHint(object? sender, EventArgs e)

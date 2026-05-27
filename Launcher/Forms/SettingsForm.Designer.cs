@@ -40,8 +40,6 @@ namespace launcherdotnet.Launcher.Forms
             button1 = new Button();
             GamesLabel = new Label();
             MirrorsHint = new Label();
-            ModloaderTab = new TabPage();
-            MLCheckbox = new CheckedListBox();
             AdvancedTab = new TabPage();
             AdvancedCheckbox = new CheckedListBox();
             ThemeTab = new TabPage();
@@ -76,7 +74,6 @@ namespace launcherdotnet.Launcher.Forms
             SettingsTabControl.SuspendLayout();
             GeneralTab.SuspendLayout();
             PluginsTab.SuspendLayout();
-            ModloaderTab.SuspendLayout();
             AdvancedTab.SuspendLayout();
             ThemeTab.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
@@ -87,7 +84,7 @@ namespace launcherdotnet.Launcher.Forms
             // SaveButton
             // 
             SaveButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            SaveButton.Location = new Point(477, 415);
+            SaveButton.Location = new Point(477, 422);
             SaveButton.Name = "SaveButton";
             SaveButton.Size = new Size(75, 23);
             SaveButton.TabIndex = 4;
@@ -100,14 +97,13 @@ namespace launcherdotnet.Launcher.Forms
             SettingsTabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             SettingsTabControl.Controls.Add(GeneralTab);
             SettingsTabControl.Controls.Add(PluginsTab);
-            SettingsTabControl.Controls.Add(ModloaderTab);
             SettingsTabControl.Controls.Add(AdvancedTab);
             SettingsTabControl.Controls.Add(ThemeTab);
             SettingsTabControl.Controls.Add(AboutTab);
             SettingsTabControl.Location = new Point(12, 12);
             SettingsTabControl.Name = "SettingsTabControl";
             SettingsTabControl.SelectedIndex = 0;
-            SettingsTabControl.Size = new Size(351, 406);
+            SettingsTabControl.Size = new Size(351, 413);
             SettingsTabControl.TabIndex = 5;
             // 
             // GeneralTab
@@ -116,7 +112,7 @@ namespace launcherdotnet.Launcher.Forms
             GeneralTab.Location = new Point(4, 24);
             GeneralTab.Name = "GeneralTab";
             GeneralTab.Padding = new Padding(3);
-            GeneralTab.Size = new Size(343, 378);
+            GeneralTab.Size = new Size(343, 385);
             GeneralTab.TabIndex = 0;
             GeneralTab.Text = "General";
             GeneralTab.UseVisualStyleBackColor = true;
@@ -141,7 +137,7 @@ namespace launcherdotnet.Launcher.Forms
             PluginsTab.Controls.Add(MirrorsHint);
             PluginsTab.Location = new Point(4, 24);
             PluginsTab.Name = "PluginsTab";
-            PluginsTab.Size = new Size(192, 72);
+            PluginsTab.Size = new Size(343, 385);
             PluginsTab.TabIndex = 2;
             PluginsTab.Text = "Plugins";
             PluginsTab.UseVisualStyleBackColor = true;
@@ -152,7 +148,7 @@ namespace launcherdotnet.Launcher.Forms
             GamePluginsBox.FormattingEnabled = true;
             GamePluginsBox.Location = new Point(0, 83);
             GamePluginsBox.Name = "GamePluginsBox";
-            GamePluginsBox.Size = new Size(285, 4);
+            GamePluginsBox.Size = new Size(340, 274);
             GamePluginsBox.TabIndex = 7;
             GamePluginsBox.SelectedIndexChanged += GamePluginsBox_SelectedIndexChanged;
             // 
@@ -160,7 +156,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             PluginsTabApiVersionLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             PluginsTabApiVersionLabel.AutoSize = true;
-            PluginsTabApiVersionLabel.Location = new Point(3, 63);
+            PluginsTabApiVersionLabel.Location = new Point(3, 361);
             PluginsTabApiVersionLabel.Name = "PluginsTabApiVersionLabel";
             PluginsTabApiVersionLabel.Size = new Size(102, 15);
             PluginsTabApiVersionLabel.TabIndex = 6;
@@ -169,7 +165,7 @@ namespace launcherdotnet.Launcher.Forms
             // button1
             // 
             button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button1.Location = new Point(142, 58);
+            button1.Location = new Point(197, 58);
             button1.Name = "button1";
             button1.Size = new Size(143, 23);
             button1.TabIndex = 5;
@@ -180,47 +176,26 @@ namespace launcherdotnet.Launcher.Forms
             // GamesLabel
             // 
             GamesLabel.AutoSize = true;
-            GamesLabel.Location = new Point(3, 58);
+            GamesLabel.Location = new Point(3, 62);
             GamesLabel.Name = "GamesLabel";
-            GamesLabel.Size = new Size(46, 15);
+            GamesLabel.Size = new Size(96, 15);
             GamesLabel.TabIndex = 2;
-            GamesLabel.Text = "Games:";
+            GamesLabel.Text = "Installed plugins:";
             // 
             // MirrorsHint
             // 
             MirrorsHint.Location = new Point(3, 3);
             MirrorsHint.Name = "MirrorsHint";
-            MirrorsHint.Size = new Size(285, 55);
+            MirrorsHint.Size = new Size(337, 55);
             MirrorsHint.TabIndex = 0;
-            MirrorsHint.Text = "Plugins are custom installation scripts that tell launcher.net how to install games and modloaders. Only game installers are currently supported.";
-            // 
-            // ModloaderTab
-            // 
-            ModloaderTab.Controls.Add(MLCheckbox);
-            ModloaderTab.Location = new Point(4, 24);
-            ModloaderTab.Name = "ModloaderTab";
-            ModloaderTab.Padding = new Padding(3);
-            ModloaderTab.Size = new Size(192, 72);
-            ModloaderTab.TabIndex = 1;
-            ModloaderTab.Text = "Melonloader";
-            ModloaderTab.UseVisualStyleBackColor = true;
-            // 
-            // MLCheckbox
-            // 
-            MLCheckbox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            MLCheckbox.FormattingEnabled = true;
-            MLCheckbox.Items.AddRange(new object[] { "Enable CI releases", "Prefer stable releases" });
-            MLCheckbox.Location = new Point(6, 6);
-            MLCheckbox.Name = "MLCheckbox";
-            MLCheckbox.Size = new Size(180, 58);
-            MLCheckbox.TabIndex = 0;
+            MirrorsHint.Text = "Plugins are custom code that can add additional functionality or tell launcher.net how to install games.";
             // 
             // AdvancedTab
             // 
             AdvancedTab.Controls.Add(AdvancedCheckbox);
             AdvancedTab.Location = new Point(4, 24);
             AdvancedTab.Name = "AdvancedTab";
-            AdvancedTab.Size = new Size(192, 72);
+            AdvancedTab.Size = new Size(343, 385);
             AdvancedTab.TabIndex = 3;
             AdvancedTab.Text = "Advanced";
             AdvancedTab.UseVisualStyleBackColor = true;
@@ -232,7 +207,7 @@ namespace launcherdotnet.Launcher.Forms
             AdvancedCheckbox.Items.AddRange(new object[] { "Show debug console", "Enable verbose logging", "Disable plugin version check", "Disable IPv6 (requires restart)" });
             AdvancedCheckbox.Location = new Point(3, 3);
             AdvancedCheckbox.Name = "AdvancedCheckbox";
-            AdvancedCheckbox.Size = new Size(186, 76);
+            AdvancedCheckbox.Size = new Size(337, 76);
             AdvancedCheckbox.TabIndex = 0;
             // 
             // ThemeTab
@@ -247,7 +222,7 @@ namespace launcherdotnet.Launcher.Forms
             ThemeTab.Location = new Point(4, 24);
             ThemeTab.Name = "ThemeTab";
             ThemeTab.Padding = new Padding(3);
-            ThemeTab.Size = new Size(343, 378);
+            ThemeTab.Size = new Size(343, 385);
             ThemeTab.TabIndex = 5;
             ThemeTab.Text = "Themes";
             ThemeTab.UseVisualStyleBackColor = true;
@@ -444,7 +419,7 @@ namespace launcherdotnet.Launcher.Forms
             AboutTab.Location = new Point(4, 24);
             AboutTab.Name = "AboutTab";
             AboutTab.Padding = new Padding(3);
-            AboutTab.Size = new Size(192, 72);
+            AboutTab.Size = new Size(343, 385);
             AboutTab.TabIndex = 4;
             AboutTab.Text = "About";
             AboutTab.UseVisualStyleBackColor = true;
@@ -452,7 +427,7 @@ namespace launcherdotnet.Launcher.Forms
             // license1
             // 
             license1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            license1.Location = new Point(3, -53);
+            license1.Location = new Point(3, 263);
             license1.Name = "license1";
             license1.Size = new Size(251, 60);
             license1.TabIndex = 9;
@@ -462,7 +437,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             linkLabel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(3, 7);
+            linkLabel1.Location = new Point(3, 323);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(251, 15);
             linkLabel1.TabIndex = 8;
@@ -474,7 +449,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             GithubLink.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             GithubLink.AutoSize = true;
-            GithubLink.Location = new Point(3, 48);
+            GithubLink.Location = new Point(3, 364);
             GithubLink.Name = "GithubLink";
             GithubLink.Size = new Size(273, 15);
             GithubLink.TabIndex = 8;
@@ -487,7 +462,7 @@ namespace launcherdotnet.Launcher.Forms
             MadeBy.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             MadeBy.AutoSize = true;
             MadeBy.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            MadeBy.Location = new Point(3, 33);
+            MadeBy.Location = new Point(3, 349);
             MadeBy.Name = "MadeBy";
             MadeBy.Size = new Size(179, 15);
             MadeBy.TabIndex = 6;
@@ -548,7 +523,7 @@ namespace launcherdotnet.Launcher.Forms
             panel1.Controls.Add(Hint);
             panel1.Location = new Point(365, 36);
             panel1.Name = "panel1";
-            panel1.Size = new Size(187, 369);
+            panel1.Size = new Size(187, 376);
             panel1.TabIndex = 6;
             // 
             // DescriptionLabel
@@ -573,7 +548,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(562, 450);
+            ClientSize = new Size(562, 457);
             Controls.Add(panel1);
             Controls.Add(SettingsTabControl);
             Controls.Add(SaveButton);
@@ -584,7 +559,6 @@ namespace launcherdotnet.Launcher.Forms
             GeneralTab.ResumeLayout(false);
             PluginsTab.ResumeLayout(false);
             PluginsTab.PerformLayout();
-            ModloaderTab.ResumeLayout(false);
             AdvancedTab.ResumeLayout(false);
             ThemeTab.ResumeLayout(false);
             ThemeTab.PerformLayout();
@@ -602,14 +576,12 @@ namespace launcherdotnet.Launcher.Forms
         private TabControl SettingsTabControl;
         private TabPage GeneralTab;
         private TabPage PluginsTab;
-        private TabPage ModloaderTab;
         private TabPage AdvancedTab;
         private CheckedListBox AdvancedCheckbox;
         private Panel panel1;
         private Label Hint;
         private CheckedListBox GeneralCheckbox;
         private Label MirrorsHint;
-        private CheckedListBox MLCheckbox;
         private Button button1;
         private Label GamesLabel;
         private Label DescriptionLabel;
