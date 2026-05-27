@@ -44,11 +44,6 @@ namespace launcherdotnet.Launcher.Forms
             this.KeyPreview = true;
             this.KeyDown += SettingsForm_KeyDown;
             this.StartPosition = FormStartPosition.CenterParent;
-
-            foreach (RadioButton btn in themeButtons)
-            {
-                btn.CheckedChanged += ThemeButton_CheckedChanged;
-            }
         }
 
         public class TaggedListBoxItem
@@ -75,7 +70,6 @@ namespace launcherdotnet.Launcher.Forms
 
             // --- Theme ---
             s.Theme = (ThemeManager.Theme)Array.FindIndex(themeButtons, b => b.Checked);
-            s.TextRenderMode = (ThemeManager.TextRenderMode)TextModeComboBox.SelectedIndex;
 
             // --- Advanced ---
             s.OpenDebugConsole = AdvancedCheckbox.GetItemChecked(0);
@@ -124,7 +118,6 @@ namespace launcherdotnet.Launcher.Forms
 
             // --- Theme ---
             themeButtons[(int)s.Theme].Checked = true;
-            TextModeComboBox.SelectedIndex = (int)s.TextRenderMode;
 
             // --- About ---
             LauncherVersionLabel.Text = $"v{Config.CurrentVersionString}";
@@ -328,44 +321,5 @@ namespace launcherdotnet.Launcher.Forms
         private void ExtendedFrameDarkThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Extends the titlebar into the app, " +
             "but uses dark mode titlebar");
 
-        private void TextModeComboBox_SelectedIndexChanged(object? sender, EventArgs e)
-        {
-            switch (TextModeComboBox.SelectedIndex)
-            {
-                case 0:
-                    Hint.Text = "Normal TextRenderer rendering except on Blur and Acrylic themes.";
-                    break;
-                case 1:
-                    Hint.Text = "Normal TextRenderer rendering only on Light, Dark, and System themes. This prevents " +
-                        "aliasing issues if you use DWMBlurGlass or other software that makes titlebars transparent.";
-                    break;
-                case 2:
-                    Hint.Text = "Always use TextRenderer rendering. This is the way Winforms normally looks.";
-                    break;
-                case 3:
-                    Hint.Text = "Always use shadow text custom rendering.";
-                    break;
-            }
-            UpdateTextRenderHint((ThemeManager.Theme)Array.FindIndex(themeButtons, b => b.Checked), (ThemeManager.TextRenderMode)TextModeComboBox.SelectedIndex);
-        }
-
-        private void ThemeButton_CheckedChanged(object? sender, EventArgs e)
-        {
-            UpdateTextRenderHint();
-        }
-
-        private void UpdateTextRenderHint(ThemeManager.Theme theme, ThemeManager.TextRenderMode mode)
-        {
-            textModeResolvesTo2.Text = $"With the selected theme {theme}, this text mode resolves to:";
-            textModeResolvesTo.Text = $"{(ThemeManager.ResolveTextRenderMode(theme, mode) ?
-                "TextRenderer" : "Shadow Text")}";
-        }
-        private void UpdateTextRenderHint()
-        {
-            ThemeManager.Theme t = (ThemeManager.Theme)Array.FindIndex(themeButtons, b => b.Checked);
-            textModeResolvesTo2.Text = $"With the selected theme {t}, this text mode resolves to:";
-            textModeResolvesTo.Text = $"{(ThemeManager.ResolveTextRenderMode(t, (ThemeManager.TextRenderMode)TextModeComboBox.SelectedIndex) ?
-                "TextRenderer" : "Shadow Text")}";
-        }
     }
 }

@@ -43,12 +43,7 @@
             AdvancedTab = new TabPage();
             AdvancedCheckbox = new CheckedListBox();
             ThemeTab = new TabPage();
-            textModeResolvesTo = new Label();
-            textModeResolvesTo2 = new Label();
             label4 = new Label();
-            label3 = new Label();
-            label1 = new Label();
-            TextModeComboBox = new ComboBox();
             ThemeHint = new Label();
             flowLayoutPanel1 = new FlowLayoutPanel();
             SystemThemeButton = new RadioButton();
@@ -235,12 +230,7 @@
             // 
             // ThemeTab
             // 
-            ThemeTab.Controls.Add(textModeResolvesTo);
-            ThemeTab.Controls.Add(textModeResolvesTo2);
             ThemeTab.Controls.Add(label4);
-            ThemeTab.Controls.Add(label3);
-            ThemeTab.Controls.Add(label1);
-            ThemeTab.Controls.Add(TextModeComboBox);
             ThemeTab.Controls.Add(ThemeHint);
             ThemeTab.Controls.Add(flowLayoutPanel1);
             ThemeTab.Location = new Point(4, 24);
@@ -251,24 +241,6 @@
             ThemeTab.Text = "Themes";
             ThemeTab.UseVisualStyleBackColor = true;
             // 
-            // textModeResolvesTo
-            // 
-            textModeResolvesTo.AutoSize = true;
-            textModeResolvesTo.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            textModeResolvesTo.Location = new Point(9, 329);
-            textModeResolvesTo.Name = "textModeResolvesTo";
-            textModeResolvesTo.Size = new Size(39, 15);
-            textModeResolvesTo.TabIndex = 6;
-            textModeResolvesTo.Text = "label5";
-            // 
-            // textModeResolvesTo2
-            // 
-            textModeResolvesTo2.Location = new Point(9, 296);
-            textModeResolvesTo2.Name = "textModeResolvesTo2";
-            textModeResolvesTo2.Size = new Size(328, 33);
-            textModeResolvesTo2.TabIndex = 5;
-            textModeResolvesTo2.Text = "This text mode resolves to:";
-            // 
             // label4
             // 
             label4.AutoSize = true;
@@ -278,34 +250,6 @@
             label4.Size = new Size(44, 15);
             label4.TabIndex = 4;
             label4.Text = "Theme";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(6, 252);
-            label3.Name = "label3";
-            label3.Size = new Size(100, 15);
-            label3.TabIndex = 4;
-            label3.Text = "Text render mode";
-            // 
-            // label1
-            // 
-            label1.Location = new Point(6, 201);
-            label1.Name = "label1";
-            label1.Size = new Size(331, 51);
-            label1.TabIndex = 3;
-            label1.Text = "Transparent background can cause text anti-aliasing issues. To fix this, launcher.NET has a custom text drawing implementation you can enable.";
-            // 
-            // TextModeComboBox
-            // 
-            TextModeComboBox.FormattingEnabled = true;
-            TextModeComboBox.Items.AddRange(new object[] { "Auto", "Auto (strict)", "TextRenderer (default Winforms)", "Shadow Text (launcher.NET)" });
-            TextModeComboBox.Location = new Point(9, 270);
-            TextModeComboBox.Name = "TextModeComboBox";
-            TextModeComboBox.Size = new Size(203, 23);
-            TextModeComboBox.TabIndex = 2;
-            TextModeComboBox.SelectedIndexChanged += TextModeComboBox_SelectedIndexChanged;
             // 
             // ThemeHint
             // 
@@ -403,7 +347,7 @@
             ExtendedFrameThemeButton.Location = new Point(3, 95);
             ExtendedFrameThemeButton.Margin = new Padding(3, 0, 3, 0);
             ExtendedFrameThemeButton.Name = "ExtendedFrameThemeButton";
-            ExtendedFrameThemeButton.Size = new Size(108, 19);
+            ExtendedFrameThemeButton.Size = new Size(107, 19);
             ExtendedFrameThemeButton.TabIndex = 0;
             ExtendedFrameThemeButton.TabStop = true;
             ExtendedFrameThemeButton.Text = "Extended frame";
@@ -416,7 +360,7 @@
             ExtendedFrameDarkThemeButton.Location = new Point(3, 114);
             ExtendedFrameDarkThemeButton.Margin = new Padding(3, 0, 3, 0);
             ExtendedFrameDarkThemeButton.Name = "ExtendedFrameDarkThemeButton";
-            ExtendedFrameDarkThemeButton.Size = new Size(142, 19);
+            ExtendedFrameDarkThemeButton.Size = new Size(141, 19);
             ExtendedFrameDarkThemeButton.TabIndex = 0;
             ExtendedFrameDarkThemeButton.TabStop = true;
             ExtendedFrameDarkThemeButton.Text = "Extended frame (dark)";
@@ -469,7 +413,7 @@
             GithubLink.AutoSize = true;
             GithubLink.Location = new Point(3, 354);
             GithubLink.Name = "GithubLink";
-            GithubLink.Size = new Size(272, 15);
+            GithubLink.Size = new Size(273, 15);
             GithubLink.TabIndex = 8;
             GithubLink.TabStop = true;
             GithubLink.Text = "https://github.com/Gameknight963/launcher.NET";
@@ -482,7 +426,7 @@
             MadeBy.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             MadeBy.Location = new Point(3, 339);
             MadeBy.Name = "MadeBy";
-            MadeBy.Size = new Size(178, 15);
+            MadeBy.Size = new Size(179, 15);
             MadeBy.TabIndex = 6;
             MadeBy.Text = "launcher.NET by gameknight963";
             // 
@@ -628,11 +572,6 @@
         private RadioButton AcrylicThemeButton;
         private RadioButton ExtendedFrameThemeButton;
         private RadioButton ExtendedFrameDarkThemeButton;
-        private ComboBox TextModeComboBox;
         private Label label4;
-        private Label label3;
-        private Label label1;
-        private Label textModeResolvesTo2;
-        private Label textModeResolvesTo;
     }
 }
