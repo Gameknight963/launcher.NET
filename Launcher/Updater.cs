@@ -66,7 +66,7 @@ namespace launcherdotnet.Launcher
 
             if (latest == null)
             {
-                LauncherLogger.Warn("The launcher.NET Github Releases API sent a response that was either invalid or contained no releases.");
+                LauncherLogger.Warn("The launcher.net Github Releases API sent a response that was either invalid or contained no releases.");
                 CoolMessageBox.Show("Github releases sent an invalid response.",
                     "Update check error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;

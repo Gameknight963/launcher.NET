@@ -299,7 +299,7 @@ namespace launcherdotnet.Launcher.Forms
         private void AcrylicThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Use acrylic background.");
 
         private void ExtendedFrameThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Extends the titlebar into the app. If you use something like" +
-            "DWMBlurGlass that blurs titlebars, launcher.NET will become transparent.");
+            "DWMBlurGlass that blurs titlebars, launcher.net will become transparent.");
 
         private void ExtendedFrameDarkThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Extends the titlebar into the app, " +
             "but uses dark mode titlebar");

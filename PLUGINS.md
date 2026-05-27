@@ -4,9 +4,9 @@ Changes in v0.6.0 (previous version v0.5.0):
 - **GameInstallerRegistry.cs (formerly PluginApi.cs):** Class PluginApi renamed to GameInstallerRegistry. This was just renamed.
 - **ILauncherPlugin.cs:** ILauncherPlugin.Initialize() is now of type ``Task``. For synchronous methods, return ``Task.CompletedTask`` at the end of Initialize(). For asynchronous methods, nothing needs to change, just make sure it has ``async`` modifier and is of type ``Task``
 
-# launcher.NET plugin development guide
+# launcher.net plugin development guide
 
-This guide will walk you through the process of developing a launcher.NET plugin to install any game you're capable of programming an installations script for.
+This guide will walk you through the process of developing a launcher.net plugin to install any game you're capable of programming an installations script for.
 
 ## 1. Setting up
 
@@ -14,7 +14,7 @@ This guide will walk you through the process of developing a launcher.NET plugin
 
 - Go to your csproj properties, search for "target OS", and set it to Windows. This will stop visual studio from complaining about "reachable on all platforms" bs.
 
-- Right click Dependencies > Add Project Reference. Open the folder where you have extracted launcher.NET, and reference "launcherdotnet.dll" and "Semver.dll"
+- Right click Dependencies > Add Project Reference. Open the folder where you have extracted launcher.net, and reference "launcherdotnet.dll" and "Semver.dll"
   
   You've set up your project! Keep following along for it to actually do something.
 
@@ -58,9 +58,9 @@ namespace ClassLibrary1
     }
 ```
 
-I would hope that Name and Description are pretty self-explanatory. In order to get the API version of your install of launcher.NET, open it, go to Settings > About > under launcher.NET Plugin API.
+I would hope that Name and Description are pretty self-explanatory. In order to get the API version of your install of launcher.net, open it, go to Settings > About > under launcher.net Plugin API.
 
-launcher.NET compares the major versions of plugins to the API to determine whether they are compatible. However, on a major version of 0, breaking changes may happen with any update. Use at your own risk.
+launcher.net compares the major versions of plugins to the API to determine whether they are compatible. However, on a major version of 0, breaking changes may happen with any update. Use at your own risk.
 
   To say Hello World just do ``PluginLogger.Msg("hello world!");``
 
@@ -163,7 +163,7 @@ public async Task Initialize()
 }
 ```
 
-**Note:** There will probably be a dedicated Update() function for this soon. Doing it in Initialize() is limited, as it requires launcher.NET to restart to receive game updates.
+**Note:** There will probably be a dedicated Update() function for this soon. Doing it in Initialize() is limited, as it requires launcher.net to restart to receive game updates.
 
 Instead of generating the version list as I do, you'll probably want to fetch it from the API of the server where you're getting your game from. If you don't know what an API is, God help you.
 
@@ -186,13 +186,13 @@ The Plugin API has a few useful tools you could use:
 
 - ``LauncherApiInfo.ApiVersion``: The current API version, if you need it at runtime for whatever reason.
 
-- ``PluginConfig``: Information about launcher.NET. Here is some useful information in here:
+- ``PluginConfig``: Information about launcher.net. Here is some useful information in here:
   
   - ``TempDir``: A temporary directory where you can put things like zip files to keep them separate from the main game's files. 
   
   - ``BaseDir``: Shorthand for AppDomain.CurrentDomain.BaseDirectory
   
-  - ``CurrentVersion``: The current version of launcher.NET.
+  - ``CurrentVersion``: The current version of launcher.net.
 
 Pretty much everything in the launcherdotnet namespace is marked as internal, so you won't be able to access it (at least, not easily. Obviously I can't stop you from doing some low level pointer stuff)
 
@@ -261,9 +261,9 @@ Task ILauncherPlugin.Initialize()
 
 - Do not include more than one plugin per assembly (i.e. do not inherit from either IGameInstaller or ILauncherPlugin more than once). IGameInstaller inherits from ILauncherPlugin, so you do not lose any features using it. Although it is technically possible to do it, it reduces user control over exactly which plugins they choose to use.
 
-- Catch your exceptions, and throw your own, more user-friendly ones (or, better yet, use a MessageBox.) launcher.NET catches exceptions for you and displays a MessageBox with the exception message.
+- Catch your exceptions, and throw your own, more user-friendly ones (or, better yet, use a MessageBox.) launcher.net catches exceptions for you and displays a MessageBox with the exception message.
 
-- Listen to the arguments that Install() passes. If you don't, something bad will probably happen. launcher.NET is still unstable.
+- Listen to the arguments that Install() passes. If you don't, something bad will probably happen. launcher.net is still unstable.
 
 ## Notes
 
