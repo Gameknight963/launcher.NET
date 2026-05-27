@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.Windows.Forms;
 
 namespace launcherdotnet.Styling
 {
@@ -70,7 +71,8 @@ namespace launcherdotnet.Styling
             ExtendFrame,
             ExtendFrameDark,
             Blur,
-            Acrylic
+            Acrylic,
+            TransparentGradient
         }
 
         public enum TextRenderMode
@@ -86,9 +88,8 @@ namespace launcherdotnet.Styling
         public static Color DarkModeButtonColor => Color.FromArgb(30, 30, 50);
         public static Color DarkModeButtonBorder => Color.FromArgb(60, 60, 60);
 
-        public static void ApplyThemeToForm(Form form, Theme theme)
+        public static void ApplyThemeToForm(Form form, Theme theme, int? gradientColor = null)
         {
-            // don't attempt to theme the comboboxes. just don't.
             switch (theme)
             {
                 case Theme.Light:
@@ -111,6 +112,9 @@ namespace launcherdotnet.Styling
                 case Theme.Acrylic:
                     ApplyAcrylicTheme(form);
                     break;
+                case Theme.TransparentGradient:
+                    ApplyClearTheme(form, gradientColor);
+                    break;
                 case Theme.System:
                     if (IsSystemLightTheme())
                         ApplyLightTheme(form);
@@ -118,7 +122,7 @@ namespace launcherdotnet.Styling
                         ApplyDarkTheme(form);
                     break;
                 default:
-                    throw new NotImplementedException("The requested theme is not implemented.");
+                    throw new ArgumentOutOfRangeException(nameof(theme));
             }
             form.Refresh();
         }
@@ -170,11 +174,11 @@ namespace launcherdotnet.Styling
             SetColorRecursive(form, new ButtonStyle(Color.Black, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
                 c => c is Button);
         }
-        private static void ApplyBlurTheme(Form form)
+        private static void ApplyBlurTheme(Form form, int? gradientColor = null)
         {
             DwmApi.EnableImmersiveDarkMode(form.Handle);
             DwmApi.UnextendFrame(form.Handle);
-            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_BLURBEHIND);
+            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_BLURBEHIND, gradientColor);
 
             SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
                 c => c is not Label && c is not Button && c is not ComboBox);
@@ -183,11 +187,25 @@ namespace launcherdotnet.Styling
             SetColorRecursive(form, new ButtonStyle(AcrylicMainColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
                 c => c is Button);
         }
-        private static void ApplyAcrylicTheme(Form form)
+        private static void ApplyAcrylicTheme(Form form, int? gradientColor = null)
         {
             DwmApi.EnableImmersiveDarkMode(form.Handle);
             DwmApi.UnextendFrame(form.Handle);
-            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND);
+            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND, gradientColor);
+
+            SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
+                c => c is not Label && c is not Button && c is not ComboBox);
+            SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
+                c => c is Label);
+            SetColorRecursive(form, new ButtonStyle(AcrylicMainColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
+                c => c is Button);
+        }
+
+        private static void ApplyClearTheme(Form form, int? gradientColor = null)
+        {
+            DwmApi.EnableImmersiveDarkMode(form.Handle);
+            DwmApi.UnextendFrame(form.Handle);
+            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_TRANSPARENTGRADIENT, gradientColor);
 
             SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
                 c => c is not Label && c is not Button && c is not ComboBox);
