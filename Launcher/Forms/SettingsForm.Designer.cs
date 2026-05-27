@@ -282,7 +282,7 @@ namespace launcherdotnet.Launcher.Forms
             ThemeHint.Name = "ThemeHint";
             ThemeHint.Size = new Size(331, 36);
             ThemeHint.TabIndex = 1;
-            ThemeHint.Text = "launcher.NET has multiple themes you can choose from. Pick the one that best suits you.\r\n";
+            ThemeHint.Text = "launcher.net has multiple themes you can choose from. Pick the one that best suits you.\r\n";
             // 
             // flowLayoutPanel1
             // 
@@ -454,7 +454,7 @@ namespace launcherdotnet.Launcher.Forms
             GithubLink.Size = new Size(273, 15);
             GithubLink.TabIndex = 8;
             GithubLink.TabStop = true;
-            GithubLink.Text = "https://github.com/Gameknight963/launcher.NET";
+            GithubLink.Text = "https://github.com/Gameknight963/launcher.net";
             GithubLink.LinkClicked += GithubLink_LinkClicked;
             // 
             // MadeBy
@@ -466,7 +466,7 @@ namespace launcherdotnet.Launcher.Forms
             MadeBy.Name = "MadeBy";
             MadeBy.Size = new Size(179, 15);
             MadeBy.TabIndex = 6;
-            MadeBy.Text = "launcher.NET by gameknight963";
+            MadeBy.Text = "launcher.net by gameknight963";
             // 
             // LauncherApiVersionLabel
             // 
@@ -496,7 +496,7 @@ namespace launcherdotnet.Launcher.Forms
             LauncherLabel.Name = "LauncherLabel";
             LauncherLabel.Size = new Size(77, 15);
             LauncherLabel.TabIndex = 6;
-            LauncherLabel.Text = "launcher.NET";
+            LauncherLabel.Text = "launcher.net";
             // 
             // label2
             // 
@@ -514,7 +514,7 @@ namespace launcherdotnet.Launcher.Forms
             LauncherApiLabel.Name = "LauncherApiLabel";
             LauncherApiLabel.Size = new Size(136, 15);
             LauncherApiLabel.TabIndex = 6;
-            LauncherApiLabel.Text = "launcher.NET Plugin API";
+            LauncherApiLabel.Text = "launcher.net Plugin API";
             // 
             // panel1
             // 

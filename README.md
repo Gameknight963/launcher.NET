@@ -1,4 +1,4 @@
-# launcher.NET
+# launcher.net
 
 A lightweight game launcher capable of playing **any** game, through the power of plugins. It also has complete Thunderstore integration,
 making mod management easy.
@@ -36,7 +36,7 @@ optimization is a dead art to some holy. anyway moving on
 
 ### but how??
 
-Instead of implementing installation a million times for a million games, launcher.NET uses 'plugins,' which are dll files that get loaded containing implementations for installing games. As of such, it doesn't currently come with much functionality. You'll need to either script plugins to install games, or find them online. However, this system makes it fully modular.
+Instead of implementing installation a million times for a million games, launcher.net uses 'plugins,' which are dll files that get loaded containing implementations for installing games. As of such, it doesn't currently come with much functionality. You'll need to either script plugins to install games, or find them online. However, this system makes it fully modular.
 
 Preinstalled plugins are planned in the next few releases.
 

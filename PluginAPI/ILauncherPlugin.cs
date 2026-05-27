@@ -20,7 +20,7 @@ namespace launcherdotnet.PluginAPI
         string Description { get; }
 
         /// <summary>
-        /// The version of the launcher.NET
+        /// The version of the 
         /// plugin API your plugin was built for.
         /// </summary>
         SemVersion TargetApiVersion { get; }
