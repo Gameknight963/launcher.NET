@@ -84,7 +84,7 @@ namespace launcherdotnet.Launcher.Settings
 
         // ===== Theme =====
         public ThemeManager.Theme Theme { get; set; } = ThemeManager.Theme.Light;
-        public ThemeManager.TextRenderMode TextRenderMode { get; set; } = ThemeManager.TextRenderMode.Auto;
+        public ThemeManager.TextRenderMode TextRenderMode { get; set; } = ThemeManager.TextRenderMode.ShadowText;
 
         // ===== Advanced =====
 
