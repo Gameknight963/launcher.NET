@@ -33,7 +33,7 @@ namespace launcherdotnet.Launcher.Forms
         public ThunderstoreModBrowser(GameInfo game)
         {
             InitializeComponent();
-            Icon = Config.AppIcon;
+            Icon = LauncherConstants.AppIcon;
             _game = game;
             okButton.Enabled = false;
             CancelButton = cancelButton;

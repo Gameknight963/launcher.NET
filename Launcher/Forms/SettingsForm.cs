@@ -14,7 +14,7 @@ namespace launcherdotnet.Launcher.Forms
         public SettingsForm()
         {
             InitializeComponent();
-            Icon = Config.AppIcon;
+            Icon = LauncherConstants.AppIcon;
 
             _themeButtons = [
                 systemThemeButton,
@@ -119,7 +119,7 @@ namespace launcherdotnet.Launcher.Forms
             gradientColorBox.Text = s.GradientColor.ToString();
 
             // --- About ---
-            LauncherVersionLabel.Text = $"v{Config.CurrentVersionString}";
+            LauncherVersionLabel.Text = $"v{LauncherConstants.CurrentVersionString}";
             LauncherApiVersionLabel.Text = $"v{LauncherApiInfo.ApiVersion}";
 
             SetSelectedHint(null);
@@ -275,7 +275,7 @@ namespace launcherdotnet.Launcher.Forms
             {
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
-                    FileName = Config.PluginsDir,
+                    FileName = LauncherConstants.PluginsDir,
                     UseShellExecute = true
                 };
 

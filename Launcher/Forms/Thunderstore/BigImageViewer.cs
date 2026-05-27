@@ -8,7 +8,7 @@ namespace launcherdotnet.Launcher.Forms
         public BigImageViewer(string url, int? width = null, int? height = null)
         {
             InitializeComponent();
-            Icon = Config.AppIcon;
+            Icon = LauncherConstants.AppIcon;
             StartPosition = FormStartPosition.CenterParent;
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.LoadAsync(url);

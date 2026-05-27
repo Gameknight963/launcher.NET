@@ -9,7 +9,7 @@ namespace launcherdotnet.Launcher.Forms
         public CoolColorPicker(Color? startColor = null)
         {
             InitializeComponent();
-            Icon = Config.AppIcon;
+            Icon = LauncherConstants.AppIcon;
             StartPosition = FormStartPosition.CenterParent;
             AcceptButton = okButton;
             okButton.DialogResult = DialogResult.OK;

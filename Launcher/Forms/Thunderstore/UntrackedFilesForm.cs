@@ -11,7 +11,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         public UntrackedFilesForm(List<string> files)
         {
             InitializeComponent();
-            Icon = Config.AppIcon;
+            Icon = LauncherConstants.AppIcon;
             StartPosition = FormStartPosition.CenterParent;
             AcceptButton = okButton;
             okButton.DialogResult = DialogResult.OK;
