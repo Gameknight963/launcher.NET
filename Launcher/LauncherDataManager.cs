@@ -8,7 +8,7 @@ namespace launcherdotnet.Launcher
     {
         private static string GetDataPath()
         {
-            return Path.Combine(Config.BaseDir, "games.json");
+            return Path.Combine(LauncherConstants.BaseDir, "games.json");
         }
         public static LauncherData? ReadLauncherData()
         {

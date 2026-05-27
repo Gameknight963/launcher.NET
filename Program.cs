@@ -18,7 +18,7 @@ namespace launcherdotnet
             LauncherSettings.Load();
             LauncherLogger.WriteLine("Hello world!", true);
             LauncherLogger.WriteLine("Vesbose logging is enabled.");
-            PluginManager.LoadPlugins(Config.PluginsDir);
+            PluginManager.LoadPlugins(LauncherConstants.PluginsDir);
             Application.Run(new LauncherForm());
         }
     }

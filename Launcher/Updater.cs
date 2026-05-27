@@ -12,7 +12,7 @@ namespace launcherdotnet.Launcher
         {
             using HttpClient http = new HttpClient();
             http.DefaultRequestHeaders.Add("User-Agent", "launcher.net");
-            string response = await http.GetStringAsync(Config.ReleasesAPIUrl);
+            string response = await http.GetStringAsync(LauncherConstants.ReleasesAPIUrl);
 
             JsonNode? json = JsonNode.Parse(response);
             if (json is null || json.AsArray().Count == 0)
@@ -30,7 +30,7 @@ namespace launcherdotnet.Launcher
 
         public static async Task CheckForUpdates()
         {
-            LauncherLogger.WriteColor($"Using version {Config.CurrentVersionString}.",
+            LauncherLogger.WriteColor($"Using version {LauncherConstants.CurrentVersionString}.",
                 false, ConsoleColor.White, ConsoleColor.Black);
             if (LauncherSettings.Settings.CheckForUpdates)
                 LauncherLogger.Write("\n");
@@ -71,17 +71,18 @@ namespace launcherdotnet.Launcher
                     "Update check error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (latest.ComparePrecedenceTo(Config.CurrentVersion) > 0)
+            if (latest.ComparePrecedenceTo(LauncherConstants.CurrentVersion) > 0)
             {
                 LauncherLogger.WriteLine($" Update available: {latest}");
-                DialogResult result = CoolMessageBox.Show($"New version is available: {latest}. You are currently on version {Config.CurrentVersionString}. Update?",
+                DialogResult result = CoolMessageBox.Show($"New version is available: {latest}. " +
+                    $"You are currently on version {LauncherConstants.CurrentVersionString}. Update?",
                     "Update available",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
                 if (result == DialogResult.No) return;
                 System.Diagnostics.Process.Start(new ProcessStartInfo
                 {
-                    FileName = Config.RelesesPage,
+                    FileName = LauncherConstants.RelesesPage,
                     UseShellExecute = true
                 });
                 return;

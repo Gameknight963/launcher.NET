@@ -15,17 +15,17 @@ namespace launcherdotnet.Launcher
         [JsonIgnore]
         public bool HasThunderstoreIntegration => ThunderstoreCommunitySlug != null;
         [JsonIgnore]
-        public string AbsolutePath => Path.Combine(Config.BaseDir, RelativePath);
+        public string AbsolutePath => Path.Combine(LauncherConstants.BaseDir, RelativePath);
         [JsonIgnore]
-        public string AbsoluteRootDirectory => Path.Combine(Config.BaseDir, RelativeRootDirectory);
+        public string AbsoluteRootDirectory => Path.Combine(LauncherConstants.BaseDir, RelativeRootDirectory);
         [JsonIgnore]
         public bool IsInsideLauncherRoot
         {
             get
             {
-                string exeFull = Path.GetFullPath(Path.Combine(Config.BaseDir, RelativePath));
-                string rootFull = Path.GetFullPath(Path.Combine(Config.BaseDir, RelativeRootDirectory));
-                return exeFull.StartsWith(Config.BaseDir) && rootFull.StartsWith(Config.BaseDir);
+                string exeFull = Path.GetFullPath(Path.Combine(LauncherConstants.BaseDir, RelativePath));
+                string rootFull = Path.GetFullPath(Path.Combine(LauncherConstants.BaseDir, RelativeRootDirectory));
+                return exeFull.StartsWith(LauncherConstants.BaseDir) && rootFull.StartsWith(LauncherConstants.BaseDir);
             }
         }
         public bool IsValid(out string reason)
@@ -59,12 +59,12 @@ namespace launcherdotnet.Launcher
                 return false;
             }
             // Cannot escape launcher root
-            if (!AbsolutePath.StartsWith(Config.BaseDir, StringComparison.OrdinalIgnoreCase))
+            if (!AbsolutePath.StartsWith(LauncherConstants.BaseDir, StringComparison.OrdinalIgnoreCase))
             {
                 reason = $"AbsolutePath '{AbsolutePath}' is outside of launcher root.";
                 return false;
             }
-            if (!AbsoluteRootDirectory.StartsWith(Config.BaseDir, StringComparison.OrdinalIgnoreCase))
+            if (!AbsoluteRootDirectory.StartsWith(LauncherConstants.BaseDir, StringComparison.OrdinalIgnoreCase))
             {
                 reason = $"AbsoluteRootDirectory '{AbsoluteRootDirectory}' is outside of launcher root.";
                 return false;

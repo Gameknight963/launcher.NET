@@ -67,8 +67,8 @@ namespace launcherdotnet.Launcher.Forms
             GameInfo newGame = new GameInfo { Label = result };
 
             GamesListItem item = (GamesListItem)GameDropdown.SelectedItem;
-            string installDir = Path.Combine(Config.GamesDir, $"{newGame.Label}_{newGame.Id}");
-            newGame.RelativeRootDirectory = Path.GetRelativePath(Config.BaseDir, installDir);
+            string installDir = Path.Combine(LauncherConstants.GamesDir, $"{newGame.Label}_{newGame.Id}");
+            newGame.RelativeRootDirectory = Path.GetRelativePath(LauncherConstants.BaseDir, installDir);
             Directory.CreateDirectory(installDir);
 
             Progress<double> progress = new Progress<double>(percent =>
@@ -105,7 +105,7 @@ namespace launcherdotnet.Launcher.Forms
                 return;
             }
 
-            newGame.RelativePath = Path.GetRelativePath(Config.BaseDir, installed.ExePath);
+            newGame.RelativePath = Path.GetRelativePath(LauncherConstants.BaseDir, installed.ExePath);
             newGame.RunWithCmd = installed.RunWithCmd;
 
             if (string.IsNullOrWhiteSpace(installed.ExePath))

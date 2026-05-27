@@ -7,8 +7,7 @@ namespace launcherdotnet.Launcher.Settings
 {
     internal class LauncherSettings
     {
-        private static readonly string _baseDir = Config.BaseDir;
-        private static readonly string _settingsPath = Path.Combine(_baseDir, "settings.json");
+        private static readonly string _settingsPath = Path.Combine(LauncherConstants.BaseDir, "settings.json");
 
         public static string ToAbsolutePath(string path) => 
             Path.IsPathRooted(path) ? path : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);

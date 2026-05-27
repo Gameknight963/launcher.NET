@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace launcherdotnet.Launcher.Settings
 {
-    public static class Config
+    public static class LauncherConstants
     {
         public static readonly string BaseDir = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory);
         public static readonly string TempDir = Path.Combine(BaseDir, "temp");
@@ -28,7 +28,7 @@ namespace launcherdotnet.Launcher.Settings
             .Split('+')[0];
         public static SemVersion CurrentVersion => SemVersion.Parse(CurrentVersionString!);
 
-        static Config()
+        static LauncherConstants()
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
             using Stream stream = assembly.GetManifestResourceStream("launcherdotnet.icon.ico")!;

@@ -9,7 +9,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         public ThunderstoreModInstaller(GameInfo game, IEnumerable<ThunderstoreVersion> pkgs, IEnumerable<ThunderstoreVersion> deps)
         {
             InitializeComponent();
-            Icon = Config.AppIcon;
+            Icon = LauncherConstants.AppIcon;
             logBox.DeselectAll();
             IEnumerable<ThunderstoreVersion> dedupedDeps = deps.Where(d => !pkgs.Any(p => p == d));
             _ = Install(game, pkgs, dedupedDeps);

@@ -31,7 +31,7 @@ namespace launcherdotnet.Networking
                 return new NetworkStream(socket, ownsSocket: true);
             };
             Client = new HttpClient(_handler);
-            Client.DefaultRequestHeaders.Add("User-Agent", $"launcherdotnet/{Config.CurrentVersion}");
+            Client.DefaultRequestHeaders.Add("User-Agent", $"launcherdotnet/{LauncherConstants.CurrentVersion}");
             _ = TestAsync();
         }
 
