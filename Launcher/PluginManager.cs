@@ -12,7 +12,7 @@ namespace launcherdotnet.Launcher
         {
             if (!Directory.Exists(folder))
             {
-                LauncherLogger.WriteLine("No plugins found.");
+                LauncherLogger.WriteLine("No plugins found.", true);
                 Directory.CreateDirectory(folder);
                 return;
             }
@@ -20,14 +20,14 @@ namespace launcherdotnet.Launcher
             string[] paths = Directory.GetFiles(folder, "*.dll");
             if (paths.Length == 0)
             {
-                LauncherLogger.WriteLine("No plugins found.");
+                LauncherLogger.WriteLine("No plugins found.", true);
                 return;
             }
 
-            LauncherLogger.WriteColor($"Found {paths.Length} plugins", false, ConsoleColor.White, ConsoleColor.Black);
-            LauncherLogger.WriteLine(" in plugins folder:");
+            LauncherLogger.WriteColor($"Found {paths.Length} plugins", true, ConsoleColor.White, ConsoleColor.Black);
+            LauncherLogger.WriteLine(" in plugins folder:", true);
             foreach (string p in paths)
-                LauncherLogger.WriteLine(Path.GetFileName(p));
+                LauncherLogger.WriteLine(Path.GetFileName(p), true);
 
             foreach (string file in paths)
             {
@@ -48,17 +48,17 @@ namespace launcherdotnet.Launcher
                             continue;
 
                         await plugin.Initialize();
-                        LauncherLogger.WriteLine($"Loaded plugin: {plugin.Name}");
+                        LauncherLogger.WriteLine($"Loaded plugin: {plugin.Name}", true);
                         _plugins.Add(plugin);
                     }
                 }
                 catch (Exception ex)
                 {
-                    LauncherLogger.Error($"Failed to load plugin {Path.GetFileName(file)} due to a {ex.GetType().Name}: {ex.Message}");
+                    LauncherLogger.Error($"Failed to load plugin {Path.GetFileName(file)} due to a {ex.GetType().Name}: {ex.Message}", true);
                 }
             }
             if (_plugins.Count > 0)
-                LauncherLogger.Success($"Loaded {_plugins.Count} plugins successfully!");
+                LauncherLogger.Success($"Loaded {_plugins.Count} plugins successfully!" , true);
         }
 
         public static IReadOnlyList<ILauncherPlugin> Plugins => _plugins;
