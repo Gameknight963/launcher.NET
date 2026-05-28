@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.InteropServices;
 
 namespace launcherdotnet.Styling
 {
@@ -118,14 +115,14 @@ namespace launcherdotnet.Styling
             {
                 AccentState = accentState,
                 AccentFlags = 2,
-                GradientColor = gradientColor ?? 0x00000000,
+                GradientColor = gradientColor ??
+                (accentState == AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND ?
+                0x66000000 :
+                0x00000000),
                 AnimationId = 0
             };
-            
-            if (accentState == AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND || gradientColor == null)
-            {
-                accent.GradientColor = 0x66000000;
-            }
+
+            LauncherLogger.WriteLine($"SetAccentState: {hwnd}, {accentState}, {gradientColor}");
 
             int size = Marshal.SizeOf(accent);
 

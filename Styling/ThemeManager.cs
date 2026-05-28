@@ -106,11 +106,11 @@ namespace launcherdotnet.Styling
                     break;
 
                 case Theme.Blur:
-                    ApplyBlurTheme(form);
+                    ApplyBlurTheme(form, gradientColor);
                     break;
 
                 case Theme.Acrylic:
-                    ApplyAcrylicTheme(form);
+                    ApplyAcrylicTheme(form, gradientColor);
                     break;
                 case Theme.TransparentGradient:
                     ApplyClearTheme(form, gradientColor);
@@ -219,14 +219,13 @@ namespace launcherdotnet.Styling
         public static void SetGlobalTheme(Theme theme, TextRenderMode? mode = null, int? gradientColor = null)
         {
             ActiveTheme = theme;
-            ActiveGradientColor = gradientColor ?? 0x66000000;
             if (mode.HasValue) ActiveTextRenderMode = mode.Value;
 
             foreach (Form form in Application.OpenForms)
             {
                 if (form is ThemeableForm tf)
                 {
-                    tf.ApplyTheme(theme, mode, ActiveGradientColor);
+                    tf.ApplyTheme(theme, mode, gradientColor);
                 }
             }
         }
