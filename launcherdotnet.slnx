@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="launcherdotnet.csproj" />
+  <Project Path="Plugins/HelloWorld/HelloWorld.csproj" Id="34d5825f-232a-4a4e-a37f-8fe97f793bc5" />
 </Solution>

@@ -1,14 +1,10 @@
 ﻿using launcherdotnet.PluginAPI;
-using System;
 using System.Reflection;
 
 namespace launcherdotnet.Launcher
 {
-
     internal static class PluginManager
     {
-        private static readonly List<ILauncherPlugin> _plugins = new();
-
         public static async void LoadPlugins(string folder)
         {
             if (!Directory.Exists(folder))
@@ -29,6 +25,7 @@ namespace launcherdotnet.Launcher
             LauncherLogger.WriteLine(" in plugins folder:", true);
             foreach (string p in paths)
                 LauncherLogger.WriteLine(Path.GetFileName(p), true);
+            int loadedPluginsCount = 0;
 
             foreach (string file in paths)
             {
@@ -65,10 +62,18 @@ namespace launcherdotnet.Launcher
 
                     await plugin.Initialize();
 
-                    PluginRegistry.Register(plugin);
-                    _plugins.Add(plugin);
+                    PluginRegistry.PluginDescriptor descriptor = new()
+                    {
+                        Name = meta.Name,
+                        Description = meta.Description,
+                        TargetApiVersion = meta.TargetApiVersion,
+                        Instance = plugin
+                    };
 
-                    LauncherLogger.WriteLine($"Loaded plugin: {plugin.Name}", true);
+                    PluginRegistry.Register(descriptor);
+                    loadedPluginsCount++;
+
+                    LauncherLogger.WriteLine($"Loaded plugin: {descriptor.Name}", true);
                 }
                 catch (Exception ex)
                 {
@@ -76,10 +81,8 @@ namespace launcherdotnet.Launcher
                         $"Failed to load plugin {Path.GetFileName(file)}: {ex.GetType().Name} - {ex.Message}");
                 }
             }
-            if (_plugins.Count > 0)
-                LauncherLogger.Success($"Loaded {_plugins.Count} plugins successfully!" , true);
+            if (loadedPluginsCount > 0)
+                LauncherLogger.Success($"Loaded {loadedPluginsCount} plugins successfully!" , true);
         }
-
-        public static IReadOnlyList<ILauncherPlugin> Plugins => _plugins;
     }
 }
