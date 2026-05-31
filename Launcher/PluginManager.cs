@@ -43,9 +43,13 @@ namespace launcherdotnet.Launcher
                         ILauncherPlugin plugin =
                             (ILauncherPlugin)Activator.CreateInstance(type)!;
 
-                        // API version check
                         if (plugin.TargetApiVersion.Major != LauncherApiInfo.ApiVersion.Major)
+                        {
+                            LauncherLogger.Error($"Plugin '{plugin.Name}' has an incompatible version.\n" +
+                                $"  Expected: Any major version of {LauncherApiInfo.ApiVersion.Major}" +
+                                $"  Got: {plugin.TargetApiVersion}");
                             continue;
+                        }
 
                         await plugin.Initialize();
                         LauncherLogger.WriteLine($"Loaded plugin: {plugin.Name}", true);

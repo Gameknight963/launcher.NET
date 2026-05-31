@@ -7,25 +7,19 @@ namespace launcherdotnet.PluginAPI
 {
     public static class GameInstallerRegistry
     {
-        private static readonly List<GameInstallPluginEntry> _gameInstallPlugins = new();
+        private static readonly List<IGameInstaller> _gameInstallPlugins = new();
 
         /// <summary>
         /// Called by a plugin to register itself as a game installer
         /// </summary>
-        public static void RegisterGameInstallPlugin(
-            IGameInstaller Installer, 
-            IEnumerable<ReleaseInfo>? Releases = null)
+        internal static void RegisterGameInstallPlugin(IGameInstaller Installer)
         {
-            _gameInstallPlugins.Add(new GameInstallPluginEntry(Installer, Releases));
+            _gameInstallPlugins.Add(Installer);
         }
 
         /// <summary>
         /// All registered game install plugins
         /// </summary>
-        public static IReadOnlyList<GameInstallPluginEntry> GameInstallPlugins => _gameInstallPlugins.AsReadOnly();
+        public static IReadOnlyList<IGameInstaller> GameInstallPlugins => _gameInstallPlugins.AsReadOnly();
     }
-
-    public record GameInstallPluginEntry(
-        IGameInstaller Installer,
-        IEnumerable<ReleaseInfo>? Releases);
 }

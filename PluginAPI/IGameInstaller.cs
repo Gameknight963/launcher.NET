@@ -10,13 +10,21 @@
         /// <param name="progress">Reports progress from 0 to 100, displayed on the installer's progress bar.</param>
         /// <param name="status">Reports a status message string, displayed on the bottom of the installer.</param>
         /// <returns>The <see cref="PluginGameInfo"/> of the installed game.</returns>
-        Task<PluginGameInfo> Install(string installDir, 
+        Task<PluginGameInfo> Install(
+            string installDir, 
             ReleaseInfo release,
             IProgress<double> progress,
             IProgress<string> status);
+
         /// <summary>
-        /// The name of the game your installer plugin installs.
+        /// The name of the game your installer plugin installs. Used for the game selection dropdown
         /// </summary>
         string GameName { get; }
+
+        /// <summary>
+        /// Gets the releases of your plugin. This should be fetched on initialization and cached to prevent delays in the UI.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<ReleaseInfo> GetReleases();
     }
 }   
