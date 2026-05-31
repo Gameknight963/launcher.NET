@@ -222,6 +222,7 @@ namespace launcherdotnet.Launcher.Forms
             SetSidebarMode(SidebarMode.GameSelected);
             GameInfo? game = GetSelectedGame();
             if (game == null) return;
+            installModsButton.Visible = game.ModManagable;
             InstallHint.Text = Path.GetFileName(game.AbsolutePath);
         }
 
