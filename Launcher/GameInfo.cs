@@ -12,6 +12,7 @@ namespace launcherdotnet.Launcher
         public bool RunWithCmd { get; set; } = false;
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string? ThunderstoreCommunitySlug { get; set; } = null;
+        public bool ModManagable = true;
         [JsonIgnore]
         public bool HasThunderstoreIntegration => ThunderstoreCommunitySlug != null;
         [JsonIgnore]

@@ -19,6 +19,7 @@ namespace launcherdotnet.Launcher
                 existing.RunWithCmd = game.RunWithCmd;
                 existing.GameName = game.GameName;
                 existing.ThunderstoreCommunitySlug = game.ThunderstoreCommunitySlug;
+                existing.ModManagable = game.ModManagable;
             }
             else
             {

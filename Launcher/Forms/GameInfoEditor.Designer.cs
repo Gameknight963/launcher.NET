@@ -48,6 +48,7 @@
             runsWithCmdCheck = new CheckBox();
             baselineButton = new Button();
             baselineFilesAmountLabel = new Label();
+            modManageableBox = new CheckBox();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -120,7 +121,7 @@
             thunderstoreSlugLabel.Location = new Point(6, 62);
             thunderstoreSlugLabel.Margin = new Padding(6);
             thunderstoreSlugLabel.Name = "thunderstoreSlugLabel";
-            thunderstoreSlugLabel.Size = new Size(103, 17);
+            thunderstoreSlugLabel.Size = new Size(104, 17);
             thunderstoreSlugLabel.TabIndex = 0;
             thunderstoreSlugLabel.Text = "Thunderstore Slug";
             thunderstoreSlugLabel.TextAlign = ContentAlignment.MiddleLeft;
@@ -158,7 +159,7 @@
             exeLabel.Location = new Point(6, 6);
             exeLabel.Margin = new Padding(6);
             exeLabel.Name = "exeLabel";
-            exeLabel.Size = new Size(64, 16);
+            exeLabel.Size = new Size(63, 16);
             exeLabel.TabIndex = 0;
             exeLabel.Text = "Executable";
             exeLabel.TextAlign = ContentAlignment.MiddleLeft;
@@ -254,7 +255,6 @@
             // 
             // baselineButton
             // 
-            baselineButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             baselineButton.Location = new Point(215, 218);
             baselineButton.Name = "baselineButton";
             baselineButton.Size = new Size(138, 23);
@@ -272,6 +272,16 @@
             baselineFilesAmountLabel.TabIndex = 9;
             baselineFilesAmountLabel.Text = "72 file(s) in baseline";
             // 
+            // modManageableBox
+            // 
+            modManageableBox.AutoSize = true;
+            modManageableBox.Location = new Point(135, 164);
+            modManageableBox.Name = "modManageableBox";
+            modManageableBox.Size = new Size(139, 19);
+            modManageableBox.TabIndex = 7;
+            modManageableBox.Text = "Enable mod manager";
+            modManageableBox.UseVisualStyleBackColor = true;
+            // 
             // GameInfoEditor
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -279,6 +289,7 @@
             ClientSize = new Size(370, 330);
             Controls.Add(baselineFilesAmountLabel);
             Controls.Add(baselineButton);
+            Controls.Add(modManageableBox);
             Controls.Add(runsWithCmdCheck);
             Controls.Add(cancelButton);
             Controls.Add(okButton);
@@ -320,5 +331,6 @@
         private CheckBox runsWithCmdCheck;
         private Button baselineButton;
         private Label baselineFilesAmountLabel;
+        private CheckBox modManageableBox;
     }
 }

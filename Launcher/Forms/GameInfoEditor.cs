@@ -1,8 +1,6 @@
 ﻿using launcherdotnet.Launcher.Settings;
 using launcherdotnet.Styling;
 using System.ComponentModel;
-using System.Xml.Linq;
-using static System.Windows.Forms.AxHost;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -25,6 +23,7 @@ namespace launcherdotnet.Launcher.Forms
             gameRootDirBox.Text = game.RelativeRootDirectory;
             guidLabel.Text = game.Id;
             runsWithCmdCheck.Checked = game.RunWithCmd;
+            modManageableBox.Checked = game.ModManagable;
 
             _state = GameModState.Load(game.AbsoluteRootDirectory);
             baselineFilesAmountLabel.Text = $"{_state.BaselineFiles?.Count ?? 0} file(s) in baseline";
@@ -45,7 +44,8 @@ namespace launcherdotnet.Launcher.Forms
                 RelativePath = gameExeBox.Text,
                 RelativeRootDirectory = gameRootDirBox.Text,
                 Id = guidLabel.Text,
-                RunWithCmd = runsWithCmdCheck.Checked
+                RunWithCmd = runsWithCmdCheck.Checked,
+                ModManagable = modManageableBox.Checked
             };
         }
 
