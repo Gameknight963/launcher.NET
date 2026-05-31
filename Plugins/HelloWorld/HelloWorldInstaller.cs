@@ -41,9 +41,11 @@ namespace launcherdotnet.Plugins.HelloWorld
 
         public string GameName => "Hello World";
 
-        public IEnumerable<ReleaseInfo> GetReleases()
+        public bool PromptForLabel => true;
+
+        public IEnumerable<ReleaseInfo>? GetReleases()
         {
-            return new List<ReleaseInfo> { new() { Version = new SemVersion(1, 0, 0) } };
+            return null;
         }
 
         public Task Initialize()
@@ -51,7 +53,7 @@ namespace launcherdotnet.Plugins.HelloWorld
             return Task.CompletedTask;
         }
 
-        public Task<PluginGameInfo> Install(string installDir, ReleaseInfo release, IProgress<double> progress, IProgress<string> status)
+        public Task<PluginGameInfo> Install(string installDir, IProgress<double> progress, IProgress<string> status, ReleaseInfo? release)
         {
             // we don't care about selected release since there's only one
             status.Report("Starting installation...");
