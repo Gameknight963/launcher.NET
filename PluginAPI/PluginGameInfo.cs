@@ -9,5 +9,6 @@ namespace launcherdotnet.PluginAPI
         public bool RunWithCmd = false;
         public string? ThunderstoreCommunitySlug;
         public bool ModManageable = false;
+        public string? Label;
     }
 }

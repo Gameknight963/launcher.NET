@@ -42,12 +42,16 @@ namespace launcherdotnet.Launcher.Forms
             IGameInstaller entry = selectedItem.Tag!;
 
             VersionDropdown.Items.Clear();
-
-            foreach (ReleaseInfo r in entry.GetReleases())
+            IEnumerable<ReleaseInfo>? releases = entry.GetReleases();
+            bool versionless = releases == null;
+            whichVersionYouWantLabel.Visible = !versionless;
+            VersionDropdown.Visible = !versionless;
+            InstallGameButton.Text = versionless ? "Continue" : "Install";
+            if (releases != null)
             {
-                VersionDropdown.Items.Add(new VersionDropdownItem { Text = r.Version.ToString(), Release = r });
+                foreach (ReleaseInfo r in releases)
+                    VersionDropdown.Items.Add(new VersionDropdownItem { Text = r.Version.ToString(), Release = r });
             }
-
             if (VersionDropdown.Items.Count > 0) VersionDropdown.SelectedIndex = 0;
         }
 
@@ -59,48 +63,59 @@ namespace launcherdotnet.Launcher.Forms
                 return;
             }
 
-            string? result = CoolInputBox.Prompt(
-                "Enter a label for this instance:",
-                "Set Game Label",
-                "New game");
-            if (result == null) return;
-            if (result != result.Trim())
+            GamesListItem item = (GamesListItem)GameDropdown.SelectedItem;
+            IGameInstaller installer = item.Tag!;
+
+            string label = installer.GameName;
+            if (installer.PromptForLabel)
             {
-                CoolMessageBox.Show("Label must not contain trailing or leading whitespace.",
+                string? result = CoolInputBox.Prompt(
+                    "Enter a label for this instance:",
+                    "Set Game Label",
+                    installer.GameName);
+
+                if (result == null) return;
+                if (result != result.Trim())
+                {
+                    CoolMessageBox.Show("Label must not contain trailing or leading whitespace.",
                         "Invalid name",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
-                return;
+                    return;
+                }
+                label = result;
             }
 
-            GameInfo newGame = new GameInfo { Label = result };
+            GameInfo newGame = new() { Label = label };
 
-            GamesListItem item = (GamesListItem)GameDropdown.SelectedItem;
             string installDir = Path.Combine(LauncherConstants.GamesDir, $"{newGame.Label}_{newGame.Id}");
             newGame.RelativeRootDirectory = Path.GetRelativePath(LauncherConstants.BaseDir, installDir);
             Directory.CreateDirectory(installDir);
 
-            Progress<double> progress = new Progress<double>(percent =>
+            Progress<double> progress = new(percent =>
             {
                 progressBar.Value = Math.Min(100, Math.Max(0, (int)percent));
             });
-            Progress<string> status = new Progress<string>(text =>
+            Progress<string> status = new(text =>
             {
                 ActivityHint.Visible = true;
                 ActivityHint.Text = text;
             });
 
-            IGameInstaller installer = item.Tag!;
-
             LauncherLogger.WriteLine($"Installing {installer.GameName} as {newGame.Label}");
-            VersionDropdownItem selectedVersion = (VersionDropdownItem)VersionDropdown.SelectedItem!;
 
-            ReleaseInfo release = selectedVersion.Release;
+            ReleaseInfo? release = null;
+            if (VersionDropdown.Visible && VersionDropdown.SelectedItem != null)
+            {
+                VersionDropdownItem selectedVersion = (VersionDropdownItem)VersionDropdown.SelectedItem;
+                release = selectedVersion.Release;
+            }
+
             PluginGameInfo installed;
 
             try
             {
-                installed = await Task.Run(() => installer.Install(installDir, release, progress, status));
+                installed = await Task.Run(() => installer.Install(installDir, progress, status, release));
                 newGame.GameName = installer.GameName;
             }
             catch (Exception ex)

@@ -30,7 +30,7 @@
         {
             GameDropdown = new ComboBox();
             label1 = new Label();
-            label2 = new Label();
+            whichVersionYouWantLabel = new Label();
             VersionDropdown = new ComboBox();
             InstallGameButton = new Button();
             progressBar = new ProgressBar();
@@ -55,14 +55,14 @@
             label1.TabIndex = 1;
             label1.Text = "What game would you like to install?";
             // 
-            // label2
+            // whichVersionYouWantLabel
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(41, 66);
-            label2.Name = "label2";
-            label2.Size = new Size(215, 15);
-            label2.TabIndex = 1;
-            label2.Text = "Which version would you like to install?";
+            whichVersionYouWantLabel.AutoSize = true;
+            whichVersionYouWantLabel.Location = new Point(41, 66);
+            whichVersionYouWantLabel.Name = "whichVersionYouWantLabel";
+            whichVersionYouWantLabel.Size = new Size(215, 15);
+            whichVersionYouWantLabel.TabIndex = 1;
+            whichVersionYouWantLabel.Text = "Which version would you like to install?";
             // 
             // VersionDropdown
             // 
@@ -74,6 +74,7 @@
             // 
             // InstallGameButton
             // 
+            InstallGameButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             InstallGameButton.Location = new Point(41, 127);
             InstallGameButton.Name = "InstallGameButton";
             InstallGameButton.Size = new Size(75, 23);
@@ -84,6 +85,7 @@
             // 
             // progressBar
             // 
+            progressBar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             progressBar.Location = new Point(41, 161);
             progressBar.Name = "progressBar";
             progressBar.Size = new Size(439, 23);
@@ -91,6 +93,7 @@
             // 
             // ActivityHint
             // 
+            ActivityHint.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             ActivityHint.AutoSize = true;
             ActivityHint.Location = new Point(41, 187);
             ActivityHint.Name = "ActivityHint";
@@ -107,7 +110,7 @@
             Controls.Add(ActivityHint);
             Controls.Add(progressBar);
             Controls.Add(InstallGameButton);
-            Controls.Add(label2);
+            Controls.Add(whichVersionYouWantLabel);
             Controls.Add(label1);
             Controls.Add(VersionDropdown);
             Controls.Add(GameDropdown);
@@ -122,7 +125,7 @@
 
         private ComboBox GameDropdown;
         private Label label1;
-        private Label label2;
+        private Label whichVersionYouWantLabel;
         private ComboBox VersionDropdown;
         private Button InstallGameButton;
         private ProgressBar progressBar;
