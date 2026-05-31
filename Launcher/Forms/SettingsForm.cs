@@ -46,9 +46,8 @@ namespace launcherdotnet.Launcher.Forms
 
         public class PluginsListboxItem
         {
-            public required string Text { get; set; }
-            public required ILauncherPlugin Plugin { get; set; }
-            public override string ToString() => Text;
+            public required PluginRegistry.PluginDescriptor Plugin;
+            public override string ToString() => Plugin.Name;
         }
 
         private bool ApplySettings()
@@ -100,9 +99,9 @@ namespace launcherdotnet.Launcher.Forms
             // --- Plugin List ---
 
             GamePluginsBox.Items.Clear();
-            foreach (IGameInstaller installer in PluginRegistry.GameInstallPlugins)
+            foreach (PluginRegistry.PluginDescriptor plugin in PluginRegistry.PluginDescriptors)
             {
-                PluginsListboxItem item = new PluginsListboxItem { Text = installer.Name, Plugin = installer };
+                PluginsListboxItem item = new PluginsListboxItem { Plugin = plugin };
                 GamePluginsBox.Items.Add(item);
             }
 

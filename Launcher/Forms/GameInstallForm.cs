@@ -20,7 +20,7 @@ namespace launcherdotnet.Launcher.Forms
 
         public void Initialize()
         {
-            foreach (IGameInstaller installer in PluginRegistry.LauncherPlugins)
+            foreach (IGameInstaller installer in PluginRegistry.GameInstallPlugins)
             {
                 GameDropdown.Items.Add(new GamesListItem { Text = installer.GameName, Tag = installer });
             }
