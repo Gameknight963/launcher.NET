@@ -44,10 +44,10 @@ namespace launcherdotnet.Launcher.Forms
             this.StartPosition = FormStartPosition.CenterParent;
         }
 
-        public class TaggedListBoxItem
+        public class PluginsListboxItem
         {
             public required string Text { get; set; }
-            public required object Tag { get; set; }
+            public required ILauncherPlugin Plugin { get; set; }
             public override string ToString() => Text;
         }
 
@@ -100,9 +100,9 @@ namespace launcherdotnet.Launcher.Forms
             // --- Plugin List ---
 
             GamePluginsBox.Items.Clear();
-            foreach (GameInstallPluginEntry entry in GameInstallerRegistry.GameInstallPlugins)
+            foreach (IGameInstaller installer in PluginRegistry.GameInstallPlugins)
             {
-                TaggedListBoxItem item = new TaggedListBoxItem { Text = entry.Installer.Name, Tag = entry };
+                PluginsListboxItem item = new PluginsListboxItem { Text = installer.Name, Plugin = installer };
                 GamePluginsBox.Items.Add(item);
             }
 
@@ -181,17 +181,15 @@ namespace launcherdotnet.Launcher.Forms
         private void ShowGamePluginsBoxHint(object? sender, EventArgs e)
         {
             if (GamePluginsBox.SelectedItems.Count == 0) return;
-            TaggedListBoxItem item = (TaggedListBoxItem)GamePluginsBox.SelectedItems[0]!;
-            GameInstallPluginEntry entry = (GameInstallPluginEntry)item.Tag!;
-            SetPluginHint(entry.Installer.Description, entry.Installer.TargetApiVersion.ToString());
+            PluginsListboxItem item = (PluginsListboxItem)GamePluginsBox.SelectedItems[0]!;
+            SetPluginHint(item.Plugin.Description, item.Plugin.TargetApiVersion.ToString());
         }
 
         private void GamePluginsBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (GamePluginsBox.SelectedItems.Count == 0) return;
-            TaggedListBoxItem item = (TaggedListBoxItem)GamePluginsBox.SelectedItems[0]!;
-            GameInstallPluginEntry entry = (GameInstallPluginEntry)item.Tag!;
-            SetPluginHint(entry.Installer.Description, entry.Installer.TargetApiVersion.ToString());
+            PluginsListboxItem item = (PluginsListboxItem)GamePluginsBox.SelectedItems[0]!;
+            SetPluginHint(item.Plugin.Description, item.Plugin.TargetApiVersion.ToString());
         }
 
         private void ShowAdvancedHint(object? sender, EventArgs e)

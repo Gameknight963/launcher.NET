@@ -1,5 +1,6 @@
-﻿using System.Reflection;
-using launcherdotnet.PluginAPI;
+﻿using launcherdotnet.PluginAPI;
+using System;
+using System.Reflection;
 
 namespace launcherdotnet.Launcher
 {
@@ -35,30 +36,44 @@ namespace launcherdotnet.Launcher
                 {
                     Assembly asm = Assembly.LoadFrom(file);
 
-                    foreach (Type type in asm.GetTypes())
+                    LauncherPluginAttribute? meta = asm.GetCustomAttribute<LauncherPluginAttribute>();
+
+                    if (meta == null)
                     {
-                        if (!typeof(ILauncherPlugin).IsAssignableFrom(type) || type.IsAbstract)
-                            continue;
-
-                        ILauncherPlugin plugin =
-                            (ILauncherPlugin)Activator.CreateInstance(type)!;
-
-                        if (plugin.TargetApiVersion.Major != LauncherApiInfo.ApiVersion.Major)
-                        {
-                            LauncherLogger.Error($"Plugin '{plugin.Name}' has an incompatible version.\n" +
-                                $"  Expected: Any major version of {LauncherApiInfo.ApiVersion.Major}" +
-                                $"  Got: {plugin.TargetApiVersion}");
-                            continue;
-                        }
-
-                        await plugin.Initialize();
-                        LauncherLogger.WriteLine($"Loaded plugin: {plugin.Name}", true);
-                        _plugins.Add(plugin);
+                        LauncherLogger.Warn($"No plugin metadata in {Path.GetFileName(file)}");
+                        continue;
                     }
+
+                    if (meta.TargetApiVersion.Major != LauncherApiInfo.ApiVersion.Major)
+                    {
+                        LauncherLogger.Error(
+                            $"Plugin '{Path.GetFileName(file)}' incompatible. " +
+                            $"Expected {LauncherApiInfo.ApiVersion.Major}, got {meta.TargetApiVersion.Major}");
+
+                        continue;
+                    }
+
+                    Type entryType = meta.EntryType;
+
+                    if (!typeof(ILauncherPlugin).IsAssignableFrom(entryType))
+                    {
+                        throw new InvalidOperationException(
+                            $"Plugin entry type '{entryType.FullName}' does not implement ILauncherPlugin.");
+                    }
+
+                    ILauncherPlugin plugin = (ILauncherPlugin)Activator.CreateInstance(entryType)!;
+
+                    await plugin.Initialize();
+
+                    PluginRegistry.Register(plugin);
+                    _plugins.Add(plugin);
+
+                    LauncherLogger.WriteLine($"Loaded plugin: {plugin.Name}", true);
                 }
                 catch (Exception ex)
                 {
-                    LauncherLogger.Error($"Failed to load plugin {Path.GetFileName(file)} due to a {ex.GetType().Name}: {ex.Message}", true);
+                    LauncherLogger.Error(
+                        $"Failed to load plugin {Path.GetFileName(file)}: {ex.GetType().Name} - {ex.Message}");
                 }
             }
             if (_plugins.Count > 0)
