@@ -22,11 +22,11 @@ namespace launcherdotnet.Launcher.Settings
 
         public static readonly Icon AppIcon;
 
-        public static string? CurrentVersionString => Assembly.GetExecutingAssembly().
-            GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.
+        public static string CurrentVersionString => Assembly.GetExecutingAssembly().
+            GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.
             InformationalVersion
             .Split('+')[0];
-        public static SemVersion CurrentVersion => SemVersion.Parse(CurrentVersionString!);
+        public static SemVersion CurrentVersion => SemVersion.Parse(CurrentVersionString);
 
         static LauncherConstants()
         {

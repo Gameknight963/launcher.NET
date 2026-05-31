@@ -20,9 +20,9 @@ namespace launcherdotnet.Launcher.Forms
 
         public void Initialize()
         {
-            foreach (GameInstallPluginEntry entry in GameInstallerRegistry.GameInstallPlugins)
+            foreach (IGameInstaller installer in GameInstallerRegistry.GameInstallPlugins)
             {
-                GameDropdown.Items.Add(new GamesListItem { Text = entry.Installer.GameName, Tag = entry });
+                GameDropdown.Items.Add(new GamesListItem { Text = installer.GameName, Tag = installer });
             }
             if (GameDropdown.Items.Count > 0) GameDropdown.SelectedIndex = 0;
             InstallGameButton.Select();
@@ -39,19 +39,16 @@ namespace launcherdotnet.Launcher.Forms
                 return;
 
             GamesListItem selectedItem = (GamesListItem)GameDropdown.SelectedItem;
-            GameInstallPluginEntry entry = selectedItem.Tag!;
+            IGameInstaller entry = selectedItem.Tag!;
 
             VersionDropdown.Items.Clear();
 
-            if (entry.Releases != null)
+            foreach (ReleaseInfo r in entry.GetReleases())
             {
-                foreach (ReleaseInfo r in entry.Releases)
-                {
-                    VersionDropdown.Items.Add(new VersionDropdownItem { Text = r.Version.ToString(), Release = r });
-                }
-
-                if (VersionDropdown.Items.Count > 0) VersionDropdown.SelectedIndex = 0;
+                VersionDropdown.Items.Add(new VersionDropdownItem { Text = r.Version.ToString(), Release = r });
             }
+
+            if (VersionDropdown.Items.Count > 0) VersionDropdown.SelectedIndex = 0;
         }
 
         private async void InstallGameButton_Click(object sender, EventArgs e)
@@ -61,8 +58,20 @@ namespace launcherdotnet.Launcher.Forms
                 CoolMessageBox.Show("Select a game.", "Invalid selection,", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            string? result = QueryName();
+
+            string? result = CoolInputBox.Prompt(
+                "Enter a label for this instance:",
+                "Set Game Label",
+                "New game");
             if (result == null) return;
+            if (result != result.Trim())
+            {
+                CoolMessageBox.Show("Label must not contain trailing or leading whitespace.",
+                        "Invalid name",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                return;
+            }
 
             GameInfo newGame = new GameInfo { Label = result };
 
@@ -80,25 +89,24 @@ namespace launcherdotnet.Launcher.Forms
                 ActivityHint.Visible = true;
                 ActivityHint.Text = text;
             });
-            
 
-            LauncherLogger.WriteLine($"Installing {item.Tag!.Installer.GameName} as {newGame.Label}");
+            IGameInstaller installer = item.Tag!;
+
+            LauncherLogger.WriteLine($"Installing {installer.GameName} as {newGame.Label}");
             VersionDropdownItem selectedVersion = (VersionDropdownItem)VersionDropdown.SelectedItem!;
 
-            ReleaseInfo release;
+            ReleaseInfo release = selectedVersion.Release;
             PluginGameInfo installed;
-            release = selectedVersion.Release;
 
             try
             {
-                IGameInstaller installer = item.Tag!.Installer;
                 installed = await Task.Run(() => installer.Install(installDir, release, progress, status));
                 newGame.GameName = installer.GameName;
             }
             catch (Exception ex)
             {
-                LauncherLogger.Error($"Error installing game:\n{ex}");
-                CoolMessageBox.Show($"Installation failed: {ex.Message}",
+                LauncherLogger.Error($"Error installing {installer}:\n{ex}");
+                CoolMessageBox.Show($"Installation failed since a {ex.GetType().Name} occured: {ex.Message}. See console for full exception.",
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -108,18 +116,6 @@ namespace launcherdotnet.Launcher.Forms
             newGame.RelativePath = Path.GetRelativePath(LauncherConstants.BaseDir, installed.ExePath);
             newGame.RunWithCmd = installed.RunWithCmd;
 
-            if (string.IsNullOrWhiteSpace(installed.ExePath))
-            {
-                LauncherLogger.Error("Installation returned no executable. This can be caused by" +
-                    "a bug in the intstaller plugin, or the plugin silently failing.");
-                CoolMessageBox.Show("The plugin did not return an executable.",
-                    "Installation failed",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                ActivityHint.Text = "Installation failed.";
-                return;
-            }
-
             ActivityHint.Text = "Installation complete.";
             GameService.UpsertGame(newGame);
             GameModState state = new();
@@ -127,32 +123,13 @@ namespace launcherdotnet.Launcher.Forms
             state.Save(installDir);
             CoolMessageBox.Show("Installation complete.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Success = true;
-            this.Close();
-        }
-
-        private string? QueryName()
-        {
-            string? result = CoolInputBox.Prompt(
-                "Enter a label for this instance:",
-                "Set Game Label",
-                "New game");
-            if (string.IsNullOrWhiteSpace(result))
-                return null;
-            if (result != result.Trim())
-            {
-                CoolMessageBox.Show("Label must not contain trailing or leading whitespace.",
-                        "Invalid name",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                return null;
-            }
-            return result;
+            Close();
         }
 
         private class GamesListItem
         {
             public required string Text { get; set; }
-            public GameInstallPluginEntry? Tag { get; set; }
+            public required IGameInstaller Tag { get; set; }
             public override string ToString() => Text;
         }
         private class VersionDropdownItem
