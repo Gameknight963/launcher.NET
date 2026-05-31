@@ -39,14 +39,15 @@ namespace launcherdotnet.Launcher.Forms
                 return;
 
             GamesListItem selectedItem = (GamesListItem)GameDropdown.SelectedItem;
-            IGameInstaller entry = selectedItem.Tag!;
+            IGameInstaller installer = selectedItem.Tag!;
 
             VersionDropdown.Items.Clear();
-            IEnumerable<ReleaseInfo>? releases = entry.GetReleases();
+            IEnumerable<ReleaseInfo>? releases = installer.GetReleases();
             bool versionless = releases == null;
             whichVersionYouWantLabel.Visible = !versionless;
             VersionDropdown.Visible = !versionless;
-            InstallGameButton.Text = versionless ? "Continue" : "Install";
+            InstallGameButton.Text = installer.PromptForLabel ? "Install" : "Continue";
+            Size = new(Size.Width, versionless ? 200 : 252);
             if (releases != null)
             {
                 foreach (ReleaseInfo r in releases)
