@@ -61,7 +61,8 @@ namespace launcherdotnet.Plugins.HelloWorld
             return Task.FromResult(new PluginGameInfo
             {
                 ExePath = finalpath,
-                RunWithCmd = true
+                RunWithCmd = true,
+                ModManageable = false
             });
         }
 
