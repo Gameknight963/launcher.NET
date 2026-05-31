@@ -157,7 +157,7 @@ By the way, themes still apply to Messageboxes and Inputboxes:
 
 I reimplemented Messagebox and Inputbox in Winforms to acheive this
 
-### Source of "Hello World" plugin
+### Source of "Hello World" plugin in v1.1.1 and before
 https://github.com/Gameknight963/launcher.NET-hello-world-plugin
 
-(this plugin will probably be moved to the source soon)
+The Hello World Plugin has been moved to this repo (under Plugins/) in any version past v1.1.1.
