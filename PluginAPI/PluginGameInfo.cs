@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using launcherdotnet.Launcher;
+using launcherdotnet.Launcher.Settings;
 
 namespace launcherdotnet.PluginAPI
 {
@@ -9,5 +8,6 @@ namespace launcherdotnet.PluginAPI
         public required string ExePath;
         public bool RunWithCmd = false;
         public string? ThunderstoreCommunitySlug;
+        public bool ModManageable = false;
     }
 }

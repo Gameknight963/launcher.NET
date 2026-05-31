@@ -115,6 +115,7 @@ namespace launcherdotnet.Launcher.Forms
 
             newGame.RelativePath = Path.GetRelativePath(LauncherConstants.BaseDir, installed.ExePath);
             newGame.RunWithCmd = installed.RunWithCmd;
+            newGame.ModManagable = installed.ModManageable;
 
             ActivityHint.Text = "Installation complete.";
             GameService.UpsertGame(newGame);
