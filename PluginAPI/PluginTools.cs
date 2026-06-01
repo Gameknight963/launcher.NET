@@ -11,12 +11,12 @@ namespace launcherdotnet.PluginAPI
         /// </summary>
         /// <param name="folderPath">The folder to search</param>
         /// <param name="gameSearchOptions"><see cref="GameSearchOptions"/> paramaters to use.</param>
-        /// <returns>Full path to the found game EXE</returns>
+        /// <param name="path">The found EXE</param>
+        /// <returns>Whether a suitable EXE was found or not.</returns>
         /// <exception cref="FileNotFoundException">Thrown if no suitable EXE is found</exception>
-        public static string FindGameExe(string folderPath, GameSearchOptions gameSearchOptions = new())
+        public static bool FindGameExe(string folderPath, out string? path, GameSearchOptions gameSearchOptions = new())
         {
-            if (!Directory.Exists(folderPath))
-                throw new DirectoryNotFoundException($"Folder not found: {folderPath}");
+            if (!Directory.Exists(folderPath)) throw new DirectoryNotFoundException($"Folder not found: {folderPath}");
 
             string folderName = Path.GetFileName(folderPath);
 
@@ -39,17 +39,24 @@ namespace launcherdotnet.PluginAPI
             }
 
             if (candidates.Count == 0)
-                throw new FileNotFoundException("No suitable executable found.");
+            {
+                path = null;
+                return false; 
+            }
 
             // Try to find EXE matching the folder name
-            var matchByName = candidates.FirstOrDefault(f =>
-                Path.GetFileNameWithoutExtension(f).IndexOf(folderName, StringComparison.OrdinalIgnoreCase) >= 0);
+            string? matchByName = candidates.FirstOrDefault(f =>
+                Path.GetFileNameWithoutExtension(f).Contains(folderName, StringComparison.OrdinalIgnoreCase));
 
             if (matchByName != null)
-                return matchByName;
+            {
+                path = matchByName;
+                return true;
+            }
 
             // Otherwise, pick the largest EXE
-            return candidates.OrderByDescending(f => new FileInfo(f).Length).First();
+            path = candidates.OrderByDescending(f => new FileInfo(f).Length).First();
+            return true;
         }
 
         /// <summary>
