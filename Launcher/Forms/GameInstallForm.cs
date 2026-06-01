@@ -128,6 +128,7 @@ namespace launcherdotnet.Launcher.Forms
             newGame.RelativePath = Path.GetRelativePath(LauncherConstants.BaseDir, installed.ExePath);
             newGame.RunWithCmd = installed.RunWithCmd;
             newGame.ModManagable = installed.ModManageable;
+            newGame.ThunderstoreCommunitySlug = installed.ThunderstoreCommunitySlug;
 
             ActivityHint.Text = "Installation complete.";
             GameService.UpsertGame(newGame);

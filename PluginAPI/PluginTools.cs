@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace launcherdotnet.PluginAPI
 {
@@ -72,9 +73,9 @@ namespace launcherdotnet.PluginAPI
         /// </param>
         /// <param name="excludeHelpers">
         /// Determines whether common helper executables should be excluded.
-        /// Defaults to <c>false</c>.
+        /// Defaults to <c>true</c>.
         /// </param>
-        public struct GameSearchOptions(bool searchSubdirs = true, bool excludeHelpers = false)
+        public struct GameSearchOptions(bool searchSubdirs = true, bool excludeHelpers = true)
         {
             /// <summary>
             /// If <c>true</c>, the search will include all subdirectories of the specified folder.
@@ -89,6 +90,20 @@ namespace launcherdotnet.PluginAPI
             /// Default is <c>false</c>.
             /// </summary>
             public bool ExcludeHelpers { get; set; } = excludeHelpers;
+        }
+
+        /// <summary>
+        /// Guesses the Thunderstore slug of a game from it's name.
+        /// </summary>
+        /// <returns></returns>
+        public static string ToThunderstoreSlug(string name)
+        {
+            name = name.ToLowerInvariant();
+            name = Regex.Replace(name, @"[^a-z0-9\s-]", "");
+            name = Regex.Replace(name, @"\s+", " ").Trim();
+            name = name.Replace(" ", "-");
+            name = Regex.Replace(name, @"-+", "-");
+            return name;
         }
     }
 }
