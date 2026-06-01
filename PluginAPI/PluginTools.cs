@@ -62,38 +62,32 @@ namespace launcherdotnet.PluginAPI
         /// <summary>
         /// Options that control how <see cref="PluginTools.FindGameExe"/> searches for game executables.
         /// </summary>
-        public struct GameSearchOptions
+        /// <remarks>
+        /// Initializes a new instance of the <see cref="GameSearchOptions"/> struct with optional settings.
+        /// </remarks>
+        /// <param name="searchSubdirs">
+        /// Determines whether subdirectories should be included in the search.
+        /// Defaults to <c>true</c>.
+        /// </param>
+        /// <param name="excludeHelpers">
+        /// Determines whether common helper executables should be excluded.
+        /// Defaults to <c>false</c>.
+        /// </param>
+        public struct GameSearchOptions(bool searchSubdirs = true, bool excludeHelpers = false)
         {
             /// <summary>
             /// If <c>true</c>, the search will include all subdirectories of the specified folder.
             /// If <c>false</c>, only the top-level folder will be searched.
             /// Default is <c>true</c>.
             /// </summary>
-            public bool SearchSubdirectories { get; set; }
+            public bool SearchSubdirectories { get; set; } = searchSubdirs;
 
             /// <summary>
             /// If <c>true</c>, the search will include helpers such as the Unity crash handler.
             /// If <c>false</c>, helpers will be ignored.
             /// Default is <c>false</c>.
             /// </summary>
-            public bool ExcludeHelpers { get; set; }
-            
-            /// <summary>
-            /// Initializes a new instance of the <see cref="GameSearchOptions"/> struct with optional settings.
-            /// </summary>
-            /// <param name="searchSubdirs">
-            /// Determines whether subdirectories should be included in the search.
-            /// Defaults to <c>true</c>.
-            /// </param>
-            /// <param name="excludeHelpers">
-            /// Determines whether common helper executables should be excluded.
-            /// Defaults to <c>false</c>.
-            /// </param>
-            public GameSearchOptions(bool searchSubdirs = true, bool excludeHelpers = false)
-            {
-                SearchSubdirectories = searchSubdirs;
-                ExcludeHelpers = excludeHelpers;
-            }
+            public bool ExcludeHelpers { get; set; } = excludeHelpers;
         }
     }
 }
