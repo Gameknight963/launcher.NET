@@ -1,6 +1,7 @@
 using launcherdotnet.Launcher.Forms;
 using launcherdotnet.PluginAPI;
 using launcherdotnet.Plugins.SteamGameCopy;
+using launcherdotnet.Thunderstore;
 
 [assembly: LauncherPlugin(typeof(SteamGameCopy),
     "Steam Game Copier",
@@ -31,8 +32,8 @@ namespace launcherdotnet.Plugins.SteamGameCopy
             SteamCopyForm form = new(games);
             form.ShowDialog();
             if (form.SelectedGame == null) return null;
-            Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(form.SelectedGame.RootDirectory, installDir);
-            if (!PluginTools.FindGameExe(installDir, out string? path))
+            PluginTools.CopyDirectoryWithProgress(form.SelectedGame.RootDirectory, installDir, progress, status);
+            if (!PluginTools.FindGameExe(installDir, out string? path, PluginTools.GameSearchOptions.SearchExcludeHelpers))
             {
                 if (CoolMessageBox.Show("The executable of the game could not be found.\n" +
                     "Would you like to select it manually?",
@@ -48,9 +49,16 @@ namespace launcherdotnet.Plugins.SteamGameCopy
                 if (dialog.ShowDialog() != DialogResult.OK) return null;
                 path = dialog.FileName;
             }
+
+            string? slug = PluginTools.ToThunderstoreSlug(form.SelectedGame.Name);
+            slug = await ThunderstoreClient.DoesThunderstoreCommunityExist(slug) ? slug : null;
+            if (slug == null) throw new Exception();
+
             return new PluginGameInfo
             {
                 ExePath = path,
+                ThunderstoreCommunitySlug = slug,
+                ModManageable = true
             };
         }
     }
