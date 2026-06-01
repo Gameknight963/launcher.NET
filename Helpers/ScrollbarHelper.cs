@@ -5,7 +5,7 @@ using System.Text;
 
 namespace launcherdotnet.Helpers
 {
-    internal class ScrollbarHelper
+    public class ScrollbarHelper
     {
         [DllImport("user32.dll")]
         private static extern bool ShowScrollBar(IntPtr hWnd, int wBar, bool bShow);
