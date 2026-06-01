@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO.Compression;
 using System.Net;
 using launcherdotnet.Networking;
+using System.Security.Policy;
 
 namespace launcherdotnet.Thunderstore
 {
@@ -116,6 +117,17 @@ namespace launcherdotnet.Thunderstore
 
             using ZipArchive zip = ZipFile.OpenRead(zipPath);
             zip.ExtractToDirectory(modsDirectory, overwriteFiles: true);
+        }
+
+        public static async Task<bool> DoesThunderstoreCommunityExist(string communitySlug)
+        {
+            LauncherLogger.WriteLine($"Checking if {communitySlug} exists on Thunderstore...");
+            string url = $"https://thunderstore.io/c/{communitySlug}/";
+            HttpRequestMessage request = new(HttpMethod.Head, url);
+            HttpResponseMessage response = await LauncherHttp.Client.SendAsync(request);
+            bool found = response.IsSuccessStatusCode;
+            LauncherLogger.WriteLine($"{communitySlug} {(found ? "does" : "does not")} have a Thunderstore community ({(int)response.StatusCode})");
+            return found;
         }
     }
 }
