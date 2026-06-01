@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace launcherdotnet.PluginAPI
@@ -14,7 +15,7 @@ namespace launcherdotnet.PluginAPI
         /// <param name="path">The found EXE</param>
         /// <returns>Whether a suitable EXE was found or not.</returns>
         /// <exception cref="FileNotFoundException">Thrown if no suitable EXE is found</exception>
-        public static bool FindGameExe(string folderPath, out string? path, GameSearchOptions gameSearchOptions = new())
+        public static bool FindGameExe(string folderPath, [NotNullWhen(true)] out string? path, GameSearchOptions gameSearchOptions = new())
         {
             if (!Directory.Exists(folderPath)) throw new DirectoryNotFoundException($"Folder not found: {folderPath}");
 
