@@ -19,12 +19,12 @@
         /// <summary>
         /// The name of the game your installer plugin installs. Used for the game selection dropdown
         /// </summary>
-        string GameName { get; } 
+        string GameName { get; }
 
         /// <summary>
-        /// Whether the installer will prompt the user to choose a Label or not. If false, defaults to GameName
+        /// When to Prompt for a Label. If "Never", defaults to GameName
         /// </summary>
-        bool PromptForLabel { get; }
+        LabelQueryTime PromptForLabel { get; }
 
         /// <summary>
         /// Gets the releases of your plugin. This should be fetched on initialization and cached to prevent delays in the UI.

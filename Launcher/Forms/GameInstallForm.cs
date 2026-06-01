@@ -46,7 +46,7 @@ namespace launcherdotnet.Launcher.Forms
             bool versionless = releases == null;
             whichVersionYouWantLabel.Visible = !versionless;
             VersionDropdown.Visible = !versionless;
-            InstallGameButton.Text = installer.PromptForLabel ? "Install" : "Continue";
+            InstallGameButton.Text = installer.PromptForLabel == LabelQueryTime.BeforeInstall ? "Install" : "Continue";
             Size = new(Size.Width, versionless ? 200 : 252);
             if (releases != null)
             {
@@ -67,27 +67,15 @@ namespace launcherdotnet.Launcher.Forms
             GamesListItem item = (GamesListItem)GameDropdown.SelectedItem;
             IGameInstaller installer = item.Tag!;
 
+            GameInfo newGame = new();
+
             string label = installer.GameName;
-            if (installer.PromptForLabel)
+            if (installer.PromptForLabel == LabelQueryTime.BeforeInstall)
             {
-                string? result = CoolInputBox.Prompt(
-                    "Enter a label for this instance:",
-                    "Set Game Label",
-                    installer.GameName);
-
+                string? result = QueryLabel(installer.GameName);
                 if (result == null) return;
-                if (result != result.Trim())
-                {
-                    CoolMessageBox.Show("Label must not contain trailing or leading whitespace.",
-                        "Invalid name",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                    return;
-                }
-                label = result;
+                newGame.Label = result;
             }
-
-            GameInfo newGame = new() { Label = label };
 
             string installDir = Path.Combine(LauncherConstants.GamesDir, $"{newGame.Label}_{newGame.Id}");
             newGame.RelativeRootDirectory = Path.GetRelativePath(LauncherConstants.BaseDir, installDir);
@@ -130,6 +118,13 @@ namespace launcherdotnet.Launcher.Forms
                 return;
             }
 
+            if (installer.PromptForLabel == LabelQueryTime.AfterInstall)
+            {
+                string? result = QueryLabel(installer.GameName);
+                if (result == null) return;
+                newGame.Label = result;
+            }
+
             newGame.RelativePath = Path.GetRelativePath(LauncherConstants.BaseDir, installed.ExePath);
             newGame.RunWithCmd = installed.RunWithCmd;
             newGame.ModManagable = installed.ModManageable;
@@ -142,6 +137,30 @@ namespace launcherdotnet.Launcher.Forms
             CoolMessageBox.Show("Installation complete.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Success = true;
             Close();
+        }
+
+        private string? QueryLabel(string defaultText)
+        {
+            string? result = CoolInputBox.Prompt(
+                "Enter a label for this instance:",
+                "Set Game Label",
+                defaultText);
+
+            if (result is null)
+                return null;
+
+            if (result != result.Trim())
+            {
+                CoolMessageBox.Show(
+                    "Label must not contain trailing or leading whitespace.",
+                    "Invalid name",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return null;
+            }
+
+            return result;
         }
 
         private class GamesListItem
