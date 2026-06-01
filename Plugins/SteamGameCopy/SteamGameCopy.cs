@@ -52,7 +52,6 @@ namespace launcherdotnet.Plugins.SteamGameCopy
 
             string? slug = PluginTools.ToThunderstoreSlug(form.SelectedGame.Name);
             slug = await ThunderstoreClient.DoesThunderstoreCommunityExist(slug) ? slug : null;
-            if (slug == null) throw new Exception();
 
             return new PluginGameInfo
             {
