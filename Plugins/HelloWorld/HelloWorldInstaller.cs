@@ -41,7 +41,7 @@ namespace launcherdotnet.Plugins.HelloWorld
 
         public string GameName => "Hello World";
 
-        public bool PromptForLabel => true;
+        public LabelQueryTime PromptForLabel => LabelQueryTime.BeforeInstall;
 
         public IEnumerable<ReleaseInfo>? GetReleases()
         {
@@ -53,19 +53,19 @@ namespace launcherdotnet.Plugins.HelloWorld
             return Task.CompletedTask;
         }
 
-        public Task<PluginGameInfo> Install(string installDir, IProgress<double> progress, IProgress<string> status, ReleaseInfo? release)
+        public async Task<PluginGameInfo?> Install(string installDir, IProgress<double> progress, IProgress<string> status, ReleaseInfo? release)
         {
             // we don't care about selected release since there's only one
             status.Report("Starting installation...");
             progress.Report(0);
             string finalpath = Path.Combine(installDir, "dummygame.exe");
             MakeDummyExe(finalpath, progress, status);
-            return Task.FromResult(new PluginGameInfo
+            return new PluginGameInfo
             {
                 ExePath = finalpath,
                 RunWithCmd = true,
                 ModManageable = false
-            });
+            };
         }
 
         static void MakeDummyExe(string outputPath, IProgress<double> progress, IProgress<string> status)
