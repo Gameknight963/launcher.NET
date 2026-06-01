@@ -32,6 +32,7 @@ namespace launcherdotnet.PluginAPI
             // Exclude some common helper EXEs
             if (gameSearchOptions.ExcludeHelpers)
             {
+                LauncherLogger.WriteLine("excluding helprs");
                 candidates = candidates
                     .Where(f => !f.EndsWith("UnityCrashHandler64.exe", StringComparison.OrdinalIgnoreCase) &&
                                 !f.EndsWith("CrashReport.exe", StringComparison.OrdinalIgnoreCase) &&
@@ -62,34 +63,29 @@ namespace launcherdotnet.PluginAPI
         }
 
         /// <summary>
-        /// Options that control how <see cref="PluginTools.FindGameExe"/> searches for game executables.
+        /// Options that control how <see cref="FindGameExe"/> searches for game executables.
         /// </summary>
-        /// <remarks>
-        /// Initializes a new instance of the <see cref="GameSearchOptions"/> struct with optional settings.
-        /// </remarks>
         /// <param name="searchSubdirs">
         /// Determines whether subdirectories should be included in the search.
-        /// Defaults to <c>true</c>.
         /// </param>
         /// <param name="excludeHelpers">
         /// Determines whether common helper executables should be excluded.
-        /// Defaults to <c>true</c>.
         /// </param>
-        public struct GameSearchOptions(bool searchSubdirs = true, bool excludeHelpers = true)
+        public struct GameSearchOptions(bool searchSubdirs = true, bool excludeHelpers = false)
         {
             /// <summary>
-            /// If <c>true</c>, the search will include all subdirectories of the specified folder.
-            /// If <c>false</c>, only the top-level folder will be searched.
-            /// Default is <c>true</c>.
+            /// If true, the search will include all subdirectories of the specified folder.
+            /// If false, only the top-level folder will be searched.
             /// </summary>
             public bool SearchSubdirectories { get; set; } = searchSubdirs;
 
             /// <summary>
-            /// If <c>true</c>, the search will include helpers such as the Unity crash handler.
-            /// If <c>false</c>, helpers will be ignored.
-            /// Default is <c>false</c>.
+            /// If true, the search will include helpers such as the Unity crash handler.
             /// </summary>
             public bool ExcludeHelpers { get; set; } = excludeHelpers;
+
+            public static GameSearchOptions SearchExcludeHelpers => new(true, true);
+            public static GameSearchOptions SearchTopLevelOnly => new(false, false);
         }
 
         /// <summary>
@@ -104,6 +100,32 @@ namespace launcherdotnet.PluginAPI
             name = name.Replace(" ", "-");
             name = Regex.Replace(name, @"-+", "-");
             return name;
+        }
+
+        public static void CopyDirectoryWithProgress(
+            string sourceDir,
+            string destDir,
+            IProgress<double> progress,
+            IProgress<string> status)
+        {
+            if (!Directory.Exists(sourceDir)) throw new DirectoryNotFoundException($"{sourceDir}: no such directory");
+            string[] files = Directory.GetFiles(sourceDir, "*", SearchOption.AllDirectories);
+            int total = files.Length;
+            int done = 0;
+
+            foreach (string file in files)
+            {
+                string relative = Path.GetRelativePath(sourceDir, file);
+                string target = Path.Combine(destDir, relative);
+
+                Directory.CreateDirectory(Path.GetDirectoryName(target)!);
+
+                File.Copy(file, target, true);
+
+                done++;
+                progress.Report(((double)done / total) * 100);
+                status.Report($"Copying {done}/{total}");
+            }
         }
     }
 }
