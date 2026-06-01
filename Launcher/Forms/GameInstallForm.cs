@@ -112,11 +112,12 @@ namespace launcherdotnet.Launcher.Forms
                 release = selectedVersion.Release;
             }
 
-            PluginGameInfo installed;
+            PluginGameInfo? installed;
 
             try
             {
                 installed = await Task.Run(() => installer.Install(installDir, progress, status, release));
+                if (installed == null) return;
                 newGame.GameName = installer.GameName;
             }
             catch (Exception ex)

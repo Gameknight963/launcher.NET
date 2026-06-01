@@ -9,8 +9,8 @@
         /// <param name="progress">Reports progress from 0 to 100, displayed on the installer's progress bar.</param>
         /// <param name="status">Reports a status message string, displayed on the bottom of the installer.</param>
         /// <param name="release">The <see cref="ReleaseInfo"/> the user selected to install.</param>
-        /// <returns>The <see cref="PluginGameInfo"/> of the installed game.</returns>
-        Task<PluginGameInfo> Install(
+        /// <returns>The <see cref="PluginGameInfo"/> of the installed game. Return null to cancel the installation.</returns>
+        Task<PluginGameInfo?> Install(
             string installDir, 
             IProgress<double> progress,
             IProgress<string> status,
