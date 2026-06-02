@@ -1,6 +1,7 @@
 ﻿using launcherdotnet.Launcher.Settings;
 using launcherdotnet.PluginAPI;
 using launcherdotnet.Styling;
+using Semver;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -42,7 +43,7 @@ namespace launcherdotnet.Launcher.Forms
             IGameInstaller installer = selectedItem.Tag!;
 
             VersionDropdown.Items.Clear();
-            IEnumerable<ReleaseInfo>? releases = installer.GetReleases();
+            IEnumerable<string>? releases = installer.GetReleases();
             bool versionless = releases == null;
             whichVersionYouWantLabel.Visible = !versionless;
             VersionDropdown.Visible = !versionless;
@@ -50,8 +51,8 @@ namespace launcherdotnet.Launcher.Forms
             Size = new(Size.Width, versionless ? 200 : 252);
             if (releases != null)
             {
-                foreach (ReleaseInfo r in releases)
-                    VersionDropdown.Items.Add(new VersionDropdownItem { Text = r.Version.ToString(), Release = r });
+                foreach (string r in releases)
+                    VersionDropdown.Items.Add(r);
             }
             if (VersionDropdown.Items.Count > 0) VersionDropdown.SelectedIndex = 0;
         }
@@ -74,9 +75,9 @@ namespace launcherdotnet.Launcher.Forms
                 if (label == null) return;
             }
 
-            ReleaseInfo? release = null;
+            string? version = null;
             if (VersionDropdown.Visible && VersionDropdown.SelectedItem != null)
-                release = ((VersionDropdownItem)VersionDropdown.SelectedItem).Release;
+                version = (string)VersionDropdown.SelectedItem;
 
             Progress<double> progress = new(percent =>
                 progressBar.Value = Math.Min(100, Math.Max(0, (int)percent)));
@@ -89,7 +90,7 @@ namespace launcherdotnet.Launcher.Forms
             GameInfo? newGame;
             try
             {
-                newGame = await GameInstallService.InstallAsync(installer, release, progress, status, label);
+                newGame = await GameInstallService.InstallAsync(installer, version, progress, status, label);
                 if (newGame == null) return;
             }
             catch (Exception ex)
@@ -145,12 +146,6 @@ namespace launcherdotnet.Launcher.Forms
         {
             public required string Text { get; set; }
             public required IGameInstaller Tag { get; set; }
-            public override string ToString() => Text;
-        }
-        private class VersionDropdownItem
-        {
-            public required string Text { get; set; }
-            public required ReleaseInfo Release { get; set; }
             public override string ToString() => Text;
         }
     }

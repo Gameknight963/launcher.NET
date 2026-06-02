@@ -1,5 +1,6 @@
 ﻿using launcherdotnet.Launcher.Settings;
 using launcherdotnet.PluginAPI;
+using Semver;
 
 namespace launcherdotnet.Launcher
 {
@@ -7,7 +8,7 @@ namespace launcherdotnet.Launcher
     {
         public static async Task<GameInfo?> InstallAsync(
             IGameInstaller installer,
-            ReleaseInfo? release,
+            string? version,
             IProgress<double> progress,
             IProgress<string> status,
             string? label = null)
@@ -18,7 +19,7 @@ namespace launcherdotnet.Launcher
             newGame.RelativeRootDirectory = Path.GetRelativePath(LauncherConstants.BaseDir, installDir);
             Directory.CreateDirectory(installDir);
 
-            PluginGameInfo? installed = await Task.Run(() => installer.Install(installDir, progress, status, release));
+            PluginGameInfo? installed = await Task.Run(() => installer.Install(installDir, progress, status, version));
             if (installed == null) return null;
 
             newGame.GameName = installer.GameName;
