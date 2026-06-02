@@ -27,6 +27,7 @@ namespace launcherdotnet.Launcher
             newGame.RunWithCmd = installed.RunWithCmd;
             newGame.ModManagable = installed.ModManageable;
             newGame.ThunderstoreCommunitySlug = installed.ThunderstoreCommunitySlug;
+            if (installed.Label != null) newGame.Label = installed.Label;
 
             GameService.UpsertGame(newGame);
             GameModState state = new();
