@@ -1,6 +1,4 @@
-﻿using Semver;
-
-namespace launcherdotnet.PluginAPI
+﻿namespace launcherdotnet.PluginAPI
 {
     public interface IGameInstaller : ILauncherPlugin
     {
@@ -32,7 +30,6 @@ namespace launcherdotnet.PluginAPI
         /// Gets the releases of your plugin. This should be fetched on initialization and cached to prevent delays in the UI.
         /// If you're making a versionless installer, return null.
         /// </summary>
-        /// <returns></returns>
         IEnumerable<string>? GetReleases();
     }
 }   
