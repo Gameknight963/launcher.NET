@@ -43,19 +43,17 @@ namespace launcherdotnet.Plugins.HelloWorld
 
         public LabelQueryTime PromptForLabel => LabelQueryTime.BeforeInstall;
 
-        public IEnumerable<ReleaseInfo>? GetReleases()
-        {
-            return null;
-        }
+        // returning null makes this a versionless installer
+        public IEnumerable<string>? GetReleases() => null;
 
         public Task Initialize()
         {
             return Task.CompletedTask;
         }
 
-        public async Task<PluginGameInfo?> Install(string installDir, IProgress<double> progress, IProgress<string> status, ReleaseInfo? release)
+        public async Task<PluginGameInfo?> Install(string installDir, IProgress<double> progress, IProgress<string> status, string? release)
         {
-            // we don't care about selected release since there's only one
+            // we don't care about selected release since this is a versionless installer
             status.Report("Starting installation...");
             progress.Report(0);
             string finalpath = Path.Combine(installDir, "dummygame.exe");

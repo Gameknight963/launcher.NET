@@ -2,6 +2,7 @@ using launcherdotnet.Launcher.Forms;
 using launcherdotnet.PluginAPI;
 using launcherdotnet.Plugins.SteamGameCopy;
 using launcherdotnet.Thunderstore;
+using System.Reflection.Metadata.Ecma335;
 
 [assembly: LauncherPlugin(typeof(SteamGameCopy),
     "Steam Game Copier",
@@ -16,17 +17,14 @@ namespace launcherdotnet.Plugins.SteamGameCopy
 
         public LabelQueryTime PromptForLabel => LabelQueryTime.AfterInstall;
 
-        public IEnumerable<ReleaseInfo>? GetReleases()
-        {
-            return null;
-        }
+        public IEnumerable<string>? GetReleases() => null;
 
         public Task Initialize()
         {
             return Task.CompletedTask;
         }
 
-        public async Task<PluginGameInfo?> Install(string installDir, IProgress<double> progress, IProgress<string> status, ReleaseInfo? release = null)
+        public async Task<PluginGameInfo?> Install(string installDir, IProgress<double> progress, IProgress<string> status, string? release = null)
         {
             List<SteamGame> games = SteamHelper.GetInstalledGames(SteamHelper.GetSteamPath() ?? throw new InvalidOperationException());
             SteamCopyForm form = new(games);
