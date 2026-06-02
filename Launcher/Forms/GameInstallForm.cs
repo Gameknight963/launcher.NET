@@ -60,58 +60,43 @@ namespace launcherdotnet.Launcher.Forms
         {
             if (GameDropdown.SelectedItem == null)
             {
-                CoolMessageBox.Show("Select a game.", "Invalid selection,", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                CoolMessageBox.Show("Select a game.", "Invalid selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             GamesListItem item = (GamesListItem)GameDropdown.SelectedItem;
             IGameInstaller installer = item.Tag!;
 
-            GameInfo newGame = new();
-
-            string label = installer.GameName;
+            string? label = null;
             if (installer.PromptForLabel == LabelQueryTime.BeforeInstall)
             {
-                string? result = QueryLabel(installer.GameName);
-                if (result == null) return;
-                newGame.Label = result;
+                label = QueryLabel(installer.GameName);
+                if (label == null) return;
             }
 
-            string installDir = Path.Combine(LauncherConstants.GamesDir, $"{newGame.Label}_{newGame.Id}");
-            newGame.RelativeRootDirectory = Path.GetRelativePath(LauncherConstants.BaseDir, installDir);
-            Directory.CreateDirectory(installDir);
+            ReleaseInfo? release = null;
+            if (VersionDropdown.Visible && VersionDropdown.SelectedItem != null)
+                release = ((VersionDropdownItem)VersionDropdown.SelectedItem).Release;
 
             Progress<double> progress = new(percent =>
-            {
-                progressBar.Value = Math.Min(100, Math.Max(0, (int)percent));
-            });
+                progressBar.Value = Math.Min(100, Math.Max(0, (int)percent)));
             Progress<string> status = new(text =>
             {
                 ActivityHint.Visible = true;
                 ActivityHint.Text = text;
             });
 
-            LauncherLogger.WriteLine($"Installing {installer.GameName} as {newGame.Label}");
-
-            ReleaseInfo? release = null;
-            if (VersionDropdown.Visible && VersionDropdown.SelectedItem != null)
-            {
-                VersionDropdownItem selectedVersion = (VersionDropdownItem)VersionDropdown.SelectedItem;
-                release = selectedVersion.Release;
-            }
-
-            PluginGameInfo? installed;
-
+            GameInfo? newGame;
             try
             {
-                installed = await Task.Run(() => installer.Install(installDir, progress, status, release));
-                if (installed == null) return;
-                newGame.GameName = installer.GameName;
+                newGame = await GameInstallService.InstallAsync(installer, release, progress, status, label);
+                if (newGame == null) return;
             }
             catch (Exception ex)
             {
                 LauncherLogger.Error($"Error installing {installer}:\n{ex}");
-                CoolMessageBox.Show($"Installation failed since a {ex.GetType().Name} occured: {ex.Message}. See console for full exception.",
+                CoolMessageBox.Show(
+                    $"Installation failed since a {ex.GetType().Name} occurred: {ex.Message}. See console for full exception.",
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -120,27 +105,19 @@ namespace launcherdotnet.Launcher.Forms
 
             if (installer.PromptForLabel == LabelQueryTime.AfterInstall)
             {
-                string? result = QueryLabel(installer.GameName);
-                if (result == null) return;
-                newGame.Label = result;
+                label = QueryLabel(installer.GameName);
+                if (label == null) return;
+                newGame.Label = label;
+                GameService.UpsertGame(newGame); // re-save with updated label
             }
 
-            newGame.RelativePath = Path.GetRelativePath(LauncherConstants.BaseDir, installed.ExePath);
-            newGame.RunWithCmd = installed.RunWithCmd;
-            newGame.ModManagable = installed.ModManageable;
-            newGame.ThunderstoreCommunitySlug = installed.ThunderstoreCommunitySlug;
-
             ActivityHint.Text = "Installation complete.";
-            GameService.UpsertGame(newGame);
-            GameModState state = new();
-            state.TakeBaseline(installDir);
-            state.Save(installDir);
             CoolMessageBox.Show("Installation complete.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Success = true;
             Close();
         }
 
-        private string? QueryLabel(string defaultText)
+        private static string? QueryLabel(string defaultText)
         {
             string? result = CoolInputBox.Prompt(
                 "Enter a label for this instance:",
