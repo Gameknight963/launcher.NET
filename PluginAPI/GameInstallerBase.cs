@@ -1,5 +1,13 @@
 ﻿namespace launcherdotnet.PluginAPI
 {
+    /// <summary>
+    /// Base implementation of <see cref="IGameInstaller"/> providing
+    /// sensible defaults for optional members
+    /// </summary>
+    /// <remarks>
+    /// Plugin authors are encouraged to inherit from this class unless
+    /// they require a different inheritance hierarchy.
+    /// </remarks>
     public abstract class GameInstallerBase : IGameInstaller
     {
         /// <inheritdoc />

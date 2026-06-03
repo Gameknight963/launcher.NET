@@ -1,5 +1,10 @@
 ﻿namespace launcherdotnet.PluginAPI
 {
+    /// <summary>
+    /// Installs a game into launcher.net.
+    /// Implement this interface directly, or inherit from
+    /// <see cref="GameInstallerBase"/> for default implementations.
+    /// </summary>
     public interface IGameInstaller : ILauncherPlugin
     {
         /// <summary>
