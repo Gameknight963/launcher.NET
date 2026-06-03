@@ -29,6 +29,7 @@ namespace launcherdotnet.Launcher.Forms
 
             _defaultSelectedHint = Hint.Text;
             ShowSettings();
+            openPluginSettingsBtn.Visible = false;
 
             GeneralCheckbox.MouseDown += ShowGeneralHint;
             GeneralCheckbox.SelectedIndexChanged += ShowGeneralHint;
@@ -36,8 +37,7 @@ namespace launcherdotnet.Launcher.Forms
             AdvancedCheckbox.MouseDown += ShowAdvancedHint;
             AdvancedCheckbox.SelectedIndexChanged += ShowAdvancedHint;
 
-            GamePluginsBox.MouseDown += ShowGamePluginsBoxHint;
-            GamePluginsBox.SelectedIndexChanged += ShowGamePluginsBoxHint;
+            GamePluginsBox.MouseDown += GamePluginsBox_MouseDown; ;
 
             this.KeyPreview = true;
             this.KeyDown += SettingsForm_KeyDown;
@@ -101,7 +101,7 @@ namespace launcherdotnet.Launcher.Forms
             GamePluginsBox.Items.Clear();
             foreach (PluginRegistry.PluginDescriptor plugin in PluginRegistry.PluginDescriptors)
             {
-                PluginsListboxItem item = new PluginsListboxItem { Plugin = plugin };
+                PluginsListboxItem item = new() { Plugin = plugin };
                 GamePluginsBox.Items.Add(item);
             }
 
@@ -177,18 +177,26 @@ namespace launcherdotnet.Launcher.Forms
             }
         }
 
-        private void ShowGamePluginsBoxHint(object? sender, EventArgs e)
+        private void ShowPluginsBoxHint()
         {
+            openPluginSettingsBtn.Visible = false;
             if (GamePluginsBox.SelectedItems.Count == 0) return;
             PluginsListboxItem item = (PluginsListboxItem)GamePluginsBox.SelectedItems[0]!;
+            openPluginSettingsBtn.Visible = item.Plugin.Instance is IPluginWithSettings;
             SetPluginHint(item.Plugin.Description, item.Plugin.TargetApiVersion.ToString());
         }
 
-        private void GamePluginsBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void GamePluginsBox_MouseDown(object? sender, MouseEventArgs e) => ShowPluginsBoxHint();
+        private void GamePluginsBox_SelectedIndexChanged(object sender, EventArgs e) => ShowPluginsBoxHint();
+
+        private void OpenPluginSettingsBtn_Click(object sender, EventArgs e)
         {
-            if (GamePluginsBox.SelectedItems.Count == 0) return;
+            // due to ShowPluginsBoxHint(), if this button is visible, the selected item's plugin
+            // is an IPluginWithSettings
+            // obviously it's not clickable if it's invisible so this won't throw
             PluginsListboxItem item = (PluginsListboxItem)GamePluginsBox.SelectedItems[0]!;
-            SetPluginHint(item.Plugin.Description, item.Plugin.TargetApiVersion.ToString());
+            IPluginWithSettings pluginWithSettings = (IPluginWithSettings)item.Plugin.Instance;
+            pluginWithSettings.CreateSettingsForm().ShowDialog();
         }
 
         private void ShowAdvancedHint(object? sender, EventArgs e)

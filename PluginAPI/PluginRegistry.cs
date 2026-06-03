@@ -5,6 +5,7 @@ namespace launcherdotnet.PluginAPI
     public static class PluginRegistry
     {
         private static readonly List<IGameInstaller> _gameInstallPlugins = new();
+        private static readonly List<IPluginWithSettings> _pluginsWithSettings = new();
         private static readonly List<ILauncherPlugin> _launcherPlugins = new();
         private static readonly List<PluginDescriptor> _pluginDescriptors = new();
 
@@ -12,6 +13,7 @@ namespace launcherdotnet.PluginAPI
         {
             _launcherPlugins.Add(descriptor.Instance);
             if (descriptor.Instance is IGameInstaller installer) _gameInstallPlugins.Add(installer);
+            if (descriptor.Instance is IPluginWithSettings pluginWithSettings) _pluginsWithSettings.Add(pluginWithSettings);
             _pluginDescriptors.Add(descriptor);
         }
 
@@ -29,6 +31,11 @@ namespace launcherdotnet.PluginAPI
         /// All registered plugin descriptors. Used for UI purposes
         /// </summary>
         public static IReadOnlyList<PluginDescriptor> PluginDescriptors => _pluginDescriptors;
+
+        /// <summary>
+        /// All registered plugins with settings
+        /// </summary>
+        public static IReadOnlyList<IPluginWithSettings> PluginsWithSettings => _pluginsWithSettings;
 
         public class PluginDescriptor
         {
