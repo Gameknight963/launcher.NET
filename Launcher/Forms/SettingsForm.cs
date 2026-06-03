@@ -317,7 +317,7 @@ namespace launcherdotnet.Launcher.Forms
 
         private void colorButton_Click(object sender, EventArgs e)
         {
-            Color? result = int.TryParse(gradientColorBox.Text, out int value) ? Color.FromArgb(value) : null;
+            Color? result = DwmColor.TryParse(gradientColorBox.Text, out DwmColor? value) ? value : null;
             using CoolColorPicker dialog = new(result);
             if (dialog.ShowDialog() == DialogResult.OK)
                 gradientColorBox.Text = DwmColor.ToDwmString(dialog.ResultColor!.Value);
