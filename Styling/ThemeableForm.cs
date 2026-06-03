@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 
 namespace launcherdotnet.Styling
 {
@@ -19,10 +20,30 @@ namespace launcherdotnet.Styling
         // wip, does not prevent thememanager from changing it later
         protected bool InheritGlobalTheme = true;
 
+        public int? ActiveGradient { get; private set; }
+
+        /// <summary>
+        /// Whether the active theme's gradient color could be considered light or not.
+        /// </summary>
+        /// <remarks>Returns true if the theme is light, and false if dark, otherwise based off the gradient color.</remarks>
+        public bool IsThemeColoredLight()
+        {
+            if (ResolvedTheme == ThemeManager.Theme.Light) return true;
+            if (ResolvedTheme == ThemeManager.Theme.Dark) return false;
+            if (ActiveGradient == null) return true;
+            DwmColor color = DwmColor.FromAbgr(ActiveGradient.Value);
+            double luminance =
+                0.2126 * color.Color.R +
+                0.7152 * color.Color.G +
+                0.0722 * color.Color.B;
+
+            return luminance <= 160.0;
+        }
         public ThemeableForm()
         {
             if (IsDesignTime) return;
             ActiveTheme = ThemeManager.ActiveTheme;
+            ActiveGradient = ThemeManager.ActiveGradientColor;
             Load += (sender, e) =>
             {
                 if (InheritGlobalTheme)
