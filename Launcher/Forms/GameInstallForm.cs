@@ -106,7 +106,7 @@ namespace launcherdotnet.Launcher.Forms
 
             if (installer.PromptForLabel == LabelQueryTime.AfterInstall)
             {
-                label = QueryLabel(installer.GameName);
+                label = LauncherDialogs.QueryLabel(installer.GameName);
                 if (label == null) return;
                 newGame.Label = label;
                 GameService.UpsertGame(newGame); // re-save with updated label
@@ -116,30 +116,6 @@ namespace launcherdotnet.Launcher.Forms
             CoolMessageBox.Show("Installation complete.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Success = true;
             Close();
-        }
-
-        private static string? QueryLabel(string defaultText)
-        {
-            string? result = CoolInputBox.Prompt(
-                "Enter a label for this instance:",
-                "Set Game Label",
-                defaultText);
-
-            if (result is null)
-                return null;
-
-            if (result != result.Trim())
-            {
-                CoolMessageBox.Show(
-                    "Label must not contain trailing or leading whitespace.",
-                    "Invalid name",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                return null;
-            }
-
-            return result;
         }
 
         private class GamesListItem
