@@ -3,14 +3,14 @@ using launcherdotnet.PluginAPI;
 using launcherdotnet.Plugins.SteamGameCopy;
 using launcherdotnet.Thunderstore;
 
-[assembly: LauncherPlugin(typeof(SteamGameCopy),
+[assembly: LauncherPlugin(typeof(Plugin),
     "Steam Game Copier",
     "Copies any installed Steam game to launcher.net",
     "1.0.0")]
 
 namespace launcherdotnet.Plugins.SteamGameCopy
 {
-    public class SteamGameCopy : IGameInstaller
+    public class Plugin : IGameInstaller
     {
         public string GameName => "Steam Game";
 
