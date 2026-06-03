@@ -65,7 +65,7 @@ namespace launcherdotnet.Launcher.Forms
 
             // --- Theme ---
             s.Theme = (ThemeManager.Theme)Array.FindIndex(_themeButtons, b => b.Checked);
-            if (!int.TryParse(gradientColorBox.Text, out int color))
+            if (!DwmColor.TryParse(gradientColorBox.Text, out DwmColor? color))
             {
                 CoolMessageBox.Show($"Ivalid integer: {gradientColorBox.Text}", "Invalid input");
                 return false;
@@ -320,7 +320,7 @@ namespace launcherdotnet.Launcher.Forms
             Color? result = int.TryParse(gradientColorBox.Text, out int value) ? Color.FromArgb(value) : null;
             using CoolColorPicker dialog = new(result);
             if (dialog.ShowDialog() == DialogResult.OK)
-                gradientColorBox.Text = dialog.ResultColor!.Value.ToArgb().ToString();
+                gradientColorBox.Text = DwmColor.ToDwmString(dialog.ResultColor!.Value);
         }
 
         private void gcCollectBtn_Click(object sender, EventArgs e)
