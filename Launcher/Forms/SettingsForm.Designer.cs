@@ -68,9 +68,10 @@ namespace launcherdotnet.Launcher.Forms
             LauncherLabel = new Label();
             label2 = new Label();
             LauncherApiLabel = new Label();
-            panel1 = new Panel();
-            DescriptionLabel = new Label();
+            panel1 = new FlowLayoutPanel();
             Hint = new Label();
+            openPluginSettingsBtn = new Button();
+            DescriptionLabel = new Label();
             SettingsTabControl.SuspendLayout();
             GeneralTab.SuspendLayout();
             PluginsTab.SuspendLayout();
@@ -451,7 +452,7 @@ namespace launcherdotnet.Launcher.Forms
             GithubLink.AutoSize = true;
             GithubLink.Location = new Point(3, 364);
             GithubLink.Name = "GithubLink";
-            GithubLink.Size = new Size(273, 15);
+            GithubLink.Size = new Size(268, 15);
             GithubLink.TabIndex = 8;
             GithubLink.TabStop = true;
             GithubLink.Text = "https://github.com/Gameknight963/launcher.net";
@@ -464,7 +465,7 @@ namespace launcherdotnet.Launcher.Forms
             MadeBy.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             MadeBy.Location = new Point(3, 349);
             MadeBy.Name = "MadeBy";
-            MadeBy.Size = new Size(179, 15);
+            MadeBy.Size = new Size(174, 15);
             MadeBy.TabIndex = 6;
             MadeBy.Text = "launcher.net by gameknight963";
             // 
@@ -494,7 +495,7 @@ namespace launcherdotnet.Launcher.Forms
             LauncherLabel.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             LauncherLabel.Location = new Point(3, 19);
             LauncherLabel.Name = "LauncherLabel";
-            LauncherLabel.Size = new Size(77, 15);
+            LauncherLabel.Size = new Size(72, 15);
             LauncherLabel.TabIndex = 6;
             LauncherLabel.Text = "launcher.net";
             // 
@@ -512,37 +513,49 @@ namespace launcherdotnet.Launcher.Forms
             LauncherApiLabel.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             LauncherApiLabel.Location = new Point(3, 60);
             LauncherApiLabel.Name = "LauncherApiLabel";
-            LauncherApiLabel.Size = new Size(136, 15);
+            LauncherApiLabel.Size = new Size(131, 15);
             LauncherApiLabel.TabIndex = 6;
             LauncherApiLabel.Text = "launcher.net Plugin API";
             // 
             // panel1
             // 
             panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            panel1.Controls.Add(DescriptionLabel);
             panel1.Controls.Add(Hint);
-            panel1.Location = new Point(365, 36);
+            panel1.Controls.Add(openPluginSettingsBtn);
+            panel1.Location = new Point(365, 82);
             panel1.Name = "panel1";
-            panel1.Size = new Size(187, 376);
+            panel1.Size = new Size(187, 330);
             panel1.TabIndex = 6;
+            // 
+            // Hint
+            // 
+            Hint.AutoSize = true;
+            Hint.Location = new Point(3, 3);
+            Hint.Margin = new Padding(3, 3, 3, 0);
+            Hint.Name = "Hint";
+            Hint.Size = new Size(157, 30);
+            Hint.TabIndex = 0;
+            Hint.Text = "Select a setting for more information on what it does.";
+            // 
+            // openPluginSettingsBtn
+            // 
+            openPluginSettingsBtn.Location = new Point(3, 36);
+            openPluginSettingsBtn.Name = "openPluginSettingsBtn";
+            openPluginSettingsBtn.Size = new Size(145, 23);
+            openPluginSettingsBtn.TabIndex = 7;
+            openPluginSettingsBtn.Text = "Open Plugin Settings";
+            openPluginSettingsBtn.UseVisualStyleBackColor = true;
+            openPluginSettingsBtn.Click += OpenPluginSettingsBtn_Click;
             // 
             // DescriptionLabel
             // 
             DescriptionLabel.AutoSize = true;
             DescriptionLabel.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            DescriptionLabel.Location = new Point(0, 30);
+            DescriptionLabel.Location = new Point(365, 64);
             DescriptionLabel.Name = "DescriptionLabel";
             DescriptionLabel.Size = new Size(71, 15);
             DescriptionLabel.TabIndex = 1;
             DescriptionLabel.Text = "Description:";
-            // 
-            // Hint
-            // 
-            Hint.Location = new Point(0, 45);
-            Hint.Name = "Hint";
-            Hint.Size = new Size(180, 319);
-            Hint.TabIndex = 0;
-            Hint.Text = "Select a setting for more information on what it does.";
             // 
             // SettingsForm
             // 
@@ -550,6 +563,7 @@ namespace launcherdotnet.Launcher.Forms
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(562, 457);
             Controls.Add(panel1);
+            Controls.Add(DescriptionLabel);
             Controls.Add(SettingsTabControl);
             Controls.Add(SaveButton);
             ForeColor = Color.Black;
@@ -569,6 +583,7 @@ namespace launcherdotnet.Launcher.Forms
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -578,7 +593,7 @@ namespace launcherdotnet.Launcher.Forms
         private TabPage PluginsTab;
         private TabPage AdvancedTab;
         private CheckedListBox AdvancedCheckbox;
-        private Panel panel1;
+        private FlowLayoutPanel panel1;
         private Label Hint;
         private CheckedListBox GeneralCheckbox;
         private Label MirrorsHint;
@@ -613,5 +628,6 @@ namespace launcherdotnet.Launcher.Forms
         private Label label1;
         private Label label3;
         private Button colorButton;
+        private Button openPluginSettingsBtn;
     }
 }
