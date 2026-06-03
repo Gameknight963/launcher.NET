@@ -146,7 +146,7 @@ namespace launcherdotnet.Styling
             OnThemeWasApplied();
         }
 
-        private void DrawShadowText(Graphics g, string text, Font font, Rectangle bounds, Color textColor)
+        private static void DrawShadowText(Graphics g, string text, Font font, Rectangle bounds, Color textColor)
         {
             Color shadowColor = Color.FromArgb(120, 0, 0, 0);
 
