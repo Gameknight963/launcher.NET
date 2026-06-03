@@ -3,6 +3,7 @@ using launcherdotnet.PluginAPI;
 using launcherdotnet.Styling;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -14,6 +15,7 @@ namespace launcherdotnet.Launcher.Forms
         public SettingsForm()
         {
             InitializeComponent();
+            StartPosition = FormStartPosition.CenterParent;
             Icon = LauncherConstants.AppIcon;
 
             _themeButtons = [
@@ -196,7 +198,8 @@ namespace launcherdotnet.Launcher.Forms
             // obviously it's not clickable if it's invisible so this won't throw
             PluginsListboxItem item = (PluginsListboxItem)GamePluginsBox.SelectedItems[0]!;
             IPluginWithSettings pluginWithSettings = (IPluginWithSettings)item.Plugin.Instance;
-            pluginWithSettings.CreateSettingsForm().ShowDialog();
+            using Form form = pluginWithSettings.CreateSettingsForm();
+            form.ShowDialog();
         }
 
         private void ShowAdvancedHint(object? sender, EventArgs e)
@@ -315,7 +318,7 @@ namespace launcherdotnet.Launcher.Forms
         private void colorButton_Click(object sender, EventArgs e)
         {
             Color? result = int.TryParse(gradientColorBox.Text, out int value) ? Color.FromArgb(value) : null;
-            CoolColorPicker dialog = new(result);
+            using CoolColorPicker dialog = new(result);
             if (dialog.ShowDialog() == DialogResult.OK)
                 gradientColorBox.Text = dialog.ResultColor!.Value.ToArgb().ToString();
         }
