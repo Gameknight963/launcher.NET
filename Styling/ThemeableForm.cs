@@ -16,10 +16,17 @@ namespace launcherdotnet.Styling
 
         private readonly HashSet<Control> _themedControls = new();
 
+        protected bool EnableAutoThemes = true;
+
         public ThemeableForm()
         {
             if (IsDesignTime) return;
-            Load += (sender, e) => ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.ActiveTextRenderMode, ThemeManager.ActiveGradientColor);
+            Load += (sender, e) =>
+            {
+                if (EnableAutoThemes)
+                    ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.ActiveTextRenderMode, 
+                        ThemeManager.ActiveGradientColor);
+            };
         }
 
         protected virtual void OnThemeWasApplied() { }
