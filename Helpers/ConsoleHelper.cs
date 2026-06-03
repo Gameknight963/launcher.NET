@@ -1,13 +1,14 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-internal class ConsoleHelper
+internal partial class ConsoleHelper
 {
-    [DllImport("kernel32.dll")]
-    private static extern bool AllocConsole();
+    [LibraryImport("kernel32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool AllocConsole();
 
-    [DllImport("kernel32.dll")]
-    private static extern bool FreeConsole();
+    [LibraryImport("kernel32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool FreeConsole();
 
     public static bool ConsoleShown = false;
 
