@@ -72,6 +72,7 @@ namespace launcherdotnet.Launcher.Forms
             Hint = new Label();
             openPluginSettingsBtn = new Button();
             DescriptionLabel = new Label();
+            gcCollectBtn = new Button();
             SettingsTabControl.SuspendLayout();
             GeneralTab.SuspendLayout();
             PluginsTab.SuspendLayout();
@@ -193,6 +194,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             // AdvancedTab
             // 
+            AdvancedTab.Controls.Add(gcCollectBtn);
             AdvancedTab.Controls.Add(AdvancedCheckbox);
             AdvancedTab.Location = new Point(4, 24);
             AdvancedTab.Name = "AdvancedTab";
@@ -557,6 +559,16 @@ namespace launcherdotnet.Launcher.Forms
             DescriptionLabel.TabIndex = 1;
             DescriptionLabel.Text = "Description:";
             // 
+            // gcCollectBtn
+            // 
+            gcCollectBtn.Location = new Point(3, 85);
+            gcCollectBtn.Name = "gcCollectBtn";
+            gcCollectBtn.Size = new Size(109, 23);
+            gcCollectBtn.TabIndex = 1;
+            gcCollectBtn.Text = "Collect garbage";
+            gcCollectBtn.UseVisualStyleBackColor = true;
+            gcCollectBtn.Click += gcCollectBtn_Click;
+            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -629,5 +641,6 @@ namespace launcherdotnet.Launcher.Forms
         private Label label3;
         private Button colorButton;
         private Button openPluginSettingsBtn;
+        private Button gcCollectBtn;
     }
 }
