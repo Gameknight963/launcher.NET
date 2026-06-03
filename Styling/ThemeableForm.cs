@@ -22,6 +22,7 @@ namespace launcherdotnet.Styling
         public ThemeableForm()
         {
             if (IsDesignTime) return;
+            ActiveTheme = ThemeManager.ActiveTheme;
             Load += (sender, e) =>
             {
                 if (InheritGlobalTheme)
