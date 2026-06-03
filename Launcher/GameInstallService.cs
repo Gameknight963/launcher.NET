@@ -22,7 +22,7 @@ namespace launcherdotnet.Launcher
             PluginGameInfo? installed = await Task.Run(() => installer.Install(installDir, progress, status, version));
             if (installed == null) return null;
 
-            newGame.GameName = installer.GameName;
+            newGame.GameName = installed.GameName ?? installer.GameName;
             newGame.RelativePath = Path.GetRelativePath(LauncherConstants.BaseDir, installed.ExePath);
             newGame.RunWithCmd = installed.RunWithCmd;
             newGame.ModManagable = installed.ModManageable;
