@@ -13,6 +13,7 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
 	<NoWarn>$(NoWarn);NU1701;NETSDK1137;</NoWarn>
 	<ApplicationIcon>icon.ico</ApplicationIcon>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
 
