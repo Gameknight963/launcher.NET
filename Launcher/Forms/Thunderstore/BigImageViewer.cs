@@ -40,7 +40,7 @@ namespace launcherdotnet.Launcher.Forms
 
         public static void Show(string url, int width, int height)
         {
-            BigImageViewer viewer = new(url, width, height);
+            using BigImageViewer viewer = new(url, width, height);
             viewer.ShowDialog();
         }
     }
