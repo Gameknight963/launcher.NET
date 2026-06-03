@@ -26,7 +26,7 @@ dotnet_diagnostic.CS1591.severity = silent
 dotnet_style_prefer_collection_expression = false
 
 # Simplify new expression
-csharp_style_implicit_object_creation_when_type_is_apparent = fales
+csharp_style_implicit_object_creation_when_type_is_apparent = false
 
 [*.csproj]
 indent_style = space
