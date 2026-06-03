@@ -1,9 +1,11 @@
 ﻿using System.Globalization;
+using Newtonsoft.Json;
 
 namespace launcherdotnet.Styling
 {
     public class DwmColor(Color color)
     {
+        [JsonConverter(typeof(DwmColorConverter))]
         public Color Color { get; set; } = color;
 
         public static implicit operator Color(DwmColor dwmColor) => dwmColor.Color;
