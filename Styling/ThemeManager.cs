@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace launcherdotnet.Styling
 {
@@ -236,21 +237,14 @@ namespace launcherdotnet.Styling
         public static bool ResolveTextRenderMode(Theme theme, TextRenderMode mode)
         {
             Theme resolvedTheme = ResolveTheme(theme);
-            switch (mode)
+            return mode switch
             {
-                case TextRenderMode.Auto:
-                    return !(resolvedTheme == Theme.Acrylic || resolvedTheme == Theme.Blur);
-
-                case TextRenderMode.AutoStrict:
-                    return resolvedTheme == Theme.Light || resolvedTheme == Theme.Dark;
-
-                case TextRenderMode.TextRenderer:
-                    return true;
-
-                case TextRenderMode.ShadowText:
-                    return false;                
-            }
-            throw new InvalidOperationException($"The requested textrendermode is invalid: {mode}");
+                TextRenderMode.Auto => !(resolvedTheme == Theme.Acrylic || resolvedTheme == Theme.Blur),
+                TextRenderMode.AutoStrict => resolvedTheme == Theme.Light || resolvedTheme == Theme.Dark,
+                TextRenderMode.TextRenderer => true,
+                TextRenderMode.ShadowText => false,
+                _ => throw new ArgumentException($"The requested textrendermode is invalid: {mode}", nameof(mode)),
+            };
         }
 
         public static Theme ResolveTheme(Theme theme)
