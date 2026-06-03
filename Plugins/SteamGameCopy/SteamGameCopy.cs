@@ -2,7 +2,6 @@ using launcherdotnet.Launcher.Forms;
 using launcherdotnet.PluginAPI;
 using launcherdotnet.Plugins.SteamGameCopy;
 using launcherdotnet.Thunderstore;
-using System.Reflection.Metadata.Ecma335;
 
 [assembly: LauncherPlugin(typeof(SteamGameCopy),
     "Steam Game Copier",
@@ -15,7 +14,7 @@ namespace launcherdotnet.Plugins.SteamGameCopy
     {
         public string GameName => "Steam Game";
 
-        public LabelQueryTime PromptForLabel => LabelQueryTime.AfterInstall;
+        public LabelQueryTime PromptForLabel => LabelQueryTime.Never;
 
         public IEnumerable<string>? GetReleases() => null;
 
@@ -30,6 +29,8 @@ namespace launcherdotnet.Plugins.SteamGameCopy
             SteamCopyForm form = new(games);
             form.ShowDialog();
             if (form.SelectedGame == null) return null;
+            string? label = Launcher.LauncherDialogs.QueryLabel(form.SelectedGame.Name);
+            if (label == null) return null;
             PluginTools.CopyDirectoryWithProgress(form.SelectedGame.RootDirectory, installDir, progress, status);
             if (!PluginTools.FindGameExe(installDir, out string? path, PluginTools.GameSearchOptions.SearchExcludeHelpers))
             {
@@ -55,7 +56,9 @@ namespace launcherdotnet.Plugins.SteamGameCopy
             {
                 ExePath = path,
                 ThunderstoreCommunitySlug = slug,
-                ModManageable = true
+                ModManageable = true,
+                Label = label,
+                GameName = form.SelectedGame.Name,
             };
         }
     }
