@@ -1,55 +1,106 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 namespace launcherdotnet.PluginAPI
 {
     public class PluginTools
     {
+        private static readonly string[] _helperExeNames =
+        [
+            "UnityCrashHandler64.exe",
+            "UnityCrashHandler32.exe",
+            "CrashReport.exe",
+            "Uninstall.exe",
+            "unins000.exe",
+            "dxsetup.exe",
+            "vcredist_x64.exe",
+            "vcredist_x86.exe",
+            "vc_redist.x64.exe",
+            "vc_redist.x86.exe",
+            "DirectX.exe",
+            "setup.exe",
+            "install.exe",
+            "dotNetFx.exe",
+            "UEPrereqSetup_x64.exe",
+            "UEPrereqSetup_x86.exe",
+            "PhysXSetup.exe",
+        ];
+
+        private static readonly string[] _nonGameNamePatterns =
+        [
+            "setup", "redist", "install", "vcredist", "directx",
+            "prereq", "crashhandler", "crash_handler", "unins"
+        ];
+        private static string NormalizeName(string s) =>
+            Regex.Replace(s, @"[\s_\-]", "", RegexOptions.None).ToLowerInvariant();
+
         /// <summary>
         /// Finds the most likely game EXE in a folder
         /// </summary>
         /// <param name="folderPath">The folder to search</param>
         /// <param name="gameSearchOptions"><see cref="GameSearchOptions"/> paramaters to use.</param>
-        /// <param name="path">The found EXE</param>
+        /// <param name="path">The found EXE. Not null if returned true.</param>
         /// <returns>Whether a suitable EXE was found or not.</returns>
-        /// <exception cref="FileNotFoundException">Thrown if no suitable EXE is found</exception>
+        /// <exception cref="DirectoryNotFoundException"></exception>
         public static bool FindGameExe(string folderPath, [NotNullWhen(true)] out string? path, GameSearchOptions gameSearchOptions = new())
         {
             if (!Directory.Exists(folderPath)) throw new DirectoryNotFoundException($"Folder not found: {folderPath}");
-
             string folderName = Path.GetFileName(folderPath);
-
-            // Get all exe files in the search directory (or top level, depending on options)
-
             SearchOption searchOption = gameSearchOptions.SearchSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            string[] exes = Directory.GetFiles(folderPath, "*.exe", SearchOption.AllDirectories);
-
+            string[] exes = Directory.GetFiles(folderPath, "*.exe", searchOption);
             List<string> candidates = exes.ToList();
 
-            // Exclude some common helper EXEs
+            // exclude known helper exes by filename
             if (gameSearchOptions.ExcludeHelpers)
             {
-                LauncherLogger.WriteLine("excluding helprs");
                 candidates = candidates
-                    .Where(f => !f.EndsWith("UnityCrashHandler64.exe", StringComparison.OrdinalIgnoreCase) &&
-                                !f.EndsWith("CrashReport.exe", StringComparison.OrdinalIgnoreCase) &&
-                                !f.EndsWith("Uninstall.exe", StringComparison.OrdinalIgnoreCase) &&
-                                !f.EndsWith("unins000.exe", StringComparison.OrdinalIgnoreCase))
+                    .Where(f =>
+                    {
+                        string fileName = Path.GetFileName(f);
+                        string fileNameLower = Path.GetFileNameWithoutExtension(f).ToLowerInvariant();
+                        return !_helperExeNames.Any(h => fileName.Equals(h, StringComparison.OrdinalIgnoreCase))
+                            && !_nonGameNamePatterns.Any(p => fileNameLower.Contains(p));
+                    })
                     .ToList();
             }
 
             if (candidates.Count == 0)
             {
                 path = null;
-                return false; 
+                return false;
             }
 
-            // Try to find EXE matching the folder name
-            string? matchByName = candidates.FirstOrDefault(f =>
-                Path.GetFileNameWithoutExtension(f).Contains(folderName, StringComparison.OrdinalIgnoreCase));
+            // prefer top-level exes
+            List<string> topLevel = candidates
+                .Where(f => Path.GetDirectoryName(f) == folderPath)
+                .ToList();
+
+            List<string> searchCandidates = topLevel.Count > 0 ? topLevel : candidates;
+
+            if (searchCandidates.Count == 1)
+            {
+                path = searchCandidates[0];
+                return true;
+            }
+
+            // fuzzy name match
+            string normalizedFolder = NormalizeName(folderName);
+            string? matchByName = searchCandidates.FirstOrDefault(f =>
+            {
+                string normalizedExe = NormalizeName(Path.GetFileNameWithoutExtension(f));
+                return normalizedExe.Contains(normalizedFolder) || normalizedFolder.Contains(normalizedExe);
+            });
+
+            // if no match in top-level, retry with full candidate list
+            if (matchByName == null && topLevel.Count > 0 && topLevel.Count != candidates.Count)
+            {
+                matchByName = candidates.FirstOrDefault(f =>
+                {
+                    string normalizedExe = NormalizeName(Path.GetFileNameWithoutExtension(f));
+                    return normalizedExe.Contains(normalizedFolder) || normalizedFolder.Contains(normalizedExe);
+                });
+                if (matchByName == null) searchCandidates = candidates; // also use full list for size fallback
+            }
 
             if (matchByName != null)
             {
@@ -57,8 +108,17 @@ namespace launcherdotnet.PluginAPI
                 return true;
             }
 
-            // Otherwise, pick the largest EXE
-            path = candidates.OrderByDescending(f => new FileInfo(f).Length).First();
+            // fall back to MultipleExesMode
+            path = gameSearchOptions.MultipleExesMode switch
+            {
+                MultipleExesMode.PickLargest => candidates.OrderByDescending(f => new FileInfo(f).Length).First(),
+                MultipleExesMode.PickSmallest => candidates.OrderBy(f => new FileInfo(f).Length).First(),
+                MultipleExesMode.Alphabetical => candidates.OrderBy(f => Path.GetFileName(f), StringComparer.OrdinalIgnoreCase).First(),
+                MultipleExesMode.ReturnFalse => null,
+                _ => candidates.OrderByDescending(f => new FileInfo(f).Length).First()
+            };
+
+            if (path == null) return false;
             return true;
         }
 
@@ -71,7 +131,8 @@ namespace launcherdotnet.PluginAPI
         /// <param name="excludeHelpers">
         /// Determines whether common helper executables should be excluded.
         /// </param>
-        public struct GameSearchOptions(bool searchSubdirs = true, bool excludeHelpers = false)
+        /// <param name="multipleExesMode">What to do if there are multiple canadite exes</param>
+        public struct GameSearchOptions(bool searchSubdirs = true, bool excludeHelpers = false, MultipleExesMode multipleExesMode = MultipleExesMode.PickLargest)
         {
             /// <summary>
             /// If true, the search will include all subdirectories of the specified folder.
@@ -84,8 +145,12 @@ namespace launcherdotnet.PluginAPI
             /// </summary>
             public bool ExcludeHelpers { get; set; } = excludeHelpers;
 
+            /// <summary>
+            /// What to do if there are multiple canadite exes
+            /// </summary>
+            public MultipleExesMode MultipleExesMode { get; set; } = multipleExesMode;
+
             public static GameSearchOptions SearchExcludeHelpers => new(true, true);
-            public static GameSearchOptions SearchTopLevelOnly => new(false, false);
         }
 
         /// <summary>
