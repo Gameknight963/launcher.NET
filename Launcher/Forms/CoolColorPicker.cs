@@ -18,6 +18,11 @@ namespace launcherdotnet.Launcher.Forms
             {
                 colorEditor.Color = startColor.Value;
             }
+            InheritGlobalTheme = false;
+            if (IsThemeColoredLight())
+                ApplyTheme(ThemeManager.Theme.Light);
+            else
+                ApplyTheme(ThemeManager.Theme.Dark);
         }
 
         private void okButton_Click(object sender, EventArgs e)
