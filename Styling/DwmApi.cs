@@ -2,14 +2,13 @@
 
 namespace launcherdotnet.Styling
 {
-    internal static class DwmApi
+    internal static partial class DwmApi
     {
-        [DllImport("dwmapi.dll")]
-        private static extern int DwmExtendFrameIntoClientArea(IntPtr hwnd, ref MARGINS pMarInset);
+        [LibraryImport("dwmapi.dll")]
+        internal static partial int DwmExtendFrameIntoClientArea(IntPtr hwnd, ref MARGINS pMarInset);
 
-        [DllImport("dwmapi.dll")]
-        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int dwAttribute, ref int pvAttribute, int cbAttribute);
-
+        [LibraryImport("dwmapi.dll")]
+        internal static partial int DwmSetWindowAttribute(IntPtr hwnd, int dwAttribute, ref int pvAttribute, int cbAttribute);
 
         public enum WindowCompositionAttribute
         {
@@ -33,8 +32,8 @@ namespace launcherdotnet.Styling
             public int SizeOfData;
         }
 
-        [DllImport("user32.dll")]
-        private static extern int SetWindowCompositionAttribute(IntPtr hwnd, ref WindowCompositionAttributeData data);
+        [LibraryImport("user32.dll")]
+        private static partial int SetWindowCompositionAttribute(IntPtr hwnd, ref WindowCompositionAttributeData data);
 
         [StructLayout(LayoutKind.Sequential)]
         public struct MARGINS
@@ -46,23 +45,16 @@ namespace launcherdotnet.Styling
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct AccentPolicy
+        public struct AccentPolicy(
+            AccentState accentState = AccentState.ACCENT_DISABLED,
+            int accentFlags = 2,
+            int gradientColor = 0x00000000,
+            int animationId = 0)
         {
-            public AccentState AccentState = AccentState.ACCENT_DISABLED;
-            public int AccentFlags = 2;
-            public int GradientColor = 0x00000000;
-            public int AnimationId = 0;
-            public AccentPolicy(
-                AccentState accentState = AccentState.ACCENT_DISABLED,
-                int accentFlags = 2,
-                int gradientColor = 0x00000000,
-                int animationId = 0)
-            {
-                AccentState = accentState;
-                AccentFlags = accentFlags;
-                GradientColor = gradientColor;
-                AnimationId = animationId;
-            }
+            public AccentState AccentState = accentState;
+            public int AccentFlags = accentFlags;
+            public int GradientColor = gradientColor;
+            public int AnimationId = animationId;
         }
 
 
@@ -76,7 +68,7 @@ namespace launcherdotnet.Styling
                 Bottom = -1
             };
 
-            DwmExtendFrameIntoClientArea(hwnd, ref margins);
+            _ = DwmExtendFrameIntoClientArea(hwnd, ref margins);
         }
 
         public static void UnextendFrame(IntPtr hwnd)
@@ -97,7 +89,7 @@ namespace launcherdotnet.Styling
             int useDark = 1;
             int attribute = 20;
 
-            DwmSetWindowAttribute(hwnd, attribute, ref useDark, sizeof(int));
+            _ = DwmSetWindowAttribute(hwnd, attribute, ref useDark, sizeof(int));
         }
 
         public static void DisableImmersiveDarkMode(IntPtr hwnd)
@@ -105,7 +97,7 @@ namespace launcherdotnet.Styling
             int useDark = 0;
             int attribute = 20;
 
-            DwmSetWindowAttribute(hwnd, attribute, ref useDark, sizeof(int));
+            _ = DwmSetWindowAttribute(hwnd, attribute, ref useDark, sizeof(int));
         }
 
 
