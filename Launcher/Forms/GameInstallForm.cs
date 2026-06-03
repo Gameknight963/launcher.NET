@@ -71,7 +71,7 @@ namespace launcherdotnet.Launcher.Forms
             string? label = null;
             if (installer.PromptForLabel == LabelQueryTime.BeforeInstall)
             {
-                label = QueryLabel(installer.GameName);
+                label = LauncherDialogs.QueryLabel(installer.GameName);
                 if (label == null) return;
             }
 
