@@ -16,14 +16,15 @@ namespace launcherdotnet.Styling
 
         private readonly HashSet<Control> _themedControls = new();
 
-        protected bool EnableAutoThemes = true;
+        // wip, does not prevent thememanager from changing it later
+        protected bool InheritGlobalTheme = true;
 
         public ThemeableForm()
         {
             if (IsDesignTime) return;
             Load += (sender, e) =>
             {
-                if (EnableAutoThemes)
+                if (InheritGlobalTheme)
                     ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.ActiveTextRenderMode, 
                         ThemeManager.ActiveGradientColor);
             };
