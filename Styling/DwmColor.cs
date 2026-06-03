@@ -4,9 +4,9 @@ using System.Globalization;
 
 namespace launcherdotnet.Styling
 {
+    [JsonConverter(typeof(DwmColorConverter))]
     public class DwmColor(Color color)
     {
-        [JsonConverter(typeof(DwmColorConverter))]
         public Color Color { get; set; } = color;
 
         public static implicit operator Color(DwmColor dwmColor) => dwmColor.Color;
