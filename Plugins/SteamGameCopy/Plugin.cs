@@ -26,7 +26,7 @@ namespace launcherdotnet.Plugins.SteamGameCopy
         public async Task<PluginGameInfo?> Install(string installDir, IProgress<double> progress, IProgress<string> status, string? release = null)
         {
             List<SteamGame> games = SteamHelper.GetInstalledGames(SteamHelper.GetSteamPath() ?? throw new InvalidOperationException());
-            SteamCopyForm form = new(games);
+            using SteamCopyForm form = new(games);
             form.ShowDialog();
             if (form.SelectedGame == null) return null;
             string? label = Launcher.LauncherDialogs.QueryLabel(form.SelectedGame.Name);
