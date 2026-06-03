@@ -322,5 +322,11 @@ namespace launcherdotnet.Launcher.Forms
             if (dialog.ShowDialog() == DialogResult.OK)
                 gradientColorBox.Text = dialog.ResultColor!.Value.ToArgb().ToString();
         }
+
+        private void gcCollectBtn_Click(object sender, EventArgs e)
+        {
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
     }
 }
