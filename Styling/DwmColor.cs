@@ -1,5 +1,6 @@
-﻿using System.Globalization;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 namespace launcherdotnet.Styling
 {
@@ -70,7 +71,7 @@ namespace launcherdotnet.Styling
         /// <summary>
         /// Attempts to parse a string in 0xAABBGGRR format.
         /// </summary>
-        public static bool TryParse(string value, out DwmColor? color)
+        public static bool TryParse(string value, [NotNullWhen(true)] out DwmColor? color)
         {
             color = null;
 
