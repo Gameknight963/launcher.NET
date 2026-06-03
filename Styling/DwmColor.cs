@@ -9,7 +9,7 @@ namespace launcherdotnet.Styling
     {
         public Color Color { get; set; } = color;
 
-        public static implicit operator Color(DwmColor dwmColor) => dwmColor.Color;
+        public static implicit operator Color(DwmColor? dwmColor) => dwmColor?.Color ?? Color.Empty;
         public static explicit operator DwmColor(Color color) => new DwmColor(color);
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace launcherdotnet.Styling
         /// <summary>
         /// Parses a string in 0xAABBGGRR format.
         /// </summary>
-        public static DwmColor Parse(string value)
+        public static DwmColor Parse(string? value)
         {
             if (!TryParse(value, out DwmColor? result))
                 throw new FormatException($"Invalid DWM color: '{value}'");
@@ -71,7 +71,7 @@ namespace launcherdotnet.Styling
         /// <summary>
         /// Attempts to parse a string in 0xAABBGGRR format.
         /// </summary>
-        public static bool TryParse(string value, [NotNullWhen(true)] out DwmColor? color)
+        public static bool TryParse(string? value, [NotNullWhen(true)] out DwmColor? color)
         {
             color = null;
 
