@@ -195,12 +195,10 @@ namespace launcherdotnet.Launcher.Forms
         private void InstallGame()
         {
             // legends will remember salamalonekabatrabaslatrowerebakaedro
-            using (GameInstallForm form = new GameInstallForm())
-            {
-                form.ShowDialog();
-                if (form.Success)
-                    UpdateGameList(gamesView);
-            }
+            using GameInstallForm form = new GameInstallForm();
+            form.ShowDialog();
+            if (form.Success)
+                UpdateGameList(gamesView);
         }
 
         private async void button3_Click(object sender, EventArgs e)
@@ -256,8 +254,7 @@ namespace launcherdotnet.Launcher.Forms
 
         private async void SettingsButton_Click(object sender, EventArgs e)
         {
-            SettingsForm form = new SettingsForm();
-            form.StartPosition = FormStartPosition.CenterParent;
+            using SettingsForm form = new();
             await Task.Run(async () => form.ShowDialog(this));
         }
 
@@ -329,7 +326,7 @@ namespace launcherdotnet.Launcher.Forms
 
             if (e.Control && e.KeyCode == Keys.Oemcomma)
             {
-                SettingsForm form = new();
+                using SettingsForm form = new();
                 form.ShowDialog();
             }
 
@@ -353,7 +350,7 @@ namespace launcherdotnet.Launcher.Forms
         {
             GameInfo? currentGame = GetSelectedGame();
             if (currentGame == null) return;
-            GameInfoEditor editor = new(currentGame);
+            using GameInfoEditor editor = new(currentGame);
             editor.ShowDialog();
             if (editor.DialogResult == DialogResult.OK)
             {
@@ -365,7 +362,8 @@ namespace launcherdotnet.Launcher.Forms
 
         private void installModsButton_Click(object sender, EventArgs e)
         {
-            new GameModManager(GetSelectedGame()!).ShowDialog();
+            using GameModManager manager = new(GetSelectedGame()!);
+            manager.ShowDialog();
         }
     }
 }

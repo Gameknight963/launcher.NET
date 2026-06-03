@@ -34,12 +34,14 @@ namespace launcherdotnet.Launcher.Forms
 
         public static void Show(string url)
         {
-            new BigImageViewer(url).ShowDialog();
+            using BigImageViewer viewer = new(url);
+            viewer.ShowDialog();
         }
 
         public static void Show(string url, int width, int height)
         {
-            new BigImageViewer(url, width, height).ShowDialog();
+            BigImageViewer viewer = new(url, width, height);
+            viewer.ShowDialog();
         }
     }
 }

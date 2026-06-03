@@ -60,7 +60,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            ThunderstoreModBrowser browser = new(_game);
+            using ThunderstoreModBrowser browser = new(_game);
             browser.ShowDialog();
             _state = GameModState.Load(_game.AbsoluteRootDirectory);
             RefreshList();
@@ -160,7 +160,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                 CoolMessageBox.Show("No untracked files found.", "Clean Up", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            UntrackedFilesForm form = new(untracked);
+            using UntrackedFilesForm form = new(untracked);
             if (form.ShowDialog() != DialogResult.OK) return;
             foreach (string file in form.SelectedForDeletion)
             {

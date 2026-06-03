@@ -259,10 +259,12 @@ namespace launcherdotnet.Launcher.Forms
 
             (List<string> pkgStrings, List<string> depStrings) = ModResolver.BuildDisplayStrings(result);
 
-            if (new ReviewAndConfirm(pkgStrings.Concat(depStrings), result.Dependencies.Count).ShowDialog() != DialogResult.OK)
+            if (new ReviewAndConfirm(pkgStrings.Concat(depStrings), result.Dependencies.Count)
+                .DialogResult != DialogResult.OK)
                 return;
 
-            new ThunderstoreModInstaller(_game, result.Packages, result.Dependencies).ShowDialog();
+            using ThunderstoreModInstaller thunderstoreModInstaller = new(_game, result.Packages, result.Dependencies);
+            thunderstoreModInstaller.ShowDialog();
             Close();
         }
     }
