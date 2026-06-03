@@ -1,10 +1,10 @@
 ﻿using Microsoft.Win32;
-using System.Diagnostics;
 
 namespace launcherdotnet.Styling
 {
     public class ThemeManager
     {
+        // there NEEDS to be a theme object eventually man... not now
         public static Theme ActiveTheme { get; private set; }
         public static Theme ResolvedTheme => ResolveTheme(ActiveTheme);
         public static TextRenderMode ActiveTextRenderMode { get; private set; }
