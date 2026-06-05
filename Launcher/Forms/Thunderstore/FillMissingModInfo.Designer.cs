@@ -29,7 +29,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
+            messageLabel = new Label();
             okButton = new Button();
             skipButton = new Button();
             cancelButton = new Button();
@@ -41,13 +41,13 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             versionTb = new TextBox();
             SuspendLayout();
             // 
-            // label1
+            // messageLabel
             // 
-            label1.Location = new Point(12, 9);
-            label1.Name = "label1";
-            label1.Size = new Size(389, 23);
-            label1.TabIndex = 0;
-            label1.Text = "The package you have selected is missing the following information:";
+            messageLabel.Location = new Point(12, 9);
+            messageLabel.Name = "messageLabel";
+            messageLabel.Size = new Size(389, 23);
+            messageLabel.TabIndex = 0;
+            messageLabel.Text = "The package you have selected is missing the following information:";
             // 
             // okButton
             // 
@@ -147,7 +147,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             Controls.Add(cancelButton);
             Controls.Add(skipButton);
             Controls.Add(okButton);
-            Controls.Add(label1);
+            Controls.Add(messageLabel);
             Name = "FillMissingModInfo";
             Text = "Missing Package Manifest";
             ResumeLayout(false);
@@ -156,7 +156,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
 
         #endregion
 
-        private Label label1;
+        private Label messageLabel;
         private Button okButton;
         private Button skipButton;
         private Button cancelButton;

@@ -2,21 +2,16 @@
 {
     public partial class FillMissingModInfo : Form
     {
-        public (string Name, string Owner, string Version)? ModInfo { get; private set; }
-        public Result FormResult { get; private set; } = Result.Cancel;
-        public enum Result
-        {
-            OK,
-            Skip,
-            Cancel,
-        }
-        public FillMissingModInfo()
+        public (string name, string owner, string version)? EditedInfo { get; private set; }
+        public FillMissingModInfo(string? labelText = null, (string name, string owner, string version)? modInfo = null)
         {
             InitializeComponent();
+            if (labelText != null) messageLabel.Text = labelText;
             okButton.Enabled = false;
             nameTb.TextChanged += AnyTextBox_TextChanged;
             ownerTb.TextChanged += AnyTextBox_TextChanged;
             versionTb.TextChanged += AnyTextBox_TextChanged;
+            if (modInfo != null) (nameTb.Text, ownerTb.Text, versionTb.Text) = modInfo.Value;
         }
 
         private void AnyTextBox_TextChanged(object? sender, EventArgs e)
@@ -29,20 +24,21 @@
 
         private void OkButton_Click(object sender, EventArgs e)
         {
-            ModInfo = (nameTb.Text, ownerTb.Text, versionTb.Text);
-            FormResult = Result.OK;
+            EditedInfo = (nameTb.Text, ownerTb.Text, versionTb.Text);
+            DialogResult = DialogResult.OK;
             Close();
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            FormResult = Result.Cancel;
+            DialogResult = DialogResult.Cancel;
             Close();
         }
 
         private void SkipButton_Click(object sender, EventArgs e)
         {
-            FormResult = Result.Skip;
+            EditedInfo = ("", "", "");
+            DialogResult = DialogResult.Continue;
             Close();
         }
     }
