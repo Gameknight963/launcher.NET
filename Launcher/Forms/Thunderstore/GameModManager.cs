@@ -1,6 +1,8 @@
 ﻿using launcherdotnet.Helpers;
 using launcherdotnet.Launcher.Settings;
 using launcherdotnet.Styling;
+using launcherdotnet.Thunderstore;
+using System.Windows.Forms;
 
 namespace launcherdotnet.Launcher.Forms.Thunderstore
 {
@@ -184,6 +186,24 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
                 return;
             }
             CleanUpUntrackedFiles();
+        }
+
+        private async void InstallFromZip_Click(object sender, EventArgs e)
+        {
+            using OpenFileDialog dialog = new();
+            dialog.Filter = "Zip archive (*.zip)|*.zip";
+            dialog.Title = "Select a package";
+            if (dialog.ShowDialog() != DialogResult.OK) return;
+            await ModInstaller.InstallZipAsync(dialog.FileName, _game, OnMissingInfo);
+            RefreshList();
+        }
+
+        private static (string, string, string)? OnMissingInfo()
+        {
+            using FillMissingModInfo form = new();
+            form.ShowDialog();
+            if (form.FormResult == FillMissingModInfo.Result.Cancel) return null;
+            return form.ModInfo;
         }
     }
 }
