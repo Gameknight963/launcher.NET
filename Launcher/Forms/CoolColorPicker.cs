@@ -16,22 +16,22 @@ namespace launcherdotnet.Launcher.Forms
             CancelButton = cancelButton;
             if (startColor != null)
             {
-                colorEditor.Color = startColor.Value;
+                hslaColorEditor.Color = startColor.Value;
 
                 // this also invalidates it
                 // invalidate() doesn't update it here for some reason
-                Shown += (s, e) => previewPanel.BackColor = colorEditor.Color;
+                Shown += (s, e) => previewPanel.BackColor = hslaColorEditor.Color;
             }
-        }
-
-        private void colorEditor_ColorChanged(object sender, EventArgs e)
-        {
-            previewPanel.BackColor = colorEditor.Color;
         }
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            ResultColor = colorEditor.Color;
+            ResultColor = hslaColorEditor.Color;
+        }
+
+        private void hslaColorEditor_ColorChanged(object sender, EventArgs e)
+        {
+            previewPanel.BackColor = hslaColorEditor.Color;
         }
     }
 }

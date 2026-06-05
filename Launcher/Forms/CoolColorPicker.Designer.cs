@@ -1,4 +1,5 @@
 ﻿using launcherdotnet.Launcher.Controls;
+
 namespace launcherdotnet.Launcher.Forms
 {
     partial class CoolColorPicker
@@ -29,27 +30,16 @@ namespace launcherdotnet.Launcher.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            colorEditor = new Cyotek.Windows.Forms.ColorEditor();
             okButton = new Button();
             cancelButton = new Button();
-            panel1 = new Panel();
             previewPanel = new CheckerboardPanel();
+            hslaColorEditor = new HslaColorEditor();
             SuspendLayout();
-            // 
-            // colorEditor
-            // 
-            colorEditor.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            colorEditor.Location = new Point(13, -85);
-            colorEditor.Margin = new Padding(4, 3, 4, 3);
-            colorEditor.Name = "colorEditor";
-            colorEditor.Size = new Size(246, 262);
-            colorEditor.TabIndex = 8;
-            colorEditor.ColorChanged += colorEditor_ColorChanged;
             // 
             // okButton
             // 
             okButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            okButton.Location = new Point(188, 246);
+            okButton.Location = new Point(188, 187);
             okButton.Name = "okButton";
             okButton.Size = new Size(75, 23);
             okButton.TabIndex = 9;
@@ -60,37 +50,38 @@ namespace launcherdotnet.Launcher.Forms
             // cancelButton
             // 
             cancelButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            cancelButton.Location = new Point(107, 246);
+            cancelButton.Location = new Point(107, 187);
             cancelButton.Name = "cancelButton";
             cancelButton.Size = new Size(75, 23);
             cancelButton.TabIndex = 9;
             cancelButton.Text = "Cancel";
             cancelButton.UseVisualStyleBackColor = true;
             // 
-            // panel1
-            // 
-            panel1.Location = new Point(12, -5);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(251, 21);
-            panel1.TabIndex = 10;
-            // 
             // previewPanel
             // 
-            previewPanel.Location = new Point(13, 183);
+            previewPanel.Location = new Point(12, 137);
             previewPanel.Name = "previewPanel";
             previewPanel.Size = new Size(246, 33);
             previewPanel.TabIndex = 11;
+            // 
+            // hslaColorEditor
+            // 
+            hslaColorEditor.Color = Color.Red;
+            hslaColorEditor.Location = new Point(12, 12);
+            hslaColorEditor.Name = "hslaColorEditor";
+            hslaColorEditor.Size = new Size(246, 119);
+            hslaColorEditor.TabIndex = 11;
+            hslaColorEditor.ColorChanged += hslaColorEditor_ColorChanged;
             // 
             // CoolColorPicker
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(275, 281);
+            ClientSize = new Size(275, 222);
+            Controls.Add(hslaColorEditor);
             Controls.Add(previewPanel);
-            Controls.Add(panel1);
             Controls.Add(cancelButton);
             Controls.Add(okButton);
-            Controls.Add(colorEditor);
             ForeColor = Color.Black;
             Name = "CoolColorPicker";
             Text = "Pick a Color";
@@ -98,11 +89,9 @@ namespace launcherdotnet.Launcher.Forms
         }
 
         #endregion
-
-        private Cyotek.Windows.Forms.ColorEditor colorEditor;
         private Button okButton;
         private Button cancelButton;
-        private Panel panel1;
         private CheckerboardPanel previewPanel;
+        private HslaColorEditor hslaColorEditor;
     }
 }
