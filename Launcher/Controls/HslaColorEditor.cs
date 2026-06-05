@@ -27,7 +27,7 @@ namespace launcherdotnet.Launcher.Controls
             }
         }
 
-        public Action? ColorChanged;
+        public event EventHandler? ColorChanged;
 
         private Color _color = Color.Red;
         private bool _updating;
@@ -86,7 +86,7 @@ namespace launcherdotnet.Launcher.Controls
         private void RebuildColor()
         {
             if (_updating) return;
-            ColorChanged?.Invoke();
+            ColorChanged?.Invoke(this, EventArgs.Empty);
             _hue = (double)hueNumericUpDown.Value;
             _saturation = (double)saturationNumericUpDown.Value / 100.0;
             _lightness = (double)lightnessNumericUpDown.Value / 100.0;
