@@ -121,7 +121,7 @@
             thunderstoreSlugLabel.Location = new Point(6, 62);
             thunderstoreSlugLabel.Margin = new Padding(6);
             thunderstoreSlugLabel.Name = "thunderstoreSlugLabel";
-            thunderstoreSlugLabel.Size = new Size(104, 17);
+            thunderstoreSlugLabel.Size = new Size(103, 17);
             thunderstoreSlugLabel.TabIndex = 0;
             thunderstoreSlugLabel.Text = "Thunderstore Slug";
             thunderstoreSlugLabel.TextAlign = ContentAlignment.MiddleLeft;
@@ -159,7 +159,7 @@
             exeLabel.Location = new Point(6, 6);
             exeLabel.Margin = new Padding(6);
             exeLabel.Name = "exeLabel";
-            exeLabel.Size = new Size(63, 16);
+            exeLabel.Size = new Size(64, 16);
             exeLabel.TabIndex = 0;
             exeLabel.Text = "Executable";
             exeLabel.TextAlign = ContentAlignment.MiddleLeft;
