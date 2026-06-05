@@ -41,6 +41,7 @@ namespace launcherdotnet.Launcher.Forms
             GamesLabel = new Label();
             MirrorsHint = new Label();
             AdvancedTab = new TabPage();
+            gcCollectBtn = new Button();
             AdvancedCheckbox = new CheckedListBox();
             ThemeTab = new TabPage();
             colorButton = new Button();
@@ -49,7 +50,7 @@ namespace launcherdotnet.Launcher.Forms
             label4 = new Label();
             label1 = new Label();
             ThemeHint = new Label();
-            flowLayoutPanel1 = new FlowLayoutPanel();
+            themeButtonsFlowLayoutPanel = new FlowLayoutPanel();
             systemThemeButton = new RadioButton();
             lightThemeButton = new RadioButton();
             darkThemeButton = new RadioButton();
@@ -72,13 +73,12 @@ namespace launcherdotnet.Launcher.Forms
             Hint = new Label();
             openPluginSettingsBtn = new Button();
             DescriptionLabel = new Label();
-            gcCollectBtn = new Button();
             SettingsTabControl.SuspendLayout();
             GeneralTab.SuspendLayout();
             PluginsTab.SuspendLayout();
             AdvancedTab.SuspendLayout();
             ThemeTab.SuspendLayout();
-            flowLayoutPanel1.SuspendLayout();
+            themeButtonsFlowLayoutPanel.SuspendLayout();
             AboutTab.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -203,6 +203,16 @@ namespace launcherdotnet.Launcher.Forms
             AdvancedTab.Text = "Advanced";
             AdvancedTab.UseVisualStyleBackColor = true;
             // 
+            // gcCollectBtn
+            // 
+            gcCollectBtn.Location = new Point(3, 85);
+            gcCollectBtn.Name = "gcCollectBtn";
+            gcCollectBtn.Size = new Size(109, 23);
+            gcCollectBtn.TabIndex = 1;
+            gcCollectBtn.Text = "Collect garbage";
+            gcCollectBtn.UseVisualStyleBackColor = true;
+            gcCollectBtn.Click += gcCollectBtn_Click;
+            // 
             // AdvancedCheckbox
             // 
             AdvancedCheckbox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
@@ -221,7 +231,7 @@ namespace launcherdotnet.Launcher.Forms
             ThemeTab.Controls.Add(label4);
             ThemeTab.Controls.Add(label1);
             ThemeTab.Controls.Add(ThemeHint);
-            ThemeTab.Controls.Add(flowLayoutPanel1);
+            ThemeTab.Controls.Add(themeButtonsFlowLayoutPanel);
             ThemeTab.Location = new Point(4, 24);
             ThemeTab.Name = "ThemeTab";
             ThemeTab.Padding = new Padding(3);
@@ -287,22 +297,22 @@ namespace launcherdotnet.Launcher.Forms
             ThemeHint.TabIndex = 1;
             ThemeHint.Text = "launcher.net has multiple themes you can choose from. Pick the one that best suits you.\r\n";
             // 
-            // flowLayoutPanel1
+            // themeButtonsFlowLayoutPanel
             // 
-            flowLayoutPanel1.Controls.Add(systemThemeButton);
-            flowLayoutPanel1.Controls.Add(lightThemeButton);
-            flowLayoutPanel1.Controls.Add(darkThemeButton);
-            flowLayoutPanel1.Controls.Add(blurThemeButton);
-            flowLayoutPanel1.Controls.Add(acrylicThemeButton);
-            flowLayoutPanel1.Controls.Add(extendedFrameThemeButton);
-            flowLayoutPanel1.Controls.Add(extendedFrameDarkThemeButton);
-            flowLayoutPanel1.Controls.Add(transparentGradientButton);
-            flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
-            flowLayoutPanel1.Location = new Point(6, 57);
-            flowLayoutPanel1.Margin = new Padding(3, 0, 3, 3);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(186, 162);
-            flowLayoutPanel1.TabIndex = 0;
+            themeButtonsFlowLayoutPanel.Controls.Add(systemThemeButton);
+            themeButtonsFlowLayoutPanel.Controls.Add(lightThemeButton);
+            themeButtonsFlowLayoutPanel.Controls.Add(darkThemeButton);
+            themeButtonsFlowLayoutPanel.Controls.Add(blurThemeButton);
+            themeButtonsFlowLayoutPanel.Controls.Add(acrylicThemeButton);
+            themeButtonsFlowLayoutPanel.Controls.Add(extendedFrameThemeButton);
+            themeButtonsFlowLayoutPanel.Controls.Add(extendedFrameDarkThemeButton);
+            themeButtonsFlowLayoutPanel.Controls.Add(transparentGradientButton);
+            themeButtonsFlowLayoutPanel.FlowDirection = FlowDirection.TopDown;
+            themeButtonsFlowLayoutPanel.Location = new Point(6, 57);
+            themeButtonsFlowLayoutPanel.Margin = new Padding(3, 0, 3, 3);
+            themeButtonsFlowLayoutPanel.Name = "themeButtonsFlowLayoutPanel";
+            themeButtonsFlowLayoutPanel.Size = new Size(186, 162);
+            themeButtonsFlowLayoutPanel.TabIndex = 0;
             // 
             // systemThemeButton
             // 
@@ -375,7 +385,7 @@ namespace launcherdotnet.Launcher.Forms
             extendedFrameThemeButton.Location = new Point(3, 95);
             extendedFrameThemeButton.Margin = new Padding(3, 0, 3, 0);
             extendedFrameThemeButton.Name = "extendedFrameThemeButton";
-            extendedFrameThemeButton.Size = new Size(107, 19);
+            extendedFrameThemeButton.Size = new Size(108, 19);
             extendedFrameThemeButton.TabIndex = 0;
             extendedFrameThemeButton.TabStop = true;
             extendedFrameThemeButton.Text = "Extended frame";
@@ -388,7 +398,7 @@ namespace launcherdotnet.Launcher.Forms
             extendedFrameDarkThemeButton.Location = new Point(3, 114);
             extendedFrameDarkThemeButton.Margin = new Padding(3, 0, 3, 0);
             extendedFrameDarkThemeButton.Name = "extendedFrameDarkThemeButton";
-            extendedFrameDarkThemeButton.Size = new Size(141, 19);
+            extendedFrameDarkThemeButton.Size = new Size(142, 19);
             extendedFrameDarkThemeButton.TabIndex = 0;
             extendedFrameDarkThemeButton.TabStop = true;
             extendedFrameDarkThemeButton.Text = "Extended frame (dark)";
@@ -401,7 +411,7 @@ namespace launcherdotnet.Launcher.Forms
             transparentGradientButton.Location = new Point(3, 133);
             transparentGradientButton.Margin = new Padding(3, 0, 3, 0);
             transparentGradientButton.Name = "transparentGradientButton";
-            transparentGradientButton.Size = new Size(134, 19);
+            transparentGradientButton.Size = new Size(133, 19);
             transparentGradientButton.TabIndex = 1;
             transparentGradientButton.TabStop = true;
             transparentGradientButton.Text = "Transparent gradient";
@@ -559,16 +569,6 @@ namespace launcherdotnet.Launcher.Forms
             DescriptionLabel.TabIndex = 1;
             DescriptionLabel.Text = "Description:";
             // 
-            // gcCollectBtn
-            // 
-            gcCollectBtn.Location = new Point(3, 85);
-            gcCollectBtn.Name = "gcCollectBtn";
-            gcCollectBtn.Size = new Size(109, 23);
-            gcCollectBtn.TabIndex = 1;
-            gcCollectBtn.Text = "Collect garbage";
-            gcCollectBtn.UseVisualStyleBackColor = true;
-            gcCollectBtn.Click += gcCollectBtn_Click;
-            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -588,8 +588,8 @@ namespace launcherdotnet.Launcher.Forms
             AdvancedTab.ResumeLayout(false);
             ThemeTab.ResumeLayout(false);
             ThemeTab.PerformLayout();
-            flowLayoutPanel1.ResumeLayout(false);
-            flowLayoutPanel1.PerformLayout();
+            themeButtonsFlowLayoutPanel.ResumeLayout(false);
+            themeButtonsFlowLayoutPanel.PerformLayout();
             AboutTab.ResumeLayout(false);
             AboutTab.PerformLayout();
             panel1.ResumeLayout(false);
@@ -625,7 +625,7 @@ namespace launcherdotnet.Launcher.Forms
         private Label license1;
         private LinkLabel linkLabel1;
         private TabPage ThemeTab;
-        private FlowLayoutPanel flowLayoutPanel1;
+        private FlowLayoutPanel themeButtonsFlowLayoutPanel;
         private RadioButton systemThemeButton;
         private RadioButton lightThemeButton;
         private Label ThemeHint;

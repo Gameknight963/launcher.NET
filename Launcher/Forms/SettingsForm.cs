@@ -15,6 +15,7 @@ namespace launcherdotnet.Launcher.Forms
         {
             InitializeComponent();
             StartPosition = FormStartPosition.CenterParent;
+            themeButtonsFlowLayoutPanel.AutoScroll = true;
             Icon = LauncherConstants.AppIcon;
 
 
@@ -119,6 +120,20 @@ namespace launcherdotnet.Launcher.Forms
             // --- Theme ---
             _themeButtons[s.ActiveTheme].Checked = true;
             gradientColorBox.Text = s.GradientColor.ToString();
+            foreach (Control control in themeButtonsFlowLayoutPanel.Controls.OfType<RadioButton>().ToList())
+            {
+                if (_themeButtons.Values.Contains(control)) continue;
+                themeButtonsFlowLayoutPanel.Controls.Remove(control);
+                control.Dispose();
+            }
+            foreach (Theme theme in Theme.Themes.Values)
+            {
+                if (_themeButtons.ContainsKey(theme.Name)) continue;
+                RadioButton rb = new RadioButton { Text = theme.Name, AutoSize = true };
+                _themeButtons[theme.Name] = rb;
+                themeButtonsFlowLayoutPanel.Controls.Add(rb);
+            }
+
 
             // --- About ---
             LauncherVersionLabel.Text = $"v{LauncherConstants.CurrentVersionString}";
