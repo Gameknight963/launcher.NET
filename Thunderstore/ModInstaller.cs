@@ -1,6 +1,7 @@
 ﻿using launcherdotnet.Launcher;
 using launcherdotnet.Networking;
 using launcherdotnet.PluginAPI;
+using Newtonsoft.Json.Linq;
 using System.IO.Compression;
 
 namespace launcherdotnet.Thunderstore
@@ -133,6 +134,63 @@ namespace launcherdotnet.Thunderstore
                 File.Delete(f);
                 onLog?.Invoke($"Deleted {Path.GetFileName(f)}");
             }
+        }
+
+        public static async Task InstallZipAsync(
+            string zipPath,
+            GameInfo game,
+            Func<(string name, string owner, string version)?> onMissingInfo)
+        {
+
+            string? modName = null, modOwner = null, modVersion = null;
+
+            using (ZipArchive archive = ZipFile.OpenRead(zipPath))
+            {
+                ZipArchiveEntry? manifestEntry = archive.GetEntry("manifest.json");
+                if (manifestEntry != null)
+                {
+                    using StreamReader reader = new(manifestEntry.Open());
+                    JObject manifest = JObject.Parse(await reader.ReadToEndAsync());
+                    modName = manifest["name"]?.ToString();
+                    modOwner = manifest["author"]?.ToString();
+                    modVersion = manifest["version_number"]?.ToString();
+                }
+            }
+
+            if (modName == null || modOwner == null || modVersion == null)
+            {
+                (string name, string owner, string version)? result = onMissingInfo();
+                if (result == null) return;
+                (modName, modOwner, modVersion) = result.Value;
+            }
+
+            List<string> extractedFiles = [];
+            using (ZipArchive archive = ZipFile.OpenRead(zipPath))
+            {
+                foreach (ZipArchiveEntry entry in archive.Entries)
+                {
+                    if (string.IsNullOrEmpty(entry.Name)) continue;
+                    string destPath = Path.Combine(game.AbsoluteRootDirectory, entry.FullName);
+                    Directory.CreateDirectory(Path.GetDirectoryName(destPath)!);
+                    entry.ExtractToFile(destPath, overwrite: true);
+                    extractedFiles.Add(entry.FullName);
+                }
+            }
+
+            DeleteIgnoreExt(Path.Combine(game.AbsoluteRootDirectory, "manifest"), null);
+            DeleteIgnoreExt(Path.Combine(game.AbsoluteRootDirectory, "icon"), null);
+            DeleteIgnoreExt(Path.Combine(game.AbsoluteRootDirectory, "README"), null);
+
+            GameModState state = GameModState.Load(game.AbsoluteRootDirectory);
+            state.InstalledMods.RemoveAll(m => m.Name == modName && m.Owner == modOwner);
+            state.InstalledMods.Add(new InstalledMod
+            {
+                Name = modName,
+                Owner = modOwner,
+                Version = modVersion,
+                Files = extractedFiles,
+            });
+            state.Save(game.AbsoluteRootDirectory);
         }
     }
 }
