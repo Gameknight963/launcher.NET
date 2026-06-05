@@ -1,4 +1,5 @@
-﻿using Semver;
+﻿using launcherdotnet.Styling;
+using Semver;
 using System.Reflection;
 
 namespace launcherdotnet.Launcher.Settings
@@ -20,13 +21,15 @@ namespace launcherdotnet.Launcher.Settings
         public static readonly string RelesesPage = $"https://github.com/{RepoOwner}/{RepoName}/releases";
         public static readonly string GithubPage = $"https://github.com/{RepoOwner}/{RepoName}";
 
+        public static readonly Theme DefaultTheme = Theme.Light;
+
         public static readonly Icon AppIcon;
 
-        public static string CurrentVersionString => Assembly.GetExecutingAssembly().
+        public static readonly string CurrentVersionString = Assembly.GetExecutingAssembly().
             GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.
             InformationalVersion
             .Split('+')[0];
-        public static SemVersion CurrentVersion => SemVersion.Parse(CurrentVersionString);
+        public static readonly SemVersion CurrentVersion = SemVersion.Parse(CurrentVersionString);
 
         static LauncherConstants()
         {
