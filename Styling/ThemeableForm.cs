@@ -25,7 +25,7 @@ namespace launcherdotnet.Styling
         /// <summary>
         /// Whether the active theme's gradient color could be considered light or not.
         /// </summary>
-        /// <remarks>Returns true if the theme is light, and false if dark, otherwise based off the gradient color.</remarks>
+        /// <returns>true if the theme is light, and false if dark, otherwise based off the gradient color.</returns>
         public bool IsThemeColoredLight()
         {
             if (ResolvedTheme == ThemeManager.Theme.Light) return true;
