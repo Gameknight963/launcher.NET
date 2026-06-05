@@ -22,11 +22,6 @@ namespace launcherdotnet.Launcher.Forms
                 // invalidate() doesn't update it here for some reason
                 Shown += (s, e) => previewPanel.BackColor = colorEditor.Color;
             }
-            InheritGlobalTheme = false;
-            if (IsThemeColoredLight())
-                ApplyTheme(Theme.Light, ThemeManager.ActiveGradientColor);
-            else
-                ApplyTheme(Theme.Dark, ThemeManager.ActiveGradientColor);
         }
 
         private void colorEditor_ColorChanged(object sender, EventArgs e)
