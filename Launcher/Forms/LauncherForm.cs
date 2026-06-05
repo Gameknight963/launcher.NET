@@ -255,7 +255,7 @@ namespace launcherdotnet.Launcher.Forms
         private async void SettingsButton_Click(object sender, EventArgs e)
         {
             using SettingsForm form = new();
-            await Task.Run(async () => form.ShowDialog(this));
+            form.ShowDialog();
         }
 
         private void RefreshGamesView()
