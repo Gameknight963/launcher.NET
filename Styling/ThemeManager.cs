@@ -4,7 +4,8 @@ namespace launcherdotnet.Styling
 {
     public class ThemeManager
     {
-        public static Theme ActiveTheme { get; private set; }
+        // ActiveTheme gets loaded in Settings on start so its ok to bang it
+        public static Theme ActiveTheme { get; private set; } = null!;
         public static int ActiveGradientColor { get; private set; }
 
         public static void SetColorRecursive(Control parent, ControlStyle style, Func<Control, bool>? filter = null)
