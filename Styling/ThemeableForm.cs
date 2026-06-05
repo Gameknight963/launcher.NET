@@ -1,26 +1,18 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics;
 
 namespace launcherdotnet.Styling
 {
     public class ThemeableForm : Form
     {
-        protected readonly ControlStyle _headerStyle = new();
+        protected Theme ActiveTheme;
 
-        private bool _useTextRenderer = true;
+        protected bool UseShadowText = false;
         private static bool IsDesignTime => LicenseManager.UsageMode == LicenseUsageMode.Designtime;
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ThemeManager.Theme ActiveTheme { get; set; }
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ThemeManager.Theme ResolvedTheme => ThemeManager.ResolveTheme(ActiveTheme);
 
         private readonly HashSet<Control> _themedControls = new();
 
         // wip, does not prevent thememanager from changing it later
         protected bool InheritGlobalTheme = true;
-
-        public int? ActiveGradient { get; private set; }
 
         /// <summary>
         /// Whether the active theme's gradient color could be considered light or not.
@@ -28,14 +20,11 @@ namespace launcherdotnet.Styling
         /// <returns>true if the theme is light, and false if dark, otherwise based off the gradient color.</returns>
         public bool IsThemeColoredLight()
         {
-            if (ResolvedTheme == ThemeManager.Theme.Light) return true;
-            if (ResolvedTheme == ThemeManager.Theme.Dark) return false;
-            if (ActiveGradient == null) return true;
-            DwmColor color = DwmColor.FromAbgr(ActiveGradient.Value);
+            Color color = ActiveTheme.MainStyle.BackColor;
             double luminance =
-                0.2126 * color.Color.R +
-                0.7152 * color.Color.G +
-                0.0722 * color.Color.B;
+                0.2126 * color.R +
+                0.7152 * color.G +
+                0.0722 * color.B;
 
             return luminance <= 160.0;
         }
@@ -43,20 +32,16 @@ namespace launcherdotnet.Styling
         {
             if (IsDesignTime) return;
             ActiveTheme = ThemeManager.ActiveTheme;
-            ActiveGradient = ThemeManager.ActiveGradientColor;
             Load += (sender, e) =>
             {
-                if (InheritGlobalTheme)
-                    ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.ActiveTextRenderMode, 
-                        ThemeManager.ActiveGradientColor);
+                ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.ActiveGradientColor);
             };
         }
 
         protected virtual void OnThemeWasApplied() { }
 
-        private void ApplyControlTheme(Control c, ThemeManager.Theme theme)
+        private void ApplyControlTheme(Control c, Theme theme)
         {
-            ThemeManager.Theme resolvedTheme = ThemeManager.ResolveTheme(theme);
             if (IsDesignTime) return;
             if (c is ListView lv)
             {
@@ -67,7 +52,7 @@ namespace launcherdotnet.Styling
                     lv.DrawSubItem += Lv_DrawSubItem;
                 }
 
-                lv.OwnerDraw = (resolvedTheme != ThemeManager.Theme.Light);
+                lv.OwnerDraw = theme.UseOwnerDrawHeaders;
             }
 
             if (c is TabControl tc)
@@ -76,14 +61,7 @@ namespace launcherdotnet.Styling
                 {
                     tc.DrawItem += Tc_DrawItem;
                 }
-
-                if (resolvedTheme == ThemeManager.Theme.Light)
-                {
-                    tc.DrawMode = TabDrawMode.Normal;
-                    return;
-                }
-
-                tc.DrawMode = TabDrawMode.OwnerDrawFixed;
+                tc.DrawMode = theme.UseOwnerDrawHeaders ? TabDrawMode.OwnerDrawFixed : TabDrawMode.Normal;
             }
 
             foreach (Control child in c.Controls)
@@ -114,65 +92,13 @@ namespace launcherdotnet.Styling
             base.Dispose(disposing);
         }
 
-        public void SetTextRenderMode(ThemeManager.Theme resolvedTheme, ThemeManager.TextRenderMode mode)
+        public void ApplyTheme(Theme theme, int gradientColor)
         {
             if (IsDesignTime) return;
-            switch (mode)
-            {
-                case ThemeManager.TextRenderMode.Auto:
-                    _useTextRenderer = !(resolvedTheme == ThemeManager.Theme.Acrylic || resolvedTheme == ThemeManager.Theme.Blur);
-                    break;
-
-                case ThemeManager.TextRenderMode.AutoStrict:
-                    _useTextRenderer = resolvedTheme == ThemeManager.Theme.Light || resolvedTheme == ThemeManager.Theme.Dark;
-                    break;
-
-                case ThemeManager.TextRenderMode.TextRenderer:
-                    _useTextRenderer = true;
-                    break;
-
-                case ThemeManager.TextRenderMode.ShadowText:
-                    _useTextRenderer = false;
-                    break;
-            }
-            this.Refresh();
-        }
-
-        public void ApplyTheme(ThemeManager.Theme theme, ThemeManager.TextRenderMode? textMode = null, int? gradientColor = null)
-        {
-            if (IsDesignTime) return;
-
-            ThemeManager.Theme resolvedTheme = ThemeManager.ResolveTheme(theme);
-
-            switch (resolvedTheme)
-            {
-                case ThemeManager.Theme.Light:
-                    break;
-
-                case ThemeManager.Theme.Dark:
-                    _headerStyle.ForeColor = Color.White;
-                    _headerStyle.BackColor = ThemeManager.DarkMainColor;
-                    break;
-
-                case ThemeManager.Theme.ExtendFrame:
-                case ThemeManager.Theme.ExtendFrameDark:
-                    _headerStyle.ForeColor = Color.White;
-                    _headerStyle.BackColor = Color.Black;
-                    break;
-
-                case ThemeManager.Theme.Blur:
-                case ThemeManager.Theme.Acrylic:
-                case ThemeManager.Theme.TransparentGradient:
-                    _headerStyle.ForeColor = Color.White;
-                    _headerStyle.BackColor = Color.Black;
-                    break;
-            }
-
             ActiveTheme = theme;
-            if (textMode.HasValue) SetTextRenderMode(resolvedTheme, textMode.Value);
-
-            ApplyControlTheme(this, resolvedTheme);
-            ThemeManager.ApplyThemeToForm(this, resolvedTheme, gradientColor);
+            UseShadowText = theme.UseShadowText;
+            ApplyControlTheme(this, theme);
+            theme.Apply(this, gradientColor);
             OnThemeWasApplied();
         }
 
@@ -208,44 +134,60 @@ namespace launcherdotnet.Styling
                 e.Graphics.FillRectangle(backBrush, e.Bounds);
             }
 
-            if (_useTextRenderer)
-            {
-                using Brush foreBrush = new SolidBrush(_headerStyle.ForeColor!.Value);
-                e.Graphics.DrawString(e.SubItem!.Text, e.SubItem.Font, foreBrush, e.Bounds);
-            }
-            else
+            if (UseShadowText)
             {
                 DrawShadowText(
                     e.Graphics,
                     e.SubItem!.Text,
                     e.SubItem.Font,
                     e.Bounds,
-                    _headerStyle.ForeColor!.Value
+                    ActiveTheme.MainStyle.ForeColor
                 );
+            }
+            else
+            {
+                using Brush foreBrush = new SolidBrush(ActiveTheme.MainStyle.ForeColor);
+                e.Graphics.DrawString(e.SubItem!.Text, e.SubItem.Font, foreBrush, e.Bounds);
+            }
+
+            if (UseShadowText)
+            {
+                DrawShadowText(
+                    e.Graphics,
+                    e.SubItem!.Text,
+                    e.SubItem.Font,
+                    e.Bounds,
+                    ActiveTheme.MainStyle.ForeColor
+                );
+            }
+            else
+            {
+                using Brush foreBrush = new SolidBrush(ActiveTheme.MainStyle.ForeColor);
+                e.Graphics.DrawString(e.SubItem!.Text, e.SubItem.Font, foreBrush, e.Bounds);
             }
         }
 
         private void Lv_DrawColumnHeader(object? sender, DrawListViewColumnHeaderEventArgs e)
         {
-            using (SolidBrush backBrush = new(_headerStyle.BackColor!.Value))
+            using (SolidBrush backBrush = new(ActiveTheme.MainStyle.BackColor))
             {
                 e.Graphics.FillRectangle(backBrush, e.Bounds);
             }
 
-            if (_useTextRenderer)
-            {
-                using Brush foreBrush = new SolidBrush(_headerStyle.ForeColor!.Value);
-                e.Graphics.DrawString(e.Header!.Text, e.Font!, foreBrush, e.Bounds);
-            }
-            else
+            if (UseShadowText)
             {
                 DrawShadowText(
                     e.Graphics,
                     e.Header!.Text,
                     e.Font!,
                     e.Bounds,
-                    _headerStyle.ForeColor!.Value
+                    ActiveTheme.MainStyle.ForeColor
                 );
+            }
+            else
+            {
+                using Brush foreBrush = new SolidBrush(ActiveTheme.MainStyle.ForeColor!);
+                e.Graphics.DrawString(e.Header!.Text, e.Font!, foreBrush, e.Bounds);
             }
         }
 
@@ -258,7 +200,7 @@ namespace launcherdotnet.Styling
 
             Rectangle bounds = tc.GetTabRect(e.Index);
 
-            using SolidBrush backBrush = new(_headerStyle.BackColor!.Value);
+            using SolidBrush backBrush = new(ActiveTheme.MainStyle.BackColor);
 
             e.Graphics.FillRectangle(backBrush, bounds);
 
@@ -267,7 +209,7 @@ namespace launcherdotnet.Styling
                 tab.Text,
                 tc.Font,
                 bounds,
-                _headerStyle.ForeColor!.Value,
+                ActiveTheme.MainStyle.ForeColor,
                 TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter
             );
 

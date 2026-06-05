@@ -25,7 +25,7 @@ namespace launcherdotnet.Launcher.Settings
             Settings = JsonConvert.DeserializeObject<LauncherSettings>(json) ?? new LauncherSettings();
 
             if (Settings.OpenDebugConsole) ConsoleHelper.Show();
-            ThemeManager.SetGlobalTheme(Settings.Theme, Settings.TextRenderMode, Settings.GradientColor.ToAbgr());
+            ThemeManager.SetGlobalTheme(Theme.FromName(Settings.ActiveTheme), Settings.GradientColor.ToAbgr());
         }
 
         public static void Save()
@@ -33,27 +33,12 @@ namespace launcherdotnet.Launcher.Settings
             string json = JsonConvert.SerializeObject(Settings, Formatting.Indented);
             Directory.CreateDirectory(Path.GetDirectoryName(_settingsPath)!);
             File.WriteAllText(_settingsPath, json);
-            ThemeManager.SetGlobalTheme(Settings.Theme, Settings.TextRenderMode, Settings.GradientColor.ToAbgr());
-            try
-            {
-                if (Settings.RunOnStartup)
-                    StartupHelper.EnableRunOnStartup();
-                else
-                    StartupHelper.DisableRunOnStartup();
-            }
-            catch (Exception ex)
-            {
-                LauncherLogger.WriteLine($"Failed to {(Settings.RunOnStartup ? "enable Run On Startup" : "disable Run on Startup")}: {ex.Message}", true);
-                CoolMessageBox.Show($"Failed to {(Settings.RunOnStartup ? "enable Run On Startup" : "disable Run on Startup")}", 
-                    "Error", 
-                    MessageBoxButtons.OK, 
-                    MessageBoxIcon.Error);
-            }
+            ThemeManager.SetGlobalTheme(Theme.FromName(Settings.ActiveTheme), Settings.GradientColor.ToAbgr());
+            if (Settings.RunOnStartup) StartupHelper.EnableRunOnStartup();
+            else StartupHelper.DisableRunOnStartup();
             if (ConsoleHelper.ConsoleShown == Settings.OpenDebugConsole) return;
-            if (Settings.OpenDebugConsole)
-                ConsoleHelper.Show();
-            else
-                ConsoleHelper.Hide();
+            if (Settings.OpenDebugConsole) ConsoleHelper.Show();
+            else ConsoleHelper.Hide();
         }
 
         public static LauncherSettings Settings { get; private set; } = new();
@@ -71,9 +56,8 @@ namespace launcherdotnet.Launcher.Settings
         public bool RunOnStartup { get; set; } = false;
 
         // ===== Theme =====
-        public ThemeManager.Theme Theme { get; set; } = ThemeManager.Theme.Light;
+        public string ActiveTheme { get; set; } = Theme.Light.Name;
         public DwmColor GradientColor { get; set; } = DwmColor.FromAbgr(0x66000000);
-        public ThemeManager.TextRenderMode TextRenderMode { get; set; } = ThemeManager.TextRenderMode.ShadowText;
 
         // ===== Advanced =====
 
