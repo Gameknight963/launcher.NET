@@ -34,7 +34,8 @@
 
 
         private static readonly Dictionary<string, Theme> _themes = new();
-        public static Theme FromName(string name) => _themes[name];
+        public static IReadOnlyDictionary<string, Theme> Themes => _themes;
+        public static Theme? FromName(string name) => _themes.TryGetValue(name, out Theme? theme) ? theme : null;
 
         // ------------------- STATIC -------------------
 
