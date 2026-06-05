@@ -53,9 +53,10 @@ namespace launcherdotnet.Launcher.Controls
             // hueColorSlider
             // 
             hueColorSlider.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            hueColorSlider.Location = new Point(33, 3);
+            hueColorSlider.Location = new Point(33, 4);
+            hueColorSlider.Margin = new Padding(3, 4, 3, 4);
             hueColorSlider.Name = "hueColorSlider";
-            hueColorSlider.Size = new Size(332, 24);
+            hueColorSlider.Size = new Size(332, 22);
             hueColorSlider.TabIndex = 0;
             hueColorSlider.Value = 52F;
             hueColorSlider.ValueChanged += HueColorSlider_ValueChanged;
@@ -64,9 +65,10 @@ namespace launcherdotnet.Launcher.Controls
             // 
             saturationColorSlider.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             saturationColorSlider.Color = Color.Peru;
-            saturationColorSlider.Location = new Point(33, 33);
+            saturationColorSlider.Location = new Point(33, 34);
+            saturationColorSlider.Margin = new Padding(3, 4, 3, 4);
             saturationColorSlider.Name = "saturationColorSlider";
-            saturationColorSlider.Size = new Size(332, 24);
+            saturationColorSlider.Size = new Size(332, 22);
             saturationColorSlider.TabIndex = 0;
             saturationColorSlider.ValueChanged += SaturationColorSlider_ValueChanged;
             // 
@@ -74,9 +76,10 @@ namespace launcherdotnet.Launcher.Controls
             // 
             lightnessColorSlider.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lightnessColorSlider.Color = Color.Peru;
-            lightnessColorSlider.Location = new Point(33, 63);
+            lightnessColorSlider.Location = new Point(33, 64);
+            lightnessColorSlider.Margin = new Padding(3, 4, 3, 4);
             lightnessColorSlider.Name = "lightnessColorSlider";
-            lightnessColorSlider.Size = new Size(332, 24);
+            lightnessColorSlider.Size = new Size(332, 22);
             lightnessColorSlider.TabIndex = 0;
             lightnessColorSlider.Value = 52F;
             lightnessColorSlider.ValueChanged += LightnessColorSlider_ValueChanged;
@@ -175,9 +178,10 @@ namespace launcherdotnet.Launcher.Controls
             alphaColorSlider.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             alphaColorSlider.Channel = RgbaChannel.Alpha;
             alphaColorSlider.Color = Color.Peru;
-            alphaColorSlider.Location = new Point(33, 93);
+            alphaColorSlider.Location = new Point(33, 94);
+            alphaColorSlider.Margin = new Padding(3, 4, 3, 4);
             alphaColorSlider.Name = "alphaColorSlider";
-            alphaColorSlider.Size = new Size(332, 27);
+            alphaColorSlider.Size = new Size(332, 25);
             alphaColorSlider.TabIndex = 0;
             alphaColorSlider.Value = 52F;
             alphaColorSlider.ValueChanged += AlphaColorSlider_ValueChanged;
