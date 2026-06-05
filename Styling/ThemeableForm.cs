@@ -4,7 +4,8 @@ namespace launcherdotnet.Styling
 {
     public class ThemeableForm : Form
     {
-        protected Theme ActiveTheme;
+        // it warns because of the design time guards unless we do this
+        protected Theme ActiveTheme = null!;
 
         protected bool UseShadowText = false;
         private static bool IsDesignTime => LicenseManager.UsageMode == LicenseUsageMode.Designtime;
