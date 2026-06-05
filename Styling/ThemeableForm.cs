@@ -8,8 +8,10 @@ namespace launcherdotnet.Styling
         protected Theme ActiveTheme = null!;
 
         protected bool UseShadowText = false;
-        private static bool IsDesignTime => LicenseManager.UsageMode == LicenseUsageMode.Designtime;
-
+        private static bool IsDesignTime =>
+            LicenseManager.UsageMode == LicenseUsageMode.Designtime ||
+            System.Diagnostics.Process.GetCurrentProcess().ProcessName
+                is "devenv" or "DesignToolsServer";
         private readonly HashSet<Control> _themedControls = new();
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -26,12 +28,13 @@ namespace launcherdotnet.Styling
                 0.2126 * color.R +
                 0.7152 * color.G +
                 0.0722 * color.B;
-
+            
             return luminance <= 160.0;
         }
         public ThemeableForm()
         {
             if (IsDesignTime) return;
+            if (ThemeManager.ActiveTheme == null) return;
             ActiveTheme = ThemeManager.ActiveTheme;
             Load += (sender, e) =>
             {
