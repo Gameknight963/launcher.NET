@@ -5,6 +5,9 @@ namespace launcherdotnet.Launcher.Controls
 {
     public partial class HslaColorEditor : UserControl
     {
+        private double _hue, _saturation, _lightness;
+        private int _alpha;
+
         [Browsable(true)]
         [Category("Appearance")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -13,12 +16,19 @@ namespace launcherdotnet.Launcher.Controls
             get => _color;
             set
             {
-                if (_color == value) return;
                 _color = value;
-                UpdateControls(value);
+                HslColor hsl = new HslColor(value);
+                _hue = hsl.H;
+                _saturation = hsl.S;
+                _lightness = hsl.L;
+                _alpha = hsl.A;
+                UpdateControls();
             }
         }
+
         private Color _color = Color.Red;
+        private bool _updating;
+
         public HslaColorEditor()
         {
             InitializeComponent();
@@ -26,92 +36,59 @@ namespace launcherdotnet.Launcher.Controls
             saturationNumericUpDown.Maximum = 100;
             lightnessNumericUpDown.Maximum = 100;
             alphaNumericUpDown.Maximum = 255;
-
-            UpdateControls(_color);
+            UpdateControls();
         }
 
-        private bool _updating;
-
-        private void UpdateControls(Color color)
+        private void UpdateControls()
         {
             if (_updating) return;
             _updating = true;
-
-            HslColor hsl = new HslColor(color);
-
-            hueNumericUpDown.Value = (decimal)hsl.H;
-            saturationNumericUpDown.Value = (decimal)(hsl.S * 100);
-            lightnessNumericUpDown.Value = (decimal)(hsl.L * 100);
-            alphaNumericUpDown.Value = _color.A;
-
-            hueColorSlider.Value = (float)hsl.H;
-            saturationColorSlider.Value = (float)(hsl.S * 100);
-            lightnessColorSlider.Value = (float)(hsl.L * 100);
-            alphaColorSlider.Value = _color.A;
-            _updating = false;
-
-        }
-
-        private void UpdateColorFromControls()
-        {
-            if (_updating) return;
-            _updating = true;
-
-            HslColor hsl = new HslColor(
-            (int)alphaNumericUpDown.Value,
-            (double)hueNumericUpDown.Value,
-            (double)saturationNumericUpDown.Value / 100.0,
-            (double)lightnessNumericUpDown.Value / 100.0);
+            lightnessColorSlider.ValueChanged -= LightnessColorSlider_ValueChanged;
+            saturationColorSlider.ValueChanged -= SaturationColorSlider_ValueChanged;
+            hueNumericUpDown.Value = (decimal)_hue;
+            saturationNumericUpDown.Value = (decimal)(_saturation * 100);
+            lightnessNumericUpDown.Value = (decimal)(_lightness * 100);
+            alphaNumericUpDown.Value = _alpha;
+            hueColorSlider.Value = (float)_hue;
+            saturationColorSlider.Color = Color.FromArgb(255, new HslColor(255, _hue, _saturation, 0.5));
+            saturationColorSlider.Value = (float)(_saturation * 100);
+            lightnessColorSlider.Color = Color.FromArgb(255, _color);
+            lightnessColorSlider.Value = (float)(_lightness * 100);
+            alphaColorSlider.Color = _color;
+            // slider doesn't render checkerboard if you set alpha to 255, setting it to 254 is a workaround
+            alphaColorSlider.Color = Color.FromArgb(254, _color);
+            alphaColorSlider.Value = _alpha;
+            lightnessColorSlider.ValueChanged += LightnessColorSlider_ValueChanged;
+            saturationColorSlider.ValueChanged += SaturationColorSlider_ValueChanged;
             _updating = false;
         }
-
 
         private void HueColorSlider_ValueChanged(object sender, EventArgs e)
-        {
-            hueNumericUpDown.Value = (decimal)hueColorSlider.Value;
-            UpdateColorFromControls();
-        }
+            => hueNumericUpDown.Value = (decimal)hueColorSlider.Value;
 
-        private void SaturationColorSlider_ValueChanged(object sender, EventArgs e)
-        {
-            saturationNumericUpDown.Value = (decimal)saturationColorSlider.Value;
-            UpdateColorFromControls();
-        }
+        private void SaturationColorSlider_ValueChanged(object? sender, EventArgs e)
+            => saturationNumericUpDown.Value = (decimal)saturationColorSlider.Value;
 
-        private void LightnessColorSlider_ValueChanged(object sender, EventArgs e)
-        {
-            lightnessNumericUpDown.Value = (decimal)lightnessColorSlider.Value;
-            UpdateColorFromControls();
-        }
+        private void LightnessColorSlider_ValueChanged(object? sender, EventArgs e)
+            => lightnessNumericUpDown.Value = (decimal)lightnessColorSlider.Value;
 
         private void AlphaColorSlider_ValueChanged(object sender, EventArgs e)
-        {
-            alphaNumericUpDown.Value = (decimal)alphaColorSlider.Value;
-            UpdateColorFromControls();
-        }
+            => alphaNumericUpDown.Value = (decimal)alphaColorSlider.Value;
 
-        private void HueNumericUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            hueColorSlider.Value = (float)hueNumericUpDown.Value;
-            UpdateColorFromControls();
-        }
+        private void HueNumericUpDown_ValueChanged(object sender, EventArgs e) => RebuildColor();
+        private void SaturationNumericUpDown_ValueChanged(object sender, EventArgs e) => RebuildColor();
+        private void LightnessNumericUpDown_ValueChanged(object sender, EventArgs e) => RebuildColor();
+        private void AlphaNumericUpDown_ValueChanged(object sender, EventArgs e) => RebuildColor();
 
-        private void SaturationNumericUpDown_ValueChanged(object sender, EventArgs e)
+        private void RebuildColor()
         {
-            saturationColorSlider.Value = (float)saturationNumericUpDown.Value;
-            UpdateColorFromControls();
-        }
-
-        private void LightnessNumericUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            lightnessColorSlider.Value = (float)lightnessNumericUpDown.Value;
-            UpdateColorFromControls();
-        }
-
-        private void AlphaNumericUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            alphaColorSlider.Value = (float)alphaNumericUpDown.Value;
-            UpdateColorFromControls();
+            if (_updating) return;
+            _hue = (double)hueNumericUpDown.Value;
+            _saturation = (double)saturationNumericUpDown.Value / 100.0;
+            _lightness = (double)lightnessNumericUpDown.Value / 100.0;
+            _alpha = (int)alphaNumericUpDown.Value;
+            _color = new HslColor(_alpha, _hue, _saturation, _lightness);
+            UpdateControls();
         }
     }
 }

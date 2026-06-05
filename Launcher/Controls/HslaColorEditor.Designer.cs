@@ -1,4 +1,4 @@
-﻿using Cyotek.Windows.Forms;
+﻿ using Cyotek.Windows.Forms;
 
 namespace launcherdotnet.Launcher.Controls
 {
