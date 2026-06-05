@@ -52,31 +52,31 @@ namespace launcherdotnet.Launcher.Controls
             // 
             // hueColorSlider
             // 
-            hueColorSlider.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            hueColorSlider.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             hueColorSlider.Location = new Point(33, 3);
             hueColorSlider.Name = "hueColorSlider";
-            hueColorSlider.Size = new Size(201, 20);
+            hueColorSlider.Size = new Size(332, 24);
             hueColorSlider.TabIndex = 0;
             hueColorSlider.Value = 52F;
             hueColorSlider.ValueChanged += HueColorSlider_ValueChanged;
             // 
             // saturationColorSlider
             // 
-            saturationColorSlider.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            saturationColorSlider.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             saturationColorSlider.Color = Color.Peru;
-            saturationColorSlider.Location = new Point(33, 29);
+            saturationColorSlider.Location = new Point(33, 33);
             saturationColorSlider.Name = "saturationColorSlider";
-            saturationColorSlider.Size = new Size(201, 20);
+            saturationColorSlider.Size = new Size(332, 24);
             saturationColorSlider.TabIndex = 0;
             saturationColorSlider.ValueChanged += SaturationColorSlider_ValueChanged;
             // 
             // lightnessColorSlider
             // 
-            lightnessColorSlider.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lightnessColorSlider.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lightnessColorSlider.Color = Color.Peru;
-            lightnessColorSlider.Location = new Point(33, 55);
+            lightnessColorSlider.Location = new Point(33, 63);
             lightnessColorSlider.Name = "lightnessColorSlider";
-            lightnessColorSlider.Size = new Size(201, 20);
+            lightnessColorSlider.Size = new Size(332, 24);
             lightnessColorSlider.TabIndex = 0;
             lightnessColorSlider.Value = 52F;
             lightnessColorSlider.ValueChanged += LightnessColorSlider_ValueChanged;
@@ -93,7 +93,7 @@ namespace launcherdotnet.Launcher.Controls
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(3, 26);
+            label2.Location = new Point(3, 30);
             label2.Name = "label2";
             label2.Size = new Size(16, 15);
             label2.TabIndex = 1;
@@ -102,7 +102,7 @@ namespace launcherdotnet.Launcher.Controls
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(3, 52);
+            label3.Location = new Point(3, 60);
             label3.Name = "label3";
             label3.Size = new Size(16, 15);
             label3.TabIndex = 1;
@@ -110,7 +110,7 @@ namespace launcherdotnet.Launcher.Controls
             // 
             // lightnessNumericUpDown
             // 
-            lightnessNumericUpDown.Location = new Point(240, 55);
+            lightnessNumericUpDown.Location = new Point(371, 63);
             lightnessNumericUpDown.Name = "lightnessNumericUpDown";
             lightnessNumericUpDown.Size = new Size(48, 23);
             lightnessNumericUpDown.TabIndex = 2;
@@ -118,7 +118,7 @@ namespace launcherdotnet.Launcher.Controls
             // 
             // saturationNumericUpDown
             // 
-            saturationNumericUpDown.Location = new Point(240, 29);
+            saturationNumericUpDown.Location = new Point(371, 33);
             saturationNumericUpDown.Name = "saturationNumericUpDown";
             saturationNumericUpDown.Size = new Size(48, 23);
             saturationNumericUpDown.TabIndex = 2;
@@ -126,7 +126,7 @@ namespace launcherdotnet.Launcher.Controls
             // 
             // hueNumericUpDown
             // 
-            hueNumericUpDown.Location = new Point(240, 3);
+            hueNumericUpDown.Location = new Point(371, 3);
             hueNumericUpDown.Name = "hueNumericUpDown";
             hueNumericUpDown.Size = new Size(48, 23);
             hueNumericUpDown.TabIndex = 2;
@@ -134,14 +134,13 @@ namespace launcherdotnet.Launcher.Controls
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tableLayoutPanel1.ColumnCount = 3;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 30F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 60F));
             tableLayoutPanel1.Controls.Add(saturationColorSlider, 1, 1);
             tableLayoutPanel1.Controls.Add(hueColorSlider, 1, 0);
-            tableLayoutPanel1.Controls.Add(lightnessColorSlider, 1, 2);
             tableLayoutPanel1.Controls.Add(saturationNumericUpDown, 2, 1);
             tableLayoutPanel1.Controls.Add(label3, 0, 2);
             tableLayoutPanel1.Controls.Add(hueNumericUpDown, 2, 0);
@@ -151,6 +150,7 @@ namespace launcherdotnet.Launcher.Controls
             tableLayoutPanel1.Controls.Add(label4, 0, 3);
             tableLayoutPanel1.Controls.Add(alphaColorSlider, 1, 3);
             tableLayoutPanel1.Controls.Add(alphaNumericUpDown, 2, 3);
+            tableLayoutPanel1.Controls.Add(lightnessColorSlider, 1, 2);
             tableLayoutPanel1.Location = new Point(3, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 4;
@@ -158,13 +158,13 @@ namespace launcherdotnet.Launcher.Controls
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25.0006275F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25.0006275F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 24.9981289F));
-            tableLayoutPanel1.Size = new Size(297, 104);
+            tableLayoutPanel1.Size = new Size(428, 123);
             tableLayoutPanel1.TabIndex = 3;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(3, 78);
+            label4.Location = new Point(3, 90);
             label4.Name = "label4";
             label4.Size = new Size(18, 15);
             label4.TabIndex = 1;
@@ -172,19 +172,19 @@ namespace launcherdotnet.Launcher.Controls
             // 
             // alphaColorSlider
             // 
-            alphaColorSlider.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            alphaColorSlider.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             alphaColorSlider.Channel = RgbaChannel.Alpha;
             alphaColorSlider.Color = Color.Peru;
-            alphaColorSlider.Location = new Point(33, 81);
+            alphaColorSlider.Location = new Point(33, 93);
             alphaColorSlider.Name = "alphaColorSlider";
-            alphaColorSlider.Size = new Size(201, 20);
+            alphaColorSlider.Size = new Size(332, 27);
             alphaColorSlider.TabIndex = 0;
             alphaColorSlider.Value = 52F;
             alphaColorSlider.ValueChanged += AlphaColorSlider_ValueChanged;
             // 
             // alphaNumericUpDown
             // 
-            alphaNumericUpDown.Location = new Point(240, 81);
+            alphaNumericUpDown.Location = new Point(371, 93);
             alphaNumericUpDown.Name = "alphaNumericUpDown";
             alphaNumericUpDown.Size = new Size(48, 23);
             alphaNumericUpDown.TabIndex = 2;
@@ -196,7 +196,7 @@ namespace launcherdotnet.Launcher.Controls
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(tableLayoutPanel1);
             Name = "HslaColorEditor";
-            Size = new Size(303, 115);
+            Size = new Size(434, 129);
             ((System.ComponentModel.ISupportInitialize)lightnessNumericUpDown).EndInit();
             ((System.ComponentModel.ISupportInitialize)saturationNumericUpDown).EndInit();
             ((System.ComponentModel.ISupportInitialize)hueNumericUpDown).EndInit();
