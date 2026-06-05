@@ -37,6 +37,7 @@
             installModsButton = new Button();
             button1 = new Button();
             installFromZip = new Button();
+            installFromDll = new Button();
             SuspendLayout();
             // 
             // modsLv
@@ -50,7 +51,7 @@
             modsLv.TabIndex = 0;
             modsLv.UseCompatibleStateImageBehavior = false;
             modsLv.View = View.Details;
-            modsLv.SelectedIndexChanged += modsLv_SelectedIndexChanged;
+            modsLv.SelectedIndexChanged += ModsLv_SelectedIndexChanged;
             // 
             // nameColumn
             // 
@@ -76,7 +77,7 @@
             uninstallButton.TabIndex = 2;
             uninstallButton.Text = "Uninstall";
             uninstallButton.UseVisualStyleBackColor = true;
-            uninstallButton.Click += uninstallButton_Click;
+            uninstallButton.Click += UninstallButton_Click;
             // 
             // closeButton
             // 
@@ -97,7 +98,7 @@
             installModsButton.TabIndex = 2;
             installModsButton.Text = "Browse on Thunderstore";
             installModsButton.UseVisualStyleBackColor = true;
-            installModsButton.Click += installModsButton_Click;
+            installModsButton.Click += InstallModsButton_Click;
             // 
             // button1
             // 
@@ -108,7 +109,7 @@
             button1.TabIndex = 3;
             button1.Text = "Clean untracked files";
             button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            button1.Click += Button1_Click;
             // 
             // installFromZip
             // 
@@ -120,11 +121,22 @@
             installFromZip.UseVisualStyleBackColor = true;
             installFromZip.Click += InstallFromZip_Click;
             // 
+            // installFromDll
+            // 
+            installFromDll.Location = new Point(170, 407);
+            installFromDll.Name = "installFromDll";
+            installFromDll.Size = new Size(103, 23);
+            installFromDll.TabIndex = 4;
+            installFromDll.Text = "Install from dll";
+            installFromDll.UseVisualStyleBackColor = true;
+            installFromDll.Click += InstallFromDll_Click;
+            // 
             // GameModManager
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(420, 466);
+            Controls.Add(installFromDll);
             Controls.Add(installFromZip);
             Controls.Add(button1);
             Controls.Add(closeButton);
@@ -148,5 +160,6 @@
         private Button installModsButton;
         private Button button1;
         private Button installFromZip;
+        private Button installFromDll;
     }
 }

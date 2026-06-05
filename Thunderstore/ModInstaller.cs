@@ -192,5 +192,38 @@ namespace launcherdotnet.Thunderstore
             });
             state.Save(game.AbsoluteRootDirectory);
         }
+
+        public static bool TryInstallDllAsync(
+            string dllPath,
+            GameInfo game,
+            string modName,
+            string modOwner,
+            string modVersion,
+            bool isDependency = false)
+        {
+            string modsDir = Path.Combine(game.AbsoluteRootDirectory, "Mods");
+            string pluginsDir = Path.Combine(game.AbsoluteRootDirectory, "BepInEx", "plugins");
+
+            if (!Directory.Exists(modsDir) && !Directory.Exists(pluginsDir)) return false;
+            string targetDir = Directory.Exists(modsDir) ? modsDir : pluginsDir;
+
+            string destPath = Path.Combine(targetDir, Path.GetFileName(dllPath));
+            File.Copy(dllPath, destPath, overwrite: true);
+
+            string relativeDest = Path.GetRelativePath(game.AbsoluteRootDirectory, destPath);
+
+            GameModState state = GameModState.Load(game.AbsoluteRootDirectory);
+            state.InstalledMods.RemoveAll(m => m.Name == modName && m.Owner == modOwner);
+            state.InstalledMods.Add(new InstalledMod
+            {
+                Name = modName,
+                Owner = modOwner,
+                Version = modVersion,
+                Files = [relativeDest],
+                IsDependency = isDependency
+            });
+            state.Save(game.AbsoluteRootDirectory);
+            return true;
+        }
     }
 }

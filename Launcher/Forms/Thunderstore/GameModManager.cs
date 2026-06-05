@@ -2,7 +2,8 @@
 using launcherdotnet.Launcher.Settings;
 using launcherdotnet.Styling;
 using launcherdotnet.Thunderstore;
-using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace launcherdotnet.Launcher.Forms.Thunderstore
 {
@@ -48,12 +49,12 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             ScrollbarHelper.Set(modsLv, ScrollbarHelper.Scrollbar.Horz, false);
         }
 
-        private void modsLv_SelectedIndexChanged(object sender, EventArgs e)
+        private void ModsLv_SelectedIndexChanged(object sender, EventArgs e)
         {
             uninstallButton.Enabled = modsLv.SelectedIndices.Count > 0;
         }
 
-        private void installModsButton_Click(object sender, EventArgs e)
+        private void InstallModsButton_Click(object sender, EventArgs e)
         {
             if (_game.ThunderstoreCommunitySlug == null)
             {
@@ -68,7 +69,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             RefreshList();
         }
 
-        private void uninstallButton_Click(object sender, EventArgs e)
+        private void UninstallButton_Click(object sender, EventArgs e)
         {
             if (modsLv.SelectedIndices.Count == 0) return;
             List<InstalledMod> selected = modsLv.SelectedItems
@@ -175,7 +176,7 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             if (!_state.HasBaseline)
             {
@@ -198,12 +199,31 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             RefreshList();
         }
 
-        private static (string, string, string)? OnMissingInfo()
+        private async void InstallFromDll_Click(object sender, EventArgs e)
         {
-            using FillMissingModInfo form = new();
+            using OpenFileDialog dialog = new();
+            dialog.Filter = ".NET assembly (*.dll)|*.dll";
+            dialog.Title = "Select an assembly";
+            if (dialog.ShowDialog() != DialogResult.OK) return;
+            (string, string, string)? modInfo = MissingInfoForm("Fill in some info for this mod:", 
+                (Path.GetFileNameWithoutExtension(dialog.SafeFileName), "", ""));
+            if (modInfo is not (string name, string owner, string version)) return;
+            if (!ModInstaller.TryInstallDllAsync(dialog.FileName, _game, name, owner, version))
+            {
+                LauncherLogger.Error("Could not find a Mods folder or a BepInEx\\plugins folder.");
+                CoolMessageBox.Show("launcher.net does not know how to install assemblies for this game.", "Installation Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
+
+        private static (string, string, string)? OnMissingInfo() => MissingInfoForm(null);
+        private static (string, string, string)? MissingInfoForm(string? labelText, (string, string, string)? modInfo = null)
+        {
+            using FillMissingModInfo form = new(labelText, modInfo);
             form.ShowDialog();
-            if (form.FormResult == FillMissingModInfo.Result.Cancel) return null;
-            return form.ModInfo;
+            if (form.DialogResult == DialogResult.Cancel) return null;
+            return form.EditedInfo;
         }
     }
 }
