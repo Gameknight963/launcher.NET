@@ -3,6 +3,7 @@ using System.ComponentModel;
 
 namespace launcherdotnet.Launcher.Controls
 {
+    [DefaultEvent("ColorChanged")]
     public partial class HslaColorEditor : UserControl
     {
         private double _hue, _saturation, _lightness;
@@ -25,6 +26,8 @@ namespace launcherdotnet.Launcher.Controls
                 UpdateControls();
             }
         }
+
+        public Action? ColorChanged;
 
         private Color _color = Color.Red;
         private bool _updating;
@@ -83,6 +86,7 @@ namespace launcherdotnet.Launcher.Controls
         private void RebuildColor()
         {
             if (_updating) return;
+            ColorChanged?.Invoke();
             _hue = (double)hueNumericUpDown.Value;
             _saturation = (double)saturationNumericUpDown.Value / 100.0;
             _lightness = (double)lightnessNumericUpDown.Value / 100.0;
