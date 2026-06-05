@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace launcherdotnet.Styling
+﻿namespace launcherdotnet.Styling
 {
     public class Theme
     {
@@ -24,8 +22,15 @@ namespace launcherdotnet.Styling
             MainStyle = style;
             UseShadowText = useShadowText;
             UseOwnerDrawHeaders = useOwnerDrawHeaders;
+            if (_themes.ContainsKey(name))
+                throw new InvalidOperationException($"A theme with the name '{name}' is already registered.");
             _themes[name] = this;
         }
+
+        public override bool Equals(object? obj) => obj is Theme other && Name == other.Name;
+        public override int GetHashCode() => Name.GetHashCode();
+        public static bool operator ==(Theme? a, Theme? b) => a?.Name == b?.Name;
+        public static bool operator !=(Theme? a, Theme? b) => a?.Name != b?.Name;
 
 
         private static readonly Dictionary<string, Theme> _themes = new();
