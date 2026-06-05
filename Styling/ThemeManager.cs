@@ -2,7 +2,7 @@
 
 namespace launcherdotnet.Styling
 {
-    public class ThemeManager
+    public static class ThemeManager
     {
         // ActiveTheme gets loaded in Settings on start so its ok to bang it
         public static Theme ActiveTheme { get; private set; } = null!;
