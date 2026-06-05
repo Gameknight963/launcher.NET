@@ -65,7 +65,7 @@ namespace launcherdotnet.Styling
 
             foreach (Form form in Application.OpenForms)
             {
-                if (form is ThemeableForm tf)
+                if (form is ThemeableForm tf && tf.InheritGlobalTheme)
                 {
                     tf.ApplyTheme(theme, gradientColor);
                 }

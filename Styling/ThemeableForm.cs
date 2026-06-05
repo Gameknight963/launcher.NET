@@ -12,8 +12,8 @@ namespace launcherdotnet.Styling
 
         private readonly HashSet<Control> _themedControls = new();
 
-        // wip, does not prevent thememanager from changing it later
-        protected bool InheritGlobalTheme = true;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool InheritGlobalTheme { get; protected set; } = true;
 
         /// <summary>
         /// Whether the active theme's gradient color could be considered light or not.
@@ -35,7 +35,7 @@ namespace launcherdotnet.Styling
             ActiveTheme = ThemeManager.ActiveTheme;
             Load += (sender, e) =>
             {
-                ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.ActiveGradientColor);
+                if (InheritGlobalTheme) ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.ActiveGradientColor);
             };
         }
 
