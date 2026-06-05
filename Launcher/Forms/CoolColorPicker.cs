@@ -1,9 +1,5 @@
 ﻿using launcherdotnet.Launcher.Settings;
 using launcherdotnet.Styling;
-using Semver;
-using System.Drawing;
-using System.Runtime.CompilerServices;
-using TheArtOfDev.HtmlRenderer.Adapters;
 
 namespace launcherdotnet.Launcher.Forms
 {
