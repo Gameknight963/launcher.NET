@@ -101,6 +101,7 @@ namespace launcherdotnet.Styling
             ApplyControlTheme(this, theme);
             theme.Apply(this, gradientColor);
             OnThemeWasApplied();
+            Refresh();
         }
 
         private static void DrawShadowText(Graphics g, string text, Font font, Rectangle bounds, Color textColor)
