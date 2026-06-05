@@ -85,7 +85,7 @@ namespace launcherdotnet.Styling
         }
 
         public static Color DarkMainColor => Color.FromArgb(30, 30, 30);
-        public static Color AcrylicMainColor => Color.FromArgb(20, 20, 30);
+        public static Color AcrylicButtonColor => Color.FromArgb(20, 20, 30);
         public static Color DarkModeButtonColor => Color.FromArgb(30, 30, 50);
         public static Color DarkModeButtonBorder => Color.FromArgb(60, 60, 60);
 
@@ -181,11 +181,11 @@ namespace launcherdotnet.Styling
             DwmApi.UnextendFrame(form.Handle);
             DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_BLURBEHIND, gradientColor);
 
-            SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
+            SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
                 c => c is not Label && c is not Button && c is not ComboBox);
-            SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
+            SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
                 c => c is Label);
-            SetColorRecursive(form, new ButtonStyle(AcrylicMainColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
+            SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
                 c => c is Button);
         }
         private static void ApplyAcrylicTheme(Form form, int? gradientColor = null)
@@ -194,11 +194,11 @@ namespace launcherdotnet.Styling
             DwmApi.UnextendFrame(form.Handle);
             DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND, gradientColor);
 
-            SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
+            SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
                 c => c is not Label && c is not Button && c is not ComboBox);
-            SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
+            SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
                 c => c is Label);
-            SetColorRecursive(form, new ButtonStyle(AcrylicMainColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
+            SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
                 c => c is Button);
         }
 
@@ -208,11 +208,11 @@ namespace launcherdotnet.Styling
             DwmApi.UnextendFrame(form.Handle);
             DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_TRANSPARENTGRADIENT, gradientColor);
 
-            SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
+            SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
                 c => c is not Label && c is not Button && c is not ComboBox);
-            SetColorRecursive(form, new ControlStyle(AcrylicMainColor, Color.White),
+            SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
                 c => c is Label);
-            SetColorRecursive(form, new ButtonStyle(AcrylicMainColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
+            SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
                 c => c is Button);
         }
 

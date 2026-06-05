@@ -164,7 +164,7 @@ namespace launcherdotnet.Styling
                 case ThemeManager.Theme.Acrylic:
                 case ThemeManager.Theme.TransparentGradient:
                     _headerStyle.ForeColor = Color.White;
-                    _headerStyle.BackColor = ThemeManager.AcrylicMainColor;
+                    _headerStyle.BackColor = Color.Black;
                     break;
             }
 
