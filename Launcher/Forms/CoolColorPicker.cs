@@ -1,5 +1,9 @@
 ﻿using launcherdotnet.Launcher.Settings;
 using launcherdotnet.Styling;
+using Semver;
+using System.Drawing;
+using System.Runtime.CompilerServices;
+using TheArtOfDev.HtmlRenderer.Adapters;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -17,12 +21,21 @@ namespace launcherdotnet.Launcher.Forms
             if (startColor != null)
             {
                 colorEditor.Color = startColor.Value;
+
+                // this also invalidates it
+                // invalidate() doesn't update it here for some reason
+                Shown += (s, e) => previewPanel.BackColor = colorEditor.Color;
             }
             InheritGlobalTheme = false;
             if (IsThemeColoredLight())
                 ApplyTheme(ThemeManager.Theme.Light);
             else
                 ApplyTheme(ThemeManager.Theme.Dark);
+        }
+
+        private void colorEditor_ColorChanged(object sender, EventArgs e)
+        {
+            previewPanel.BackColor = colorEditor.Color;
         }
 
         private void okButton_Click(object sender, EventArgs e)
