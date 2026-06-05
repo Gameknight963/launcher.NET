@@ -3,14 +3,13 @@ using launcherdotnet.PluginAPI;
 using launcherdotnet.Styling;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using System.Windows.Forms;
 
 namespace launcherdotnet.Launcher.Forms
 {
     public partial class SettingsForm : ThemeableForm
     {
         private readonly string _defaultSelectedHint = "";
-        private readonly RadioButton[] _themeButtons;
+        private readonly Dictionary<string, RadioButton> _themeButtons;
 
         public SettingsForm()
         {
@@ -18,16 +17,18 @@ namespace launcherdotnet.Launcher.Forms
             StartPosition = FormStartPosition.CenterParent;
             Icon = LauncherConstants.AppIcon;
 
-            _themeButtons = [
-                systemThemeButton,
-                lightThemeButton,
-                darkThemeButton,
-                extendedFrameThemeButton,
-                extendedFrameDarkThemeButton,
-                blurThemeButton,
-                acrylicThemeButton,
-                transparentGradientButton
-            ];
+
+            _themeButtons = new Dictionary<string, RadioButton>
+                {
+                    { Theme.System.Name, systemThemeButton },
+                    { Theme.Light.Name, lightThemeButton },
+                    { Theme.Dark.Name, darkThemeButton },
+                    { Theme.ExtendFrame.Name, extendedFrameThemeButton },
+                    { Theme.ExtendFrameDark.Name, extendedFrameDarkThemeButton },
+                    { Theme.Blur.Name, blurThemeButton },
+                    { Theme.Acrylic.Name, acrylicThemeButton },
+                    { Theme.TransparentGradient.Name, transparentGradientButton }
+                };
 
             _defaultSelectedHint = Hint.Text;
             ShowSettings();
@@ -64,7 +65,7 @@ namespace launcherdotnet.Launcher.Forms
             s.RunOnStartup = GeneralCheckbox.GetItemChecked(4);
 
             // --- Theme ---
-            s.Theme = (ThemeManager.Theme)Array.FindIndex(_themeButtons, b => b.Checked);
+            s.ActiveTheme = _themeButtons.First(kvp => kvp.Value.Checked).Key;
             if (!DwmColor.TryParse(gradientColorBox.Text, out DwmColor? color))
             {
                 CoolMessageBox.Show($"Ivalid integer: {gradientColorBox.Text}", "Invalid input");
@@ -116,7 +117,7 @@ namespace launcherdotnet.Launcher.Forms
             AdvancedCheckbox.SetItemChecked(3, s.DisableIPv6);
 
             // --- Theme ---
-            _themeButtons[(int)s.Theme].Checked = true;
+            _themeButtons[s.ActiveTheme].Checked = true;
             gradientColorBox.Text = s.GradientColor.ToString();
 
             // --- About ---

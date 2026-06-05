@@ -4,22 +4,15 @@ namespace launcherdotnet.Styling
 {
     public class ThemeManager
     {
-        // there NEEDS to be a theme object eventually man... not now
         public static Theme ActiveTheme { get; private set; }
-        public static Theme ResolvedTheme => ResolveTheme(ActiveTheme);
-        public static TextRenderMode ActiveTextRenderMode { get; private set; }
-        public static int? ActiveGradientColor { get; private set; }
-        private static bool? _cachedSystemLightTheme;
+        public static int ActiveGradientColor { get; private set; }
 
         public static void SetColorRecursive(Control parent, ControlStyle style, Func<Control, bool>? filter = null)
         {
             if (filter == null || filter(parent))
             {
-                if (style.BackColor.HasValue)
-                    parent.BackColor = style.BackColor.Value;
-
-                if (style.ForeColor.HasValue)
-                    parent.ForeColor = style.ForeColor.Value;
+                parent.BackColor = style.BackColor;
+                parent.ForeColor = style.ForeColor;
 
                 if (style.Font != null)
                     parent.Font = style.Font;
@@ -64,214 +57,30 @@ namespace launcherdotnet.Styling
             }
         }
 
-        public enum Theme
-        {
-            System,
-            Light,
-            Dark,
-            ExtendFrame,
-            ExtendFrameDark,
-            Blur,
-            Acrylic,
-            TransparentGradient
-        }
-
-        public enum TextRenderMode
-        {
-            Auto,
-            AutoStrict,
-            TextRenderer,
-            ShadowText
-        }
-
         public static Color DarkMainColor => Color.FromArgb(30, 30, 30);
         public static Color AcrylicButtonColor => Color.FromArgb(20, 20, 30);
         public static Color DarkModeButtonColor => Color.FromArgb(30, 30, 50);
         public static Color DarkModeButtonBorder => Color.FromArgb(60, 60, 60);
 
-        public static void ApplyThemeToForm(Form form, Theme theme, int? gradientColor = null)
-        {
-            switch (theme)
-            {
-                case Theme.Light:
-                    ApplyLightTheme(form);
-                    break;
-
-                case Theme.Dark:
-                    ApplyDarkTheme(form);
-                    break;
-
-                case Theme.ExtendFrame:
-                case Theme.ExtendFrameDark:
-                    ApplyExtendFrameTheme(form, theme == Theme.ExtendFrame);
-                    break;
-
-                case Theme.Blur:
-                    ApplyBlurTheme(form, gradientColor);
-                    break;
-
-                case Theme.Acrylic:
-                    ApplyAcrylicTheme(form, gradientColor);
-                    break;
-                case Theme.TransparentGradient:
-                    ApplyClearTheme(form, gradientColor);
-                    break;
-                case Theme.System:
-                    if (IsSystemLightTheme())
-                        ApplyLightTheme(form);
-                    else
-                        ApplyDarkTheme(form);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(theme));
-            }
-            form.Refresh();
-        }
-
-        private static void ApplyLightTheme(Form form)
-        {
-            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
-            DwmApi.UnextendFrame(form.Handle);
-            DwmApi.DisableImmersiveDarkMode(form.Handle);
-
-            SetColorRecursive(form, new ControlStyle(SystemColors.Control, Color.Black),
-                c => c is not ListView && c is not Button && c is not TextBox && c is not CheckedListBox && c is not ComboBox);
-            SetColorRecursive(form, new ControlStyle(SystemColors.Window, Color.Black),
-                c => c is ListView || c is TextBox);
-            SetColorRecursive(form, new ButtonStyle(SystemColors.Window, Color.Black, FlatStyle.Standard),
-                c => c is Button);
-            SetColorRecursive(form, new ControlStyle(SystemColors.Window, Color.Black),
-                c => c is CheckedListBox);
-
-            form.BackColor = SystemColors.Control;
-        }
-        private static void ApplyDarkTheme(Form form)
-        {
-            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
-            DwmApi.UnextendFrame(form.Handle);
-            DwmApi.EnableImmersiveDarkMode(form.Handle);
-
-            SetColorRecursive(form, new ControlStyle(DarkMainColor, Color.White),
-                c => c is not Label && c is not Button && c is not ComboBox);
-            SetColorRecursive(form, new ControlStyle(DarkMainColor, Color.White),
-                c => c is Label);
-            SetColorRecursive(form, new ButtonStyle(DarkModeButtonColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
-                c => c is Button);
-        }
-        private static void ApplyExtendFrameTheme(Form form, bool light = true)
-        {
-            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
-            if (light)
-                DwmApi.DisableImmersiveDarkMode(form.Handle);
-            else
-                DwmApi.EnableImmersiveDarkMode(form.Handle);
-
-            DwmApi.ExtendFrame(form.Handle);
-
-            SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                c => c is not Label && c is not Button && c is not ComboBox);
-            SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                c => c is Label);
-            SetColorRecursive(form, new ButtonStyle(Color.Black, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
-                c => c is Button);
-        }
-        private static void ApplyBlurTheme(Form form, int? gradientColor = null)
-        {
-            DwmApi.EnableImmersiveDarkMode(form.Handle);
-            DwmApi.UnextendFrame(form.Handle);
-            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_BLURBEHIND, gradientColor);
-
-            SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                c => c is not Label && c is not Button && c is not ComboBox);
-            SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                c => c is Label);
-            SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
-                c => c is Button);
-        }
-        private static void ApplyAcrylicTheme(Form form, int? gradientColor = null)
-        {
-            DwmApi.EnableImmersiveDarkMode(form.Handle);
-            DwmApi.UnextendFrame(form.Handle);
-            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND, gradientColor);
-
-            SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                c => c is not Label && c is not Button && c is not ComboBox);
-            SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                c => c is Label);
-            SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
-                c => c is Button);
-        }
-
-        private static void ApplyClearTheme(Form form, int? gradientColor = null)
-        {
-            DwmApi.EnableImmersiveDarkMode(form.Handle);
-            DwmApi.UnextendFrame(form.Handle);
-            DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_TRANSPARENTGRADIENT, gradientColor);
-
-            SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                c => c is not Label && c is not Button && c is not ComboBox);
-            SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                c => c is Label);
-            SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkModeButtonBorder),
-                c => c is Button);
-        }
-
-
-        public static void SetGlobalTheme(Theme theme, TextRenderMode? mode = null, int? gradientColor = null)
+        public static void SetGlobalTheme(Theme theme, int gradientColor)
         {
             ActiveTheme = theme;
-            if (mode.HasValue) ActiveTextRenderMode = mode.Value;
             ActiveGradientColor = gradientColor;
 
             foreach (Form form in Application.OpenForms)
             {
                 if (form is ThemeableForm tf)
                 {
-                    tf.ApplyTheme(theme, mode, gradientColor);
+                    tf.ApplyTheme(theme, gradientColor);
                 }
             }
-        }
-
-        /// <returns>True if TextRenderer, false if ShadowText</returns>
-        /// <exception cref="InvalidOperationException"></exception>
-        public static bool ResolveTextRenderMode(Theme theme, TextRenderMode mode)
-        {
-            Theme resolvedTheme = ResolveTheme(theme);
-            return mode switch
-            {
-                TextRenderMode.Auto => !(resolvedTheme == Theme.Acrylic || resolvedTheme == Theme.Blur),
-                TextRenderMode.AutoStrict => resolvedTheme == Theme.Light || resolvedTheme == Theme.Dark,
-                TextRenderMode.TextRenderer => true,
-                TextRenderMode.ShadowText => false,
-                _ => throw new ArgumentException($"The requested textrendermode is invalid: {mode}", nameof(mode)),
-            };
-        }
-
-        public static Theme ResolveTheme(Theme theme)
-        {
-            return theme switch
-            {
-                Theme.System => IsSystemLightTheme() ? Theme.Light : Theme.Dark,
-                _ => theme
-            };
         }
 
         /// <returns>True if light theme, false if dark theme.</returns>
         /// <exception cref="InvalidOperationException"></exception>
         public static bool IsSystemLightTheme()
         {
-            if (_cachedSystemLightTheme.HasValue)
-                return _cachedSystemLightTheme.Value;
-
-            _cachedSystemLightTheme = IsSystemLightThemeRaw();
-            return _cachedSystemLightTheme.Value;
-        }
-
-        /// <returns>True if light theme, false if dark theme.</returns>
-        /// <exception cref="InvalidOperationException"></exception>
-        private static bool IsSystemLightThemeRaw()
-        {
-            object? value = Registry.GetValue(
+            object value = Registry.GetValue(
                 @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize",
                 "AppsUseLightTheme",
                 1) ?? 

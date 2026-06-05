@@ -24,9 +24,9 @@ namespace launcherdotnet.Launcher.Forms
             }
             InheritGlobalTheme = false;
             if (IsThemeColoredLight())
-                ApplyTheme(ThemeManager.Theme.Light);
+                ApplyTheme(Theme.Light, ThemeManager.ActiveGradientColor);
             else
-                ApplyTheme(ThemeManager.Theme.Dark);
+                ApplyTheme(Theme.Dark, ThemeManager.ActiveGradientColor);
         }
 
         private void colorEditor_ColorChanged(object sender, EventArgs e)

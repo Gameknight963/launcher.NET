@@ -9,17 +9,15 @@
         public Color? DownBackColor { get; set; }
 
         public ButtonStyle(
-            Color? backColor = null,
-            Color? foreColor = null,
+            Color backColor,
+            Color foreColor,
             FlatStyle? flatStyle = null,
             int? borderSize = null,
             Color? borderColor = null,
             Color? hoverBackColor = null,
             Color? downBackColor = null,
-            Font? font = null)
+            Font? font = null) : base(backColor, foreColor)
         {
-            BackColor = backColor;
-            ForeColor = foreColor;
             FlatStyle = flatStyle;
             BorderSize = borderSize;
             BorderColor = borderColor;
