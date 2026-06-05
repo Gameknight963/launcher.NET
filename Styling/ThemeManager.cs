@@ -58,11 +58,6 @@ namespace launcherdotnet.Styling
             }
         }
 
-        public static Color DarkMainColor => Color.FromArgb(30, 30, 30);
-        public static Color AcrylicButtonColor => Color.FromArgb(20, 20, 30);
-        public static Color DarkModeButtonColor => Color.FromArgb(30, 30, 50);
-        public static Color DarkModeButtonBorder => Color.FromArgb(60, 60, 60);
-
         public static void SetGlobalTheme(Theme theme, int gradientColor)
         {
             ActiveTheme = theme;
