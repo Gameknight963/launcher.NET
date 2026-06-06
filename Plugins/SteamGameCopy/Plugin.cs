@@ -6,7 +6,7 @@ using launcherdotnet.Thunderstore;
 [assembly: LauncherPlugin(typeof(Plugin),
     "Steam Game Copier",
     "Copies any installed Steam game to launcher.net",
-    "1.0.0")]
+    "2.0.0")]
 
 namespace launcherdotnet.Plugins.SteamGameCopy
 {
