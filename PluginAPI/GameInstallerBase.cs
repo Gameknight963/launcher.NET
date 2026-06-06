@@ -18,7 +18,7 @@
 
         /// <inheritdoc />
         public virtual LabelQueryTime PromptForLabel =>
-            LabelQueryTime.Never;
+            LabelQueryTime.BeforeInstall;
 
         /// <inheritdoc/>
         public abstract string GameName { get; }
