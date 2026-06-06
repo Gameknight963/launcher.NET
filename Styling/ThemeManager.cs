@@ -98,6 +98,7 @@ namespace launcherdotnet.Styling
         {
             ActiveTheme = theme;
             ActiveGradientColor = gradientColor;
+            UseVisualStyles = useVisualStyles;
 
             foreach (Form form in Application.OpenForms)
             {
