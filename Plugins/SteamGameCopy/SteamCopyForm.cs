@@ -1,5 +1,6 @@
 using launcherdotnet.Styling;
 using launcherdotnet.Helpers;
+using launcherdotnet.PluginAPI;
 
 namespace launcherdotnet.Plugins.SteamGameCopy
 {
@@ -21,7 +22,7 @@ namespace launcherdotnet.Plugins.SteamGameCopy
             foreach (SteamGame game in games)
             {
                 ListViewItem item = new(game.Name);
-                item.SubItems.Add(FormatSize(game.SizeOnDisk));
+                item.SubItems.Add(PluginTools.FormatSize(game.SizeOnDisk));
                 item.Tag = game;
                 gamesLv.Items.Add(item);
             }
@@ -45,23 +46,6 @@ namespace launcherdotnet.Plugins.SteamGameCopy
         private void GamesLv_SelectedIndexChanged(object? sender, EventArgs e)
         {
             okButton.Enabled = !(gamesLv.SelectedIndices.Count == 0);
-        }
-
-        public static string FormatSize(long bytes)
-        {
-            // future proof ig
-            string[] units = { "B", "KB", "MB", "GB", "TB", "PB" };
-
-            double size = bytes;
-            int unit = 0;
-
-            while (size >= 1024 && unit < units.Length - 1)
-            {
-                size /= 1024;
-                unit++;
-            }
-
-            return $"{size:0.##} {units[unit]}";
         }
     }
 }
