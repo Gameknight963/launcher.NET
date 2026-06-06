@@ -1,4 +1,4 @@
-Changes in v1.0.0 (previous version v0.8.1): 
+**Changes in v1.0.0 (previous version v0.8.1):**
 
 - **IGameInstaller.cs:**
   - You no longer have to call a function to register your plugin. The loader will do it for you automatically.
@@ -8,6 +8,9 @@ Changes in v1.0.0 (previous version v0.8.1):
   - `RegisterGameInstaller` is now internal `Register`, since it is only used by the loader
   - You can now some informations about which plugins are loaded with `GameInstallPlugins`, `LauncherPlugins`, `PluginDescriptors`, and `PluginsWithSettings`.
 - **Other:** You now need to add the `LauncherPluginAttribute` to your assembly in order to write a plugin.
+
+**Changes in v2.0.0 (previous version v1.0.0):**
+ - `GameInstallerBase.PromptForLabel` now defaults to BeforeInstall rather than Never.
 
 # launcher.net plugin development guide
 
@@ -172,7 +175,7 @@ server where you're getting your game from.
 If you don't know what an API is, God help you.
 
 ```csharp
-public virtual LabelQueryTime PromptForLabel => LabelQueryTime.Never;
+public virtual LabelQueryTime PromptForLabel => LabelQueryTime.BeforeInstall;
 ```
 
 When the installer dialog should prompt for a label. Either before install, after install, or never. 
