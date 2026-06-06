@@ -192,5 +192,22 @@ namespace launcherdotnet.PluginAPI
                 status.Report($"Copying {done}/{total}");
             }
         }
+
+        public static string FormatSize(long bytes)
+        {
+            // future proof ig
+            string[] units = { "B", "KB", "MB", "GB", "TB", "PB" };
+
+            double size = bytes;
+            int unit = 0;
+
+            while (size >= 1024 && unit < units.Length - 1)
+            {
+                size /= 1024;
+                unit++;
+            }
+
+            return $"{size:0.##} {units[unit]}";
+        }
     }
 }
