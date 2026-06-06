@@ -65,9 +65,13 @@ namespace ClassLibrary1
     }
 ```
 
-I would hope that Name and Description are pretty self-explanatory. In order to get the API version of your install of launcher.net, open it, go to Settings > About > under launcher.net Plugin API. Make sure it's a valid Semantic version otherwise the loader will fail to parse it.
+The LauncherPluginAttribute is constructed like this:
+```csharp
+public LauncherPluginAttribute(Type entryType, string name, string description, string targetApiVersion) { ... }
+```
+`entryType` is the type of the class that holds your plugin. Name and description should be self-explanatory. For `targetApiVersion`: in order to get the API version of your install of launcher.net, open it, go to Settings > About > under launcher.net Plugin API. Make sure it's a valid Semantic version otherwise the loader will fail to parse it.
 
-launcher.net compares the major versions of plugins to the API to determine whether they are compatible. This check can be disabled in Settings, but it will probably just throw ReflectionTypeLoadException on loading the plugin (which is caught by the loader, not unhandled, mind you)
+launcher.net compares the major versions of what API plugins target to the current API to determine whether they are compatible. This check can be disabled in Settings, but it will probably just throw ReflectionTypeLoadException on loading the plugin (which is caught by the loader, not unhandled, mind you)
 
 To say Hello World just do ``PluginLogger.Msg("hello world!");``
 
