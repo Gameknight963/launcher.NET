@@ -89,9 +89,9 @@ namespace launcherdotnet.Plugins.GameFromUrl
 
                 if (totalBytes > 0)
                 {
-                    double percent = (double)downloadedBytes / totalBytes;
+                    double percent = (double)downloadedBytes * 100 / totalBytes;
                     progress.Report(percent);
-                    status.Report($"Downloaded {downloadedBytes} out of {totalBytes} bytes ({percent})");
+                    status.Report($"Downloaded {downloadedBytes} out of {totalBytes} bytes ({percent}%)");
                 }
             }
 
