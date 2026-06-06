@@ -44,6 +44,7 @@ namespace launcherdotnet.Launcher.Forms
             gcCollectBtn = new Button();
             AdvancedCheckbox = new CheckedListBox();
             ThemeTab = new TabPage();
+            useVisualStylesCheckBox = new CheckBox();
             colorButton = new Button();
             gradientColorBox = new TextBox();
             label3 = new Label();
@@ -225,6 +226,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             // ThemeTab
             // 
+            ThemeTab.Controls.Add(useVisualStylesCheckBox);
             ThemeTab.Controls.Add(colorButton);
             ThemeTab.Controls.Add(gradientColorBox);
             ThemeTab.Controls.Add(label3);
@@ -239,6 +241,17 @@ namespace launcherdotnet.Launcher.Forms
             ThemeTab.TabIndex = 5;
             ThemeTab.Text = "Themes";
             ThemeTab.UseVisualStyleBackColor = true;
+            // 
+            // useVisualStylesCheckBox
+            // 
+            useVisualStylesCheckBox.AutoSize = true;
+            useVisualStylesCheckBox.Location = new Point(6, 321);
+            useVisualStylesCheckBox.Name = "useVisualStylesCheckBox";
+            useVisualStylesCheckBox.Size = new Size(126, 19);
+            useVisualStylesCheckBox.TabIndex = 7;
+            useVisualStylesCheckBox.Text = "Enable visual styles";
+            useVisualStylesCheckBox.UseVisualStyleBackColor = true;
+            useVisualStylesCheckBox.CheckedChanged += UseVisualStylesCheckBox_CheckedChanged;
             // 
             // colorButton
             // 
@@ -563,7 +576,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             DescriptionLabel.AutoSize = true;
             DescriptionLabel.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            DescriptionLabel.Location = new Point(365, 64);
+            DescriptionLabel.Location = new Point(369, 64);
             DescriptionLabel.Name = "DescriptionLabel";
             DescriptionLabel.Size = new Size(71, 15);
             DescriptionLabel.TabIndex = 1;
@@ -642,5 +655,6 @@ namespace launcherdotnet.Launcher.Forms
         private Button colorButton;
         private Button openPluginSettingsBtn;
         private Button gcCollectBtn;
+        private CheckBox useVisualStylesCheckBox;
     }
 }

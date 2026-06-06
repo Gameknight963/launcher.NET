@@ -2,7 +2,7 @@
 {
     public class Theme
     {
-        public delegate void ApplyThemeDelegate(Form form, int gradientColor);
+        public delegate void ApplyThemeDelegate(Form form, int gradientColor, bool useVisualStyles);
 
         public readonly ApplyThemeDelegate Apply;
         public readonly ControlStyle MainStyle;
@@ -17,7 +17,7 @@
             bool useShadowText = true,
             bool useOwnerDrawHeaders = true)
         {
-            Name = name; 
+            Name = name;
             Apply = apply;
             MainStyle = style;
             UseShadowText = useShadowText;
@@ -32,12 +32,11 @@
         public static bool operator ==(Theme? a, Theme? b) => a?.Name == b?.Name;
         public static bool operator !=(Theme? a, Theme? b) => a?.Name != b?.Name;
 
+        // ------------------- STATIC -------------------
 
         private static readonly Dictionary<string, Theme> _themes = new();
         public static IReadOnlyDictionary<string, Theme> Themes => _themes;
         public static Theme? FromName(string name) => _themes.TryGetValue(name, out Theme? theme) ? theme : null;
-
-        // ------------------- STATIC -------------------
 
         public static readonly Color DarkMainColor = Color.FromArgb(30, 30, 30);
         public static readonly Color AcrylicButtonColor = Color.FromArgb(20, 20, 30);
@@ -46,7 +45,7 @@
 
         public static readonly Theme Light = new(
             "Light",
-            (form, gradientColor) =>
+            (form, gradientColor, useVisualStyles) =>
             {
                 DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
                 DwmApi.UnextendFrame(form.Handle);
@@ -60,6 +59,8 @@
                     c => c is Button);
                 ThemeManager.SetColorRecursive(form, new ControlStyle(SystemColors.Window, SystemColors.ControlText),
                     c => c is CheckedListBox);
+
+                ThemeManager.SetVisualStyleRecursive(form, useVisualStyles ? VisualStyle.Explorer : VisualStyle.None);
             },
             new ControlStyle(SystemColors.Control, SystemColors.ControlText),
             useShadowText: false,
@@ -68,31 +69,32 @@
 
         public static readonly Theme Dark = new(
             "Dark",
-            (form, gradientColor) =>
-                {
-                    DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
-                    DwmApi.UnextendFrame(form.Handle);
-                    DwmApi.EnableImmersiveDarkMode(form.Handle);
+            (form, gradientColor, useVisualStyles) =>
+            {
+                DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
+                DwmApi.UnextendFrame(form.Handle);
+                DwmApi.EnableImmersiveDarkMode(form.Handle);
 
-                    ThemeManager.SetColorRecursive(form, new ControlStyle(DarkMainColor, Color.White),
-                        c => c is not Label && c is not Button && c is not ComboBox);
-                    ThemeManager.SetColorRecursive(form, new ControlStyle(DarkMainColor, Color.White),
-                        c => c is Label);
-                    ThemeManager.SetColorRecursive(form, new ButtonStyle(DarkButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
-                        c => c is Button);
-                },
-                new ControlStyle(DarkMainColor, Color.White),
-                useShadowText: false,
-                useOwnerDrawHeaders: true
+                ThemeManager.SetColorRecursive(form, new ControlStyle(DarkMainColor, Color.White),
+                    c => c is not Label && c is not Button && c is not ComboBox);
+                ThemeManager.SetColorRecursive(form, new ControlStyle(DarkMainColor, Color.White),
+                    c => c is Label);
+                ThemeManager.SetColorRecursive(form, new ButtonStyle(DarkButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
+                    c => c is Button);
+
+                ThemeManager.SetVisualStyleRecursive(form, useVisualStyles ? VisualStyle.DarkExplorer : VisualStyle.None);
+            },
+            new ControlStyle(DarkMainColor, Color.White),
+            useShadowText: false,
+            useOwnerDrawHeaders: true
             );
 
         public static readonly Theme System = new(
             "System",
-            (form, gradientColor) =>
+            (form, gradientColor, style) =>
             {
                 Theme real = ThemeManager.IsSystemLightTheme() ? Light : Dark;
-
-                real.Apply(form, gradientColor);
+                real.Apply(form, gradientColor, style);
             },
             new ControlStyle(Color.Empty, Color.Empty),
             useShadowText: false,
@@ -101,7 +103,7 @@
 
         public static readonly Theme ExtendFrame = new(
             "ExtendFrame",
-            (form, gradientColor) =>
+            (form, gradientColor, useVisualStyles) =>
             {
                 DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
                 DwmApi.DisableImmersiveDarkMode(form.Handle);
@@ -113,13 +115,14 @@
                     c => c is Label);
                 ThemeManager.SetColorRecursive(form, new ButtonStyle(Color.Black, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
                     c => c is Button);
+                ThemeManager.SetVisualStyleRecursive(form, useVisualStyles ? VisualStyle.Explorer : VisualStyle.None);
             },
             new ControlStyle(Color.Black, Color.White)
         );
 
         public static readonly Theme ExtendFrameDark = new(
             "ExtendFrameDark",
-            (form, gradientColor) =>
+            (form, gradientColor, useVisualStyles) =>
             {
                 DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
                 DwmApi.EnableImmersiveDarkMode(form.Handle);
@@ -131,13 +134,15 @@
                     c => c is Label);
                 ThemeManager.SetColorRecursive(form, new ButtonStyle(Color.Black, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
                     c => c is Button);
+
+                ThemeManager.SetVisualStyleRecursive(form, useVisualStyles ? VisualStyle.DarkExplorer : VisualStyle.None);
             },
             new ControlStyle(Color.Black, Color.White)
         );
 
         public static readonly Theme Blur = new(
             "Blur",
-            (form, gradientColor) =>
+            (form, gradientColor, useVisualStyles) =>
             {
                 DwmApi.EnableImmersiveDarkMode(form.Handle);
                 DwmApi.UnextendFrame(form.Handle);
@@ -149,13 +154,15 @@
                     c => c is Label);
                 ThemeManager.SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
                     c => c is Button);
+
+                ThemeManager.SetVisualStyleRecursive(form, useVisualStyles ? VisualStyle.DarkExplorer : VisualStyle.None);
             },
             new ControlStyle(Color.Black, Color.White)
         );
 
         public static readonly Theme Acrylic = new(
             "Acrylic",
-            (form, gradientColor) =>
+            (form, gradientColor, useVisualStyles) =>
             {
                 DwmApi.EnableImmersiveDarkMode(form.Handle);
                 DwmApi.UnextendFrame(form.Handle);
@@ -167,13 +174,14 @@
                     c => c is Label);
                 ThemeManager.SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
                     c => c is Button);
+                ThemeManager.SetVisualStyleRecursive(form, useVisualStyles ? VisualStyle.DarkExplorer : VisualStyle.None);
             },
             new ControlStyle(Color.Black, Color.White)
         );
 
         public static readonly Theme TransparentGradient = new(
             "TransparentGradient",
-            (form, gradientColor) =>
+            (form, gradientColor, useVisualStyles) =>
             {
                 DwmApi.EnableImmersiveDarkMode(form.Handle);
                 DwmApi.UnextendFrame(form.Handle);
@@ -185,6 +193,8 @@
                     c => c is Label);
                 ThemeManager.SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
                     c => c is Button);
+
+                ThemeManager.SetVisualStyleRecursive(form, useVisualStyles ? VisualStyle.DarkExplorer : VisualStyle.None);
             },
             new ControlStyle(Color.Black, Color.White)
         );

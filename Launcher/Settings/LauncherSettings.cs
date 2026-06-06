@@ -25,7 +25,9 @@ namespace launcherdotnet.Launcher.Settings
             Settings = JsonConvert.DeserializeObject<LauncherSettings>(json) ?? new LauncherSettings();
 
             if (Settings.OpenDebugConsole) ConsoleHelper.Show();
-            ThemeManager.SetGlobalTheme(Theme.FromName(Settings.ActiveTheme) ?? LauncherConstants.DefaultTheme, Settings.GradientColor.ToAbgr());
+            ThemeManager.SetGlobalTheme(Theme.FromName(Settings.ActiveTheme) ?? 
+                LauncherConstants.DefaultTheme, Settings.GradientColor.ToAbgr(), 
+                Settings.UseVisualStyles);
         }
 
         public static void Save()
@@ -33,7 +35,10 @@ namespace launcherdotnet.Launcher.Settings
             string json = JsonConvert.SerializeObject(Settings, Formatting.Indented);
             Directory.CreateDirectory(Path.GetDirectoryName(_settingsPath)!);
             File.WriteAllText(_settingsPath, json);
-            ThemeManager.SetGlobalTheme(Theme.FromName(Settings.ActiveTheme) ?? LauncherConstants.DefaultTheme, Settings.GradientColor.ToAbgr());
+            ThemeManager.SetGlobalTheme(
+                Theme.FromName(Settings.ActiveTheme) ?? LauncherConstants.DefaultTheme, 
+                Settings.GradientColor.ToAbgr(),
+                Settings.UseVisualStyles);
             if (Settings.RunOnStartup) StartupHelper.EnableRunOnStartup();
             else StartupHelper.DisableRunOnStartup();
             if (ConsoleHelper.ConsoleShown == Settings.OpenDebugConsole) return;
@@ -58,6 +63,7 @@ namespace launcherdotnet.Launcher.Settings
         // ===== Theme =====
         public string ActiveTheme { get; set; } = Theme.Light.Name;
         public DwmColor GradientColor { get; set; } = DwmColor.FromAbgr(0x66000000);
+        public bool UseVisualStyles { get; set; } = true;
 
         // ===== Advanced =====
 

@@ -3,6 +3,7 @@ using launcherdotnet.PluginAPI;
 using launcherdotnet.Styling;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -75,6 +76,8 @@ namespace launcherdotnet.Launcher.Forms
 
             s.GradientColor = color;
 
+            s.UseVisualStyles = useVisualStylesCheckBox.Checked;
+
             // --- Advanced ---
             s.OpenDebugConsole = AdvancedCheckbox.GetItemChecked(0);
             s.VerboseLogging = AdvancedCheckbox.GetItemChecked(1);
@@ -134,6 +137,7 @@ namespace launcherdotnet.Launcher.Forms
                 themeButtonsFlowLayoutPanel.Controls.Add(rb);
             }
 
+            useVisualStylesCheckBox.Checked = s.UseVisualStyles;
 
             // --- About ---
             LauncherVersionLabel.Text = $"v{LauncherConstants.CurrentVersionString}";
@@ -141,8 +145,6 @@ namespace launcherdotnet.Launcher.Forms
 
             SetSelectedHint(null);
         }
-
-
         private void SetSelectedHint(string? description, string? defaultSetting = null)
         {
             if (description == null)
@@ -316,20 +318,23 @@ namespace launcherdotnet.Launcher.Forms
         private void LightThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Use light theme.");
 
         private void DarkThemeButton_CheckedChanged(object sender, EventArgs e) =>
-            Hint.Text = ("Use dark theme. Some controls, such as comboboxes, are drawn at the UxTheme layer, so they cannot be themed");
+            Hint.Text = ("Use dark theme. Some controls, such as comboboxes, are drawn at the UxTheme layer, so they cannot be themed. " +
+            "This works best with visual styles enabled.");
 
-        private void BlurThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Use a blurred background.");
+        private void BlurThemeButton_CheckedChanged(object sender, EventArgs e) => 
+            Hint.Text = ("Use a blurred background.");
 
-        private void AcrylicThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Use acrylic background.");
+        private void AcrylicThemeButton_CheckedChanged(object sender, EventArgs e) => 
+            Hint.Text = ("Use acrylic background.");
 
-        private void ExtendedFrameThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Extends the titlebar into the app. If you use something like" +
-            "DWMBlurGlass that blurs titlebars, launcher.net will become transparent.");
+        private void ExtendedFrameThemeButton_CheckedChanged(object sender, EventArgs e) =>
+            Hint.Text = ("Extends the titlebar into the app. If you use tilebar blurring software launcher.net will become transparent.");
 
-        private void ExtendedFrameDarkThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Extends the titlebar into the app, " +
-            "but uses dark mode titlebar");
+        private void ExtendedFrameDarkThemeButton_CheckedChanged(object sender, EventArgs e) => 
+            Hint.Text = ("Extends the titlebar into the app, but uses dark mode titlebar and dark visual style if you have it enabled");
 
-        private void TransparentGradientButton_CheckedChanged(object sender, EventArgs e) => Hint.Text =
-            ("Clear background with no blur.");
+        private void TransparentGradientButton_CheckedChanged(object sender, EventArgs e) => 
+            Hint.Text = ("Clear background with no blur.");
 
         private void colorButton_Click(object sender, EventArgs e)
         {
@@ -344,5 +349,8 @@ namespace launcherdotnet.Launcher.Forms
             GC.WaitForPendingFinalizers();
             GC.Collect();
         }
+
+        private void UseVisualStylesCheckBox_CheckedChanged(object sender, EventArgs e) => 
+            Hint.Text = ("Enables Explorer visual styles, as defined by the theme. This can improve dark mode consistency.");
     }
 }
