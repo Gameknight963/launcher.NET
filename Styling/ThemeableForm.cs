@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.InteropServices;
 
 namespace launcherdotnet.Styling
 {
@@ -38,7 +39,7 @@ namespace launcherdotnet.Styling
             ActiveTheme = ThemeManager.ActiveTheme;
             Load += (sender, e) =>
             {
-                if (InheritGlobalTheme) ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.ActiveGradientColor);
+                if (InheritGlobalTheme) ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.ActiveGradientColor, ThemeManager.UseVisualStyles);
             };
         }
 
@@ -96,13 +97,13 @@ namespace launcherdotnet.Styling
             base.Dispose(disposing);
         }
 
-        public void ApplyTheme(Theme theme, int gradientColor)
+        public void ApplyTheme(Theme theme, int gradientColor, bool useVisualStyles)
         {
             if (IsDesignTime) return;
             ActiveTheme = theme;
             UseShadowText = theme.UseShadowText;
             ApplyControlTheme(this, theme);
-            theme.Apply(this, gradientColor);
+            theme.Apply(this, gradientColor, useVisualStyles);
             OnThemeWasApplied();
             Refresh();
         }
