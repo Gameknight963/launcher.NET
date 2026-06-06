@@ -1,11 +1,10 @@
 ﻿using launcherdotnet.PluginAPI;
 using launcherdotnet.Plugins.HelloWorld;
-using Semver;
 
 [assembly: LauncherPlugin(typeof(HelloWorldInstaller), 
     "Hello World Installer", 
     "Generates an exe that prints Hello World to the console.", 
-    "1.0.0")]
+    "2.0.0")]
 
 namespace launcherdotnet.Plugins.HelloWorld
 {
