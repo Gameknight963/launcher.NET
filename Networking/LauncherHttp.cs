@@ -13,11 +13,10 @@ namespace launcherdotnet.Networking
 
         static LauncherHttp()
         {
-            if (!LauncherSettings.Settings.DisableIPv6 || !NetworkInterface.GetIsNetworkAvailable())
-            {
-                Client = new();
-                return;
-            }
+            Client = new HttpClient(_handler);
+            Client.DefaultRequestHeaders.Add("User-Agent", $"launcherdotnet/{LauncherConstants.CurrentVersion}");
+
+            if (!LauncherSettings.Settings.DisableIPv6 || !NetworkInterface.GetIsNetworkAvailable()) return;
             _handler.ConnectCallback = async (context, cancellationToken) =>
             {
                 IPAddress[] addresses = await Dns.GetHostAddressesAsync(context.DnsEndPoint.Host, cancellationToken);
@@ -30,8 +29,6 @@ namespace launcherdotnet.Networking
 
                 return new NetworkStream(socket, ownsSocket: true);
             };
-            Client = new HttpClient(_handler);
-            Client.DefaultRequestHeaders.Add("User-Agent", $"launcherdotnet/{LauncherConstants.CurrentVersion}");
             _ = TestAsync();
         }
 
