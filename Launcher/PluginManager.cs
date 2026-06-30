@@ -1,4 +1,5 @@
-﻿using launcherdotnet.PluginAPI;
+﻿using launcherdotnet.Launcher.Settings;
+using launcherdotnet.PluginAPI;
 using System.Reflection;
 
 namespace launcherdotnet.Launcher
@@ -41,7 +42,9 @@ namespace launcherdotnet.Launcher
                         continue;
                     }
 
-                    if (meta.TargetApiVersion.ComparePrecedenceTo(LauncherApiInfo.ApiVersion) > 0 || meta.TargetApiVersion.Major != LauncherApiInfo.ApiVersion.Major)
+                    if (!LauncherSettings.Settings.DisablePluginVersionCheck &&
+                        !(meta.TargetApiVersion.ComparePrecedenceTo(LauncherApiInfo.ApiVersion) <= 0 &&
+                          meta.TargetApiVersion.Major == LauncherApiInfo.ApiVersion.Major))
                     {
                         LauncherLogger.Error(
                             $"Plugin '{Path.GetFileName(file)}' incompatible. \n" +
