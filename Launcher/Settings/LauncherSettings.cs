@@ -62,7 +62,7 @@ namespace launcherdotnet.Launcher.Settings
 
         // ===== Theme =====
         public string ActiveTheme { get; set; } = Theme.Light.Name;
-        public DwmColor GradientColor { get; set; } = DwmColor.FromAbgr(0x66000000);
+        public DwmColor GradientColor { get; set; } = DwmColor.FromAbgr(0x27950366);
         public bool UseVisualStyles { get; set; } = true;
 
         // ===== Advanced =====
