@@ -41,12 +41,11 @@ namespace launcherdotnet.Launcher
                         continue;
                     }
 
-                    if (meta.TargetApiVersion.Major != LauncherApiInfo.ApiVersion.Major)
+                    if (meta.TargetApiVersion.ComparePrecedenceTo(LauncherApiInfo.ApiVersion) > 0 || meta.TargetApiVersion.Major != LauncherApiInfo.ApiVersion.Major)
                     {
                         LauncherLogger.Error(
-                            $"Plugin '{Path.GetFileName(file)}' incompatible. " +
-                            $"Expected {LauncherApiInfo.ApiVersion.Major}, got {meta.TargetApiVersion.Major}");
-
+                            $"Plugin '{Path.GetFileName(file)}' incompatible. \n" +
+                            $"Expected any version between {LauncherApiInfo.ApiVersion.Major}.0.0-{LauncherApiInfo.ApiVersion}, got {meta.TargetApiVersion}");
                         continue;
                     }
 
