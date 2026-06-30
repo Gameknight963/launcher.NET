@@ -2,5 +2,6 @@
   <Project Path="launcherdotnet.csproj" />
   <Project Path="Plugins/GameFromUrl/GameFromUrl.csproj" Id="1a390a88-4029-4709-a981-f2f03c35f34f" />
   <Project Path="Plugins/HelloWorld/HelloWorld.csproj" Id="34d5825f-232a-4a4e-a37f-8fe97f793bc5" />
+  <Project Path="Plugins/MSZInstaller/MSZInstaller.csproj" Id="2e7145e9-4754-48ad-bf9b-3b532d3e07a1" />
   <Project Path="Plugins/SteamGameCopy/SteamGameCopy.csproj" Id="24ac62bb-134b-4f1b-bce5-d4af8d2ddf9c" />
 </Solution>
