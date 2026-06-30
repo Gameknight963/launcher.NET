@@ -7,7 +7,7 @@ using launcherdotnet;
 [assembly: LauncherPlugin(typeof(MSZInstaller.Plugin),
     "Miside Zero Installer",
     "Downloads and installs Miside Zero from my Github mirror",
-    "2.0.0")]
+    "2.0.1")]
 
 namespace MSZInstaller
 {
