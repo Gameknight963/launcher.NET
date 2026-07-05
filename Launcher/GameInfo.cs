@@ -1,4 +1,5 @@
 ﻿using launcherdotnet.Launcher.Settings;
+using launcherdotnet.PluginAPI;
 using Newtonsoft.Json;
 
 namespace launcherdotnet.Launcher
@@ -11,10 +12,22 @@ namespace launcherdotnet.Launcher
         public string GameName { get; set; } = "";
         public bool RunWithCmd { get; set; } = false;
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string? ThunderstoreCommunitySlug { get; set; } = null;
-        public bool ModManagable = true;
+
         [JsonIgnore]
+        public string DataDirectory =>
+            Path.Combine(LauncherConstants.BaseDir, "gamedata", Id);
+
+        public bool ModManagable = false;
+
+        public T LoadConfig<T>(string sourceId) where T : ModSourceConfig<T>, new() => ModSourceConfig<T>.Load(this, sourceId);
+
+        [JsonIgnore]
+        [Obsolete("launcher.net will no longer respond to Thunderstore-related properties")]
         public bool HasThunderstoreIntegration => ThunderstoreCommunitySlug != null;
+
+        [Obsolete("launcher.net will no longer respond to Thunderstore-related properties")]
+        public string? ThunderstoreCommunitySlug { get; set; } = null;
+
         [JsonIgnore]
         public string AbsolutePath => Path.Combine(LauncherConstants.BaseDir, RelativePath);
         [JsonIgnore]

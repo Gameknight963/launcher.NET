@@ -5,19 +5,26 @@ namespace launcherdotnet.PluginAPI
     public interface IModSource : ILauncherPlugin
     {
         /// <summary>
-        /// User-friendly display name
+        /// User friendly display name
         /// </summary>
         string DisplayName { get; }
 
         /// <summary>
-        /// Unique identifier for this mod source, used to match against GameInfo.
+        /// Unique identifier for this mod source, used to match against <see cref="GameInfo"/>.
         /// </summary>
-        /// <remarks>Follow the convention 'namespace.pluginname' or 'owner.pluginname'.</remarks>
+        /// 
+        /// <remarks>
+        /// Follow the convention 'namespace.pluginname' or 'owner.pluginname'.
+        /// </remarks>
         string Id { get; }
 
         /// <summary>
         /// Opens the mod browser for this game.
         /// </summary>
+        /// 
+        /// <param name="game">
+        /// The game the user has requested to open the mod browser for.
+        /// </param>
         Task OpenModBrowser(GameInfo game);
 
         /// <summary>
