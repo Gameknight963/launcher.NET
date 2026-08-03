@@ -2,11 +2,10 @@
 using launcherdotnet.Launcher.Settings;
 using launcherdotnet.PluginAPI;
 using launcherdotnet.Styling;
-using launcherdotnet.Thunderstore;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace launcherdotnet.Launcher.Forms.Thunderstore
+namespace launcherdotnet.Launcher.Forms
 {
     public partial class GameModManager : ThemeableForm
     {
@@ -58,9 +57,9 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             uninstallButton.Enabled = modsLv.SelectedIndices.Count > 0;
         }
 
-        private void InstallModsButton_Click(object sender, EventArgs e)
+        private async void InstallModsButton_Click(object sender, EventArgs e)
         {
-            _source.OpenModBrowser(_game);
+            await _source.OpenModBrowser(_game);
             RefreshList();
         }
 
@@ -78,46 +77,42 @@ namespace launcherdotnet.Launcher.Forms.Thunderstore
             RefreshList();
         }
 
-        private async void InstallFromZip_Click(object sender, EventArgs e)
-        {
-            using OpenFileDialog dialog = new();
-            dialog.Filter = "Zip archive (*.zip)|*.zip";
-            dialog.Title = "Select a package";
-            if (dialog.ShowDialog() != DialogResult.OK) return;
-            await ModInstaller.InstallZipAsync(dialog.FileName, _game, OnMissingInfo);
-            RefreshList();
-        }
+        //private async void InstallFromZip_Click(object sender, EventArgs e)
+        //{
+        //    using OpenFileDialog dialog = new();
+        //    dialog.Filter = "Zip archive (*.zip)|*.zip";
+        //    dialog.Title = "Select a package";
+        //    if (dialog.ShowDialog() != DialogResult.OK) return;
+        //    await ModInstaller.InstallZipAsync(dialog.FileName, _game, OnMissingInfo);
+        //    RefreshList();
+        //}
 
-        private async void InstallFromDll_Click(object sender, EventArgs e)
-        {
-            using OpenFileDialog dialog = new();
-            dialog.Filter = ".NET assembly (*.dll)|*.dll";
-            dialog.Title = "Select an assembly";
-            if (dialog.ShowDialog() != DialogResult.OK) return;
-            (string, string, string)? modInfo = MissingInfoForm("Fill in some info for this mod:",
-                (Path.GetFileNameWithoutExtension(dialog.SafeFileName), "", ""));
-            if (modInfo is not (string name, string owner, string version)) return;
-            if (!ModInstaller.TryInstallDllAsync(dialog.FileName, _game, name, owner, version))
-            {
-                LauncherLogger.Error("Could not find a Mods folder or a BepInEx\\plugins folder.");
-                CoolMessageBox.Show("launcher.net does not know how to install assemblies for this game.", "Installation Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-        }
+        //private async void InstallFromDll_Click(object sender, EventArgs e)
+        //{
+        //    using OpenFileDialog dialog = new();
+        //    dialog.Filter = ".NET assembly (*.dll)|*.dll";
+        //    dialog.Title = "Select an assembly";
+        //    if (dialog.ShowDialog() != DialogResult.OK) return;
+        //    (string, string, string)? modInfo = MissingInfoForm("Fill in some info for this mod:",
+        //        (Path.GetFileNameWithoutExtension(dialog.SafeFileName), "", ""));
+        //    if (modInfo is not (string name, string owner, string version)) return;
+        //    if (!ModInstaller.TryInstallDllAsync(dialog.FileName, _game, name, owner, version))
+        //    {
+        //        LauncherLogger.Error("Could not find a Mods folder or a BepInEx\\plugins folder.");
+        //        CoolMessageBox.Show("launcher.net does not know how to install assemblies for this game.", "Installation Error",
+        //            MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        return;
+        //    }
+        //}
 
         private static (string, string, string)? OnMissingInfo() => MissingInfoForm(null);
         private static (string, string, string)? MissingInfoForm(string? labelText, (string, string, string)? modInfo = null)
         {
-            using FillMissingModInfo form = new(labelText, modInfo);
-            form.ShowDialog();
-            if (form.DialogResult == DialogResult.Cancel) return null;
-            return form.EditedInfo;
-        }
-
-        private void InstallFroDll_Click(object sender, EventArgs e)
-        {
-
+            throw new Exception();
+            //using FillMissingModInfo form = new(labelText, modInfo);
+            //form.ShowDialog();
+            //if (form.DialogResult == DialogResult.Cancel) return null;
+            //return form.EditedInfo;
         }
     }
 }

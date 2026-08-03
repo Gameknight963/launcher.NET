@@ -1,7 +1,6 @@
 using launcherdotnet.Launcher.Forms;
 using launcherdotnet.PluginAPI;
 using launcherdotnet.Plugins.SteamGameCopy;
-using launcherdotnet.Thunderstore;
 
 [assembly: LauncherPlugin(typeof(Plugin),
     "Steam Game Copier",
@@ -50,7 +49,7 @@ namespace launcherdotnet.Plugins.SteamGameCopy
             }
 
             string? slug = PluginTools.ToThunderstoreSlug(form.SelectedGame.Name);
-            slug = await ThunderstoreClient.DoesThunderstoreCommunityExist(slug) ? slug : null;
+            //slug = await ThunderstoreClient.DoesThunderstoreCommunityExist(slug) ? slug : null;
 
             return new PluginGameInfo
             {

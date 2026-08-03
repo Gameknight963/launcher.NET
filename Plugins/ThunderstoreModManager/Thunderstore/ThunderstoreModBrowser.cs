@@ -1,13 +1,15 @@
 ﻿using launcherdotnet.Launcher.Forms.Thunderstore;
 using launcherdotnet.Launcher.Settings;
 using launcherdotnet.Networking;
+using launcherdotnet.PluginAPI;
 using launcherdotnet.Styling;
-using launcherdotnet.Thunderstore;
 using Markdig;
 using Markdown.ColorCode;
 using Svg;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
+using ThunderstoreModManager;
+using ThunderstoreModManager.ThunderstoreAPI;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -17,11 +19,11 @@ namespace launcherdotnet.Launcher.Forms
         private List<string> _chunkUrls = [];
         private int _currentChunk = 0;
         private bool _isLoading = false;
-        private readonly string _slug;
         private readonly Dictionary<int, List<ThunderstoreVersion>> _versionCache = [];
         private readonly Dictionary<int, string> _readmeCache = [];
         private string? _currentReadme;
         private readonly GameInfo _game;
+        private readonly ThunderstoreData _data;
 
         private readonly HashSet<ThunderstoreVersion> _selectedForInstall = [];
 
@@ -30,7 +32,7 @@ namespace launcherdotnet.Launcher.Forms
             .UseColorCode()
             .Build();
 
-        public ThunderstoreModBrowser(GameInfo game)
+        public ThunderstoreModBrowser(GameInfo game, ThunderstoreData data)
         {
             InitializeComponent();
             Icon = LauncherConstants.AppIcon;
@@ -40,10 +42,20 @@ namespace launcherdotnet.Launcher.Forms
             AcceptButton = okButton;
             StartPosition = FormStartPosition.CenterParent;
             modsLv.VirtualMode = true;
+            if (data.ThunderstoreSlug == null)
+            {
+                string? result = CoolInputBox.Prompt("This game has no Thunderstore slug set. Assign one here:");
+                if (result == null)
+                {
+                    DialogResult = DialogResult.Cancel;
+                    Close();
+                }
+                data.ThunderstoreSlug = result;
+            }
+            _data = data;
             modsLv.RetrieveVirtualItem += ModsLv_RetrieveVirtualItem;
             UpdateModsLv(game);
-            _slug = game.ThunderstoreCommunitySlug ??
-                throw new InvalidOperationException("Game has no thunderstore slug");
+            
             FormClosed += (s, e) =>
             {
                 modsLv.VirtualListSize = 0;
@@ -94,7 +106,7 @@ namespace launcherdotnet.Launcher.Forms
             if (_currentChunk >= _chunkUrls.Count) return;
             _isLoading = true;
             int topIndex = modsLv.TopItem?.Index ?? 0;
-            LauncherLogger.WriteLine($"Fetching chunk {_currentChunk}");
+            PluginLogger.Log($"Fetching chunk {_currentChunk}");
             List<ThunderstorePackageSlim> packages = await ThunderstoreClient.GetPackageListChunkAsync(_chunkUrls[_currentChunk]);
             _currentChunk++;
             _packages.AddRange(packages);
@@ -106,7 +118,7 @@ namespace launcherdotnet.Launcher.Forms
 
         async void UpdateModsLv(GameInfo game)
         {
-            if (game.ThunderstoreCommunitySlug is not string slug) return;
+            if (_data.ThunderstoreSlug is not string slug) return;
             downloadPnl.Visible = false;
             _packages = [];
             _currentChunk = 0;
@@ -117,11 +129,13 @@ namespace launcherdotnet.Launcher.Forms
             UseWaitCursor = false;
             downloadPnl.Visible = true;
             modsLv.Items[0].Selected = true;
-            LauncherLogger.WriteLine("Done with initial modlist fetch");
+            PluginLogger.Log("Done with initial modlist fetch");
         }
 
         private async void modsLv_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (_data.ThunderstoreSlug is not string slug) return;
+
             if (modsLv.SelectedIndices.Count == 0)
             {
                 downloadPnl.Visible = false;
@@ -147,7 +161,7 @@ namespace launcherdotnet.Launcher.Forms
                     UseWaitCursor = false;
                     return;
                 }
-                versions = await full.FetchVersionsAsync(_slug);
+                versions = await full.FetchVersionsAsync(slug);
                 _versionCache[index] = versions;
             }
 

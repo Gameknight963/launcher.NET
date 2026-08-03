@@ -1,17 +1,18 @@
 ﻿using ThunderstoreModManager;
 using launcherdotnet.PluginAPI;
 using launcherdotnet.Launcher;
+using launcherdotnet.Launcher.Forms;
+using launcherdotnet;
 
 [assembly: LauncherPlugin(typeof(Plugin),
-    "Steam Game Copier",
-    "Copies any installed Steam game to launcher.net",
+    "Thunderstore Mod Manager",
+    "Browse and install mods on Thunderstore",
     "2.0.0")]
 
 namespace ThunderstoreModManager
 {
     public class Plugin : IModSource
     {
-        private ModSourceConfig<ThunderstoreData>? _config;
         private const string _sourceId = "modstate";
 
         public string DisplayName => "Thunderstore Mod Manager";
@@ -29,9 +30,11 @@ namespace ThunderstoreModManager
             return Task.CompletedTask;
         }
 
-        public Task OpenModBrowser(GameInfo game)
+        public async Task OpenModBrowser(GameInfo game)
         {
-            throw new NotImplementedException();
+            ThunderstoreData config = ModSourceConfig<ThunderstoreData>.Load(game, _sourceId);
+            using ThunderstoreModBrowser browser = new(game, config);
+            browser.ShowDialog();
         }
 
         public bool UninstallMod(GameInfo game, InstalledMod mod)

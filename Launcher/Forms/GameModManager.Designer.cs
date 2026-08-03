@@ -1,4 +1,4 @@
-﻿namespace launcherdotnet.Launcher.Forms.Thunderstore
+﻿namespace launcherdotnet.Launcher.Forms
 {
     partial class GameModManager
     {

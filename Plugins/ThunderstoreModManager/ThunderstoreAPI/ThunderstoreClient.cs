@@ -7,8 +7,9 @@ using System.IO.Compression;
 using System.Net;
 using launcherdotnet.Networking;
 using System.Security.Policy;
+using launcherdotnet;
 
-namespace launcherdotnet.Thunderstore
+namespace ThunderstoreModManager.ThunderstoreAPI
 {
     public static class ThunderstoreClient
     {

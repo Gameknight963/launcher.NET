@@ -1,6 +1,7 @@
-﻿using Semver;
+﻿using launcherdotnet;
+using Semver;
 
-namespace launcherdotnet.Thunderstore
+namespace ThunderstoreModManager.ThunderstoreAPI
 {
     public static class ModResolver
     {

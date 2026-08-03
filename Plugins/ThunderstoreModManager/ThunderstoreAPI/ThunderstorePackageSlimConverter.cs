@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace launcherdotnet.Thunderstore
+namespace ThunderstoreModManager.ThunderstoreAPI
 {
     public class ThunderstorePackageSlimConverter : JsonConverter<ThunderstorePackageSlim>
     {

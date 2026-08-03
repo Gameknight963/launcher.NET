@@ -1,4 +1,4 @@
-﻿namespace launcherdotnet.Thunderstore
+﻿namespace ThunderstoreModManager.ThunderstoreAPI
 {
     public class ThunderstorePackageSlim
     {

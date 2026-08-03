@@ -9,7 +9,6 @@ namespace launcherdotnet.Launcher.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public GameInfo? EditedGameInfo { get; set; }
         private readonly GameInfo _game;
-        private GameModState _state;
 
         public GameInfoEditor(GameInfo game)
         {
@@ -18,15 +17,11 @@ namespace launcherdotnet.Launcher.Forms
             _game = game;
             labelBox.Text = game.Label;
             nameBox.Text = game.GameName;
-            thunderstoreSlugBox.Text = game.ThunderstoreCommunitySlug;
+            modManagerIdBox.Text = game.ModManagerId;
             gameExeBox.Text = game.RelativePath;
             gameRootDirBox.Text = game.RelativeRootDirectory;
             guidLabel.Text = game.Id;
             runsWithCmdCheck.Checked = game.RunWithCmd;
-            modManageableBox.Checked = game.ModManagable;
-
-            _state = GameModState.Load(game.AbsoluteRootDirectory);
-            baselineFilesAmountLabel.Text = $"{_state.BaselineFiles?.Count ?? 0} file(s) in baseline";
 
             AcceptButton = okButton;
             CancelButton = cancelButton;
@@ -40,7 +35,7 @@ namespace launcherdotnet.Launcher.Forms
             {
                 Label = labelBox.Text,
                 GameName = nameBox.Text,
-                ThunderstoreCommunitySlug = thunderstoreSlugBox.Text,
+                ModManagerId = modManagerIdBox.Text == string.Empty ? null : modManagerIdBox.Text,
                 RelativePath = gameExeBox.Text,
                 RelativeRootDirectory = gameRootDirBox.Text,
                 Id = guidLabel.Text,
@@ -70,27 +65,6 @@ namespace launcherdotnet.Launcher.Forms
         private void copyGUIDButton_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(guidLabel.Text);
-        }
-
-        private void baselineButton_Click(object sender, EventArgs e)
-        {
-            if (CoolMessageBox.Show(
-                "This will mark all files not belonging to a tracked mod as vanilla game files.\n" +
-                "Any previously recorded baseline will be overwritten.\n\nContinue?",
-                "Recalculate Baseline",
-                MessageBoxButtons.OKCancel,
-                MessageBoxIcon.Warning) != DialogResult.OK) return;
-
-            HashSet<string> modFiles = _state.InstalledMods
-                .SelectMany(m => m.Files)
-                .ToHashSet();
-
-            string[] allFiles = Directory.GetFiles(_game.AbsoluteRootDirectory, "*", SearchOption.AllDirectories);
-            _state.TakeBaseline(_game.AbsoluteRootDirectory, f => !modFiles.Contains(f));
-
-            _state.Save(_game.AbsoluteRootDirectory);
-            LauncherLogger.WriteLine($"Recalculated baseline: {_state.BaselineFiles?.Count ?? 0} files");
-            CoolMessageBox.Show("Baseline recalculated successfully.", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

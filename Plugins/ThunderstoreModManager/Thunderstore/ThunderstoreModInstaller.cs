@@ -1,6 +1,6 @@
 ﻿using launcherdotnet.Launcher.Settings;
 using launcherdotnet.Styling;
-using launcherdotnet.Thunderstore;
+using ThunderstoreModManager.ThunderstoreAPI;
 
 namespace launcherdotnet.Launcher.Forms.Thunderstore
 {

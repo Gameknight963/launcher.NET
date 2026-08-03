@@ -11,5 +11,7 @@ namespace ThunderstoreModManager
     {
         [JsonProperty("installedMods")]
         public List<InstalledMod> InstalledMods { get; set; } = [];
+        [JsonProperty("thunderstoreSlug")]
+        public string? ThunderstoreSlug; 
     }
 }

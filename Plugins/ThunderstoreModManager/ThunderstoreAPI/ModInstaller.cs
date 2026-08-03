@@ -4,7 +4,7 @@ using launcherdotnet.PluginAPI;
 using Newtonsoft.Json.Linq;
 using System.IO.Compression;
 
-namespace launcherdotnet.Thunderstore
+namespace ThunderstoreModManager.ThunderstoreAPI
 {
     public static class ModInstaller
     {
