@@ -2,6 +2,7 @@
 
 namespace launcherdotnet.Launcher
 {
+    [Obsolete("Use ModSourceConfig and IGameInstaller instead.")]
     public class GameModState
     {
         public const string FileName = "launcherdotnet_modstate.json";

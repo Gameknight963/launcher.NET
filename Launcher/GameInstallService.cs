@@ -25,7 +25,6 @@ namespace launcherdotnet.Launcher
             newGame.GameName = installed.GameName ?? installer.GameName;
             newGame.RelativePath = Path.GetRelativePath(LauncherConstants.BaseDir, installed.ExePath);
             newGame.RunWithCmd = installed.RunWithCmd;
-            newGame.ModManagable = installed.ModManageable;
             newGame.ThunderstoreCommunitySlug = installed.ThunderstoreCommunitySlug;
             if (installed.Label != null) newGame.Label = installed.Label;
 

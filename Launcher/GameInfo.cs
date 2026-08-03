@@ -6,18 +6,21 @@ namespace launcherdotnet.Launcher
 {
     public class GameInfo
     {
+
         public string Label { get; set; } = "";
         public string RelativePath { get; set; } = "";
         public string RelativeRootDirectory { get; set; } = "";
         public string GameName { get; set; } = "";
         public bool RunWithCmd { get; set; } = false;
         public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string? ModManagerId { get; set; }
 
         [JsonIgnore]
         public string DataDirectory =>
             Path.Combine(LauncherConstants.BaseDir, "gamedata", Id);
 
-        public bool ModManagable = false;
+        [Obsolete("Check if ModManagerId is null instead. Here temporarily to make refactoring easier.")]
+        public bool ModManagable => ModManagerId != null;
 
         public T LoadConfig<T>(string sourceId) where T : ModSourceConfig<T>, new() => ModSourceConfig<T>.Load(this, sourceId);
 

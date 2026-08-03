@@ -37,6 +37,7 @@ namespace launcherdotnet.PluginAPI
         /// </summary>
         /// <param name="game">The game that a package is being uninstalled from</param>
         /// <param name="mod">The mod that is being uninstalled</param>
-        void UninstallMod(GameInfo game, InstalledMod mod);
+        /// <returns><see langword="false"/> if the uninstallation should be cancelled, otherwise <see langword="true"/>.</returns>
+        bool UninstallMod(GameInfo game, InstalledMod mod);
     }
 }

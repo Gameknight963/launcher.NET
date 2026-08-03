@@ -45,7 +45,6 @@ namespace launcherdotnet.Launcher.Forms
                 RelativeRootDirectory = gameRootDirBox.Text,
                 Id = guidLabel.Text,
                 RunWithCmd = runsWithCmdCheck.Checked,
-                ModManagable = modManageableBox.Checked
             };
         }
 

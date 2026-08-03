@@ -3,6 +3,7 @@ using launcherdotnet.Helpers;
 using launcherdotnet.Launcher.Settings;
 using System.Diagnostics;
 using launcherdotnet.Launcher.Forms.Thunderstore;
+using launcherdotnet.PluginAPI;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -220,7 +221,7 @@ namespace launcherdotnet.Launcher.Forms
             SetSidebarMode(SidebarMode.GameSelected);
             GameInfo? game = GetSelectedGame();
             if (game == null) return;
-            installModsButton.Visible = game.ModManagable;
+            installModsButton.Visible = game.ModManagerId != null;
             InstallHint.Text = Path.GetFileName(game.AbsolutePath);
         }
 
