@@ -28,6 +28,8 @@ namespace launcherdotnet.Launcher
                 LauncherLogger.WriteLine(Path.GetFileName(p), true);
             int loadedPluginsCount = 0;
 
+            List<(LauncherPluginAttribute Meta, ILauncherPlugin Plugin)> plugins = new();
+
             foreach (string file in paths)
             {
                 try
@@ -62,20 +64,7 @@ namespace launcherdotnet.Launcher
 
                     ILauncherPlugin plugin = (ILauncherPlugin)Activator.CreateInstance(entryType)!;
 
-                    await plugin.Initialize();
-
-                    PluginRegistry.PluginDescriptor descriptor = new()
-                    {
-                        Name = meta.Name,
-                        Description = meta.Description,
-                        TargetApiVersion = meta.TargetApiVersion,
-                        Instance = plugin
-                    };
-
-                    PluginRegistry.Register(descriptor);
-                    loadedPluginsCount++;
-
-                    LauncherLogger.WriteLine($"Loaded plugin: {descriptor.Name}", true);
+                    plugins.Add((meta, plugin));
                 }
                 catch (Exception ex)
                 {
@@ -83,6 +72,32 @@ namespace launcherdotnet.Launcher
                         $"Failed to load plugin {Path.GetFileName(file)}: {ex.GetType().Name} - {ex.Message}");
                 }
             }
+
+            await Task.WhenAll(plugins.Select(async x =>
+            {
+                try
+                {
+                    await x.Plugin.Initialize();
+
+                    PluginRegistry.PluginDescriptor descriptor = new()
+                    {
+                        Name = x.Meta.Name,
+                        Description = x.Meta.Description,
+                        TargetApiVersion = x.Meta.TargetApiVersion,
+                        Instance = x.Plugin
+                    };
+
+                    PluginRegistry.Register(descriptor);
+                    Interlocked.Increment(ref loadedPluginsCount);
+
+                    LauncherLogger.WriteLine($"Loaded plugin: {descriptor.Name}", true);
+                }
+                catch (Exception ex)
+                {
+                    LauncherLogger.Error(
+                        $"Failed to initialize plugin '{x.Meta.Name}': {ex.GetType().Name} - {ex.Message}");
+                }
+            }));
             if (loadedPluginsCount > 0)
                 LauncherLogger.Success($"Loaded {loadedPluginsCount} plugins successfully!" , true);
         }
