@@ -48,7 +48,7 @@ namespace launcherdotnet.Launcher.Forms
             whichVersionYouWantLabel.Visible = !versionless;
             VersionDropdown.Visible = !versionless;
             InstallGameButton.Text = installer.PromptForLabel == LabelQueryTime.BeforeInstall ? "Install" : "Continue";
-            Size = new(Size.Width, versionless ? 200 : 252);
+            Size = new(Size.Width, LogicalToDeviceUnits(versionless ? 200 : 252));
             if (releases != null)
             {
                 foreach (string r in releases)
