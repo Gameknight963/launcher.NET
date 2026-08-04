@@ -29,9 +29,6 @@ namespace launcherdotnet.Launcher
             if (installed.Label != null) newGame.Label = installed.Label;
 
             GameService.UpsertGame(newGame);
-            GameModState state = new();
-            state.TakeBaseline(installDir);
-            state.Save(installDir);
 
             return newGame;
         }
