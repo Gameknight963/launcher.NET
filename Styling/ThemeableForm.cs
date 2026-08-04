@@ -39,7 +39,7 @@ namespace launcherdotnet.Styling
             ActiveTheme = ThemeManager.ActiveTheme;
             Load += (sender, e) =>
             {
-                if (InheritGlobalTheme) ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.ActiveGradientColor, ThemeManager.UseVisualStyles);
+                if (InheritGlobalTheme) ApplyTheme(ThemeManager.ActiveTheme, ThemeManager.ActiveGradientColor, ThemeManager.ActiveVisualStyle);
             };
         }
 
@@ -97,13 +97,14 @@ namespace launcherdotnet.Styling
             base.Dispose(disposing);
         }
 
-        public void ApplyTheme(Theme theme, int gradientColor, bool useVisualStyles)
+        public void ApplyTheme(Theme theme, int gradientColor, VisualStyle style)
         {
             if (IsDesignTime) return;
             ActiveTheme = theme;
             UseShadowText = theme.UseShadowText;
             ApplyControlTheme(this, theme);
-            theme.Apply(this, gradientColor, useVisualStyles);
+            ThemeManager.SetVisualStyleRecursive(this, style);
+            theme.Apply(this, gradientColor);
             OnThemeWasApplied();
             Refresh();
         }

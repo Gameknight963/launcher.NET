@@ -44,9 +44,10 @@ namespace launcherdotnet.Launcher.Forms
             gcCollectBtn = new Button();
             AdvancedCheckbox = new CheckedListBox();
             ThemeTab = new TabPage();
-            useVisualStylesCheckBox = new CheckBox();
+            visualStyleComboBox = new ComboBox();
             colorButton = new Button();
             gradientColorBox = new TextBox();
+            label5 = new Label();
             label3 = new Label();
             label4 = new Label();
             label1 = new Label();
@@ -226,9 +227,10 @@ namespace launcherdotnet.Launcher.Forms
             // 
             // ThemeTab
             // 
-            ThemeTab.Controls.Add(useVisualStylesCheckBox);
+            ThemeTab.Controls.Add(visualStyleComboBox);
             ThemeTab.Controls.Add(colorButton);
             ThemeTab.Controls.Add(gradientColorBox);
+            ThemeTab.Controls.Add(label5);
             ThemeTab.Controls.Add(label3);
             ThemeTab.Controls.Add(label4);
             ThemeTab.Controls.Add(label1);
@@ -242,16 +244,13 @@ namespace launcherdotnet.Launcher.Forms
             ThemeTab.Text = "Themes";
             ThemeTab.UseVisualStyleBackColor = true;
             // 
-            // useVisualStylesCheckBox
+            // visualStyleComboBox
             // 
-            useVisualStylesCheckBox.AutoSize = true;
-            useVisualStylesCheckBox.Location = new Point(6, 321);
-            useVisualStylesCheckBox.Name = "useVisualStylesCheckBox";
-            useVisualStylesCheckBox.Size = new Size(126, 19);
-            useVisualStylesCheckBox.TabIndex = 7;
-            useVisualStylesCheckBox.Text = "Enable visual styles";
-            useVisualStylesCheckBox.UseVisualStyleBackColor = true;
-            useVisualStylesCheckBox.CheckedChanged += UseVisualStylesCheckBox_CheckedChanged;
+            visualStyleComboBox.FormattingEnabled = true;
+            visualStyleComboBox.Location = new Point(6, 327);
+            visualStyleComboBox.Name = "visualStyleComboBox";
+            visualStyleComboBox.Size = new Size(121, 23);
+            visualStyleComboBox.TabIndex = 7;
             // 
             // colorButton
             // 
@@ -270,6 +269,17 @@ namespace launcherdotnet.Launcher.Forms
             gradientColorBox.PlaceholderText = "0x66000000";
             gradientColorBox.Size = new Size(133, 23);
             gradientColorBox.TabIndex = 5;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.Location = new Point(6, 309);
+            label5.Margin = new Padding(3, 3, 3, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(66, 15);
+            label5.TabIndex = 4;
+            label5.Text = "Visual style";
             // 
             // label3
             // 
@@ -312,6 +322,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             // themeButtonsFlowLayoutPanel
             // 
+            themeButtonsFlowLayoutPanel.AutoScroll = true;
             themeButtonsFlowLayoutPanel.Controls.Add(systemThemeButton);
             themeButtonsFlowLayoutPanel.Controls.Add(lightThemeButton);
             themeButtonsFlowLayoutPanel.Controls.Add(darkThemeButton);
@@ -324,7 +335,7 @@ namespace launcherdotnet.Launcher.Forms
             themeButtonsFlowLayoutPanel.Location = new Point(6, 57);
             themeButtonsFlowLayoutPanel.Margin = new Padding(3, 0, 3, 3);
             themeButtonsFlowLayoutPanel.Name = "themeButtonsFlowLayoutPanel";
-            themeButtonsFlowLayoutPanel.Size = new Size(186, 162);
+            themeButtonsFlowLayoutPanel.Size = new Size(331, 162);
             themeButtonsFlowLayoutPanel.TabIndex = 0;
             // 
             // systemThemeButton
@@ -398,7 +409,7 @@ namespace launcherdotnet.Launcher.Forms
             extendedFrameThemeButton.Location = new Point(3, 95);
             extendedFrameThemeButton.Margin = new Padding(3, 0, 3, 0);
             extendedFrameThemeButton.Name = "extendedFrameThemeButton";
-            extendedFrameThemeButton.Size = new Size(108, 19);
+            extendedFrameThemeButton.Size = new Size(107, 19);
             extendedFrameThemeButton.TabIndex = 0;
             extendedFrameThemeButton.TabStop = true;
             extendedFrameThemeButton.Text = "Extended frame";
@@ -411,7 +422,7 @@ namespace launcherdotnet.Launcher.Forms
             extendedFrameDarkThemeButton.Location = new Point(3, 114);
             extendedFrameDarkThemeButton.Margin = new Padding(3, 0, 3, 0);
             extendedFrameDarkThemeButton.Name = "extendedFrameDarkThemeButton";
-            extendedFrameDarkThemeButton.Size = new Size(142, 19);
+            extendedFrameDarkThemeButton.Size = new Size(141, 19);
             extendedFrameDarkThemeButton.TabIndex = 0;
             extendedFrameDarkThemeButton.TabStop = true;
             extendedFrameDarkThemeButton.Text = "Extended frame (dark)";
@@ -424,7 +435,7 @@ namespace launcherdotnet.Launcher.Forms
             transparentGradientButton.Location = new Point(3, 133);
             transparentGradientButton.Margin = new Padding(3, 0, 3, 0);
             transparentGradientButton.Name = "transparentGradientButton";
-            transparentGradientButton.Size = new Size(133, 19);
+            transparentGradientButton.Size = new Size(134, 19);
             transparentGradientButton.TabIndex = 1;
             transparentGradientButton.TabStop = true;
             transparentGradientButton.Text = "Transparent gradient";
@@ -574,6 +585,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             // DescriptionLabel
             // 
+            DescriptionLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             DescriptionLabel.AutoSize = true;
             DescriptionLabel.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             DescriptionLabel.Location = new Point(369, 64);
@@ -640,7 +652,6 @@ namespace launcherdotnet.Launcher.Forms
         private TabPage ThemeTab;
         private FlowLayoutPanel themeButtonsFlowLayoutPanel;
         private RadioButton systemThemeButton;
-        private RadioButton lightThemeButton;
         private Label ThemeHint;
         private RadioButton darkThemeButton;
         private RadioButton blurThemeButton;
@@ -655,6 +666,8 @@ namespace launcherdotnet.Launcher.Forms
         private Button colorButton;
         private Button openPluginSettingsBtn;
         private Button gcCollectBtn;
-        private CheckBox useVisualStylesCheckBox;
+        private RadioButton lightThemeButton;
+        private ComboBox visualStyleComboBox;
+        private Label label5;
     }
 }

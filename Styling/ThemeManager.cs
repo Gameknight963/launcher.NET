@@ -5,12 +5,12 @@ namespace launcherdotnet.Styling
 {
     public static class ThemeManager
     {
-        // ActiveTheme gets loaded in Settings on start so its ok to bang it
-        public static Theme ActiveTheme { get; private set; } = null!;
+        // ActiveTheme gets loaded in Settings on start, but this is a safe fallback
+        public static Theme ActiveTheme { get; private set; } = Theme.Light;
         public static int ActiveGradientColor { get; private set; }
-        public static bool UseVisualStyles { get; private set; }
+        public static VisualStyle ActiveVisualStyle { get; private set; }
 
-        private static string? GetThemeName(VisualStyle style)
+        public static string? GetThemeName(VisualStyle style)
         {
             return style switch
             {
@@ -23,6 +23,20 @@ namespace launcherdotnet.Styling
                 VisualStyle.CommandModule => "CommandModule",
             };
         }
+
+        public static IReadOnlyDictionary<VisualStyle, string?> VisualStyleNames => _visualStyleNames;
+
+        private static readonly Dictionary<VisualStyle, string?> _visualStyleNames = new Dictionary<VisualStyle, string?>()
+        {
+            [VisualStyle.None] = null,
+            [VisualStyle.Explorer] = "Explorer",
+            [VisualStyle.ItemsView] = "ItemsView",
+            [VisualStyle.DarkExplorer] = "DarkMode_Explorer",
+            [VisualStyle.SearchBox] = "SearchBox",
+            [VisualStyle.Navigation] = "Navigation",
+            [VisualStyle.CommandModule] = "CommandModule",
+        };
+
 
         [DllImport("uxtheme.dll", CharSet = CharSet.Unicode)]
         private static extern int SetWindowTheme(
@@ -94,17 +108,22 @@ namespace launcherdotnet.Styling
             }
         }
 
-        public static void SetGlobalTheme(Theme theme, int gradientColor, bool useVisualStyles)
+        public static void SetGlobalTheme(Theme theme, int gradientColor, VisualStyle style)
         {
             ActiveTheme = theme;
             ActiveGradientColor = gradientColor;
-            UseVisualStyles = useVisualStyles;
+            ActiveVisualStyle = style;
 
             foreach (Form form in Application.OpenForms)
             {
                 if (form is ThemeableForm tf && tf.InheritGlobalTheme)
                 {
-                    tf.ApplyTheme(theme, gradientColor, useVisualStyles);
+                    tf.ApplyTheme(theme, gradientColor, style);
+                }
+                else
+                {
+                    SetVisualStyleRecursive(form, style);
+                    theme.Apply(form, gradientColor);
                 }
             }
         }

@@ -2,29 +2,32 @@
 {
     public class Theme
     {
-        public delegate void ApplyThemeDelegate(Form form, int gradientColor, bool useVisualStyles);
+        public delegate void ApplyThemeDelegate(Form form, int gradientColor);
 
         public readonly ApplyThemeDelegate Apply;
         public readonly ControlStyle MainStyle;
         public readonly bool UseShadowText;
         public readonly bool UseOwnerDrawHeaders;
         public readonly string Name;
+        public readonly string UserFriendlyName;
 
         public Theme(
-            string name,
+            string id,
+            string userFriendlyName,
             ApplyThemeDelegate apply,
             ControlStyle style,
             bool useShadowText = true,
             bool useOwnerDrawHeaders = true)
         {
-            Name = name;
+            Name = id;
+            UserFriendlyName = userFriendlyName;
             Apply = apply;
             MainStyle = style;
             UseShadowText = useShadowText;
             UseOwnerDrawHeaders = useOwnerDrawHeaders;
-            if (_themes.ContainsKey(name))
-                throw new InvalidOperationException($"A theme with the name '{name}' is already registered.");
-            _themes[name] = this;
+            if (_themes.ContainsKey(id))
+                throw new InvalidOperationException($"A theme with the name '{id}' is already registered.");
+            _themes[id] = this;
         }
 
         public override bool Equals(object? obj) => obj is Theme other && Name == other.Name;
@@ -44,8 +47,9 @@
         public static readonly Color DarkButtonBorder = Color.FromArgb(60, 60, 60);
 
         public static readonly Theme Light = new(
+            "launcherdotnet.light_theme",
             "Light",
-            (form, gradientColor, useVisualStyles) =>
+            (form, gradientColor) =>
             {
                 DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
                 DwmApi.UnextendFrame(form.Handle);
@@ -59,8 +63,6 @@
                     c => c is Button);
                 ThemeManager.SetColorRecursive(form, new ControlStyle(SystemColors.Window, SystemColors.ControlText),
                     c => c is CheckedListBox);
-
-                ThemeManager.SetVisualStyleRecursive(form, useVisualStyles ? VisualStyle.Explorer : VisualStyle.None);
             },
             new ControlStyle(SystemColors.Control, SystemColors.ControlText),
             useShadowText: false,
@@ -68,8 +70,9 @@
         );
 
         public static readonly Theme Dark = new(
+            "launcherdotnet.dark_theme",
             "Dark",
-            (form, gradientColor, useVisualStyles) =>
+            (form, gradientColor) =>
             {
                 DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
                 DwmApi.UnextendFrame(form.Handle);
@@ -81,8 +84,6 @@
                     c => c is Label);
                 ThemeManager.SetColorRecursive(form, new ButtonStyle(DarkButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
                     c => c is Button);
-
-                ThemeManager.SetVisualStyleRecursive(form, useVisualStyles ? VisualStyle.DarkExplorer : VisualStyle.None);
             },
             new ControlStyle(DarkMainColor, Color.White),
             useShadowText: false,
@@ -90,11 +91,12 @@
             );
 
         public static readonly Theme System = new(
+            "launcherdotnet.system_theme",
             "System",
-            (form, gradientColor, style) =>
+            (form, gradientColor) =>
             {
                 Theme real = ThemeManager.IsSystemLightTheme() ? Light : Dark;
-                real.Apply(form, gradientColor, style);
+                real.Apply(form, gradientColor);
             },
             new ControlStyle(Color.Empty, Color.Empty),
             useShadowText: false,
@@ -102,8 +104,9 @@
         );
 
         public static readonly Theme ExtendFrame = new(
-            "ExtendFrame",
-            (form, gradientColor, useVisualStyles) =>
+            "launcherdotnet.extendframe_theme",
+            "Extended frame",
+            (form, gradientColor) =>
             {
                 DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
                 DwmApi.DisableImmersiveDarkMode(form.Handle);
@@ -115,14 +118,14 @@
                     c => c is Label);
                 ThemeManager.SetColorRecursive(form, new ButtonStyle(Color.Black, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
                     c => c is Button);
-                ThemeManager.SetVisualStyleRecursive(form, useVisualStyles ? VisualStyle.Explorer : VisualStyle.None);
             },
             new ControlStyle(Color.Black, Color.White)
         );
 
         public static readonly Theme ExtendFrameDark = new(
-            "ExtendFrameDark",
-            (form, gradientColor, useVisualStyles) =>
+            "launcherdotnet.extendframe_dark_theme",
+            "Extended frame (dark)",
+            (form, gradientColor) =>
             {
                 DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
                 DwmApi.EnableImmersiveDarkMode(form.Handle);
@@ -135,14 +138,14 @@
                 ThemeManager.SetColorRecursive(form, new ButtonStyle(Color.Black, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
                     c => c is Button);
 
-                ThemeManager.SetVisualStyleRecursive(form, useVisualStyles ? VisualStyle.DarkExplorer : VisualStyle.None);
             },
             new ControlStyle(Color.Black, Color.White)
         );
 
         public static readonly Theme Blur = new(
+            "launcherdotnet.blur_theme",
             "Blur",
-            (form, gradientColor, useVisualStyles) =>
+            (form, gradientColor) =>
             {
                 DwmApi.EnableImmersiveDarkMode(form.Handle);
                 DwmApi.UnextendFrame(form.Handle);
@@ -155,14 +158,14 @@
                 ThemeManager.SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
                     c => c is Button);
 
-                ThemeManager.SetVisualStyleRecursive(form, useVisualStyles ? VisualStyle.DarkExplorer : VisualStyle.None);
             },
             new ControlStyle(Color.Black, Color.White)
         );
 
         public static readonly Theme Acrylic = new(
+            "launcherdotnet.acrylic_theme",
             "Acrylic",
-            (form, gradientColor, useVisualStyles) =>
+            (form, gradientColor) =>
             {
                 DwmApi.EnableImmersiveDarkMode(form.Handle);
                 DwmApi.UnextendFrame(form.Handle);
@@ -174,14 +177,14 @@
                     c => c is Label);
                 ThemeManager.SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
                     c => c is Button);
-                ThemeManager.SetVisualStyleRecursive(form, useVisualStyles ? VisualStyle.DarkExplorer : VisualStyle.None);
             },
             new ControlStyle(Color.Black, Color.White)
         );
 
         public static readonly Theme TransparentGradient = new(
-            "TransparentGradient",
-            (form, gradientColor, useVisualStyles) =>
+            "launcherdotnet.transparent_gradient_theme",
+            "Transparent gradient",
+            (form, gradientColor) =>
             {
                 DwmApi.EnableImmersiveDarkMode(form.Handle);
                 DwmApi.UnextendFrame(form.Handle);
@@ -194,7 +197,6 @@
                 ThemeManager.SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
                     c => c is Button);
 
-                ThemeManager.SetVisualStyleRecursive(form, useVisualStyles ? VisualStyle.DarkExplorer : VisualStyle.None);
             },
             new ControlStyle(Color.Black, Color.White)
         );

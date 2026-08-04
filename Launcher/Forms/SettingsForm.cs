@@ -10,7 +10,7 @@ namespace launcherdotnet.Launcher.Forms
     public partial class SettingsForm : ThemeableForm
     {
         private readonly string _defaultSelectedHint = "";
-        private readonly Dictionary<string, RadioButton> _themeButtons;
+        private readonly Dictionary<string, RadioButton> _themeButtons = new();
 
         public SettingsForm()
         {
@@ -19,18 +19,7 @@ namespace launcherdotnet.Launcher.Forms
             themeButtonsFlowLayoutPanel.AutoScroll = true;
             Icon = LauncherConstants.AppIcon;
 
-
-            _themeButtons = new Dictionary<string, RadioButton>
-                {
-                    { Theme.System.Name, systemThemeButton },
-                    { Theme.Light.Name, lightThemeButton },
-                    { Theme.Dark.Name, darkThemeButton },
-                    { Theme.ExtendFrame.Name, extendedFrameThemeButton },
-                    { Theme.ExtendFrameDark.Name, extendedFrameDarkThemeButton },
-                    { Theme.Blur.Name, blurThemeButton },
-                    { Theme.Acrylic.Name, acrylicThemeButton },
-                    { Theme.TransparentGradient.Name, transparentGradientButton }
-                };
+            themeButtonsFlowLayoutPanel.Controls.Clear();
 
             _defaultSelectedHint = Hint.Text;
             ShowSettings();
@@ -76,7 +65,7 @@ namespace launcherdotnet.Launcher.Forms
 
             s.GradientColor = color;
 
-            s.UseVisualStyles = useVisualStylesCheckBox.Checked;
+            s.VisualStyle = (visualStyleComboBox.SelectedItem as VisualStylesBoxItem)?.Style ?? VisualStyle.None;
 
             // --- Advanced ---
             s.OpenDebugConsole = AdvancedCheckbox.GetItemChecked(0);
@@ -121,7 +110,17 @@ namespace launcherdotnet.Launcher.Forms
             AdvancedCheckbox.SetItemChecked(3, s.DisableIPv6);
 
             // --- Theme ---
-            _themeButtons[s.ActiveTheme].Checked = true;
+            foreach (Theme theme in Theme.Themes.Values)
+            {
+                RadioButton rb = new RadioButton { Text = theme.UserFriendlyName, AutoSize = true };
+                _themeButtons[theme.Name] = rb;
+                themeButtonsFlowLayoutPanel.Controls.Add(rb);
+            }
+
+            if (_themeButtons.TryGetValue(s.ActiveTheme, out RadioButton? button))
+                button.Checked = true;
+            else _themeButtons.Values.First().Checked = true;
+
             gradientColorBox.Text = s.GradientColor.ToString();
             foreach (Control control in themeButtonsFlowLayoutPanel.Controls.OfType<RadioButton>().ToList())
             {
@@ -129,15 +128,18 @@ namespace launcherdotnet.Launcher.Forms
                 themeButtonsFlowLayoutPanel.Controls.Remove(control);
                 control.Dispose();
             }
-            foreach (Theme theme in Theme.Themes.Values)
-            {
-                if (_themeButtons.ContainsKey(theme.Name)) continue;
-                RadioButton rb = new RadioButton { Text = theme.Name, AutoSize = true };
-                _themeButtons[theme.Name] = rb;
-                themeButtonsFlowLayoutPanel.Controls.Add(rb);
-            }
 
-            useVisualStylesCheckBox.Checked = s.UseVisualStyles;
+            foreach (VisualStyle style in ThemeManager.VisualStyleNames.Keys)
+            {
+                visualStyleComboBox.Items.Add(new VisualStylesBoxItem()
+                {
+                    Text = style.ToString(),
+                    Style = style,
+                });
+            }
+            visualStyleComboBox.SelectedItem = visualStyleComboBox.Items
+                .OfType<VisualStylesBoxItem>()
+                .FirstOrDefault(x => x.Style == s.VisualStyle);
 
             // --- About ---
             LauncherVersionLabel.Text = $"v{LauncherConstants.CurrentVersionString}";
@@ -145,6 +147,15 @@ namespace launcherdotnet.Launcher.Forms
 
             SetSelectedHint(null);
         }
+
+        private class VisualStylesBoxItem
+        {
+            public string Text = "";
+            public VisualStyle Style;
+
+            public override string ToString() => Text;
+        }
+
         private void SetSelectedHint(string? description, string? defaultSetting = null)
         {
             if (description == null)
@@ -292,6 +303,7 @@ namespace launcherdotnet.Launcher.Forms
             catch (Exception ex)
             {
                 CoolMessageBox.Show(ex.Message, "Error opening browser", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LauncherLogger.WriteLine(ex.ToString());
             }
         }
 

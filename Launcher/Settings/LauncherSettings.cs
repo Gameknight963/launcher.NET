@@ -27,7 +27,7 @@ namespace launcherdotnet.Launcher.Settings
             if (Settings.OpenDebugConsole) ConsoleHelper.Show();
             ThemeManager.SetGlobalTheme(Theme.FromName(Settings.ActiveTheme) ?? 
                 LauncherConstants.DefaultTheme, Settings.GradientColor.ToAbgr(), 
-                Settings.UseVisualStyles);
+                Settings.VisualStyle);
         }
 
         public static void Save()
@@ -38,7 +38,7 @@ namespace launcherdotnet.Launcher.Settings
             ThemeManager.SetGlobalTheme(
                 Theme.FromName(Settings.ActiveTheme) ?? LauncherConstants.DefaultTheme, 
                 Settings.GradientColor.ToAbgr(),
-                Settings.UseVisualStyles);
+                Settings.VisualStyle);
             if (Settings.RunOnStartup) StartupHelper.EnableRunOnStartup();
             else StartupHelper.DisableRunOnStartup();
             if (ConsoleHelper.ConsoleShown == Settings.OpenDebugConsole) return;
@@ -63,7 +63,7 @@ namespace launcherdotnet.Launcher.Settings
         // ===== Theme =====
         public string ActiveTheme { get; set; } = Theme.Light.Name;
         public DwmColor GradientColor { get; set; } = DwmColor.FromAbgr(0x27950366);
-        public bool UseVisualStyles { get; set; } = true;
+        public VisualStyle VisualStyle { get; set; } = VisualStyle.None;
 
         // ===== Advanced =====
 
