@@ -65,6 +65,7 @@ namespace launcherdotnet.Launcher
                     ILauncherPlugin plugin = (ILauncherPlugin)Activator.CreateInstance(entryType)!;
 
                     plugins.Add((meta, plugin));
+                    plugin.InitializeMainThread();
                 }
                 catch (Exception ex)
                 {
