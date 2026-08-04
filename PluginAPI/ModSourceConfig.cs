@@ -18,6 +18,7 @@ namespace launcherdotnet.PluginAPI
         public void Save(GameInfo game, string sourceId)
         {
             string path = Path.Combine(game.DataDirectory, $"{sourceId}.json");
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
             File.WriteAllText(path, JsonConvert.SerializeObject(this, Formatting.Indented));
         }
     }

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ThunderstoreModManager
 {
-    public class ThunderstoreData
+    public class ThunderstoreConfig : ModSourceConfig<ThunderstoreConfig>
     {
         [JsonProperty("installedMods")]
         public List<InstalledMod> InstalledMods { get; set; } = [];

@@ -23,7 +23,7 @@ namespace launcherdotnet.Launcher.Forms
         private readonly Dictionary<int, string> _readmeCache = [];
         private string? _currentReadme;
         private readonly GameInfo _game;
-        private readonly ThunderstoreData _data;
+        private readonly ThunderstoreConfig _config;
 
         private readonly HashSet<ThunderstoreVersion> _selectedForInstall = [];
 
@@ -32,7 +32,7 @@ namespace launcherdotnet.Launcher.Forms
             .UseColorCode()
             .Build();
 
-        public ThunderstoreModBrowser(GameInfo game, ThunderstoreData data)
+        public ThunderstoreModBrowser(GameInfo game, ThunderstoreConfig config)
         {
             InitializeComponent();
             Icon = LauncherConstants.AppIcon;
@@ -42,7 +42,7 @@ namespace launcherdotnet.Launcher.Forms
             AcceptButton = okButton;
             StartPosition = FormStartPosition.CenterParent;
             modsLv.VirtualMode = true;
-            if (data.ThunderstoreSlug == null)
+            if (config.ThunderstoreSlug == null)
             {
                 string? result = CoolInputBox.Prompt("This game has no Thunderstore slug set. Assign one here:");
                 if (result == null)
@@ -50,9 +50,10 @@ namespace launcherdotnet.Launcher.Forms
                     DialogResult = DialogResult.Cancel;
                     Close();
                 }
-                data.ThunderstoreSlug = result;
+                config.ThunderstoreSlug = result;
+                config.Save(game, Plugin.SourceId);
             }
-            _data = data;
+            _config = config;
             modsLv.RetrieveVirtualItem += ModsLv_RetrieveVirtualItem;
             UpdateModsLv(game);
             
@@ -118,7 +119,7 @@ namespace launcherdotnet.Launcher.Forms
 
         async void UpdateModsLv(GameInfo game)
         {
-            if (_data.ThunderstoreSlug is not string slug) return;
+            if (_config.ThunderstoreSlug is not string slug) return;
             downloadPnl.Visible = false;
             _packages = [];
             _currentChunk = 0;
@@ -134,7 +135,7 @@ namespace launcherdotnet.Launcher.Forms
 
         private async void modsLv_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_data.ThunderstoreSlug is not string slug) return;
+            if (_config.ThunderstoreSlug is not string slug) return;
 
             if (modsLv.SelectedIndices.Count == 0)
             {
@@ -276,7 +277,7 @@ namespace launcherdotnet.Launcher.Forms
             using ReviewAndConfirm confirm = new(pkgStrings.Concat(depStrings), result.Dependencies.Count);
             if (confirm.ShowDialog() != DialogResult.OK) return;
 
-            using ThunderstoreModInstaller thunderstoreModInstaller = new(_game, result.Packages, result.Dependencies);
+            using ThunderstoreModInstaller thunderstoreModInstaller = new(_game, result.Packages, result.Dependencies, _config);
             thunderstoreModInstaller.ShowDialog();
             Close();
         }

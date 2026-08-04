@@ -13,7 +13,7 @@ namespace ThunderstoreModManager
 {
     public class Plugin : IModSource
     {
-        private const string _sourceId = "modstate";
+        internal const string SourceId = "modstate";
 
         public string DisplayName => "Thunderstore Mod Manager";
 
@@ -21,7 +21,7 @@ namespace ThunderstoreModManager
 
         public IEnumerable<InstalledMod> GetInstalledMods(GameInfo game)
         {
-            ThunderstoreData config = ModSourceConfig<ThunderstoreData>.Load(game, _sourceId);
+            ThunderstoreConfig config = ThunderstoreConfig.Load(game, SourceId);
             return config.InstalledMods;
         }
 
@@ -32,9 +32,10 @@ namespace ThunderstoreModManager
 
         public async Task OpenModBrowser(GameInfo game)
         {
-            ThunderstoreData config = ModSourceConfig<ThunderstoreData>.Load(game, _sourceId);
+            ThunderstoreConfig config = ThunderstoreConfig.Load(game, SourceId);
             using ThunderstoreModBrowser browser = new(game, config);
             browser.ShowDialog();
+            config.Save(game, SourceId);
         }
 
         public bool UninstallMod(GameInfo game, InstalledMod mod)

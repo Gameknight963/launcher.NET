@@ -12,12 +12,12 @@ namespace ThunderstoreModManager.ThunderstoreAPI
             GameInfo game,
             IEnumerable<ThunderstoreVersion> pkgs,
             IEnumerable<ThunderstoreVersion> deps,
+            ThunderstoreConfig config,
             Action<string>? onLog = null,
             Action<int, int>? onProgress = null,
             Action<int>? onDownloadProgress = null)
         {
-            GameModState state = GameModState.Load(game.AbsoluteRootDirectory);
-            HashSet<string> installedVersions = state.InstalledMods
+            HashSet<string> installedVersions = config.InstalledMods
                 .Select(m => $"{m.Owner}-{m.Name}-{m.Version}")
                 .ToHashSet();
 
@@ -59,10 +59,10 @@ namespace ThunderstoreModManager.ThunderstoreAPI
             onLog?.Invoke("Updating manifest...");
             foreach (InstalledMod mod in installed)
             {
-                state.InstalledMods.RemoveAll(m => m.Name == mod.Name && m.Owner == mod.Owner);
-                state.InstalledMods.Add(mod);
+                config.InstalledMods.RemoveAll(m => m.Name == mod.Name && m.Owner == mod.Owner);
+                config.InstalledMods.Add(mod);
             }
-            state.Save(game.AbsoluteRootDirectory);
+            config.Save(game, Plugin.SourceId);
             onLog?.Invoke("All done.");
         }
 
@@ -136,10 +136,11 @@ namespace ThunderstoreModManager.ThunderstoreAPI
             }
         }
 
-        public static async Task InstallZipAsync(
+        internal static async Task InstallZipAsync(
             string zipPath,
             GameInfo game,
-            Func<(string name, string owner, string version)?> onMissingInfo)
+            Func<(string name, string owner, string version)?> onMissingInfo,
+            ThunderstoreConfig config)
         {
 
             string? modName = null, modOwner = null, modVersion = null;
@@ -181,24 +182,23 @@ namespace ThunderstoreModManager.ThunderstoreAPI
             DeleteIgnoreExt(Path.Combine(game.AbsoluteRootDirectory, "icon"), null);
             DeleteIgnoreExt(Path.Combine(game.AbsoluteRootDirectory, "README"), null);
 
-            GameModState state = GameModState.Load(game.AbsoluteRootDirectory);
-            state.InstalledMods.RemoveAll(m => m.Name == modName && m.Owner == modOwner);
-            state.InstalledMods.Add(new InstalledMod
+            config.InstalledMods.RemoveAll(m => m.Name == modName && m.Owner == modOwner);
+            config.InstalledMods.Add(new InstalledMod
             {
                 Name = modName,
                 Owner = modOwner,
                 Version = modVersion,
                 Files = extractedFiles,
             });
-            state.Save(game.AbsoluteRootDirectory);
         }
 
-        public static bool TryInstallDllAsync(
+        internal static bool TryInstallDllAsync(
             string dllPath,
             GameInfo game,
             string modName,
             string modOwner,
             string modVersion,
+            ThunderstoreConfig config,
             bool isDependency = false)
         {
             string modsDir = Path.Combine(game.AbsoluteRootDirectory, "Mods");
@@ -212,9 +212,8 @@ namespace ThunderstoreModManager.ThunderstoreAPI
 
             string relativeDest = Path.GetRelativePath(game.AbsoluteRootDirectory, destPath);
 
-            GameModState state = GameModState.Load(game.AbsoluteRootDirectory);
-            state.InstalledMods.RemoveAll(m => m.Name == modName && m.Owner == modOwner);
-            state.InstalledMods.Add(new InstalledMod
+            config.InstalledMods.RemoveAll(m => m.Name == modName && m.Owner == modOwner);
+            config.InstalledMods.Add(new InstalledMod
             {
                 Name = modName,
                 Owner = modOwner,
@@ -222,7 +221,6 @@ namespace ThunderstoreModManager.ThunderstoreAPI
                 Files = [relativeDest],
                 IsDependency = isDependency
             });
-            state.Save(game.AbsoluteRootDirectory);
             return true;
         }
     }
