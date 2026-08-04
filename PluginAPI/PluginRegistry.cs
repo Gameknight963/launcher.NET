@@ -3,7 +3,6 @@
 namespace launcherdotnet.PluginAPI
 {
     public static class PluginRegistry
-
     {
         private static readonly List<PluginDescriptor> _pluginDescriptors = new();
 
@@ -13,15 +12,24 @@ namespace launcherdotnet.PluginAPI
         private static readonly List<IPluginWithSettings> _pluginsWithSettings = new();
         private static readonly List<IModSource> _modSources = new();
 
+        private static readonly Lock _lock = new();
 
         internal static void Register(PluginDescriptor descriptor)
         {
-            _launcherPlugins.Add(descriptor.Instance);
-            _pluginDescriptors.Add(descriptor);
+            lock (_lock)
+            {
+                _launcherPlugins.Add(descriptor.Instance);
+                _pluginDescriptors.Add(descriptor);
 
-            if (descriptor.Instance is IGameInstaller installer) _gameInstallPlugins.Add(installer);
-            if (descriptor.Instance is IPluginWithSettings pluginWithSettings) _pluginsWithSettings.Add(pluginWithSettings);
-            if (descriptor.Instance is IModSource modSource) _modSources.Add(modSource);
+                if (descriptor.Instance is IGameInstaller installer)
+                    _gameInstallPlugins.Add(installer);
+
+                if (descriptor.Instance is IPluginWithSettings pluginWithSettings)
+                    _pluginsWithSettings.Add(pluginWithSettings);
+
+                if (descriptor.Instance is IModSource modSource)
+                    _modSources.Add(modSource);
+            }
         }
 
         /// <summary>
