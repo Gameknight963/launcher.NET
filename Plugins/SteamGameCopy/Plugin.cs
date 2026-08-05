@@ -1,11 +1,12 @@
 using launcherdotnet.Launcher.Forms;
 using launcherdotnet.PluginAPI;
 using launcherdotnet.Plugins.SteamGameCopy;
+using System.Reflection;
 
 [assembly: LauncherPlugin(typeof(Plugin),
     "Steam Game Copier",
     "Copies any installed Steam game to launcher.net",
-    "2.0.0")]
+    "2.1.0")]
 
 namespace launcherdotnet.Plugins.SteamGameCopy
 {
@@ -48,17 +49,25 @@ namespace launcherdotnet.Plugins.SteamGameCopy
                 path = dialog.FileName;
             }
 
-            string? slug = PluginTools.ToThunderstoreSlug(form.SelectedGame.Name);
-            //slug = await ThunderstoreClient.DoesThunderstoreCommunityExist(slug) ? slug : null;
-
-            return new PluginGameInfo
+            PluginGameInfo info = new PluginGameInfo
             {
                 ExePath = path,
-                ThunderstoreCommunitySlug = slug,
-                ModManageable = true,
                 Label = label,
                 GameName = form.SelectedGame.Name,
             };
+
+            Assembly? assembly = AppDomain.CurrentDomain
+                .GetAssemblies()
+                .FirstOrDefault(a => a.GetName().Name == "ThunderstoreModManager");
+            if (assembly != null)
+            {
+                string? slug = PluginTools.ToThunderstoreSlug(form.SelectedGame.Name);
+                slug = await OptionalThunderstoreWrapper.DoesSlugExist(slug) ? slug : null;
+                OptionalThunderstoreWrapper.SetSlug(slug, info);
+                info.ModManagerId = "launcherdotnet.thunderstore";
+            }
+
+            return info;
         }
     }
 }
