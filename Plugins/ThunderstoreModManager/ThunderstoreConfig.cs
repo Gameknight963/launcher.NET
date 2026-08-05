@@ -10,6 +10,8 @@ namespace ThunderstoreModManager
 {
     public class ThunderstoreConfig : ModSourceConfig<ThunderstoreConfig>
     {
+        public const string SourceId = "modstate";
+
         [JsonProperty("installedMods")]
         public List<InstalledMod> InstalledMods { get; set; } = [];
 

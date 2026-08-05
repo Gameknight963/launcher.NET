@@ -68,7 +68,7 @@ namespace ThunderstoreModManager.ThunderstoreAPI
                 config.InstalledMods.RemoveAll(m => m.Name == mod.Name && m.Owner == mod.Owner);
                 config.InstalledMods.Add(mod);
             }
-            config.Save(game, Plugin.SourceId);
+            config.Save(game, ThunderstoreConfig.SourceId);
             onLog?.Invoke("All done.");
         }
 
