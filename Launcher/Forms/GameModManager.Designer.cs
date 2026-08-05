@@ -91,7 +91,7 @@
             installModsButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             installModsButton.Location = new Point(12, 410);
             installModsButton.Name = "installModsButton";
-            installModsButton.Size = new Size(171, 23);
+            installModsButton.Size = new Size(200, 23);
             installModsButton.TabIndex = 2;
             installModsButton.Text = "Browse...";
             installModsButton.UseVisualStyleBackColor = true;
