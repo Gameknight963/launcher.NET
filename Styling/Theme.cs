@@ -2,21 +2,64 @@
 
 namespace launcherdotnet.Styling
 {
+    /// <summary>
+    /// Represents a complete visual theme that can be applied to a window.
+    /// </summary>
     public class Theme
     {
         public delegate void ApplyThemeDelegate(Form form, int gradientColor);
 
+        /// <summary>
+        /// The method used to apply this theme to a form.
+        /// </summary>
         public readonly ApplyThemeDelegate Apply;
+
+        /// <summary>
+        /// The default control style used by this theme.
+        /// </summary>
         public readonly ControlStyle MainStyle;
+
+        /// <summary>
+        /// Whether text shadows should be enabled on certain elements.
+        /// Can make transparency look better.
+        /// </summary>
         public readonly bool UseShadowText;
+
+        /// <summary>
+        /// Whether headers should be owner-drawn. If enabled, 
+        /// the styles from <see cref="MainStyle"/> will be used.
+        /// Otherwise, normal UxTheme drawing.
+        /// </summary>
         public readonly bool UseOwnerDrawHeaders;
+
+        /// <summary>
+        /// The unique identifier used to reference this theme.
+        /// </summary>
+        /// <remarks>
+        /// Follow the convention 'namespace.identifier' to avoid collisions.
+        /// </remarks>
         public readonly string Id;
+
+        /// <summary>
+        /// The display name of this theme intended for presentation to users.
+        /// </summary>
         public readonly string UserFriendlyName;
 
+        /// <summary>
+        /// Registers this theme to <see cref="Themes"/>, making it appear
+        /// appear in the settings theme selector.
+        /// </summary>
+        /// <remarks>
+        /// This only applies on the next time settings is opened.
+        /// </remarks>
+        /// <param name="overwrite"><see langword="true"/> to overwrite an already registered theme with the existing <see cref="Id"/>.
+        /// If <see langword="false"/>, and a theme with the same <see cref="Id"/> is already registered, throws an exception.</param>
+        /// <exception cref="InvalidOperationException">Thrown if <paramref name="overwrite"/> is <see langword="false"/>
+        /// and a theme with the same <see cref="Id"/> is already registed.</exception>
         public void Register(bool overwrite = false)
         {
             if (!overwrite && _themes.ContainsKey(Id))
-                throw new InvalidOperationException($"A theme with the name '{Id}' is already registered.");
+                throw new InvalidOperationException($"'{Id}' is already registered.");
             _themes[Id] = this;
         }
 
@@ -46,14 +89,28 @@ namespace launcherdotnet.Styling
         // ------------------- STATIC -------------------
 
         private static readonly Dictionary<string, Theme> _themes = new();
+
+        /// <summary>
+        /// All registered themes. The key is the <see cref="Id"/>.
+        /// </summary>
         public static IReadOnlyDictionary<string, Theme> Themes => _themes;
-        public static Theme? FromName(string name) => _themes.TryGetValue(name, out Theme? theme) ? theme : null;
 
-        public static readonly Color DarkMainColor = Color.FromArgb(30, 30, 30);
-        public static readonly Color AcrylicButtonColor = Color.FromArgb(20, 20, 30);
-        public static readonly Color DarkButtonColor = Color.FromArgb(30, 30, 50);
-        public static readonly Color DarkButtonBorder = Color.FromArgb(60, 60, 60);
+        /// <summary>
+        /// Tries to get a theme with the given id.
+        /// </summary>
+        /// <param name="id">The <see cref="Id"/> of the theme to get.</param>
+        /// <returns>The <see cref="Theme"/> with the matching Id, otherwise, <see langword="null"></see>.</returns>
+        public static Theme? FromId(string id) => _themes.TryGetValue(id, out Theme? theme) ? theme : null;
 
+        internal static readonly Color DarkMainColor = Color.FromArgb(30, 30, 30);
+        internal static readonly Color AcrylicButtonColor = Color.FromArgb(20, 20, 30);
+        internal static readonly Color DarkButtonColor = Color.FromArgb(30, 30, 50);
+        internal static readonly Color DarkButtonBorder = Color.FromArgb(60, 60, 60);
+
+        /// <summary>
+        /// Represents the default light theme.
+        /// Uses the standard Windows control colors with no non-client visual effects.
+        /// </summary>
         public static readonly Theme Light = new(
             "launcherdotnet.light_theme",
             "Light",
@@ -78,6 +135,10 @@ namespace launcherdotnet.Styling
             register: true
         );
 
+        /// <summary>
+        /// Represents the default dark theme.
+        /// Uses dark control colors and enables immersive dark mode.
+        /// </summary>
         public static readonly Theme Dark = new(
             "launcherdotnet.dark_theme",
             "Dark",
@@ -100,6 +161,10 @@ namespace launcherdotnet.Styling
             register: true
             );
 
+        /// <summary>
+        /// Represents a theme that automatically follows the system appearance setting.
+        /// Applies either the <see cref="Light"/> or <see cref="Dark"/> theme depending on the current Windows theme.
+        /// </summary>
         public static readonly Theme System = new(
             "launcherdotnet.system_theme",
             "System",
@@ -114,6 +179,9 @@ namespace launcherdotnet.Styling
             register: true
         );
 
+        /// <summary>
+        /// Represents a theme that extends the DWM frame into the client area.
+        /// </summary>
         public static readonly Theme ExtendFrame = new(
             "launcherdotnet.extendframe_theme",
             "Extended frame",
@@ -134,6 +202,10 @@ namespace launcherdotnet.Styling
             register: true
         );
 
+        /// <summary>
+        /// Represents a dark variant of the extended frame theme.
+        /// Extends the DWM frame into the client area and enables immersive dark mode.
+        /// </summary>
         public static readonly Theme ExtendFrameDark = new(
             "launcherdotnet.extendframe_dark_theme",
             "Extended frame (dark)",
@@ -155,6 +227,9 @@ namespace launcherdotnet.Styling
             register: true
         );
 
+        /// <summary>
+        /// Represents a theme that applies the Windows blur-behind composition effect.
+        /// </summary>
         public static readonly Theme Blur = new(
             "launcherdotnet.blur_theme",
             "Blur",
@@ -176,6 +251,9 @@ namespace launcherdotnet.Styling
             register: true
         );
 
+        /// <summary>
+        /// Represents a theme that applies the Windows acrylic blur composition effect.
+        /// </summary>
         public static readonly Theme Acrylic = new(
             "launcherdotnet.acrylic_theme",
             "Acrylic",
@@ -196,6 +274,9 @@ namespace launcherdotnet.Styling
             register: true
         );
 
+        /// <summary>
+        /// Represents a theme that applies a transparent gradient composition effect.
+        /// </summary>
         public static readonly Theme TransparentGradient = new(
             "launcherdotnet.transparent_gradient_theme",
             "Transparent gradient",
