@@ -40,14 +40,14 @@ namespace launcherdotnet.Launcher
                 if (Path.GetPathRoot(folder) == folder)
                     throw new InvalidOperationException("Refusing to delete root directory.");
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
             {
-
-                CoolMessageBox.Show($"{ex.GetType().Name}: {ex.Message}. Check if games path in config.json is malformed.");
-                throw new InvalidOperationException($"Unprecedented exception {ex.GetType().Name} while trying to delete game {game.GameName}.");
+                CoolMessageBox.Show($"{ex.GetType().Name}: {ex.Message}. Check if games path is malformed.");
             }
+
             Directory.Delete(game.AbsoluteRootDirectory, true);
             if (Directory.Exists(game.DataDirectory)) Directory.Delete(game.DataDirectory, true);
+
             RemoveMissingGames();
             return folder;
         }
