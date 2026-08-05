@@ -47,6 +47,7 @@ namespace launcherdotnet.Launcher
                 throw new InvalidOperationException($"Unprecedented exception {ex.GetType().Name} while trying to delete game {game.GameName}.");
             }
             Directory.Delete(game.AbsoluteRootDirectory, true);
+            if (Directory.Exists(game.DataDirectory)) Directory.Delete(game.DataDirectory, true);
             RemoveMissingGames();
             return folder;
         }
