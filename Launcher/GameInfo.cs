@@ -6,7 +6,6 @@ namespace launcherdotnet.Launcher
 {
     public class GameInfo
     {
-
         public string Label { get; set; } = "";
         public string RelativePath { get; set; } = "";
         public string RelativeRootDirectory { get; set; } = "";
@@ -16,13 +15,12 @@ namespace launcherdotnet.Launcher
         public string? ModManagerId { get; set; }
 
         [JsonIgnore]
-        public string DataDirectory =>
-            Path.Combine(LauncherConstants.BaseDir, "gamedata", Id);
+        public string DataDirectory => GetDataDirectory(Id);
+
+        public static string GetDataDirectory(string id) => Path.Combine(LauncherConstants.BaseDir, "gamedata", id);
 
         [Obsolete("Check if ModManagerId is null instead. Here temporarily to make refactoring easier.")]
         public bool ModManagable => ModManagerId != null;
-
-        public T LoadConfig<T>(string sourceId) where T : ModSourceConfig<T>, new() => ModSourceConfig<T>.Load(this, sourceId);
 
         [JsonIgnore]
         [Obsolete("launcher.net will no longer respond to Thunderstore-related properties")]
