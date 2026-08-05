@@ -1,4 +1,5 @@
 ﻿using launcherdotnet.Launcher.Settings;
+using launcherdotnet.PluginAPI;
 using launcherdotnet.Styling;
 using System.ComponentModel;
 
@@ -22,6 +23,8 @@ namespace launcherdotnet.Launcher.Forms
             gameRootDirBox.Text = game.RelativeRootDirectory;
             guidLabel.Text = game.Id;
             runsWithCmdCheck.Checked = game.RunWithCmd;
+
+            modManagerIdBox.Items.AddRange(PluginRegistry.ModSources.Select(x => x.Id).ToArray());
 
             AcceptButton = okButton;
             CancelButton = cancelButton;

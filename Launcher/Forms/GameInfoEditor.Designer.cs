@@ -31,10 +31,10 @@
             labelOfTheGameLabel = new Label();
             labelBox = new TextBox();
             tableLayoutPanel1 = new TableLayoutPanel();
+            modManagerIdBox = new ComboBox();
             nameBox = new TextBox();
             gameNameLabel = new Label();
             modManagerIdLabel = new Label();
-            modManagerIdBox = new TextBox();
             tableLayoutPanel2 = new TableLayoutPanel();
             exeLabel = new Label();
             gameExeBox = new TextBox();
@@ -76,12 +76,12 @@
             tableLayoutPanel1.ColumnCount = 2;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.Controls.Add(modManagerIdBox, 1, 2);
             tableLayoutPanel1.Controls.Add(labelOfTheGameLabel, 0, 0);
             tableLayoutPanel1.Controls.Add(labelBox, 1, 0);
             tableLayoutPanel1.Controls.Add(nameBox, 1, 1);
             tableLayoutPanel1.Controls.Add(gameNameLabel, 0, 1);
             tableLayoutPanel1.Controls.Add(modManagerIdLabel, 0, 2);
-            tableLayoutPanel1.Controls.Add(modManagerIdBox, 1, 2);
             tableLayoutPanel1.Location = new Point(12, 12);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 3;
@@ -90,6 +90,14 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel1.Size = new Size(344, 85);
             tableLayoutPanel1.TabIndex = 2;
+            // 
+            // modManagerIdBox
+            // 
+            modManagerIdBox.FormattingEnabled = true;
+            modManagerIdBox.Location = new Point(123, 59);
+            modManagerIdBox.Name = "modManagerIdBox";
+            modManagerIdBox.Size = new Size(218, 23);
+            modManagerIdBox.TabIndex = 8;
             // 
             // nameBox
             // 
@@ -122,14 +130,6 @@
             modManagerIdLabel.TabIndex = 0;
             modManagerIdLabel.Text = "Mod Manager ID";
             modManagerIdLabel.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // modManagerIdBox
-            // 
-            modManagerIdBox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            modManagerIdBox.Location = new Point(123, 59);
-            modManagerIdBox.Name = "modManagerIdBox";
-            modManagerIdBox.Size = new Size(218, 23);
-            modManagerIdBox.TabIndex = 1;
             // 
             // tableLayoutPanel2
             // 
@@ -282,7 +282,6 @@
         private TextBox nameBox;
         private Label gameNameLabel;
         private Label modManagerIdLabel;
-        private TextBox modManagerIdBox;
         private TableLayoutPanel tableLayoutPanel2;
         private Label exeLabel;
         private TextBox gameExeBox;
@@ -294,5 +293,6 @@
         private Button okButton;
         private Button cancelButton;
         private CheckBox runsWithCmdCheck;
+        private ComboBox modManagerIdBox;
     }
 }
