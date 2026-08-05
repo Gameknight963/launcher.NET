@@ -408,3 +408,6 @@ with that same string gives you the file you saved.
 
 ### Note:
 I made all of the code examples without an IDE, so they may be slightly wrong lol. Adjust accordingly.
+
+### Other note:
+You can have your plugins be any license, it doesn't have to necessarily be GPLv3 compliant. I don't own your plugins.
