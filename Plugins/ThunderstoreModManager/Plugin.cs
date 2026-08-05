@@ -39,12 +39,12 @@ namespace ThunderstoreModManager
             config.Save(game, SourceId);
         }
 
-        public bool UninstallMod(GameInfo game, InstalledMod mod)
+        public bool UninstallMods(GameInfo game, List<InstalledMod> mods)
         {
             ThunderstoreConfig config = ThunderstoreConfig.Load(game, SourceId);
-            ModInstaller.UninstallMod(game, mod, config);
+            bool success = ModInstaller.UninstallManyMods(game, mods, config);
             config.Save(game, SourceId);
-            return true;
+            return success;
         }
     }
 }

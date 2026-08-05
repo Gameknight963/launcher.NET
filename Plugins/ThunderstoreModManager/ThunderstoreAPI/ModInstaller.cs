@@ -1,9 +1,14 @@
-﻿using launcherdotnet.Launcher;
+﻿using launcherdotnet;
+using launcherdotnet.Launcher;
+using launcherdotnet.Launcher.Forms;
 using launcherdotnet.Networking;
 using launcherdotnet.PluginAPI;
 using Newtonsoft.Json.Linq;
 using System.IO.Compression;
+using System.Reflection;
+using System.Xml.Linq;
 using ThunderstoreModManager.Extensions;
+using static System.Windows.Forms.AxHost;
 
 namespace ThunderstoreModManager.ThunderstoreAPI
 {
@@ -67,7 +72,7 @@ namespace ThunderstoreModManager.ThunderstoreAPI
             onLog?.Invoke("All done.");
         }
 
-        public static void UninstallMod(GameInfo game, InstalledMod mod, ThunderstoreConfig config, bool handleDependencies = true)
+        public static void UninstallMod(GameInfo game, InstalledMod mod, ThunderstoreConfig config)
         {
             foreach (string file in mod.Files)
             {
@@ -79,9 +84,79 @@ namespace ThunderstoreModManager.ThunderstoreAPI
             int removed = config.InstalledMods.RemoveAll(x => x.DependencyStringEquals(mod));
             if (removed == 0)
                 PluginLogger.Error($"unable to remove mod '{mod.DependencyString()}' from config", true);
-            if (removed > 1)
+            else if (removed > 1)
                 PluginLogger.Warn($"Somehow managed to find two matches for $'{mod.DependencyString()}' in config. " +
                     $"This is most definitely a bug");
+            else
+                PluginLogger.Success($"successfully uninstalled mod '{mod.Name}'");
+
+        }
+
+        public static bool UninstallManyMods(GameInfo game, List<InstalledMod> mods, ThunderstoreConfig config, bool gui = true)
+        {
+            if (gui)
+            {
+                string names = string.Join(Environment.NewLine, mods.Select(m => m.Name));
+
+                // warn if other mods depend on what we're removing
+                List<InstalledMod> dependents = config.InstalledMods
+                    .Except(mods)
+                    .Where(m => m.Dependencies.Any(d => mods.Any(s => d.StartsWith($"{s.Owner}-{s.Name}-"))))
+                    .ToList();
+
+                if (dependents.Count > 0)
+                {
+                    string dependentNames = string.Join(Environment.NewLine, dependents.Select(m => m.Name));
+                    PluginLogger.Warn($"Uninstall requested for mods that have dependents: {string.Join(", ", mods.Select(m => m.Name))}");
+                    if (CoolMessageBox.Show(
+                        $"The following mods depend on one or more mods you are trying to uninstall:\n" +
+                        $"{dependentNames}\n\nUninstalling may cause them to break. Continue anyway?",
+                        "Warning",
+                        MessageBoxButtons.OKCancel,
+                        MessageBoxIcon.Warning) != DialogResult.OK) return false;
+                }
+
+                if (CoolMessageBox.Show(
+                    $"Are you sure you would like to uninstall the following mods?\n{names}",
+                    "Confirm Uninstall",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Question) != DialogResult.OK) return false;
+
+                // find orphaned dependencies after removal
+                HashSet<string> stillRequired = config.InstalledMods
+                    .Except(mods)
+                    .SelectMany(m => m.Dependencies)
+                    .ToHashSet();
+
+                List<InstalledMod> orphans = config.InstalledMods
+                    .Except(mods)
+                    .Where(m => m.IsDependency && !stillRequired.Any(d => d.StartsWith($"{m.Owner}-{m.Name}-")))
+                    .ToList();
+
+                if (orphans.Count > 0)
+                {
+                    string orphanNames = string.Join(Environment.NewLine, orphans.Select(m => m.Name));
+                    PluginLogger.WriteLine($"Found {orphans.Count} orphaned dependencies: {string.Join(", ", orphans.Select(m => m.Name))}");
+                    if (CoolMessageBox.Show(
+                        $"The following dependencies are no longer needed by any installed mod:\n{orphanNames}" +
+                        $"\n\nWould you like to remove them too?",
+                        "Remove Unused Dependencies",
+                        MessageBoxButtons.OKCancel,
+                        MessageBoxIcon.Question) == DialogResult.OK)
+                        mods.AddRange(orphans);
+                }
+            }
+
+            foreach (InstalledMod mod in mods)
+            {
+                UninstallMod(game, mod, config);
+            }
+
+            return true;
+
+            // soon
+            //if (config.InstalledMods.Count == 0 && config.HasBaseline)
+            //    CleanUpUntrackedFiles();
 
         }
 

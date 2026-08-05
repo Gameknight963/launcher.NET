@@ -70,10 +70,7 @@ namespace launcherdotnet.Launcher.Forms
                 .Cast<ListViewItem>()
                 .Select(x => (InstalledMod)x.Tag!)
                 .ToList();
-            foreach (InstalledMod mod in selected)
-            {
-                if (!_source.UninstallMod(_game, mod)) break;
-            }
+            _source.UninstallMods(_game, selected);
             RefreshList();
         }
 
