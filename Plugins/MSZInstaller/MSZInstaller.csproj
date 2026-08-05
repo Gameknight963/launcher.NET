@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\launcherdotnet.csproj" />
+    <ProjectReference Include="..\ThunderstoreModManager\ThunderstoreModManager.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

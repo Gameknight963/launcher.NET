@@ -1,13 +1,16 @@
-﻿using launcherdotnet.PluginAPI;
-using System.IO.Compression;
-using System.Text.Json.Nodes;
+﻿using launcherdotnet;
+using launcherdotnet.Launcher;
+using launcherdotnet.PluginAPI;
 using Semver;
-using launcherdotnet;
+using System.IO.Compression;
+using System.Reflection;
+using System.Text.Json.Nodes;
+using ThunderstoreModManager;
 
 [assembly: LauncherPlugin(typeof(MSZInstaller.Plugin),
     "Miside Zero Installer",
     "Downloads and installs Miside Zero from my Github mirror",
-    "2.0.1")]
+    "2.1.0")]
 
 namespace MSZInstaller
 {
@@ -24,8 +27,6 @@ namespace MSZInstaller
 
         public async Task Initialize()
         {
-            PluginLogger.Log(launcherdotnet.Networking.LauncherHttp.Client.DefaultRequestHeaders.UserAgent.ToString());
-
             HttpResponseMessage resp = await launcherdotnet.Networking.LauncherHttp.Client.GetAsync(_releases);
             resp.EnsureSuccessStatusCode();
 
@@ -111,11 +112,22 @@ namespace MSZInstaller
             if (!File.Exists(exePath))
                 throw new FileNotFoundException($"Extraction failed: could not find {exePath}");
 
-            return new PluginGameInfo
-            {
-                ExePath = exePath,
-                ThunderstoreCommunitySlug = "miside-zero",
+            PluginGameInfo info = new()
+            { 
+                ExePath = exePath 
             };
+
+
+            Assembly? assembly = AppDomain.CurrentDomain
+            .GetAssemblies()
+            .FirstOrDefault(a => a.GetName().Name == "ThunderstoreModManager");
+            if (assembly != null)
+            {
+                OptionalThunderstoreWrapper.SetSlug("miside-zero", info);
+                info.ModManagerId = "launcherdotnet.thunderstore";
+            }
+
+            return info;
         }
 
         public IEnumerable<string>? GetReleases() => _versions.Keys;
