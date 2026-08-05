@@ -10,8 +10,15 @@ namespace launcherdotnet.Styling
         public readonly ControlStyle MainStyle;
         public readonly bool UseShadowText;
         public readonly bool UseOwnerDrawHeaders;
-        public readonly string Name;
+        public readonly string Id;
         public readonly string UserFriendlyName;
+
+        public void Register(bool overwrite = false)
+        {
+            if (!overwrite && _themes.ContainsKey(Id))
+                throw new InvalidOperationException($"A theme with the name '{Id}' is already registered.");
+            _themes[Id] = this;
+        }
 
         public Theme(
             string id,
@@ -19,23 +26,22 @@ namespace launcherdotnet.Styling
             ApplyThemeDelegate apply,
             ControlStyle style,
             bool useShadowText = true,
-            bool useOwnerDrawHeaders = true)
+            bool useOwnerDrawHeaders = true,
+            bool register = false)
         {
-            Name = id;
+            Id = id;
             UserFriendlyName = userFriendlyName;
             Apply = apply;
             MainStyle = style;
             UseShadowText = useShadowText;
             UseOwnerDrawHeaders = useOwnerDrawHeaders;
-            if (_themes.ContainsKey(id))
-                throw new InvalidOperationException($"A theme with the name '{id}' is already registered.");
-            _themes[id] = this;
+            if (register) Register();
         }
 
-        public override bool Equals(object? obj) => obj is Theme other && Name == other.Name;
-        public override int GetHashCode() => Name.GetHashCode();
-        public static bool operator ==(Theme? a, Theme? b) => a?.Name == b?.Name;
-        public static bool operator !=(Theme? a, Theme? b) => a?.Name != b?.Name;
+        public override bool Equals(object? obj) => obj is Theme other && Id == other.Id;
+        public override int GetHashCode() => Id.GetHashCode();
+        public static bool operator ==(Theme? a, Theme? b) => a?.Id == b?.Id;
+        public static bool operator !=(Theme? a, Theme? b) => a?.Id != b?.Id;
 
         // ------------------- STATIC -------------------
 
@@ -68,7 +74,8 @@ namespace launcherdotnet.Styling
             },
             new ControlStyle(SystemColors.Control, SystemColors.ControlText),
             useShadowText: false,
-            useOwnerDrawHeaders: false
+            useOwnerDrawHeaders: false,
+            register: true
         );
 
         public static readonly Theme Dark = new(
@@ -89,7 +96,8 @@ namespace launcherdotnet.Styling
             },
             new ControlStyle(DarkMainColor, Color.White),
             useShadowText: false,
-            useOwnerDrawHeaders: true
+            useOwnerDrawHeaders: true,
+            register: true
             );
 
         public static readonly Theme System = new(
@@ -102,7 +110,8 @@ namespace launcherdotnet.Styling
             },
             new ControlStyle(Color.Empty, Color.Empty),
             useShadowText: false,
-            useOwnerDrawHeaders: !ThemeManager.IsSystemLightTheme()
+            useOwnerDrawHeaders: !ThemeManager.IsSystemLightTheme(),
+            register: true
         );
 
         public static readonly Theme ExtendFrame = new(
@@ -121,7 +130,8 @@ namespace launcherdotnet.Styling
                 ThemeManager.SetColorRecursive(form, new ButtonStyle(Color.Black, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
                     c => c is Button);
             },
-            new ControlStyle(Color.Black, Color.White)
+            new ControlStyle(Color.Black, Color.White),
+            register: true
         );
 
         public static readonly Theme ExtendFrameDark = new(
@@ -141,7 +151,8 @@ namespace launcherdotnet.Styling
                     c => c is Button);
 
             },
-            new ControlStyle(Color.Black, Color.White)
+            new ControlStyle(Color.Black, Color.White),
+            register: true
         );
 
         public static readonly Theme Blur = new(
@@ -161,7 +172,8 @@ namespace launcherdotnet.Styling
                     c => c is Button);
 
             },
-            new ControlStyle(Color.Black, Color.White)
+            new ControlStyle(Color.Black, Color.White),
+            register: true
         );
 
         public static readonly Theme Acrylic = new(
@@ -180,7 +192,8 @@ namespace launcherdotnet.Styling
                 ThemeManager.SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
                     c => c is Button);
             },
-            new ControlStyle(Color.Black, Color.White)
+            new ControlStyle(Color.Black, Color.White),
+            register: true
         );
 
         public static readonly Theme TransparentGradient = new(
@@ -200,7 +213,8 @@ namespace launcherdotnet.Styling
                     c => c is Button);
 
             },
-            new ControlStyle(Color.Black, Color.White)
+            new ControlStyle(Color.Black, Color.White),
+            register: true
         );
     }
 }
