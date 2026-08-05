@@ -1,5 +1,4 @@
-﻿using launcherdotnet.Windows;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace launcherdotnet.Windows
 {
@@ -165,6 +164,98 @@ namespace launcherdotnet.Windows
         {
             int val = value;
             Marshal.ThrowExceptionForHR(Native.DwmSetWindowAttribute(hwnd, (int)attribute, &val, sizeof(int)));
+        }
+
+        public class Support
+        {
+            /// <summary>
+            /// Gets whether immersive dark mode window attributes are supported.
+            /// </summary>
+            /// <remarks>
+            /// Supported since Windows 10 version 1809 (build 17763).
+            /// </remarks>
+            public static bool ImmersiveDarkMode =>
+                OperatingSystem.IsWindowsVersionAtLeast(10, 0, 17763);
+
+            /// <summary>
+            /// Gets whether the system backdrop window attribute is supported.
+            /// </summary>
+            /// <remarks>
+            /// Supported since Windows 11 version 22H2 (build 22621).
+            /// </remarks>
+            public static bool SystemBackdrop =>
+                OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22621);
+
+            /// <summary>
+            /// Gets whether acrylic system backdrops are supported.
+            /// </summary>
+            /// <remarks>
+            /// Supported since Windows 11 version 22H2 (build 22621).
+            /// </remarks>
+            public static bool AcrylicBackdrop =>
+                OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22621);
+
+            /// <summary>
+            /// Gets whether Mica system backdrops are supported.
+            /// </summary>
+            /// <remarks>
+            /// Supported since Windows 11 version 22H2 (build 22621).
+            /// </remarks>
+            public static bool MicaBackdrop =>
+                OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22621);
+
+            /// <summary>
+            /// Gets whether DWM frame extension into the client area is supported.
+            /// </summary>
+            /// <remarks>
+            /// Supported since Windows Vista.
+            /// </remarks>
+            public static bool FrameExtension => 
+                OperatingSystem.IsWindowsVersionAtLeast(6, 0);
+
+            /// <summary>
+            /// Gets whether the SetWindowCompositionAttribute API is available.
+            /// </summary>
+            /// <remarks>
+            /// Supported since Windows 8 (build 9200).
+            /// </remarks>
+            public static bool WindowCompositionAttribute =>
+                OperatingSystem.IsWindowsVersionAtLeast(6, 2);
+            /// <summary>
+            /// Gets whether the gradient accent effect is supported.
+            /// </summary>
+            /// <remarks>
+            /// Supported since Windows 10 version 1507 (build 10240).
+            /// </remarks>
+            public static bool AccentGradient =>
+                OperatingSystem.IsWindowsVersionAtLeast(10, 0, 10240);
+
+            /// <summary>
+            /// Gets whether the transparent gradient accent effect is supported.
+            /// </summary>
+            /// <remarks>
+            /// Supported since Windows 10 version 1507 (build 10240).
+            /// </remarks>
+            public static bool AccentTransparentGradient =>
+                OperatingSystem.IsWindowsVersionAtLeast(10, 0, 10240);
+
+            /// <summary>
+            /// Gets whether the blur-behind accent effect is supported.
+            /// </summary>
+            /// <remarks>
+            /// Supported since Windows 10 version 1507 (build 10240).
+            /// </remarks>
+            public static bool AccentBlurBehind =>
+                OperatingSystem.IsWindowsVersionAtLeast(10, 0, 10240);
+
+            /// <summary>
+            /// Gets whether the acrylic blur accent effect is supported.
+            /// </summary>
+            /// <remarks>
+            /// Supported since Windows 10 version 1803 (build 17134).
+            /// </remarks>
+            public static bool AccentAcrylicBlurBehind =>
+                OperatingSystem.IsWindowsVersionAtLeast(10, 0, 17134);
         }
     }
 }
