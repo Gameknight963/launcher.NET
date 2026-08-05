@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace launcherdotnet.PluginAPI
 {
-    public abstract class PluginData<T> where T : PluginData<T>, new()
+    public abstract class PluginGameData<T> where T : PluginGameData<T>, new()
     {
         public static T Load(string gameDataDirectory, string sourceId)
         {

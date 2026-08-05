@@ -8,7 +8,7 @@ using System.Text;
 
 namespace ThunderstoreModManager
 {
-    public class ThunderstoreConfig : PluginData<ThunderstoreConfig>
+    public class ThunderstoreConfig : PluginGameData<ThunderstoreConfig>
     {
         public const string SourceId = "modstate";
 
