@@ -1,4 +1,6 @@
-﻿namespace launcherdotnet.Styling
+﻿using launcherdotnet.Windows;
+
+namespace launcherdotnet.Styling
 {
     public class Theme
     {
@@ -51,7 +53,7 @@
             "Light",
             (form, gradientColor) =>
             {
-                DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
+                DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_DISABLED);
                 DwmApi.UnextendFrame(form.Handle);
                 DwmApi.DisableImmersiveDarkMode(form.Handle);
 
@@ -74,7 +76,7 @@
             "Dark",
             (form, gradientColor) =>
             {
-                DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
+                DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_DISABLED);
                 DwmApi.UnextendFrame(form.Handle);
                 DwmApi.EnableImmersiveDarkMode(form.Handle);
 
@@ -108,7 +110,7 @@
             "Extended frame",
             (form, gradientColor) =>
             {
-                DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
+                DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_DISABLED);
                 DwmApi.DisableImmersiveDarkMode(form.Handle);
                 DwmApi.ExtendFrame(form.Handle);
 
@@ -127,7 +129,7 @@
             "Extended frame (dark)",
             (form, gradientColor) =>
             {
-                DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_DISABLED);
+                DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_DISABLED);
                 DwmApi.EnableImmersiveDarkMode(form.Handle);
                 DwmApi.ExtendFrame(form.Handle);
 
@@ -149,7 +151,7 @@
             {
                 DwmApi.EnableImmersiveDarkMode(form.Handle);
                 DwmApi.UnextendFrame(form.Handle);
-                DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_BLURBEHIND, gradientColor);
+                DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_ENABLE_BLURBEHIND, gradientColor);
 
                 ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
                     c => c is not Label && c is not Button && c is not ComboBox);
@@ -169,7 +171,7 @@
             {
                 DwmApi.EnableImmersiveDarkMode(form.Handle);
                 DwmApi.UnextendFrame(form.Handle);
-                DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND, gradientColor);
+                DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND, gradientColor);
 
                 ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
                     c => c is not Label && c is not Button && c is not ComboBox);
@@ -188,7 +190,7 @@
             {
                 DwmApi.EnableImmersiveDarkMode(form.Handle);
                 DwmApi.UnextendFrame(form.Handle);
-                DwmApi.SetAccentState(form.Handle, DwmApi.AccentState.ACCENT_ENABLE_TRANSPARENTGRADIENT, gradientColor);
+                DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_ENABLE_TRANSPARENTGRADIENT, gradientColor);
 
                 ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
                     c => c is not Label && c is not Button && c is not ComboBox);
