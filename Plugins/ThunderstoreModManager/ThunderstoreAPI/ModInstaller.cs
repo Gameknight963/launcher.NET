@@ -67,7 +67,7 @@ namespace ThunderstoreModManager.ThunderstoreAPI
             onLog?.Invoke("All done.");
         }
 
-        public static void UninstallMod(GameInfo game, InstalledMod mod, ThunderstoreConfig config)
+        public static void UninstallMod(GameInfo game, InstalledMod mod, ThunderstoreConfig config, bool handleDependencies = true)
         {
             foreach (string file in mod.Files)
             {
@@ -75,10 +75,13 @@ namespace ThunderstoreModManager.ThunderstoreAPI
                 File.Delete(absolute);
                 PluginLogger.WriteLine($"Deleted '{absolute}'", true);
             }
-
+            
             int removed = config.InstalledMods.RemoveAll(x => x.DependencyStringEquals(mod));
             if (removed == 0)
                 PluginLogger.Error($"unable to remove mod '{mod.DependencyString()}' from config", true);
+            if (removed > 1)
+                PluginLogger.Warn($"Somehow managed to find two matches for $'{mod.DependencyString()}' in config. " +
+                    $"This is most definitely a bug");
 
         }
 

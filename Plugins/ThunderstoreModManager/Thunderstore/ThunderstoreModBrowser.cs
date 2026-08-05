@@ -191,7 +191,7 @@ namespace launcherdotnet.Launcher.Forms
             downloadPnl.Visible = true;
             SetDownloadPanelBasedOnContext();
             UseWaitCursor = false;
-            LauncherLogger.WriteLine($"Done fetching info for {slim.Name}");
+            PluginLogger.WriteLine($"Done fetching info for {slim.Name}");
         }
 
         private void UpdateReadme(string readmeContent)
