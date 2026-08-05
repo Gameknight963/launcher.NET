@@ -113,7 +113,7 @@ namespace launcherdotnet.Launcher.Forms
             foreach (Theme theme in Theme.Themes.Values)
             {
                 RadioButton rb = new RadioButton { Text = theme.UserFriendlyName, AutoSize = true };
-                _themeButtons[theme.Name] = rb;
+                _themeButtons[theme.Id] = rb;
                 themeButtonsFlowLayoutPanel.Controls.Add(rb);
             }
 
