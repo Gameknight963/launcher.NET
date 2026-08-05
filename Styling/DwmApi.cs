@@ -113,9 +113,6 @@ namespace launcherdotnet.Styling
                 0x00000000),
                 AnimationId = 0
             };
-
-            LauncherLogger.WriteLine($"SetAccentState: {hwnd}, {accentState}, {gradientColor}");
-
             int size = Marshal.SizeOf(accent);
 
             IntPtr ptr = Marshal.AllocHGlobal(size);
