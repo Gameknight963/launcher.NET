@@ -51,7 +51,7 @@ namespace launcherdotnet.Launcher.Forms
                     Close();
                 }
                 config.ThunderstoreSlug = result;
-                config.Save(game, Plugin.SourceId);
+                config.Save(game, ThunderstoreConfig.SourceId);
             }
             _config = config;
             modsLv.RetrieveVirtualItem += ModsLv_RetrieveVirtualItem;
