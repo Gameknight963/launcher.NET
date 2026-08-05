@@ -1,7 +1,7 @@
 ﻿using launcherdotnet.Windows;
 using System.Runtime.InteropServices;
 
-namespace launcherdotnet.Styling.Win32
+namespace launcherdotnet.Windows
 {
     /// <summary>
     /// Provides access to Desktop Window Manager (DWM) and window composition APIs.
