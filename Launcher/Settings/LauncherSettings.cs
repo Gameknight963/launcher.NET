@@ -25,7 +25,7 @@ namespace launcherdotnet.Launcher.Settings
             Settings = JsonConvert.DeserializeObject<LauncherSettings>(json) ?? new LauncherSettings();
 
             if (Settings.OpenDebugConsole) ConsoleHelper.Show();
-            ThemeManager.SetGlobalTheme(Theme.FromName(Settings.ActiveTheme) ?? 
+            ThemeManager.SetGlobalTheme(Theme.FromId(Settings.ActiveTheme) ?? 
                 LauncherConstants.DefaultTheme, Settings.GradientColor.ToAbgr(), 
                 Settings.VisualStyle);
         }
@@ -36,7 +36,7 @@ namespace launcherdotnet.Launcher.Settings
             Directory.CreateDirectory(Path.GetDirectoryName(_settingsPath)!);
             File.WriteAllText(_settingsPath, json);
             ThemeManager.SetGlobalTheme(
-                Theme.FromName(Settings.ActiveTheme) ?? LauncherConstants.DefaultTheme, 
+                Theme.FromId(Settings.ActiveTheme) ?? LauncherConstants.DefaultTheme, 
                 Settings.GradientColor.ToAbgr(),
                 Settings.VisualStyle);
             if (Settings.RunOnStartup) StartupHelper.EnableRunOnStartup();
