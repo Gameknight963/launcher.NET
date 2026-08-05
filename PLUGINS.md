@@ -1,3 +1,5 @@
+## wip: update docs (current version: v1.2.0)
+
 **Changes in v1.0.0 (previous version v0.8.1):**
 
 - **IGameInstaller.cs:**
