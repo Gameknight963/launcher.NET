@@ -9,13 +9,16 @@ namespace launcherdotnet.Launcher.Forms
 {
     public partial class GameModManager : ThemeableForm
     {
-        readonly GameInfo _game;
-        readonly IModSource _source;
+        // we WILL assign to these, the compiler is just stupid
+        readonly GameInfo _game = null!;
+        readonly IModSource _source = null!;
 
         public GameModManager(GameInfo game)
         {
             if (game.ModManagerId == null) throw new ArgumentException("Cannot open this form on a game that has no ModManagerId.");
-            _source = PluginRegistry.ModSources.First(x => x.Id == game.ModManagerId);
+            IModSource? source = PluginRegistry.ModSources.FirstOrDefault(x => x.Id == game.ModManagerId) 
+                ?? throw new ArgumentException($"Could not find the mod provider '{game.ModManagerId}'.");
+            _source = source;
 
             InitializeComponent();
             Icon = LauncherConstants.AppIcon;

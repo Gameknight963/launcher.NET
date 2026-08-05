@@ -362,8 +362,17 @@ namespace launcherdotnet.Launcher.Forms
 
         private void installModsButton_Click(object sender, EventArgs e)
         {
-            using GameModManager manager = new(GetSelectedGame()!);
-            manager.ShowDialog();
+            GameInfo game = GetSelectedGame()!;
+            try
+            {
+                using GameModManager manager = new(game);
+                manager.ShowDialog();
+            }
+            catch (ArgumentException)
+            {
+                CoolMessageBox.Show($"Could not find the mod provider '{game.ModManagerId}.' Is it installed?",
+                    "Invalid Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
