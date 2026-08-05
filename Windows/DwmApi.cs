@@ -152,6 +152,34 @@ namespace launcherdotnet.Windows
         }
 
         /// <summary>
+        /// Attempts to set a DWM window attribute value and returns the resulting HRESULT.
+        /// </summary>
+        /// <param name="hwnd">The handle of the window.</param>
+        /// <param name="attribute">The DWM attribute to modify.</param>
+        /// <param name="value">The value to assign to the attribute.</param>
+        /// <returns>
+        /// The HRESULT returned by DWM. A value of <c>0</c> indicates success;
+        /// otherwise, the result represents the failure code returned by DWM.
+        /// </returns>
+        /// <remarks>
+        /// Unlike <see cref="DwmSetWindowAttribute(nint, DwmWindowAttribute, int)"/>,
+        /// this method does not throw an exception when the operation fails.
+        /// This allows callers to handle unsupported attributes or other native failures
+        /// manually.
+        /// </remarks>
+        public static unsafe int TryDwmSetWindowAttribute(
+            nint hwnd,
+            DwmWindowAttribute attribute,
+            int value)
+        {
+            return Native.DwmSetWindowAttribute(
+                hwnd,
+                (int)attribute,
+                &value,
+                sizeof(int));
+        }
+
+        /// <summary>
         /// Sets a DWM window attribute value.
         /// </summary>
         /// <param name="hwnd">The handle of the window.</param>
@@ -160,10 +188,19 @@ namespace launcherdotnet.Windows
         /// <exception cref="ExternalException">
         /// Thrown if DWM fails to set the attribute.
         /// </exception>
-        public static unsafe void DwmSetWindowAttribute(nint hwnd, DwmWindowAttribute attribute, int value)
+        public static unsafe void DwmSetWindowAttribute(
+            nint hwnd,
+            DwmWindowAttribute attribute,
+            int value)
         {
             int val = value;
-            Marshal.ThrowExceptionForHR(Native.DwmSetWindowAttribute(hwnd, (int)attribute, &val, sizeof(int)));
+            int result = Native.DwmSetWindowAttribute(
+                hwnd,
+                (int)attribute,
+                &val,
+                sizeof(int));
+
+            Marshal.ThrowExceptionForHR(result);
         }
 
         public class Support
