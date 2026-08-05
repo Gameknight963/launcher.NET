@@ -3,6 +3,7 @@ using launcherdotnet.PluginAPI;
 using launcherdotnet.Launcher;
 using launcherdotnet.Launcher.Forms;
 using launcherdotnet;
+using ThunderstoreModManager.ThunderstoreAPI;
 
 [assembly: LauncherPlugin(typeof(Plugin),
     "Thunderstore Mod Manager",
@@ -40,7 +41,10 @@ namespace ThunderstoreModManager
 
         public bool UninstallMod(GameInfo game, InstalledMod mod)
         {
-            throw new NotImplementedException();
+            ThunderstoreConfig config = ThunderstoreConfig.Load(game, SourceId);
+            ModInstaller.UninstallMod(game, mod, config);
+            config.Save(game, SourceId);
+            return true;
         }
     }
 }

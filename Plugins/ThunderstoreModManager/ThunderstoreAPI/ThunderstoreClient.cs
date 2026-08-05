@@ -22,7 +22,7 @@ namespace ThunderstoreModManager.ThunderstoreAPI
         public static async Task<ThunderstorePackage?> GetPackageAsync(string owner, string name)
         {
             string url = $"{BaseUrl}/api/experimental/package/{owner}/{name}/";
-            LauncherLogger.WriteLine($"Fetching package: {url}");
+            PluginLogger.WriteLine($"Fetching package: {url}");
             using Stream stream = await _http.GetStreamAsync(url);
             using StreamReader streamReader = new(stream);
             using JsonTextReader jsonReader = new(streamReader);
@@ -34,7 +34,7 @@ namespace ThunderstoreModManager.ThunderstoreAPI
         public static async Task<ThunderstoreVersion?> GetPackageVersionAsync(string owner, string name, string version)
         {
             string url = $"{BaseUrl}/api/experimental/package/{owner}/{name}/{version}/";
-            LauncherLogger.WriteLine($"Fetching package version: {url}");
+            PluginLogger.WriteLine($"Fetching package version: {url}");
             using Stream stream = await _http.GetStreamAsync(url);
             using StreamReader streamReader = new(stream);
             using JsonTextReader jsonReader = new(streamReader);
@@ -45,7 +45,7 @@ namespace ThunderstoreModManager.ThunderstoreAPI
         public static async Task<List<ThunderstoreVersion>> GetPackageVersionsAsync(string communitySlug, string uuid4)
         {
             string url = $"{BaseUrl}/c/{communitySlug}/api/v1/package/{uuid4}/";
-            LauncherLogger.WriteLine($"Fetching versions: {url}");
+            PluginLogger.WriteLine($"Fetching versions: {url}");
 
             using Stream stream = await _http.GetStreamAsync(url);
             using StreamReader streamReader = new(stream);
@@ -75,19 +75,19 @@ namespace ThunderstoreModManager.ThunderstoreAPI
         public static async Task<List<string>> GetPackageListIndexAsync(string communitySlug)
         {
             string url = $"{BaseUrl}/c/{communitySlug}/api/v1/package-listing-index/";
-            LauncherLogger.WriteLine($"Fetching package list index: {url}");
+            PluginLogger.WriteLine($"Fetching package list index: {url}");
             byte[] compressed = await _http.GetByteArrayAsync(url);
-            LauncherLogger.WriteLine("Decompressing...");
+            PluginLogger.WriteLine("Decompressing...");
             string json = DecompressGzip(compressed);
-            LauncherLogger.WriteLine("Deserializing...");
+            PluginLogger.WriteLine("Deserializing...");
             List<string>? chunkUrls = JsonConvert.DeserializeObject<List<string>>(json);
-            LauncherLogger.WriteLine($"Got {chunkUrls?.Count ?? 0} chunk URLs");
+            PluginLogger.WriteLine($"Got {chunkUrls?.Count ?? 0} chunk URLs");
             return chunkUrls ?? [];
         }
 
         public static async Task<List<ThunderstorePackageSlim>> GetPackageListChunkAsync(string chunkUrl)
         {
-            LauncherLogger.WriteLine($"Fetching chunk: {chunkUrl}");
+            PluginLogger.WriteLine($"Fetching chunk: {chunkUrl}");
 
             using Stream compressed = await _http.GetStreamAsync(chunkUrl);
             using GZipStream gzipStream = new(compressed, CompressionMode.Decompress);
@@ -96,7 +96,7 @@ namespace ThunderstoreModManager.ThunderstoreAPI
             JsonSerializer serializer = new();
             serializer.Converters.Add(new ThunderstorePackageSlimConverter());
             List<ThunderstorePackageSlim>? packages = serializer.Deserialize<List<ThunderstorePackageSlim>>(jsonReader);
-            LauncherLogger.WriteLine($"Got {packages?.Count ?? 0} packages from chunk");
+            PluginLogger.WriteLine($"Got {packages?.Count ?? 0} packages from chunk");
             return packages ?? [];
         }
 
@@ -122,12 +122,12 @@ namespace ThunderstoreModManager.ThunderstoreAPI
 
         public static async Task<bool> DoesThunderstoreCommunityExist(string communitySlug)
         {
-            LauncherLogger.WriteLine($"Checking if {communitySlug} exists on Thunderstore...");
+            PluginLogger.WriteLine($"Checking if {communitySlug} exists on Thunderstore...");
             string url = $"https://thunderstore.io/c/{communitySlug}/";
             HttpRequestMessage request = new(HttpMethod.Head, url);
             HttpResponseMessage response = await LauncherHttp.Client.SendAsync(request);
             bool found = response.IsSuccessStatusCode;
-            LauncherLogger.WriteLine($"{communitySlug} {(found ? "does" : "does not")} have a Thunderstore community ({(int)response.StatusCode})");
+            PluginLogger.WriteLine($"{communitySlug} {(found ? "does" : "does not")} have a Thunderstore community ({(int)response.StatusCode})");
             return found;
         }
     }

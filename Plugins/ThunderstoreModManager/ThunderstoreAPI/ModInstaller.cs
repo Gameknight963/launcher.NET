@@ -3,6 +3,7 @@ using launcherdotnet.Networking;
 using launcherdotnet.PluginAPI;
 using Newtonsoft.Json.Linq;
 using System.IO.Compression;
+using ThunderstoreModManager.Extensions;
 
 namespace ThunderstoreModManager.ThunderstoreAPI
 {
@@ -64,6 +65,21 @@ namespace ThunderstoreModManager.ThunderstoreAPI
             }
             config.Save(game, Plugin.SourceId);
             onLog?.Invoke("All done.");
+        }
+
+        public static void UninstallMod(GameInfo game, InstalledMod mod, ThunderstoreConfig config)
+        {
+            foreach (string file in mod.Files)
+            {
+                string absolute = Path.Combine(game.AbsoluteRootDirectory, file);
+                File.Delete(absolute);
+                PluginLogger.WriteLine($"Deleted '{absolute}'", true);
+            }
+
+            int removed = config.InstalledMods.RemoveAll(x => x.DependencyStringEquals(mod));
+            if (removed == 0)
+                PluginLogger.Error($"unable to remove mod '{mod.DependencyString()}' from config", true);
+
         }
 
         private static async Task<InstalledMod> InstallPackageAsync(

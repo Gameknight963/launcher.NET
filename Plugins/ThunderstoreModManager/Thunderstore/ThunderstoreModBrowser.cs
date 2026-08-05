@@ -55,7 +55,7 @@ namespace launcherdotnet.Launcher.Forms
             }
             _config = config;
             modsLv.RetrieveVirtualItem += ModsLv_RetrieveVirtualItem;
-            UpdateModsLv(game);
+            UpdateModsLv();
             
             FormClosed += (s, e) =>
             {
@@ -74,7 +74,7 @@ namespace launcherdotnet.Launcher.Forms
                     byte[] data = await LauncherHttp.Client.GetByteArrayAsync(args.Src);
                     using MemoryStream ms = new(data);
                     SvgDocument svgDoc = SvgDocument.Open<SvgDocument>(ms);
-                    Bitmap svgImg = new((int)svgDoc.Width, (int)svgDoc.Height, PixelFormat.Format32bppArgb);
+                    Bitmap svgImg = new((int)(float)svgDoc.Width, (int)(float)svgDoc.Height, PixelFormat.Format32bppArgb);
                     svgDoc.Draw(svgImg);
                     args.Callback(svgImg);
                 }
@@ -107,7 +107,7 @@ namespace launcherdotnet.Launcher.Forms
             if (_currentChunk >= _chunkUrls.Count) return;
             _isLoading = true;
             int topIndex = modsLv.TopItem?.Index ?? 0;
-            PluginLogger.Log($"Fetching chunk {_currentChunk}");
+            PluginLogger.WriteLine($"Fetching chunk {_currentChunk}");
             List<ThunderstorePackageSlim> packages = await ThunderstoreClient.GetPackageListChunkAsync(_chunkUrls[_currentChunk]);
             _currentChunk++;
             _packages.AddRange(packages);
@@ -117,7 +117,7 @@ namespace launcherdotnet.Launcher.Forms
             _isLoading = false;
         }
 
-        async void UpdateModsLv(GameInfo game)
+        async void UpdateModsLv()
         {
             if (_config.ThunderstoreSlug is not string slug) return;
             downloadPnl.Visible = false;
@@ -130,7 +130,7 @@ namespace launcherdotnet.Launcher.Forms
             UseWaitCursor = false;
             downloadPnl.Visible = true;
             modsLv.Items[0].Selected = true;
-            PluginLogger.Log("Done with initial modlist fetch");
+            PluginLogger.WriteLine("Done with initial modlist fetch");
         }
 
         private async void modsLv_SelectedIndexChanged(object sender, EventArgs e)
