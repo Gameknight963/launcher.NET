@@ -100,11 +100,12 @@ namespace launcherdotnet.Styling
         public void ApplyTheme(Theme theme, int gradientColor, VisualStyle style)
         {
             if (IsDesignTime) return;
-            ActiveTheme = theme;
+            ActiveTheme.Unapply(this);
             UseShadowText = theme.UseShadowText;
             ApplyControlTheme(this, theme);
             ThemeManager.SetVisualStyleRecursive(this, style);
             theme.Apply(this, gradientColor);
+            ActiveTheme = theme;
             OnThemeWasApplied();
             Refresh();
         }

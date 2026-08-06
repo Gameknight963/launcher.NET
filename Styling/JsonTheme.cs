@@ -30,6 +30,7 @@ namespace launcherdotnet.Styling
                 Id,
                 UserFriendlyName,
                 ApplyTheme,
+                UnapplyTheme,
                 BaseStyle,
                 UseShadowText,
                 UseOwnerDrawHeaders
@@ -45,6 +46,13 @@ namespace launcherdotnet.Styling
             DwmApi.SetAccentState(form.Handle, AccentState, gradientColor);
             DwmApi.SetImmersiveDarkMode(form.Handle, Effects.HasFlag(WindowEffects.DarkMode));
             DwmApi.ExtendFrame(form.Handle, Effects.HasFlag(WindowEffects.ExtendFrame));
+        }
+
+        static void UnapplyTheme(Form form)
+        {
+            DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_DISABLED, 0);
+            DwmApi.SetImmersiveDarkMode(form.Handle, false);
+            DwmApi.UnextendFrame(form.Handle);
         }
 
         public List<ThemeRule> Rules = new();

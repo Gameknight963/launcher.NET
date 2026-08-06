@@ -9,10 +9,25 @@ namespace launcherdotnet.Styling
     {
         public delegate void ApplyThemeDelegate(Form form, int gradientColor);
 
+        public delegate void UnapplyThemeDelegate(Form form);
+
         /// <summary>
         /// The method used to apply this theme to a form.
         /// </summary>
+        /// <remarks>
+        /// You are expected to overwrite color changes from the previous theme.
+        /// </remarks>
         public readonly ApplyThemeDelegate Apply;
+
+        /// <summary>
+        /// Reverts any effects applied by this theme that would not be 
+        /// overwritten by simply applying another theme.
+        /// </summary>
+        /// <remarks>
+        /// Color changes do not need to be reverted here as they will be 
+        /// overwritten by the incoming theme.
+        /// </remarks>
+        public readonly UnapplyThemeDelegate Unapply;
 
         /// <summary>
         /// The default control style used by this theme.
@@ -67,6 +82,7 @@ namespace launcherdotnet.Styling
             string id,
             string userFriendlyName,
             ApplyThemeDelegate apply,
+            UnapplyThemeDelegate unapply,
             ControlStyle style,
             bool useShadowText = true,
             bool useOwnerDrawHeaders = true,
@@ -75,6 +91,7 @@ namespace launcherdotnet.Styling
             Id = id;
             UserFriendlyName = userFriendlyName;
             Apply = apply;
+            Unapply = unapply;
             MainStyle = style;
             UseShadowText = useShadowText;
             UseOwnerDrawHeaders = useOwnerDrawHeaders;
@@ -114,12 +131,8 @@ namespace launcherdotnet.Styling
         public static readonly Theme Light = new(
             "launcherdotnet.light_theme",
             "Light",
-            (form, gradientColor) =>
+            static (Form form, int gradientColor) =>
             {
-                DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_DISABLED);
-                DwmApi.UnextendFrame(form.Handle);
-                DwmApi.DisableImmersiveDarkMode(form.Handle);
-
                 ThemeManager.SetColorRecursive(form, new ControlStyle(SystemColors.Control, SystemColors.ControlText),
                     c => c is not ListView && c is not Button && c is not TextBox && c is not CheckedListBox && c is not ComboBox);
                 ThemeManager.SetColorRecursive(form, new ControlStyle(SystemColors.Window, SystemColors.ControlText),
@@ -129,6 +142,7 @@ namespace launcherdotnet.Styling
                 ThemeManager.SetColorRecursive(form, new ControlStyle(SystemColors.Window, SystemColors.ControlText),
                     c => c is CheckedListBox);
             },
+            (Form form) => DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_DISABLED),
             new ControlStyle(SystemColors.Control, SystemColors.ControlText),
             useShadowText: false,
             useOwnerDrawHeaders: false,
@@ -142,18 +156,18 @@ namespace launcherdotnet.Styling
         public static readonly Theme Dark = new(
             "launcherdotnet.dark_theme",
             "Dark",
-            (form, gradientColor) =>
+            static (form, gradientColor) =>
             {
-                DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_DISABLED);
-                DwmApi.UnextendFrame(form.Handle);
-                DwmApi.EnableImmersiveDarkMode(form.Handle);
-
                 ThemeManager.SetColorRecursive(form, new ControlStyle(DarkMainColor, Color.White),
                     c => c is not Label && c is not Button && c is not ComboBox);
                 ThemeManager.SetColorRecursive(form, new ControlStyle(DarkMainColor, Color.White),
                     c => c is Label);
                 ThemeManager.SetColorRecursive(form, new ButtonStyle(DarkButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
                     c => c is Button);
+            },
+            static (Form form) =>
+            {
+                DwmApi.DisableImmersiveDarkMode(form.Handle);
             },
             new ControlStyle(DarkMainColor, Color.White),
             useShadowText: false,
@@ -168,11 +182,12 @@ namespace launcherdotnet.Styling
         public static readonly Theme System = new(
             "launcherdotnet.system_theme",
             "System",
-            (form, gradientColor) =>
+            static (form, gradientColor) =>
             {
                 Theme real = ThemeManager.IsSystemLightTheme() ? Light : Dark;
                 real.Apply(form, gradientColor);
             },
+            static _ => { },
             ThemeManager.IsSystemLightTheme() ? 
                 new ControlStyle(SystemColors.Control, SystemColors.ControlText) : 
                 new ControlStyle(DarkMainColor, Color.White),
