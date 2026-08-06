@@ -173,7 +173,9 @@ namespace launcherdotnet.Styling
                 Theme real = ThemeManager.IsSystemLightTheme() ? Light : Dark;
                 real.Apply(form, gradientColor);
             },
-            new ControlStyle(Color.Empty, Color.Empty),
+            ThemeManager.IsSystemLightTheme() ? 
+                new ControlStyle(SystemColors.Control, SystemColors.ControlText) : 
+                new ControlStyle(DarkMainColor, Color.White),
             useShadowText: false,
             useOwnerDrawHeaders: !ThemeManager.IsSystemLightTheme(),
             register: true
