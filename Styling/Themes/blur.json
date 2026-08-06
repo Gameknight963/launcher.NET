@@ -1,0 +1,47 @@
+{
+  "Id": "launcherdotnet.blur_theme",
+  "UserFriendlyName": "Blur",
+  "BaseStyle": {
+    "BackColor": "#000000",
+    "ForeColor": "#FFFFFF",
+    "BorderStyle": null
+  },
+  "UseShadowText": true,
+  "UseOwnerDrawHeaders": true,
+  "AccentState": "ACCENT_ENABLE_BLURBEHIND",
+  "Effects": "DarkMode",
+  "Rules": [
+    {
+      "Exclude": [
+        "System.Windows.Forms.Label, System.Windows.Forms",
+        "System.Windows.Forms.Button, System.Windows.Forms",
+        "System.Windows.Forms.ComboBox, System.Windows.Forms"
+      ],
+      "Style": {
+        "BackColor": "#000000",
+        "ForeColor": "#FFFFFF"
+      }
+    },
+    {
+      "Include": [
+        "System.Windows.Forms.Label, System.Windows.Forms"
+      ],
+      "Style": {
+        "BackColor": "#000000",
+        "ForeColor": "#FFFFFF"
+      }
+    },
+    {
+      "Include": [
+        "System.Windows.Forms.Button, System.Windows.Forms"
+      ],
+      "Style": {
+        "$type": "launcherdotnet.Styling.ButtonStyle, launcherdotnet",
+        "BackColor": "#202020",
+        "ForeColor": "#FFFFFF",
+        "FlatStyle": "Flat",
+        "BorderColor": "#333333"
+      }
+    }
+  ]
+}

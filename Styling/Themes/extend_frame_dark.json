@@ -1,0 +1,47 @@
+{
+  "Id": "launcherdotnet.extendframe_dark_theme",
+  "UserFriendlyName": "Extended frame (dark)",
+  "BaseStyle": {
+    "BackColor": "#000000",
+    "ForeColor": "#FFFFFF",
+    "BorderStyle": null
+  },
+  "UseShadowText": true,
+  "UseOwnerDrawHeaders": true,
+  "AccentState": "ACCENT_DISABLED",
+  "Effects": "DarkMode, ExtendFrame",
+  "Rules": [
+    {
+      "Exclude": [
+        "System.Windows.Forms.Label, System.Windows.Forms",
+        "System.Windows.Forms.Button, System.Windows.Forms",
+        "System.Windows.Forms.ComboBox, System.Windows.Forms"
+      ],
+      "Style": {
+        "BackColor": "#000000",
+        "ForeColor": "#FFFFFF"
+      }
+    },
+    {
+      "Include": [
+        "System.Windows.Forms.Label, System.Windows.Forms"
+      ],
+      "Style": {
+        "BackColor": "#000000",
+        "ForeColor": "#FFFFFF"
+      }
+    },
+    {
+      "Include": [
+        "System.Windows.Forms.Button, System.Windows.Forms"
+      ],
+      "Style": {
+        "$type": "launcherdotnet.Styling.ButtonStyle, launcherdotnet",
+        "BackColor": "#000000",
+        "ForeColor": "#FFFFFF",
+        "FlatStyle": "Flat",
+        "BorderColor": "#333333"
+      }
+    }
+  ]
+}
