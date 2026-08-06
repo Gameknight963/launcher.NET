@@ -21,6 +21,10 @@
   <ItemGroup>
 	  <EmbeddedResource Include="icon.ico" />
   </ItemGroup>
+
+  <Target Name="CopyThemesAfterBuild" AfterTargets="Build">
+    <Exec Command='xcopy "$(ProjectDir)Styling\Themes\*" "$(TargetDir)Themes\" /E /I /Y' />
+  </Target>
 	
   <ItemGroup>
     <PackageReference Include="Cyotek.Windows.Forms.ColorPicker" Version="2.0.0-beta.7" />

@@ -181,123 +181,123 @@ namespace launcherdotnet.Styling
             register: true
         );
 
-        /// <summary>
-        /// Represents a theme that extends the DWM frame into the client area.
-        /// </summary>
-        public static readonly Theme ExtendFrame = new(
-            "launcherdotnet.extendframe_theme",
-            "Extended frame",
-            (form, gradientColor) =>
-            {
-                DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_DISABLED);
-                DwmApi.DisableImmersiveDarkMode(form.Handle);
-                DwmApi.ExtendFrame(form.Handle);
+        ///// <summary>
+        ///// Represents a theme that extends the DWM frame into the client area.
+        ///// </summary>
+        //public static readonly Theme ExtendFrame = new(
+        //    "launcherdotnet.extendframe_theme",
+        //    "Extended frame",
+        //    (form, gradientColor) =>
+        //    {
+        //        DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_DISABLED);
+        //        DwmApi.DisableImmersiveDarkMode(form.Handle);
+        //        DwmApi.ExtendFrame(form.Handle);
 
-                ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                    c => c is not Label && c is not Button && c is not ComboBox);
-                ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                    c => c is Label);
-                ThemeManager.SetColorRecursive(form, new ButtonStyle(Color.Black, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
-                    c => c is Button);
-            },
-            new ControlStyle(Color.Black, Color.White),
-            register: true
-        );
+        //        ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
+        //            c => c is not Label && c is not Button && c is not ComboBox);
+        //        ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
+        //            c => c is Label);
+        //        ThemeManager.SetColorRecursive(form, new ButtonStyle(Color.Black, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
+        //            c => c is Button);
+        //    },
+        //    new ControlStyle(Color.Black, Color.White),
+        //    register: true
+        //);
 
-        /// <summary>
-        /// Represents a dark variant of the extended frame theme.
-        /// Extends the DWM frame into the client area and enables immersive dark mode.
-        /// </summary>
-        public static readonly Theme ExtendFrameDark = new(
-            "launcherdotnet.extendframe_dark_theme",
-            "Extended frame (dark)",
-            (form, gradientColor) =>
-            {
-                DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_DISABLED);
-                DwmApi.EnableImmersiveDarkMode(form.Handle);
-                DwmApi.ExtendFrame(form.Handle);
+        ///// <summary>
+        ///// Represents a dark variant of the extended frame theme.
+        ///// Extends the DWM frame into the client area and enables immersive dark mode.
+        ///// </summary>
+        //public static readonly Theme ExtendFrameDark = new(
+        //    "launcherdotnet.extendframe_dark_theme",
+        //    "Extended frame (dark)",
+        //    (form, gradientColor) =>
+        //    {
+        //        DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_DISABLED);
+        //        DwmApi.EnableImmersiveDarkMode(form.Handle);
+        //        DwmApi.ExtendFrame(form.Handle);
 
-                ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                    c => c is not Label && c is not Button && c is not ComboBox);
-                ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                    c => c is Label);
-                ThemeManager.SetColorRecursive(form, new ButtonStyle(Color.Black, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
-                    c => c is Button);
+        //        ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
+        //            c => c is not Label && c is not Button && c is not ComboBox);
+        //        ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
+        //            c => c is Label);
+        //        ThemeManager.SetColorRecursive(form, new ButtonStyle(Color.Black, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
+        //            c => c is Button);
 
-            },
-            new ControlStyle(Color.Black, Color.White),
-            register: true
-        );
+        //    },
+        //    new ControlStyle(Color.Black, Color.White),
+        //    register: true
+        //);
 
-        /// <summary>
-        /// Represents a theme that applies the Windows blur-behind composition effect.
-        /// </summary>
-        public static readonly Theme Blur = new(
-            "launcherdotnet.blur_theme",
-            "Blur",
-            (form, gradientColor) =>
-            {
-                DwmApi.EnableImmersiveDarkMode(form.Handle);
-                DwmApi.UnextendFrame(form.Handle);
-                DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_ENABLE_BLURBEHIND, gradientColor);
+        ///// <summary>
+        ///// Represents a theme that applies the Windows blur-behind composition effect.
+        ///// </summary>
+        //public static readonly Theme Blur = new(
+        //    "launcherdotnet.blur_theme",
+        //    "Blur",
+        //    (form, gradientColor) =>
+        //    {
+        //        DwmApi.EnableImmersiveDarkMode(form.Handle);
+        //        DwmApi.UnextendFrame(form.Handle);
+        //        DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_ENABLE_BLURBEHIND, gradientColor);
 
-                ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                    c => c is not Label && c is not Button && c is not ComboBox);
-                ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                    c => c is Label);
-                ThemeManager.SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
-                    c => c is Button);
+        //        ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
+        //            c => c is not Label && c is not Button && c is not ComboBox);
+        //        ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
+        //            c => c is Label);
+        //        ThemeManager.SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
+        //            c => c is Button);
 
-            },
-            new ControlStyle(Color.Black, Color.White),
-            register: true
-        );
+        //    },
+        //    new ControlStyle(Color.Black, Color.White),
+        //    register: true
+        //);
 
-        /// <summary>
-        /// Represents a theme that applies the Windows acrylic blur composition effect.
-        /// </summary>
-        public static readonly Theme Acrylic = new(
-            "launcherdotnet.acrylic_theme",
-            "Acrylic",
-            (form, gradientColor) =>
-            {
-                DwmApi.EnableImmersiveDarkMode(form.Handle);
-                DwmApi.UnextendFrame(form.Handle);
-                DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND, gradientColor);
+        ///// <summary>
+        ///// Represents a theme that applies the Windows acrylic blur composition effect.
+        ///// </summary>
+        //public static readonly Theme Acrylic = new(
+        //    "launcherdotnet.acrylic_theme",
+        //    "Acrylic",
+        //    (form, gradientColor) =>
+        //    {
+        //        DwmApi.EnableImmersiveDarkMode(form.Handle);
+        //        DwmApi.UnextendFrame(form.Handle);
+        //        DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND, gradientColor);
 
-                ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                    c => c is not Label && c is not Button && c is not ComboBox);
-                ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                    c => c is Label);
-                ThemeManager.SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
-                    c => c is Button);
-            },
-            new ControlStyle(Color.Black, Color.White),
-            register: true
-        );
+        //        ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
+        //            c => c is not Label && c is not Button && c is not ComboBox);
+        //        ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
+        //            c => c is Label);
+        //        ThemeManager.SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
+        //            c => c is Button);
+        //    },
+        //    new ControlStyle(Color.Black, Color.White),
+        //    register: true
+        //);
 
-        /// <summary>
-        /// Represents a theme that applies a transparent gradient composition effect.
-        /// </summary>
-        public static readonly Theme TransparentGradient = new(
-            "launcherdotnet.transparent_gradient_theme",
-            "Transparent gradient",
-            (form, gradientColor) =>
-            {
-                DwmApi.EnableImmersiveDarkMode(form.Handle);
-                DwmApi.UnextendFrame(form.Handle);
-                DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_ENABLE_TRANSPARENTGRADIENT, gradientColor);
+        ///// <summary>
+        ///// Represents a theme that applies a transparent gradient composition effect.
+        ///// </summary>
+        //public static readonly Theme TransparentGradient = new(
+        //    "launcherdotnet.transparent_gradient_theme",
+        //    "Transparent gradient",
+        //    (form, gradientColor) =>
+        //    {
+        //        DwmApi.EnableImmersiveDarkMode(form.Handle);
+        //        DwmApi.UnextendFrame(form.Handle);
+        //        DwmApi.SetAccentState(form.Handle, AccentState.ACCENT_ENABLE_TRANSPARENTGRADIENT, gradientColor);
 
-                ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                    c => c is not Label && c is not Button && c is not ComboBox);
-                ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
-                    c => c is Label);
-                ThemeManager.SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
-                    c => c is Button);
+        //        ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
+        //            c => c is not Label && c is not Button && c is not ComboBox);
+        //        ThemeManager.SetColorRecursive(form, new ControlStyle(Color.Black, Color.White),
+        //            c => c is Label);
+        //        ThemeManager.SetColorRecursive(form, new ButtonStyle(AcrylicButtonColor, Color.White, FlatStyle.Flat, null, DarkButtonBorder),
+        //            c => c is Button);
 
-            },
-            new ControlStyle(Color.Black, Color.White),
-            register: true
-        );
+        //    },
+        //    new ControlStyle(Color.Black, Color.White),
+        //    register: true
+        //);
     }
 }

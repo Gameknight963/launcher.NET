@@ -7,6 +7,11 @@ namespace launcherdotnet.Styling
 {
     public class JsonTheme : IThemeProvider
     {
+        static readonly JsonSerializerSettings _settings = new()
+        {
+            TypeNameHandling = TypeNameHandling.Auto
+        };
+
         public string? Id;
         public string? UserFriendlyName;
         public ControlStyle? BaseStyle;
@@ -64,16 +69,16 @@ namespace launcherdotnet.Styling
         }
 
 
-        public static JsonTheme Load(string path)
+        internal static JsonTheme Load(string path)
         {
             string json = File.ReadAllText(path);
 
-            JsonTheme? theme = JsonConvert.DeserializeObject<JsonTheme>(json)
+            JsonTheme? theme = JsonConvert.DeserializeObject<JsonTheme>(json, _settings)
                 ?? throw new InvalidDataException("Failed to deserialize theme.");
             return theme;
         }
 
-        public static IEnumerable<JsonTheme> LoadAll(string folderPath)
+        internal static IEnumerable<JsonTheme> LoadAll(string folderPath)
         {
             return Directory.GetFiles(folderPath).Select(Load);
         }
@@ -84,7 +89,7 @@ namespace launcherdotnet.Styling
             foreach (JsonTheme theme in LoadAll(LauncherConstants.ThemesDir))
             {
                 theme.GetTheme().Register();
-                LauncherLogger.WriteLine($"Registered {theme.Id}");
+                LauncherLogger.WriteLine($"Registered {theme.Id}", true);
             }
         }
     }
