@@ -36,7 +36,7 @@
         "System.Windows.Forms.Button, System.Windows.Forms"
       ],
       "Style": {
-        "$type": "launcherdotnet.Styling.ButtonStyle, launcherdotnet",
+        "Type": "Button",
         "BackColor": "#202020",
         "ForeColor": "#FFFFFF",
         "FlatStyle": "Flat",

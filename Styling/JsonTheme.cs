@@ -1,5 +1,4 @@
-﻿using ColorCode.Styling;
-using launcherdotnet.Launcher.Settings;
+﻿using launcherdotnet.Launcher.Settings;
 using launcherdotnet.Windows;
 using Newtonsoft.Json;
 
@@ -9,7 +8,7 @@ namespace launcherdotnet.Styling
     {
         static readonly JsonSerializerSettings _settings = new()
         {
-            TypeNameHandling = TypeNameHandling.Auto
+            Converters = { new StyleConverter() }
         };
 
         public string? Id;
@@ -52,35 +51,42 @@ namespace launcherdotnet.Styling
 
         public class ThemeRule
         {
-            public List<Type?> Include = new();
-            public List<Type?> Exclude = new();
+            public List<string> Include = new();
+            public List<string> Exclude = new();
             public required ControlStyle Style;
 
             public bool Matches(Control control)
             {
-                if (Exclude.Any(x => x?.IsInstanceOfType(control) == true))
+                if (Exclude.Any(t => IsMatch(control, t))) return false;
+                if (Include.Count == 0) return true;
+                return Include.Any(t => IsMatch(control, t));
+            }
+
+            static bool IsMatch(Control control, string typeName)
+            {
+                Type? resolved = Type.GetType(typeName);
+                if (resolved == null)
+                {
+                    LauncherLogger.Warn($"Theme references nonexistant type '{typeName}'");
                     return false;
-
-                if (Include.Count == 0)
-                    return true;
-
-                return Include.Any(x => x?.IsInstanceOfType(control) == true);
+                }
+                return resolved.IsInstanceOfType(control);
             }
         }
 
-
-        internal static JsonTheme Load(string path)
+        public static JsonTheme? Load(string path)
         {
             string json = File.ReadAllText(path);
 
-            JsonTheme? theme = JsonConvert.DeserializeObject<JsonTheme>(json, _settings)
-                ?? throw new InvalidDataException("Failed to deserialize theme.");
+            JsonTheme? theme = JsonConvert.DeserializeObject<JsonTheme>(json, _settings);
+            if (theme == null)
+                LauncherLogger.Error($"Could not deserialize theme '{path}'");
             return theme;
         }
 
         internal static IEnumerable<JsonTheme> LoadAll(string folderPath)
         {
-            return Directory.GetFiles(folderPath).Select(Load);
+            return Directory.GetFiles(folderPath).Select(Load).OfType<JsonTheme>();
         }
 
         internal static void RegisterAll()
