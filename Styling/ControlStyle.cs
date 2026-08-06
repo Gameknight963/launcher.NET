@@ -1,10 +1,14 @@
-﻿namespace launcherdotnet.Styling
+﻿using System.Text.Json.Serialization;
+
+namespace launcherdotnet.Styling
 {
     public class ControlStyle
     {
         public Color BackColor { get; set; }
         public Color ForeColor { get; set; }
         public BorderStyle? BorderStyle { get; set; }
+
+        [JsonIgnore] // can't serialize
         public Font? Font { get; set; }
 
         public ControlStyle(
