@@ -8,7 +8,7 @@ namespace launcherdotnet.Styling
         public Color ForeColor { get; set; }
         public BorderStyle? BorderStyle { get; set; }
 
-        [JsonIgnore] // can't serialize
+        [JsonIgnore]
         public Font? Font { get; set; }
 
         public ControlStyle(

@@ -1,6 +1,7 @@
 using launcherdotnet.Launcher;
 using launcherdotnet.Launcher.Forms;
 using launcherdotnet.Launcher.Settings;
+using launcherdotnet.Styling;
 
 namespace launcherdotnet
 {
@@ -15,6 +16,7 @@ namespace launcherdotnet
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
+            JsonTheme.RegisterAll();
             LauncherSettings.Load();
             LauncherLogger.WriteLine("Hello world!", true);
             LauncherLogger.WriteLine("Vesbose logging is enabled.");

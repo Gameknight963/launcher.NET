@@ -9,6 +9,8 @@ namespace launcherdotnet.Launcher.Settings
         public static readonly string BaseDir = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory);
         public static readonly string TempDir = Path.Combine(BaseDir, "temp");
         public static readonly string GamesDir = Path.Combine(BaseDir, "games");
+        public static readonly string DataDir = Path.Combine(BaseDir, "data");
+        public static readonly string ThemesDir = Path.Combine(BaseDir, "themes");
 
         public static readonly string PluginsDir = Path.Combine(BaseDir, "plugins");
 
