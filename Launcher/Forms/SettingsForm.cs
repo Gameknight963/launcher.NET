@@ -337,6 +337,19 @@ namespace launcherdotnet.Launcher.Forms
         }
 
 
+        private void RefreshBtn_Click(object sender, EventArgs e)
+        {
+            JsonTheme.RegisterAll(true);
+            _themeButtons.Clear();
+            themeButtonsFlowLayoutPanel.Controls.Clear();
+            foreach (Theme theme in Theme.Themes.Values)
+            {
+                RadioButton rb = new RadioButton { Text = theme.UserFriendlyName, AutoSize = true };
+                _themeButtons[theme.Id] = rb;
+                themeButtonsFlowLayoutPanel.Controls.Add(rb);
+            }
+        }
+
         private void SystemThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = "Use the theme Windows is set to.";
 
         private void LightThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = ("Use light theme.");

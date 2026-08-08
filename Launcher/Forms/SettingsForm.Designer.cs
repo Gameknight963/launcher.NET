@@ -44,6 +44,7 @@ namespace launcherdotnet.Launcher.Forms
             gcCollectBtn = new Button();
             AdvancedCheckbox = new CheckedListBox();
             ThemeTab = new TabPage();
+            refreshBtn = new Button();
             themesFolderBtn = new Button();
             visualStyleComboBox = new ComboBox();
             colorButton = new Button();
@@ -227,6 +228,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             // ThemeTab
             // 
+            ThemeTab.Controls.Add(refreshBtn);
             ThemeTab.Controls.Add(themesFolderBtn);
             ThemeTab.Controls.Add(visualStyleComboBox);
             ThemeTab.Controls.Add(colorButton);
@@ -243,6 +245,16 @@ namespace launcherdotnet.Launcher.Forms
             ThemeTab.TabIndex = 5;
             ThemeTab.Text = "Themes";
             ThemeTab.UseVisualStyleBackColor = true;
+            // 
+            // refreshBtn
+            // 
+            refreshBtn.Location = new Point(113, 12);
+            refreshBtn.Name = "refreshBtn";
+            refreshBtn.Size = new Size(76, 23);
+            refreshBtn.TabIndex = 8;
+            refreshBtn.Text = "Refresh";
+            refreshBtn.UseVisualStyleBackColor = true;
+            refreshBtn.Click += RefreshBtn_Click;
             // 
             // themesFolderBtn
             // 
@@ -676,5 +688,6 @@ namespace launcherdotnet.Launcher.Forms
         private ComboBox visualStyleComboBox;
         private Label label5;
         private Button themesFolderBtn;
+        private Button refreshBtn;
     }
 }
