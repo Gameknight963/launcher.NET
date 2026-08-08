@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using launcherdotnet.Launcher.Settings;
+using Microsoft.Win32;
 using System.Runtime.InteropServices;
 
 namespace launcherdotnet.Styling
@@ -6,7 +7,7 @@ namespace launcherdotnet.Styling
     public static class ThemeManager
     {
         // ActiveTheme gets loaded in Settings on start, but this is a safe fallback
-        public static Theme ActiveTheme { get; private set; } = Theme.Light;
+        public static Theme ActiveTheme { get; private set; } = LauncherConstants.DefaultTheme;
         public static int ActiveGradientColor { get; private set; }
         public static VisualStyle ActiveVisualStyle { get; private set; }
 
