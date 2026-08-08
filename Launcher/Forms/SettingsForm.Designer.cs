@@ -41,8 +41,8 @@ namespace launcherdotnet.Launcher.Forms
             GamesLabel = new Label();
             MirrorsHint = new Label();
             AdvancedTab = new TabPage();
-            label6 = new Label();
             performanceLabel = new Label();
+            label6 = new Label();
             gcCollectBtn = new Button();
             AdvancedCheckbox = new CheckedListBox();
             ThemeTab = new TabPage();
@@ -210,30 +210,30 @@ namespace launcherdotnet.Launcher.Forms
             AdvancedTab.Text = "Advanced";
             AdvancedTab.UseVisualStyleBackColor = true;
             // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label6.Location = new Point(3, 114);
-            label6.Margin = new Padding(3);
-            label6.Name = "label6";
-            label6.Size = new Size(78, 15);
-            label6.TabIndex = 2;
-            label6.Text = "Performance:";
-            // 
             // performanceLabel
             // 
             performanceLabel.AutoSize = true;
-            performanceLabel.Location = new Point(3, 135);
+            performanceLabel.Location = new Point(3, 153);
             performanceLabel.Margin = new Padding(3);
             performanceLabel.Name = "performanceLabel";
             performanceLabel.Size = new Size(153, 15);
             performanceLabel.TabIndex = 0;
             performanceLabel.Text = "Performance will show here";
             // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label6.Location = new Point(3, 132);
+            label6.Margin = new Padding(3);
+            label6.Name = "label6";
+            label6.Size = new Size(78, 15);
+            label6.TabIndex = 2;
+            label6.Text = "Performance:";
+            // 
             // gcCollectBtn
             // 
-            gcCollectBtn.Location = new Point(3, 85);
+            gcCollectBtn.Location = new Point(3, 103);
             gcCollectBtn.Name = "gcCollectBtn";
             gcCollectBtn.Size = new Size(109, 23);
             gcCollectBtn.TabIndex = 1;
@@ -245,10 +245,10 @@ namespace launcherdotnet.Launcher.Forms
             // 
             AdvancedCheckbox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             AdvancedCheckbox.FormattingEnabled = true;
-            AdvancedCheckbox.Items.AddRange(new object[] { "Show debug console", "Enable verbose logging", "Disable plugin version check", "Disable IPv6 (requires restart)" });
+            AdvancedCheckbox.Items.AddRange(new object[] { "Show debug console", "Enable verbose logging", "Disable plugin version check", "Disable IPv6 (requires restart)", "Wait for plugins to initialize before starting" });
             AdvancedCheckbox.Location = new Point(3, 3);
             AdvancedCheckbox.Name = "AdvancedCheckbox";
-            AdvancedCheckbox.Size = new Size(337, 76);
+            AdvancedCheckbox.Size = new Size(337, 94);
             AdvancedCheckbox.TabIndex = 0;
             // 
             // ThemeTab

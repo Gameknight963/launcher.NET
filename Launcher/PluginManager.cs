@@ -6,7 +6,7 @@ namespace launcherdotnet.Launcher
 {
     internal static class PluginManager
     {
-        public static async void LoadPlugins(string folder)
+        public static async Task LoadPlugins(string folder)
         {
             if (!Directory.Exists(folder))
             {

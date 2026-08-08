@@ -80,6 +80,7 @@ namespace launcherdotnet.Launcher.Forms
             s.VerboseLogging = AdvancedCheckbox.GetItemChecked(1);
             s.DisablePluginVersionCheck = AdvancedCheckbox.GetItemChecked(2);
             s.DisableIPv6 = AdvancedCheckbox.GetItemChecked(3);
+            s.WaitForPlugins = AdvancedCheckbox.GetItemChecked(4);
 
             string json = JsonConvert.SerializeObject(s, Formatting.Indented);
             LauncherLogger.WriteLine("New settings saved:");
@@ -116,6 +117,7 @@ namespace launcherdotnet.Launcher.Forms
             AdvancedCheckbox.SetItemChecked(1, s.VerboseLogging);
             AdvancedCheckbox.SetItemChecked(2, s.DisablePluginVersionCheck);
             AdvancedCheckbox.SetItemChecked(3, s.DisableIPv6);
+            AdvancedCheckbox.SetItemChecked(4, s.WaitForPlugins);
 
             // --- Theme ---
             foreach (Theme theme in Theme.Themes.Values)
@@ -280,6 +282,12 @@ namespace launcherdotnet.Launcher.Forms
                 case 3:
                     SetSelectedHint("If enabled, launcher.net will not allow IPv6 connections.",
                         "Disabled");
+                    break;
+                case 4:
+                    SetSelectedHint("If enabled launcher.net will not show the main window until all " +
+                        "plugins are done inializing.\n" +
+                        "If plugin loading is slow, enable this (some plugins will be unavailable momentarily as they start).",
+                        "Enabled");
                     break;
             }
         }
