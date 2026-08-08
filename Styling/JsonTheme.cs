@@ -97,12 +97,13 @@ namespace launcherdotnet.Styling
             return Directory.GetFiles(folderPath).Select(Load).OfType<JsonTheme>();
         }
 
-        internal static void RegisterAll()
+        internal static void RegisterAll(bool overwrite = false)
         {
+
             Directory.CreateDirectory(LauncherConstants.ThemesDir);
             foreach (JsonTheme theme in LoadAll(LauncherConstants.ThemesDir))
             {
-                theme.GetTheme().Register();
+                theme.GetTheme().Register(overwrite);
                 LauncherLogger.WriteLine($"Registered {theme.Id}", true);
             }
         }
