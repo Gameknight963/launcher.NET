@@ -248,6 +248,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             // refreshBtn
             // 
+            refreshBtn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             refreshBtn.Location = new Point(113, 12);
             refreshBtn.Name = "refreshBtn";
             refreshBtn.Size = new Size(76, 23);
@@ -258,6 +259,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             // themesFolderBtn
             // 
+            themesFolderBtn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             themesFolderBtn.Location = new Point(195, 12);
             themesFolderBtn.Name = "themesFolderBtn";
             themesFolderBtn.Size = new Size(142, 23);
@@ -341,6 +343,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             // themeButtonsFlowLayoutPanel
             // 
+            themeButtonsFlowLayoutPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             themeButtonsFlowLayoutPanel.AutoScroll = true;
             themeButtonsFlowLayoutPanel.Controls.Add(systemThemeButton);
             themeButtonsFlowLayoutPanel.Controls.Add(lightThemeButton);

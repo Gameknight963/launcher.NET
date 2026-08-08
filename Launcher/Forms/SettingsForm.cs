@@ -348,6 +348,7 @@ namespace launcherdotnet.Launcher.Forms
                 _themeButtons[theme.Id] = rb;
                 themeButtonsFlowLayoutPanel.Controls.Add(rb);
             }
+            ThemeManager.SetVisualStyleRecursive(themeButtonsFlowLayoutPanel, ThemeManager.ActiveVisualStyle);
         }
 
         private void SystemThemeButton_CheckedChanged(object sender, EventArgs e) => Hint.Text = "Use the theme Windows is set to.";
