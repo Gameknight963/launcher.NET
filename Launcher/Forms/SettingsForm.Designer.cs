@@ -37,13 +37,14 @@ namespace launcherdotnet.Launcher.Forms
             PluginsTab = new TabPage();
             GamePluginsBox = new ListBox();
             PluginsTabApiVersionLabel = new Label();
-            button1 = new Button();
+            openPluginsBtn = new Button();
             GamesLabel = new Label();
             MirrorsHint = new Label();
             AdvancedTab = new TabPage();
             gcCollectBtn = new Button();
             AdvancedCheckbox = new CheckedListBox();
             ThemeTab = new TabPage();
+            themesFolderBtn = new Button();
             visualStyleComboBox = new ComboBox();
             colorButton = new Button();
             gradientColorBox = new TextBox();
@@ -51,7 +52,6 @@ namespace launcherdotnet.Launcher.Forms
             label3 = new Label();
             label4 = new Label();
             label1 = new Label();
-            ThemeHint = new Label();
             themeButtonsFlowLayoutPanel = new FlowLayoutPanel();
             systemThemeButton = new RadioButton();
             lightThemeButton = new RadioButton();
@@ -136,7 +136,7 @@ namespace launcherdotnet.Launcher.Forms
             PluginsTab.AutoScroll = true;
             PluginsTab.Controls.Add(GamePluginsBox);
             PluginsTab.Controls.Add(PluginsTabApiVersionLabel);
-            PluginsTab.Controls.Add(button1);
+            PluginsTab.Controls.Add(openPluginsBtn);
             PluginsTab.Controls.Add(GamesLabel);
             PluginsTab.Controls.Add(MirrorsHint);
             PluginsTab.Location = new Point(4, 24);
@@ -166,16 +166,16 @@ namespace launcherdotnet.Launcher.Forms
             PluginsTabApiVersionLabel.TabIndex = 6;
             PluginsTabApiVersionLabel.Text = "API version: v0.0.0";
             // 
-            // button1
+            // openPluginsBtn
             // 
-            button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button1.Location = new Point(197, 58);
-            button1.Name = "button1";
-            button1.Size = new Size(143, 23);
-            button1.TabIndex = 5;
-            button1.Text = "Open plugins folder...";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            openPluginsBtn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            openPluginsBtn.Location = new Point(197, 58);
+            openPluginsBtn.Name = "openPluginsBtn";
+            openPluginsBtn.Size = new Size(143, 23);
+            openPluginsBtn.TabIndex = 5;
+            openPluginsBtn.Text = "Open plugins folder...";
+            openPluginsBtn.UseVisualStyleBackColor = true;
+            openPluginsBtn.Click += OpenPluginsBtn_Click;
             // 
             // GamesLabel
             // 
@@ -227,6 +227,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             // ThemeTab
             // 
+            ThemeTab.Controls.Add(themesFolderBtn);
             ThemeTab.Controls.Add(visualStyleComboBox);
             ThemeTab.Controls.Add(colorButton);
             ThemeTab.Controls.Add(gradientColorBox);
@@ -234,7 +235,6 @@ namespace launcherdotnet.Launcher.Forms
             ThemeTab.Controls.Add(label3);
             ThemeTab.Controls.Add(label4);
             ThemeTab.Controls.Add(label1);
-            ThemeTab.Controls.Add(ThemeHint);
             ThemeTab.Controls.Add(themeButtonsFlowLayoutPanel);
             ThemeTab.Location = new Point(4, 24);
             ThemeTab.Name = "ThemeTab";
@@ -244,19 +244,31 @@ namespace launcherdotnet.Launcher.Forms
             ThemeTab.Text = "Themes";
             ThemeTab.UseVisualStyleBackColor = true;
             // 
+            // themesFolderBtn
+            // 
+            themesFolderBtn.Location = new Point(195, 12);
+            themesFolderBtn.Name = "themesFolderBtn";
+            themesFolderBtn.Size = new Size(142, 23);
+            themesFolderBtn.TabIndex = 8;
+            themesFolderBtn.Text = "Open themes folder";
+            themesFolderBtn.UseVisualStyleBackColor = true;
+            themesFolderBtn.Click += ThemesFolderBtn_Click;
+            // 
             // visualStyleComboBox
             // 
+            visualStyleComboBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             visualStyleComboBox.FormattingEnabled = true;
-            visualStyleComboBox.Location = new Point(6, 327);
+            visualStyleComboBox.Location = new Point(6, 356);
             visualStyleComboBox.Name = "visualStyleComboBox";
             visualStyleComboBox.Size = new Size(121, 23);
             visualStyleComboBox.TabIndex = 7;
             // 
             // colorButton
             // 
-            colorButton.Location = new Point(145, 279);
+            colorButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            colorButton.Location = new Point(145, 308);
             colorButton.Name = "colorButton";
-            colorButton.Size = new Size(86, 23);
+            colorButton.Size = new Size(86, 25);
             colorButton.TabIndex = 6;
             colorButton.Text = "Pick a color";
             colorButton.UseVisualStyleBackColor = true;
@@ -264,7 +276,8 @@ namespace launcherdotnet.Launcher.Forms
             // 
             // gradientColorBox
             // 
-            gradientColorBox.Location = new Point(6, 280);
+            gradientColorBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            gradientColorBox.Location = new Point(6, 309);
             gradientColorBox.Name = "gradientColorBox";
             gradientColorBox.PlaceholderText = "0x66000000";
             gradientColorBox.Size = new Size(133, 23);
@@ -272,9 +285,10 @@ namespace launcherdotnet.Launcher.Forms
             // 
             // label5
             // 
+            label5.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label5.Location = new Point(6, 309);
+            label5.Location = new Point(6, 338);
             label5.Margin = new Padding(3, 3, 3, 0);
             label5.Name = "label5";
             label5.Size = new Size(66, 15);
@@ -283,9 +297,10 @@ namespace launcherdotnet.Launcher.Forms
             // 
             // label3
             // 
+            label3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(6, 262);
+            label3.Location = new Point(6, 291);
             label3.Margin = new Padding(3, 3, 3, 0);
             label3.Name = "label3";
             label3.Size = new Size(82, 15);
@@ -296,7 +311,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.Location = new Point(6, 42);
+            label4.Location = new Point(6, 16);
             label4.Name = "label4";
             label4.Size = new Size(44, 15);
             label4.TabIndex = 4;
@@ -304,21 +319,13 @@ namespace launcherdotnet.Launcher.Forms
             // 
             // label1
             // 
-            label1.Location = new Point(6, 223);
+            label1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            label1.Location = new Point(6, 252);
             label1.Margin = new Padding(3, 3, 3, 0);
             label1.Name = "label1";
-            label1.Size = new Size(331, 36);
+            label1.Size = new Size(331, 38);
             label1.TabIndex = 1;
             label1.Text = "The background color of transparent themes is determined by the gradient color. Change it here.";
-            // 
-            // ThemeHint
-            // 
-            ThemeHint.Location = new Point(6, 6);
-            ThemeHint.Margin = new Padding(3, 3, 3, 0);
-            ThemeHint.Name = "ThemeHint";
-            ThemeHint.Size = new Size(331, 36);
-            ThemeHint.TabIndex = 1;
-            ThemeHint.Text = "launcher.net has multiple themes you can choose from. Pick the one that best suits you.\r\n";
             // 
             // themeButtonsFlowLayoutPanel
             // 
@@ -332,10 +339,10 @@ namespace launcherdotnet.Launcher.Forms
             themeButtonsFlowLayoutPanel.Controls.Add(extendedFrameDarkThemeButton);
             themeButtonsFlowLayoutPanel.Controls.Add(transparentGradientButton);
             themeButtonsFlowLayoutPanel.FlowDirection = FlowDirection.TopDown;
-            themeButtonsFlowLayoutPanel.Location = new Point(6, 57);
+            themeButtonsFlowLayoutPanel.Location = new Point(6, 38);
             themeButtonsFlowLayoutPanel.Margin = new Padding(3, 0, 3, 3);
             themeButtonsFlowLayoutPanel.Name = "themeButtonsFlowLayoutPanel";
-            themeButtonsFlowLayoutPanel.Size = new Size(331, 162);
+            themeButtonsFlowLayoutPanel.Size = new Size(331, 208);
             themeButtonsFlowLayoutPanel.TabIndex = 0;
             // 
             // systemThemeButton
@@ -634,7 +641,7 @@ namespace launcherdotnet.Launcher.Forms
         private Label Hint;
         private CheckedListBox GeneralCheckbox;
         private Label MirrorsHint;
-        private Button button1;
+        private Button openPluginsBtn;
         private Label GamesLabel;
         private Label DescriptionLabel;
         private Label LauncherApiLabel;
@@ -652,7 +659,6 @@ namespace launcherdotnet.Launcher.Forms
         private TabPage ThemeTab;
         private FlowLayoutPanel themeButtonsFlowLayoutPanel;
         private RadioButton systemThemeButton;
-        private Label ThemeHint;
         private RadioButton darkThemeButton;
         private RadioButton blurThemeButton;
         private RadioButton acrylicThemeButton;
@@ -669,5 +675,6 @@ namespace launcherdotnet.Launcher.Forms
         private RadioButton lightThemeButton;
         private ComboBox visualStyleComboBox;
         private Label label5;
+        private Button themesFolderBtn;
     }
 }
