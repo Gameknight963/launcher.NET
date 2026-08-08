@@ -41,6 +41,8 @@ namespace launcherdotnet.Launcher.Forms
             GamesLabel = new Label();
             MirrorsHint = new Label();
             AdvancedTab = new TabPage();
+            label6 = new Label();
+            performanceLabel = new Label();
             gcCollectBtn = new Button();
             AdvancedCheckbox = new CheckedListBox();
             ThemeTab = new TabPage();
@@ -197,6 +199,8 @@ namespace launcherdotnet.Launcher.Forms
             // 
             // AdvancedTab
             // 
+            AdvancedTab.Controls.Add(performanceLabel);
+            AdvancedTab.Controls.Add(label6);
             AdvancedTab.Controls.Add(gcCollectBtn);
             AdvancedTab.Controls.Add(AdvancedCheckbox);
             AdvancedTab.Location = new Point(4, 24);
@@ -205,6 +209,27 @@ namespace launcherdotnet.Launcher.Forms
             AdvancedTab.TabIndex = 3;
             AdvancedTab.Text = "Advanced";
             AdvancedTab.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label6.Location = new Point(3, 114);
+            label6.Margin = new Padding(3);
+            label6.Name = "label6";
+            label6.Size = new Size(78, 15);
+            label6.TabIndex = 2;
+            label6.Text = "Performance:";
+            // 
+            // performanceLabel
+            // 
+            performanceLabel.AutoSize = true;
+            performanceLabel.Location = new Point(3, 135);
+            performanceLabel.Margin = new Padding(3);
+            performanceLabel.Name = "performanceLabel";
+            performanceLabel.Size = new Size(153, 15);
+            performanceLabel.TabIndex = 0;
+            performanceLabel.Text = "Performance will show here";
             // 
             // gcCollectBtn
             // 
@@ -633,6 +658,7 @@ namespace launcherdotnet.Launcher.Forms
             PluginsTab.ResumeLayout(false);
             PluginsTab.PerformLayout();
             AdvancedTab.ResumeLayout(false);
+            AdvancedTab.PerformLayout();
             ThemeTab.ResumeLayout(false);
             ThemeTab.PerformLayout();
             themeButtonsFlowLayoutPanel.ResumeLayout(false);
@@ -692,5 +718,7 @@ namespace launcherdotnet.Launcher.Forms
         private Label label5;
         private Button themesFolderBtn;
         private Button refreshBtn;
+        private Label label6;
+        private Label performanceLabel;
     }
 }

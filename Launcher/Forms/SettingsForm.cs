@@ -36,7 +36,15 @@ namespace launcherdotnet.Launcher.Forms
             this.KeyPreview = true;
             this.KeyDown += SettingsForm_KeyDown;
             this.StartPosition = FormStartPosition.CenterParent;
+
+            _performaceUpdateTimer.Interval = 750;
+            _performaceUpdateTimer.Tick += PerformaceUpdateTimer_Tick;
+            _performaceUpdateTimer.Start();
         }
+
+        private void PerformaceUpdateTimer_Tick(object? sender, EventArgs e) => UpdatePerformace();
+
+        readonly System.Windows.Forms.Timer _performaceUpdateTimer = new();
 
         public class PluginsListboxItem
         {
@@ -154,6 +162,26 @@ namespace launcherdotnet.Launcher.Forms
             public VisualStyle Style;
 
             public override string ToString() => Text;
+        }
+
+        TimeSpan _lastCpuTime;
+        DateTime _lastSampleTime;
+        readonly Process _process = Process.GetCurrentProcess();
+
+        void UpdatePerformace()
+        {
+            performanceLabel.Text = "";
+            long managed = GC.GetTotalMemory(false);
+            performanceLabel.Text += $"Managed heap: {PluginTools.FormatSize(managed)}\n";
+            performanceLabel.Text += $"Unmanaged: {PluginTools.FormatSize(_process.PrivateMemorySize64 - managed)}\n";
+
+            double cpuTimeDelta = (_process.TotalProcessorTime - _lastCpuTime).TotalMilliseconds;
+            double elapsedTime = (DateTime.UtcNow - _lastSampleTime).TotalMilliseconds;
+            double cpuPercent = cpuTimeDelta / (elapsedTime * Environment.ProcessorCount) * 100;
+            _lastCpuTime = _process.TotalProcessorTime;
+            _lastSampleTime = DateTime.UtcNow;
+
+            performanceLabel.Text += $"CPU: {cpuPercent:F1}%\n";
         }
 
         private void SetSelectedHint(string? description, string? defaultSetting = null)
