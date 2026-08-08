@@ -78,6 +78,17 @@ namespace launcherdotnet.Styling
             _themes[Id] = this;
         }
 
+        /// <summary>
+        /// Removes this theme from <see cref="Themes"/>.
+        /// </summary>
+        /// <remarks>
+        /// This only applies on the next time settings is opened.
+        /// </remarks>
+        public void Deregister()
+        {
+            _themes.Remove(Id);
+        }
+
         public Theme(
             string id,
             string userFriendlyName,
