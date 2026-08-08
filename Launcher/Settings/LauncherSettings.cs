@@ -72,6 +72,6 @@ namespace launcherdotnet.Launcher.Settings
         public bool DisablePluginVersionCheck { get; set; } = false;
         public bool DisablePathChecks { get; set; } = false;
         public bool DisableIPv6 { get; set; } = false;
-        public bool WaitForPlugins { get; set; } = true;
+        public bool WaitForPlugins { get; set; } = false;
     }
 }
