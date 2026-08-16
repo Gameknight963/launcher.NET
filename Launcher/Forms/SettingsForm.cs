@@ -3,6 +3,7 @@ using launcherdotnet.PluginAPI;
 using launcherdotnet.Styling;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Reflection.PortableExecutable;
 using System.Runtime.CompilerServices;
 
 namespace launcherdotnet.Launcher.Forms
@@ -124,6 +125,7 @@ namespace launcherdotnet.Launcher.Forms
             {
                 RadioButton rb = new RadioButton { Text = theme.UserFriendlyName, AutoSize = true };
                 _themeButtons[theme.Id] = rb;
+                rb.Margin = new Padding(1);
                 themeButtonsFlowLayoutPanel.Controls.Add(rb);
             }
 
