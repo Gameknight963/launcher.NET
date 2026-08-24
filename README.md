@@ -1,3 +1,5 @@
+![Downloads](https://img.shields.io/github/downloads/gameknight963/launcher.NET/total)
+![Latest Release](https://img.shields.io/github/v/release/gameknight963/launcher.NET)
 # launcher.net
 
 A lightweight game launcher capable of playing **any** game, through the power of plugins. It also has complete Thunderstore integration,
