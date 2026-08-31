@@ -152,6 +152,27 @@ namespace launcherdotnet.Windows
         }
 
         /// <summary>
+        /// Applies the given <paramref name="policy"/> to a window
+        /// </summary>
+        /// <param name="hwnd">The handle of the window.</param>
+        /// <param name="policy">The <see cref="AccentPolicy"/> to apply to the window.</param>
+        /// <returns>
+        /// <see langword="true"/> if the accent policy was applied successfully;
+        /// otherwise, <see langword="false"/>.
+        /// </returns>
+        public static unsafe bool SetAccentPolicy(nint hwnd, AccentPolicy policy)
+        {
+            WindowCompositionAttributeData data = new()
+            {
+                Attribute = WindowCompositionAttribute.WCA_ACCENT_POLICY,
+                Data = (nint)(&policy),
+                SizeOfData = sizeof(AccentPolicy)
+            };
+
+            return SetWindowCompositionAttribute(hwnd, data);
+        }
+
+        /// <summary>
         /// Attempts to set a DWM window attribute value and returns the resulting HRESULT.
         /// </summary>
         /// <param name="hwnd">The handle of the window.</param>
