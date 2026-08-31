@@ -17,26 +17,34 @@ namespace launcherdotnet.Windows
 
         /// <summary>
         /// Enables a gradient color effect.
-        /// This is an undocumented feature introduced in Windows 10.
         /// </summary>
         ACCENT_ENABLE_GRADIENT = 1,
 
         /// <summary>
         /// Enables a transparent gradient effect.
-        /// This is an undocumented feature introduced in Windows 10.
         /// </summary>
         ACCENT_ENABLE_TRANSPARENTGRADIENT = 2,
 
         /// <summary>
         /// Enables a blur-behind effect.
-        /// This is an undocumented feature introduced in Windows 10.
         /// </summary>
         ACCENT_ENABLE_BLURBEHIND = 3,
 
         /// <summary>
         /// Enables an acrylic blur effect.
-        /// This is an undocumented feature introduced in Windows 10 version 1803.
+        /// Introduced in Windows 10 1803.
         /// </summary>
         ACCENT_ENABLE_ACRYLICBLURBEHIND = 4
+
+        /// <summary>
+        /// Draw the host backdrop effect (like windows 11 mica effect.)
+        /// Introduced in Windows 10 1809.
+        /// </summary>
+        ACCENT_ENABLE_HOSTBACKDROP = 5,
+
+        /// <summary>
+        /// Unknown. Seems to draw background fully transparent. I don't recommend you use this
+        /// </summary>
+        ACCENT_INVALID_STATE = 6,
     }
 }
