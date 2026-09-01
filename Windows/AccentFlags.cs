@@ -25,7 +25,13 @@ namespace launcherdotnet.Windows
         /// <summary>
         /// Enables the gradient color (without this flag, the OS chooses).
         /// </summary>
+#pragma warning disable CA1069 // Enums values should not be duplicated
         ACCENT_FLAG_ENABLE_GRADIENT_COLOR = 1 << 1,
+#pragma warning restore CA1069 // Enums values should not be duplicated
+
+        // As stated in the xml of the previous member,
+        // ACCENT_FLAG_ENABLE_MODERN_ACRYLIC_RECIPE and ACCENT_FLAG_ENABLE_GRADIENT_COLOR share
+        // the same value, which is why we supress CA1069
 
         ACCENT_FLAG_ENABLE_FULLSCREEN = 1 << 2,
         ACCENT_FLAG_ENABLE_BORDER_LEFT = 1 << 5,
