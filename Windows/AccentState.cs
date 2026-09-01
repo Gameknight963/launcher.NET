@@ -34,7 +34,7 @@ namespace launcherdotnet.Windows
         /// Enables an acrylic blur effect.
         /// Introduced in Windows 10 1803.
         /// </summary>
-        ACCENT_ENABLE_ACRYLICBLURBEHIND = 4
+        ACCENT_ENABLE_ACRYLICBLURBEHIND = 4,
 
         /// <summary>
         /// Draw the host backdrop effect (like windows 11 mica effect.)

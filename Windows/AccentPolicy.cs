@@ -28,7 +28,7 @@ namespace launcherdotnet.Windows
         /// </param>
         public AccentPolicy(
             AccentState accentState = AccentState.ACCENT_DISABLED,
-            AccentFlags accentFlags = AccentFlags.ACCENT_FLAG_ENABLE_GRADIENT_COLOR,
+            AccentFlags accentFlags = Windows.AccentFlags.ACCENT_FLAG_ENABLE_GRADIENT_COLOR,
             int gradientColor = 0x00000000,
             int animationId = 0)
         {
