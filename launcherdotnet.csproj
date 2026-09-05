@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <Target Name="CopyThemesAfterBuild" AfterTargets="Build">
-    <Exec Command='xcopy "$(ProjectDir)Styling\themes\*" "$(TargetDir)themes\" /E /I /Y' />
+    <Exec Command="xcopy &quot;$(ProjectDir)Styling\themes\*&quot; &quot;$(TargetDir)themes\&quot; /E /I /Y" />
   </Target>
 	
   <ItemGroup>
