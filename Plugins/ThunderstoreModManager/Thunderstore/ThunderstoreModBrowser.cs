@@ -1,4 +1,4 @@
-﻿using launcherdotnet.Launcher.Forms.Thunderstore;
+using launcherdotnet.Launcher.Forms.Thunderstore;
 using launcherdotnet.Launcher.Settings;
 using launcherdotnet.Networking;
 using launcherdotnet.PluginAPI;
@@ -21,11 +21,20 @@ namespace launcherdotnet.Launcher.Forms
         private bool _isLoading = false;
         private readonly Dictionary<int, List<ThunderstoreVersion>> _versionCache = [];
         private readonly Dictionary<int, string> _readmeCache = [];
+        private readonly Dictionary<int, string> _htmlCache = [];
+        private readonly Dictionary<int, ListViewItem> _itemCache = [];
+        private readonly Dictionary<string, Bitmap> _badgeCache = [];
         private string? _currentReadme;
         private readonly GameInfo _game;
         private readonly ThunderstoreConfig _config;
 
         private readonly HashSet<ThunderstoreVersion> _selectedForInstall = [];
+
+        [GeneratedRegex(@"\n</code>")]
+        private static partial Regex CodeNewlineRegex();
+
+        [GeneratedRegex("""<img\s+src="([^"]+)"([^>]*)>""")]
+        private static partial Regex ImgTagRegex();
 
         private static readonly MarkdownPipeline _pipeline = new MarkdownPipelineBuilder()
             .UseAdvancedExtensions()
@@ -61,6 +70,11 @@ namespace launcherdotnet.Launcher.Forms
             {
                 modsLv.VirtualListSize = 0;
                 _packages = [];
+                _itemCache.Clear();
+                _htmlCache.Clear();
+                foreach (Bitmap bmp in _badgeCache.Values)
+                    bmp.Dispose();
+                _badgeCache.Clear();
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             };
@@ -71,11 +85,17 @@ namespace launcherdotnet.Launcher.Forms
                     || args.Src.Contains("shields.io"))
                 {
                     args.Handled = true;
+                    if (_badgeCache.TryGetValue(args.Src, out Bitmap? cached))
+                    {
+                        args.Callback(cached);
+                        return;
+                    }
                     byte[] data = await LauncherHttp.Client.GetByteArrayAsync(args.Src);
                     using MemoryStream ms = new(data);
                     SvgDocument svgDoc = SvgDocument.Open<SvgDocument>(ms);
                     Bitmap svgImg = new((int)(float)svgDoc.Width, (int)(float)svgDoc.Height, PixelFormat.Format32bppArgb);
                     svgDoc.Draw(svgImg);
+                    _badgeCache[args.Src] = svgImg;
                     args.Callback(svgImg);
                 }
             };
@@ -92,7 +112,12 @@ namespace launcherdotnet.Launcher.Forms
 
         private void ModsLv_RetrieveVirtualItem(object? sender, RetrieveVirtualItemEventArgs e)
         {
-            e.Item = new ListViewItem(_packages[e.ItemIndex].Name);
+            if (!_itemCache.TryGetValue(e.ItemIndex, out ListViewItem? item))
+            {
+                item = new ListViewItem(_packages[e.ItemIndex].Name);
+                _itemCache[e.ItemIndex] = item;
+            }
+            e.Item = item;
             if (!_isLoading && _currentChunk < _chunkUrls.Count && e.ItemIndex == _packages.Count - 1)
             {
                 int visibleCount = modsLv.ClientSize.Height / (modsLv.GetItemRect(0).Height);
@@ -187,20 +212,25 @@ namespace launcherdotnet.Launcher.Forms
                 UseWaitCursor = false;
                 return;
             }
-            UpdateReadme(readmeContent);
+            if (!_htmlCache.TryGetValue(index, out string? html))
+            {
+                html = BuildHtml(readmeContent);
+                _htmlCache[index] = html;
+            }
+            _currentReadme = readmeContent;
+            descriptionPanel.Text = html;
             downloadPnl.Visible = true;
             SetDownloadPanelBasedOnContext();
             UseWaitCursor = false;
             PluginLogger.WriteLine($"Done fetching info for {slim.Name}");
         }
 
-        private void UpdateReadme(string readmeContent)
+        private string BuildHtml(string readmeContent)
         {
-            _currentReadme = readmeContent;
             string fg = ColorTranslator.ToHtml(ForeColor);
             string raisedBg = ColorTranslator.ToHtml(ControlPaint.Light(BackColor, 0.1f));
-            string body = Markdig.Markdown.ToHtml(_currentReadme, _pipeline);
-            body = Regex.Replace(body, @"\n</code>", "</code>");
+            string body = Markdig.Markdown.ToHtml(readmeContent, _pipeline);
+            body = CodeNewlineRegex().Replace(body, "</code>");
             string html = $@"<html><head>
                 <style>
                     body {{ font-family: Segoe UI, sans-serif; font-size: 13px; color: {fg}; margin: 8px; }}
@@ -215,13 +245,14 @@ namespace launcherdotnet.Launcher.Forms
                     p:last-child, pre:last-child {{ margin-bottom: 0; }}
                 </style>
                 </head><body>{body}</body></html>";
-            html = Regex.Replace(html, """<img\s+src="([^"]+)"([^>]*)>""", """<a href="img:$1"><img src="$1"$2></a>""");
-            descriptionPanel.Text = html;
+            return ImgTagRegex().Replace(html, """<a href="img:$1"><img src="$1"$2></a>""");
         }
 
         protected override void OnThemeWasApplied()
         {
-            if (_currentReadme != null) UpdateReadme(_currentReadme);
+            _htmlCache.Clear();
+            if (_currentReadme != null)
+                descriptionPanel.Text = BuildHtml(_currentReadme);
         }
 
         private ThunderstoreVersion? GetSelectedVersion()
