@@ -1,5 +1,6 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using launcherdotnet.Launcher.Forms;
+using launcherdotnet.Launcher.Settings;
 
 namespace launcherdotnet.Launcher
 {
@@ -41,6 +42,7 @@ namespace launcherdotnet.Launcher
             }
             catch (InvalidOperationException ex)
             {
+                if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                 CoolMessageBox.Show($"{ex.GetType().Name}: {ex.Message}. Check if games path is malformed.");
             }
 

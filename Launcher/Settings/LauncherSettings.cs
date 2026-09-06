@@ -1,7 +1,6 @@
 ﻿using launcherdotnet.Helpers;
 using launcherdotnet.Styling;
 using Newtonsoft.Json;
-using launcherdotnet.Launcher.Forms;
 
 namespace launcherdotnet.Launcher.Settings
 {
@@ -73,5 +72,6 @@ namespace launcherdotnet.Launcher.Settings
         public bool DisablePathChecks { get; set; } = false;
         public bool DisableIPv6 { get; set; } = false;
         public bool WaitForPlugins { get; set; } = false;
+        public bool DisableExceptionHandling { get; set; } = false;
     }
 }

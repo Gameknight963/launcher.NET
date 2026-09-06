@@ -1,4 +1,4 @@
-﻿using launcherdotnet.Launcher.Settings;
+using launcherdotnet.Launcher.Settings;
 using launcherdotnet.PluginAPI;
 using System.Reflection;
 
@@ -69,6 +69,7 @@ namespace launcherdotnet.Launcher
                 }
                 catch (Exception ex)
                 {
+                    if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                     LauncherLogger.Error(
                         $"Failed to load plugin {Path.GetFileName(file)}: {ex.GetType().Name} - {ex.Message}");
                 }
@@ -95,6 +96,7 @@ namespace launcherdotnet.Launcher
                 }
                 catch (Exception ex)
                 {
+                    if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                     LauncherLogger.Error(
                         $"Failed to initialize plugin '{x.Meta.Name}': {ex.GetType().Name} - {ex.Message}");
                 }

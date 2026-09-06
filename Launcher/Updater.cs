@@ -1,4 +1,4 @@
-﻿using launcherdotnet.Launcher.Settings;
+using launcherdotnet.Launcher.Settings;
 using Semver;
 using System.Diagnostics;
 using System.Text.Json.Nodes;
@@ -45,6 +45,7 @@ namespace launcherdotnet.Launcher
             }
             catch (HttpRequestException)
             {
+                if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                 LauncherLogger.Warn($"An HttpRequestException occured while checking for updates. Ensure you have an Internet connection " +
                     $"and your DNS is properly configured.");
                 if (!LauncherSettings.Settings.WarnOnFailedUpdate) return;
@@ -55,6 +56,7 @@ namespace launcherdotnet.Launcher
             }
             catch (Exception ex)
             {
+                if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                 LauncherLogger.Warn($"Unprecedented exception {ex.GetType().Name} occured while checking for updates. {ex.Message}");
                 if (!LauncherSettings.Settings.WarnOnFailedUpdate) return;
                 CoolMessageBox.Show("An unprecedented error occured while checking for updates. Check the console for more details.",

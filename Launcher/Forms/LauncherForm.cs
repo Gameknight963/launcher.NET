@@ -168,6 +168,7 @@ namespace launcherdotnet.Launcher.Forms
             }
             catch (Exception ex)
             {
+                if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                 LauncherLogger.Error($"Failed to launch:\n{ex}");
                 CoolMessageBox.Show($"Failed to launch game: {ex.Message} Check the console for more details.",
                     "Launch error",
@@ -370,6 +371,7 @@ namespace launcherdotnet.Launcher.Forms
             }
             catch (ArgumentException)
             {
+                if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                 CoolMessageBox.Show($"Could not find the mod provider '{game.ModManagerId}.' Is it installed?",
                     "Invalid Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

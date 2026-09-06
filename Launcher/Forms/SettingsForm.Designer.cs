@@ -213,7 +213,7 @@ namespace launcherdotnet.Launcher.Forms
             // performanceLabel
             // 
             performanceLabel.AutoSize = true;
-            performanceLabel.Location = new Point(3, 153);
+            performanceLabel.Location = new Point(3, 171);
             performanceLabel.Margin = new Padding(3);
             performanceLabel.Name = "performanceLabel";
             performanceLabel.Size = new Size(153, 15);
@@ -224,7 +224,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label6.Location = new Point(3, 132);
+            label6.Location = new Point(3, 150);
             label6.Margin = new Padding(3);
             label6.Name = "label6";
             label6.Size = new Size(78, 15);
@@ -233,7 +233,7 @@ namespace launcherdotnet.Launcher.Forms
             // 
             // gcCollectBtn
             // 
-            gcCollectBtn.Location = new Point(3, 103);
+            gcCollectBtn.Location = new Point(3, 121);
             gcCollectBtn.Name = "gcCollectBtn";
             gcCollectBtn.Size = new Size(109, 23);
             gcCollectBtn.TabIndex = 1;
@@ -245,10 +245,10 @@ namespace launcherdotnet.Launcher.Forms
             // 
             AdvancedCheckbox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             AdvancedCheckbox.FormattingEnabled = true;
-            AdvancedCheckbox.Items.AddRange(new object[] { "Show debug console", "Enable verbose logging", "Disable plugin version check", "Disable IPv6 (requires restart)", "Wait for plugins to initialize before starting" });
+            AdvancedCheckbox.Items.AddRange(new object[] { "Show debug console", "Enable verbose logging", "Disable plugin version check", "Disable IPv6 (requires restart)", "Wait for plugins to initialize before starting", "Disable exception handling" });
             AdvancedCheckbox.Location = new Point(3, 3);
             AdvancedCheckbox.Name = "AdvancedCheckbox";
-            AdvancedCheckbox.Size = new Size(337, 94);
+            AdvancedCheckbox.Size = new Size(337, 112);
             AdvancedCheckbox.TabIndex = 0;
             // 
             // ThemeTab
@@ -456,7 +456,7 @@ namespace launcherdotnet.Launcher.Forms
             extendedFrameThemeButton.Location = new Point(3, 95);
             extendedFrameThemeButton.Margin = new Padding(3, 0, 3, 0);
             extendedFrameThemeButton.Name = "extendedFrameThemeButton";
-            extendedFrameThemeButton.Size = new Size(107, 19);
+            extendedFrameThemeButton.Size = new Size(108, 19);
             extendedFrameThemeButton.TabIndex = 0;
             extendedFrameThemeButton.TabStop = true;
             extendedFrameThemeButton.Text = "Extended frame";
@@ -469,7 +469,7 @@ namespace launcherdotnet.Launcher.Forms
             extendedFrameDarkThemeButton.Location = new Point(3, 114);
             extendedFrameDarkThemeButton.Margin = new Padding(3, 0, 3, 0);
             extendedFrameDarkThemeButton.Name = "extendedFrameDarkThemeButton";
-            extendedFrameDarkThemeButton.Size = new Size(141, 19);
+            extendedFrameDarkThemeButton.Size = new Size(142, 19);
             extendedFrameDarkThemeButton.TabIndex = 0;
             extendedFrameDarkThemeButton.TabStop = true;
             extendedFrameDarkThemeButton.Text = "Extended frame (dark)";
@@ -482,7 +482,7 @@ namespace launcherdotnet.Launcher.Forms
             transparentGradientButton.Location = new Point(3, 133);
             transparentGradientButton.Margin = new Padding(3, 0, 3, 0);
             transparentGradientButton.Name = "transparentGradientButton";
-            transparentGradientButton.Size = new Size(134, 19);
+            transparentGradientButton.Size = new Size(133, 19);
             transparentGradientButton.TabIndex = 1;
             transparentGradientButton.TabStop = true;
             transparentGradientButton.Text = "Transparent gradient";

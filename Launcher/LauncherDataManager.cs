@@ -1,4 +1,4 @@
-﻿using launcherdotnet.Launcher.Settings;
+using launcherdotnet.Launcher.Settings;
 using Newtonsoft.Json;
 using launcherdotnet.Launcher.Forms;
 
@@ -27,6 +27,7 @@ namespace launcherdotnet.Launcher
             }
             catch (Exception ex)
             {
+                if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                 LauncherLogger.Error($"Error reading games.json: {ex.GetType().Name}:", true);
                 if (LauncherSettings.Settings.VerboseLogging)
                 {
@@ -53,6 +54,7 @@ namespace launcherdotnet.Launcher
             }
             catch(Exception ex)
             {
+                if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                 LauncherLogger.Error($"Error writing games.json: {ex.GetType().Name}:", true);
                 if (LauncherSettings.Settings.VerboseLogging)
                 {

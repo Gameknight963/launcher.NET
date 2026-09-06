@@ -1,10 +1,8 @@
-﻿using launcherdotnet.Launcher.Settings;
+using launcherdotnet.Launcher.Settings;
 using launcherdotnet.PluginAPI;
 using launcherdotnet.Styling;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using System.Reflection.PortableExecutable;
-using System.Runtime.CompilerServices;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -82,6 +80,7 @@ namespace launcherdotnet.Launcher.Forms
             s.DisablePluginVersionCheck = AdvancedCheckbox.GetItemChecked(2);
             s.DisableIPv6 = AdvancedCheckbox.GetItemChecked(3);
             s.WaitForPlugins = AdvancedCheckbox.GetItemChecked(4);
+            s.DisableExceptionHandling = AdvancedCheckbox.GetItemChecked(5);
 
             string json = JsonConvert.SerializeObject(s, Formatting.Indented);
             LauncherLogger.WriteLine("New settings saved:");
@@ -119,6 +118,7 @@ namespace launcherdotnet.Launcher.Forms
             AdvancedCheckbox.SetItemChecked(2, s.DisablePluginVersionCheck);
             AdvancedCheckbox.SetItemChecked(3, s.DisableIPv6);
             AdvancedCheckbox.SetItemChecked(4, s.WaitForPlugins);
+            AdvancedCheckbox.SetItemChecked(5, s.DisableExceptionHandling);
 
             // --- Theme ---
             foreach (Theme theme in Theme.Themes.Values)
@@ -273,7 +273,8 @@ namespace launcherdotnet.Launcher.Forms
                         "Disabled");
                     break;
                 case 1:
-                    SetSelectedHint("If enabled, debug logging will be more verbose.",
+                    SetSelectedHint("If enabled, debug logging will include " +
+                        "more details that are hidden from normal logging, which could make logs difficult to read.",
                         "Disabled");
                     break;
                 case 2:
@@ -286,10 +287,16 @@ namespace launcherdotnet.Launcher.Forms
                         "Disabled");
                     break;
                 case 4:
-                    SetSelectedHint("If enabled launcher.net will not show the main window until all " +
+                    SetSelectedHint("If enabled, launcher.net will not show the main window until all " +
                         "plugins are done inializing.\n" +
                         "If plugin loading is slow, enable this (some plugins will be unavailable momentarily as they start).",
                         "Enabled");
+                    break;
+                case 5:
+                    SetSelectedHint("If enabled, launcher.net will rethrow exceptions instead of catching them, " +
+                        "making them easier to inspect during debugging.\n" +
+                        "Exceptions intended to be handled normally will still be caught.",
+                        "Disabled");
                     break;
             }
         }
@@ -307,6 +314,7 @@ namespace launcherdotnet.Launcher.Forms
             }
             catch (Exception ex)
             {
+                if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                 LauncherLogger.Error($"Error applying settings: {ex}");
                 CoolMessageBox.Show(
                     $"Error applying settings: {ex.GetType().Name}. The console may include additional " +
@@ -340,6 +348,7 @@ namespace launcherdotnet.Launcher.Forms
             }
             catch (Exception ex)
             {
+                if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                 CoolMessageBox.Show(ex.Message, "Error opening browser", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 LauncherLogger.WriteLine(ex.ToString());
             }
@@ -369,6 +378,7 @@ namespace launcherdotnet.Launcher.Forms
             }
             catch (Exception ex)
             {
+                if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                 LauncherLogger.Error($"Failed to open folder:\n\n{ex}");
                 CoolMessageBox.Show($"Failed to open folder: {ex.Message}");
             }

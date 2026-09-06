@@ -1,4 +1,4 @@
-﻿using launcherdotnet.Launcher.Settings;
+using launcherdotnet.Launcher.Settings;
 using launcherdotnet.PluginAPI;
 using launcherdotnet.Styling;
 using Semver;
@@ -95,6 +95,7 @@ namespace launcherdotnet.Launcher.Forms
             }
             catch (Exception ex)
             {
+                if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                 LauncherLogger.Error($"Error installing {installer}:\n{ex}");
                 CoolMessageBox.Show(
                     $"Installation failed since a {ex.GetType().Name} occurred: {ex.Message}. See console for full exception.",
