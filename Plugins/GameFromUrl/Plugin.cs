@@ -8,7 +8,7 @@ using System.Windows.Forms;
 [assembly: LauncherPlugin(typeof(Plugin),
     "Game from Url",
     "Downloads a ZIP from a URL and installs it",
-    "2.0.0")]
+    "2.3.0")]
 
 namespace launcherdotnet.Plugins.GameFromUrl
 {
