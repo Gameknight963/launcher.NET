@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace launcherdotnet.Styling
@@ -140,22 +140,6 @@ namespace launcherdotnet.Styling
             using (Brush backBrush = new SolidBrush(back))
             {
                 e.Graphics.FillRectangle(backBrush, e.Bounds);
-            }
-
-            if (UseShadowText)
-            {
-                DrawShadowText(
-                    e.Graphics,
-                    e.SubItem!.Text,
-                    e.SubItem.Font,
-                    e.Bounds,
-                    ActiveTheme.MainStyle.ForeColor
-                );
-            }
-            else
-            {
-                using Brush foreBrush = new SolidBrush(ActiveTheme.MainStyle.ForeColor);
-                e.Graphics.DrawString(e.SubItem!.Text, e.SubItem.Font, foreBrush, e.Bounds);
             }
 
             if (UseShadowText)
