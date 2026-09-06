@@ -19,7 +19,7 @@ namespace launcherdotnet.Launcher
             newGame.RelativeRootDirectory = Path.GetRelativePath(LauncherConstants.BaseDir, installDir);
             Directory.CreateDirectory(installDir);
 
-            PluginGameInfo? installed = await Task.Run(() => installer.Install(installDir, progress, status, version));
+            PluginGameInfo? installed = await installer.Install(installDir, progress, status, version);
             if (installed == null) return null;
 
             newGame.GameName = installed.GameName ?? installer.GameName;
