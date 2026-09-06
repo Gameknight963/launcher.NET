@@ -209,5 +209,20 @@ namespace launcherdotnet.PluginAPI
 
             return $"{size:0.##} {units[unit]}";
         }
+
+        /// <summary>
+        /// Runs a function on a dedicated STA thread and returns the result.
+        /// Use this when calling UI components that require STA, such as <see cref="OpenFileDialog"/>
+        /// or <see cref="FolderBrowserDialog"/>, from async methods or thread pool threads.
+        /// </summary>
+        public static T RunOnSta<T>(Func<T> func)
+        {
+            T result = default!;
+            Thread thread = new(() => result = func());
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
+            return result;
+        }
     }
 }
