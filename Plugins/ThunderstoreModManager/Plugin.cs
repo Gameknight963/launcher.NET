@@ -1,4 +1,4 @@
-﻿using ThunderstoreModManager;
+using ThunderstoreModManager;
 using launcherdotnet.PluginAPI;
 using launcherdotnet.Launcher;
 using launcherdotnet.Launcher.Forms;
@@ -32,6 +32,14 @@ namespace ThunderstoreModManager
         public async Task OpenModBrowser(GameInfo game)
         {
             ThunderstoreConfig config = ThunderstoreConfig.Load(game, ThunderstoreConfig.SourceId);
+            if (config.ThunderstoreSlug == null)
+            {
+                string? result = CoolInputBox.Prompt("This game has no Thunderstore slug set. Assign one here:");
+                if (result == null) return;
+                config.ThunderstoreSlug = result;
+                config.Save(game, ThunderstoreConfig.SourceId);
+            }
+
             using ThunderstoreModBrowser browser = new(game, config);
             browser.ShowDialog();
             config.Save(game, ThunderstoreConfig.SourceId);

@@ -26,7 +26,10 @@ namespace launcherdotnet.Launcher.Forms
         private readonly Dictionary<string, Bitmap> _badgeCache = [];
         private string? _currentReadme;
         private readonly GameInfo _game;
-        private readonly ThunderstoreConfig _config;
+
+        // the only case this would be null if the user pressed cancel
+        // so realistically we can never read a null reference
+        private readonly ThunderstoreConfig _config = null!; 
 
         private readonly HashSet<ThunderstoreVersion> _selectedForInstall = [];
 
@@ -51,17 +54,6 @@ namespace launcherdotnet.Launcher.Forms
             AcceptButton = okButton;
             StartPosition = FormStartPosition.CenterParent;
             modsLv.VirtualMode = true;
-            if (config.ThunderstoreSlug == null)
-            {
-                string? result = CoolInputBox.Prompt("This game has no Thunderstore slug set. Assign one here:");
-                if (result == null)
-                {
-                    DialogResult = DialogResult.Cancel;
-                    Close();
-                }
-                config.ThunderstoreSlug = result;
-                config.Save(game, ThunderstoreConfig.SourceId);
-            }
             _config = config;
             modsLv.RetrieveVirtualItem += ModsLv_RetrieveVirtualItem;
             UpdateModsLv();
