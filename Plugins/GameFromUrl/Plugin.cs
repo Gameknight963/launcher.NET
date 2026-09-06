@@ -139,7 +139,7 @@ namespace launcherdotnet.Plugins.GameFromUrl
 
         public async Task<PluginGameInfo?> Install(string installDir, IProgress<double> progress, IProgress<string> status, string? version = null)
         {
-            string? input = UrlInputBox.Prompt();
+            string? input = PluginTools.RunOnSta( () => UrlInputBox.Prompt());
             if (input == null) return null;
 
             if (!input.Contains("://"))
