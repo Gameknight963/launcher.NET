@@ -175,10 +175,7 @@ namespace launcherdotnet.Launcher.Forms
         void UpdatePerformace()
         {
             _process.Refresh();
-            performanceLabel.Text = "";
             long managed = GC.GetTotalMemory(false);
-            performanceLabel.Text += $"Managed heap: {PluginTools.FormatSize(managed)}\n";
-            performanceLabel.Text += $"Unmanaged: {PluginTools.FormatSize(_process.PrivateMemorySize64 - managed)}\n";
 
             double cpuTimeDelta = (_process.TotalProcessorTime - _lastCpuTime).TotalMilliseconds;
             double elapsedTime = (DateTime.UtcNow - _lastSampleTime).TotalMilliseconds;
@@ -186,7 +183,9 @@ namespace launcherdotnet.Launcher.Forms
             _lastCpuTime = _process.TotalProcessorTime;
             _lastSampleTime = DateTime.UtcNow;
 
-            performanceLabel.Text += $"CPU: {cpuPercent:F1}%\n";
+            performanceLabel.Text = $"Managed heap: {PluginTools.FormatSize(managed)}\n" +
+                                    $"Unmanaged: {PluginTools.FormatSize(_process.PrivateMemorySize64 - managed)}\n" +
+                                    $"CPU: {cpuPercent:F1}%\n";
         }
 
         private void SetSelectedHint(string? description, string? defaultSetting = null)
