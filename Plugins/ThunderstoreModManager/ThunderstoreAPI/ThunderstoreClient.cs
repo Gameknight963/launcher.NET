@@ -76,11 +76,12 @@ namespace ThunderstoreModManager.ThunderstoreAPI
         {
             string url = $"{BaseUrl}/c/{communitySlug}/api/v1/package-listing-index/";
             PluginLogger.WriteLine($"Fetching package list index: {url}");
-            byte[] compressed = await _http.GetByteArrayAsync(url);
-            PluginLogger.WriteLine("Decompressing...");
-            string json = DecompressGzip(compressed);
-            PluginLogger.WriteLine("Deserializing...");
-            List<string>? chunkUrls = JsonConvert.DeserializeObject<List<string>>(json);
+            using Stream stream = await _http.GetStreamAsync(url);
+            using GZipStream gzipStream = new(stream, CompressionMode.Decompress);
+            using StreamReader streamReader = new(gzipStream);
+            using JsonTextReader jsonReader = new(streamReader);
+            JsonSerializer serializer = new();
+            List<string>? chunkUrls = serializer.Deserialize<List<string>>(jsonReader);
             PluginLogger.WriteLine($"Got {chunkUrls?.Count ?? 0} chunk URLs");
             return chunkUrls ?? [];
         }
@@ -98,14 +99,6 @@ namespace ThunderstoreModManager.ThunderstoreAPI
             List<ThunderstorePackageSlim>? packages = serializer.Deserialize<List<ThunderstorePackageSlim>>(jsonReader);
             PluginLogger.WriteLine($"Got {packages?.Count ?? 0} packages from chunk");
             return packages ?? [];
-        }
-
-        private static string DecompressGzip(byte[] compressed)
-        {
-            using MemoryStream inputStream = new(compressed);
-            using GZipStream gzipStream = new(inputStream, CompressionMode.Decompress);
-            using StreamReader reader = new(gzipStream);
-            return reader.ReadToEnd();
         }
 
         public static async Task DownloadModAsync(ThunderstoreVersion version, string modsDirectory)
