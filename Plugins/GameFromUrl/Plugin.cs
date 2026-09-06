@@ -216,11 +216,16 @@ namespace launcherdotnet.Plugins.GameFromUrl
                     return null;
                 }
 
-                using OpenFileDialog dialog = new();
-                dialog.Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*";
-                dialog.Title = "Select the game executable";
-                if (dialog.ShowDialog() != DialogResult.OK) return null;
-                path = dialog.FileName;
+                path = PluginTools.RunOnSta(() =>
+                {
+                    using OpenFileDialog dialog = new();
+                    dialog.Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*";
+                    dialog.Title = "Select the game executable";
+                    dialog.InitialDirectory = installDir;
+                    if (dialog.ShowDialog() != DialogResult.OK) return null;
+                    return dialog.FileName;
+                });
+                if (path == null) return null;
             }
 
             return new PluginGameInfo
