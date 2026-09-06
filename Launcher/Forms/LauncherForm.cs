@@ -29,7 +29,6 @@ namespace launcherdotnet.Launcher.Forms
             SetStatus(IdleStatus);
             SetSidebarMode(SidebarMode.Idle);
 
-            _cachedData = LauncherDataManager.ReadLauncherData();
             UpdateGameList(gamesView);
             ResizeColumns();
             Task.Run(async () => Updater.CheckForUpdates());
