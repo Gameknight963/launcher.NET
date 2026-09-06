@@ -1,4 +1,4 @@
-﻿using launcherdotnet.Launcher.Settings;
+using launcherdotnet.Launcher.Settings;
 using launcherdotnet.Windows;
 using Newtonsoft.Json;
 
@@ -70,15 +70,20 @@ namespace launcherdotnet.Styling
                 return Include.Any(t => IsMatch(control, t));
             }
 
+            private static readonly Dictionary<string, Type?> _typeCache = new();
+
             static bool IsMatch(Control control, string typeName)
             {
-                Type? resolved = Type.GetType(typeName);
-                if (resolved == null)
+                if (!_typeCache.TryGetValue(typeName, out Type? resolved))
                 {
-                    LauncherLogger.Warn($"Theme references nonexistant type '{typeName}'");
-                    return false;
+                    resolved = Type.GetType(typeName);
+                    _typeCache[typeName] = resolved;
+                    if (resolved == null)
+                    {
+                        LauncherLogger.Warn($"Theme references nonexistant type '{typeName}'");
+                    }
                 }
-                return resolved.IsInstanceOfType(control);
+                return resolved?.IsInstanceOfType(control) ?? false;
             }
         }
 
