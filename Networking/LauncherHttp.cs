@@ -1,4 +1,4 @@
-﻿using launcherdotnet.Launcher.Settings;
+using launcherdotnet.Launcher.Settings;
 using System.Diagnostics;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -24,10 +24,15 @@ namespace launcherdotnet.Networking
                 IPAddress? ipv4 = addresses.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork) 
                     ?? throw new Exception("No IPv4 address found.");
                 Socket socket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-                await socket.ConnectAsync(ipv4, context.DnsEndPoint.Port, cancellationToken);
-
-                return new NetworkStream(socket, ownsSocket: true);
+                try
+                {
+                    await socket.ConnectAsync(ipv4, context.DnsEndPoint.Port, cancellationToken);
+                    return new NetworkStream(socket, ownsSocket: true);
+                }
+                finally
+                {
+                    socket.Dispose();
+                }
             };
             _ = TestAsync();
         }

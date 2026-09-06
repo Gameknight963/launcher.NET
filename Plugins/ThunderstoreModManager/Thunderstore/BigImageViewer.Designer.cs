@@ -1,4 +1,4 @@
-﻿namespace launcherdotnet.Launcher.Forms
+namespace launcherdotnet.Launcher.Forms
 {
     partial class BigImageViewer
     {
@@ -13,9 +13,13 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                pictureBox1.Image?.Dispose();
+                if (components != null)
+                {
+                    components.Dispose();
+                }
             }
             base.Dispose(disposing);
         }

@@ -244,7 +244,7 @@ namespace launcherdotnet.Launcher.Forms
             {
                 FileName = game.AbsoluteRootDirectory,
                 UseShellExecute = true
-            });
+            })?.Dispose();
         }
 
         private void RenameButton_Click(object sender, EventArgs e)
@@ -313,7 +313,7 @@ namespace launcherdotnet.Launcher.Forms
                 {
                     FileName = game.AbsoluteRootDirectory,
                     UseShellExecute = true
-                });
+                })?.Dispose();
             }
             if ((e.Control && (e.KeyCode == Keys.L || e.KeyCode == Keys.F)) || e.KeyCode == Keys.NumPad0)
             {

@@ -1,4 +1,4 @@
-﻿using launcherdotnet.Launcher.Settings;
+using launcherdotnet.Launcher.Settings;
 using launcherdotnet.PluginAPI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -124,8 +124,8 @@ namespace ThunderstoreModManager.ThunderstoreAPI
         {
             PluginLogger.WriteLine($"Checking if {communitySlug} exists on Thunderstore...");
             string url = $"https://thunderstore.io/c/{communitySlug}/";
-            HttpRequestMessage request = new(HttpMethod.Head, url);
-            HttpResponseMessage response = await LauncherHttp.Client.SendAsync(request);
+            using HttpRequestMessage request = new(HttpMethod.Head, url);
+            using HttpResponseMessage response = await LauncherHttp.Client.SendAsync(request);
             bool found = response.IsSuccessStatusCode;
             PluginLogger.WriteLine($"{communitySlug} {(found ? "does" : "does not")} have a Thunderstore community ({(int)response.StatusCode})");
             return found;

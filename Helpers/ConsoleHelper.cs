@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 
 internal partial class ConsoleHelper
 {
@@ -11,22 +11,33 @@ internal partial class ConsoleHelper
     private static partial bool FreeConsole();
 
     public static bool ConsoleShown = false;
+    private static StreamWriter? _outWriter;
+    private static StreamWriter? _errWriter;
+    private static StreamReader? _inReader;
 
     public static void Show()
     {
         ConsoleShown = true;
         AllocConsole();
-        Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
-        Console.SetError(new StreamWriter(Console.OpenStandardError()) { AutoFlush = true });
-        Console.SetIn(new StreamReader(Console.OpenStandardInput()));
+        _outWriter = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
+        _errWriter = new StreamWriter(Console.OpenStandardError()) { AutoFlush = true };
+        _inReader = new StreamReader(Console.OpenStandardInput());
+        Console.SetOut(_outWriter);
+        Console.SetError(_errWriter);
+        Console.SetIn(_inReader);
     }
 
     public static void Hide()
     {
         ConsoleShown = false;
-        FreeConsole();
         Console.SetOut(TextWriter.Null);
         Console.SetError(TextWriter.Null);
-        ConsoleShown = false;
+        _outWriter?.Dispose();
+        _errWriter?.Dispose();
+        _inReader?.Dispose();
+        _outWriter = null;
+        _errWriter = null;
+        _inReader = null;
+        FreeConsole();
     }
 }

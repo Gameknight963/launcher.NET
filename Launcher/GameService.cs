@@ -69,7 +69,7 @@ namespace launcherdotnet.Launcher
                 psi.FileName = game.AbsolutePath;
                 psi.CreateNoWindow = false;
             }
-            Process.Start(psi);
+            Process.Start(psi)?.Dispose();
         }
 
         public static bool RemoveMissingGames()

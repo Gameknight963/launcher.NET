@@ -1,4 +1,4 @@
-﻿using Cyotek.Windows.Forms;
+using Cyotek.Windows.Forms;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -15,9 +15,15 @@ namespace launcherdotnet.Launcher.Forms
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                _performaceUpdateTimer.Stop();
+                _performaceUpdateTimer.Dispose();
+                _process.Dispose();
+                if (components != null)
+                {
+                    components.Dispose();
+                }
             }
             base.Dispose(disposing);
         }

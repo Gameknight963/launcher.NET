@@ -84,7 +84,7 @@ namespace launcherdotnet.Launcher
                 {
                     FileName = LauncherConstants.RelesesPage,
                     UseShellExecute = true
-                });
+                })?.Dispose();
                 return;
             }
             LauncherLogger.WriteLine($"No updates available.");

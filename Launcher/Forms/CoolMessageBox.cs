@@ -1,4 +1,4 @@
-﻿using launcherdotnet.Styling;
+using launcherdotnet.Styling;
 using System.Media;
 
 namespace launcherdotnet.Launcher.Forms
@@ -50,7 +50,6 @@ namespace launcherdotnet.Launcher.Forms
 
             this.Text = caption;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            pictureBoxIcon.Image = SystemIcons.Information.ToBitmap();
 
             int lineHeight = TextRenderer.MeasureText("A", label.Font).Height;
             if (text != null) label.Text = text;
@@ -118,6 +117,10 @@ namespace launcherdotnet.Launcher.Forms
                 case MessageBoxIcon.Question:
                     this.Icon = SystemIcons.Question;
                     pictureBoxIcon.Image = SystemIcons.Question.ToBitmap();
+                    break;
+
+                default:
+                    pictureBoxIcon.Visible = false;
                     break;
             }
             switch (icon)

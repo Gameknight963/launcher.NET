@@ -174,6 +174,7 @@ namespace launcherdotnet.Launcher.Forms
 
         void UpdatePerformace()
         {
+            _process.Refresh();
             performanceLabel.Text = "";
             long managed = GC.GetTotalMemory(false);
             performanceLabel.Text += $"Managed heap: {PluginTools.FormatSize(managed)}\n";
@@ -344,7 +345,7 @@ namespace launcherdotnet.Launcher.Forms
                     FileName = url,
                     UseShellExecute = true
                 };
-                Process.Start(psi);
+                Process.Start(psi)?.Dispose();
             }
             catch (Exception ex)
             {
@@ -374,7 +375,7 @@ namespace launcherdotnet.Launcher.Forms
                     UseShellExecute = true
                 };
 
-                Process.Start(psi);
+                Process.Start(psi)?.Dispose();
             }
             catch (Exception ex)
             {
