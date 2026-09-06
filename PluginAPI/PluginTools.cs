@@ -1,10 +1,13 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 namespace launcherdotnet.PluginAPI
 {
-    public class PluginTools
+    public partial class PluginTools
     {
+        [GeneratedRegex(@"[\s_\-]")]
+        private static partial Regex NormalizeNameRegex();
+
         private static readonly string[] _helperExeNames =
         [
             "UnityCrashHandler64.exe",
@@ -32,7 +35,7 @@ namespace launcherdotnet.PluginAPI
             "prereq", "crashhandler", "crash_handler", "unins"
         ];
         private static string NormalizeName(string s) =>
-            Regex.Replace(s, @"[\s_\-]", "", RegexOptions.None).ToLowerInvariant();
+            NormalizeNameRegex().Replace(s, "").ToLowerInvariant();
 
         /// <summary>
         /// Finds the most likely game EXE in a folder
@@ -153,6 +156,15 @@ namespace launcherdotnet.PluginAPI
             public static GameSearchOptions SearchExcludeHelpers => new(true, true);
         }
 
+        [GeneratedRegex(@"[^a-z0-9\s-]")]
+        private static partial Regex SlugInvalidCharsRegex();
+
+        [GeneratedRegex(@"\s+")]
+        private static partial Regex SlugWhitespaceRegex();
+
+        [GeneratedRegex(@"-+")]
+        private static partial Regex SlugDashesRegex();
+
         /// <summary>
         /// Guesses the Thunderstore slug of a game from it's name.
         /// </summary>
@@ -160,10 +172,10 @@ namespace launcherdotnet.PluginAPI
         public static string ToThunderstoreSlug(string name)
         {
             name = name.ToLowerInvariant();
-            name = Regex.Replace(name, @"[^a-z0-9\s-]", "");
-            name = Regex.Replace(name, @"\s+", " ").Trim();
+            name = SlugInvalidCharsRegex().Replace(name, "");
+            name = SlugWhitespaceRegex().Replace(name, " ").Trim();
             name = name.Replace(" ", "-");
-            name = Regex.Replace(name, @"-+", "-");
+            name = SlugDashesRegex().Replace(name, "-");
             return name;
         }
 
@@ -178,6 +190,7 @@ namespace launcherdotnet.PluginAPI
             int total = files.Length;
             int done = 0;
 
+            long lastReportTicks = 0;
             foreach (string file in files)
             {
                 string relative = Path.GetRelativePath(sourceDir, file);
@@ -188,8 +201,13 @@ namespace launcherdotnet.PluginAPI
                 File.Copy(file, target, true);
 
                 done++;
-                progress.Report(((double)done / total) * 100);
-                status.Report($"Copying {done}/{total}");
+                long now = Environment.TickCount64;
+                if (done == total || now - lastReportTicks >= 50)
+                {
+                    lastReportTicks = now;
+                    progress.Report(((double)done / total) * 100);
+                    status.Report($"Copying {done}/{total}");
+                }
             }
         }
 
