@@ -1,9 +1,9 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using System.Text.RegularExpressions;
 
 namespace launcherdotnet.Plugins.SteamGameCopy
 {
-    public static class SteamHelper
+    public static partial class SteamHelper
     {
         public static string? GetSteamPath()
         {
@@ -13,13 +13,19 @@ namespace launcherdotnet.Plugins.SteamGameCopy
                 null) as string;
         }
 
+        [GeneratedRegex("\"path\"\\s+\"([^\"]+)\"")]
+        private static partial Regex VdfPathRegex();
+
+        [GeneratedRegex("\"(?<key>[^\"]+)\"\\s+\"(?<value>[^\"]+)\"")]
+        private static partial Regex AcfFieldRegex();
+
         public static List<string> GetLibraryFolders(string steamPath)
         {
             List<string> folders = [Path.Combine(steamPath, "steamapps")];
             string vdf = Path.Combine(steamPath, "steamapps", "libraryfolders.vdf");
             if (!File.Exists(vdf)) return folders;
             string content = File.ReadAllText(vdf);
-            foreach (Match match in Regex.Matches(content, "\"path\"\\s+\"([^\"]+)\""))
+            foreach (Match match in VdfPathRegex().Matches(content))
                 folders.Add(Path.Combine(match.Groups[1].Value.Replace("\\\\", "\\"), "steamapps"));
             return folders;
         }
@@ -33,23 +39,19 @@ namespace launcherdotnet.Plugins.SteamGameCopy
                 foreach (string acf in Directory.GetFiles(library, "appmanifest_*.acf"))
                 {
                     string content = File.ReadAllText(acf);
-                    string? name = GetValue(content, "name");
-                    string? installdir = GetValue(content, "installdir");
-                    string? sizeStr = GetValue(content, "SizeOnDisk");
-                    if (name == null || installdir == null) continue;
+                    Dictionary<string, string> fields = new(StringComparer.OrdinalIgnoreCase);
+                    foreach (Match m in AcfFieldRegex().Matches(content))
+                        fields.TryAdd(m.Groups["key"].Value, m.Groups["value"].Value);
+
+                    if (!fields.TryGetValue("name", out string? name) || !fields.TryGetValue("installdir", out string? installdir))
+                        continue;
                     string fullPath = Path.Combine(library, "common", installdir);
                     if (!Directory.Exists(fullPath)) continue;
-                    long size = long.Parse(sizeStr ?? "0");
+                    long.TryParse(fields.GetValueOrDefault("SizeOnDisk", "0"), out long size);
                     games.Add(new SteamGame(name, fullPath, size));
                 }
             }
             return games;
-        }
-
-        private static string? GetValue(string content, string key)
-        {
-            Match match = Regex.Match(content, $"\"{key}\"\\s+\"([^\"]+)\"");
-            return match.Success ? match.Groups[1].Value : null;
         }
     }
 
