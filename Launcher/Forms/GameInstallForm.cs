@@ -57,6 +57,12 @@ namespace launcherdotnet.Launcher.Forms
             if (VersionDropdown.Items.Count > 0) VersionDropdown.SelectedIndex = 0;
         }
 
+        void CancelInstall(string reason = "Installation failed.")
+        {
+            progressBar.Value = 0;
+            ActivityHint.Text = reason;
+        }
+
         private async void InstallGameButton_Click(object sender, EventArgs e)
         {
             if (GameDropdown.SelectedItem == null)
@@ -72,7 +78,11 @@ namespace launcherdotnet.Launcher.Forms
             if (installer.PromptForLabel == LabelQueryTime.BeforeInstall)
             {
                 label = LauncherDialogs.QueryLabel(installer.GameName);
-                if (label == null) return;
+                if (label == null)
+                {
+                    CancelInstall("Installation cancelled.");
+                    return;
+                }
             }
 
             string? version = null;
@@ -91,7 +101,11 @@ namespace launcherdotnet.Launcher.Forms
             try
             {
                 newGame = await GameInstallService.InstallAsync(installer, version, progress, status, label);
-                if (newGame == null) return;
+                if (newGame == null)
+                {
+                    CancelInstall();
+                    return;
+                }
             }
             catch (Exception ex)
             {
@@ -102,13 +116,20 @@ namespace launcherdotnet.Launcher.Forms
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
+                // todo: cleanup leftover files if installation fails
+                CancelInstall();
                 return;
             }
 
             if (installer.PromptForLabel == LabelQueryTime.AfterInstall)
             {
                 label = LauncherDialogs.QueryLabel(installer.GameName);
-                if (label == null) return;
+                if (label == null)
+                {
+                    // todo: cleanup leftover files here too
+                    CancelInstall("Installation cancalled.");
+                    return;
+                }
                 newGame.Label = label;
                 GameService.UpsertGame(newGame); // re-save with updated label
             }
