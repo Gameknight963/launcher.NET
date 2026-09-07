@@ -69,9 +69,9 @@ namespace launcherdotnet.Launcher
                 }
                 catch (Exception ex)
                 {
-                    if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                     LauncherLogger.Error(
                         $"Failed to load plugin {Path.GetFileName(file)}: {ex.GetType().Name} - {ex.Message}");
+                    if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                 }
             }
 
@@ -96,9 +96,9 @@ namespace launcherdotnet.Launcher
                 }
                 catch (Exception ex)
                 {
-                    if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                     LauncherLogger.Error(
                         $"Failed to initialize plugin '{x.Meta.Name}': {ex.GetType().Name} - {ex.Message}");
+                    if (LauncherSettings.Settings.DisableExceptionHandling) throw;
                 }
             }));
             if (loadedPluginsCount > 0)

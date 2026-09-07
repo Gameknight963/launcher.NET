@@ -1,9 +1,9 @@
-# build.ps1 — clean, build Release, strip PDB, zip output
+# build.ps1 - clean, build Release, strip PDB, zip output
 
 $scriptDir  = $PSScriptRoot
-$binRelease = Join-Path $scriptDir "bin\Release"
+$binRelease = Join-Path $scriptDir "launcherdotnet\bin\Release"
 $tfmDir     = Join-Path $binRelease "net10.0-windows"
-$outputZip  = Join-Path $scriptDir "bin\launcherdotnet.zip"
+$outputZip  = Join-Path $scriptDir "launcherdotnet\bin\launcherdotnet.zip"
 
 # 1. Delete bin/Release
 if (Test-Path $binRelease) {
