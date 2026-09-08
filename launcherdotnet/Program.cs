@@ -25,11 +25,11 @@ namespace launcherdotnet
 
             if (LauncherSettings.Settings.WaitForPlugins)
             {
-                PluginManager.LoadPlugins(LauncherConstants.PluginsDir).GetAwaiter().GetResult();
+                PluginManager.LoadPlugins().GetAwaiter().GetResult();
             }
             else
             {
-                PluginManager.LoadPlugins(LauncherConstants.PluginsDir).ContinueWith(t =>
+                PluginManager.LoadPlugins().ContinueWith(t =>
                 {
                     if (t.IsFaulted && t.Exception != null)
                     {
