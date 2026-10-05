@@ -3,6 +3,7 @@ using launcherdotnet.Helpers;
 using launcherdotnet.Launcher.Settings;
 using System.Diagnostics;
 using launcherdotnet.PluginAPI;
+using launcherdotnet.Launcher.Controls;
 
 namespace launcherdotnet.Launcher.Forms
 {
@@ -227,7 +228,7 @@ namespace launcherdotnet.Launcher.Forms
                 if (menuPlugin.MenuPluginType == MenuPluginType.GamePluginActions && 
                     menuPlugin.GetMenuItem() is ToolStripMenuItem item)
                 {
-                    pluginActionsButton.DropDownMenu ??= new ContextMenuStrip();
+                    pluginActionsButton.DropDownMenu ??= new CoolContextMenu();
                     pluginActionsButton.DropDownMenu.Items.Add(item);
                 }
             }
