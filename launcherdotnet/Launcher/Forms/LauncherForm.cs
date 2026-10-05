@@ -147,6 +147,7 @@ namespace launcherdotnet.Launcher.Forms
                     RenameButton.Visible = false;
                     editGameInfoButton.Visible = false;
                     installModsButton.Visible = false;
+                    pluginActionsButton.Visible = false;
                     break;
 
                 case SidebarMode.GameSelected:
@@ -155,7 +156,6 @@ namespace launcherdotnet.Launcher.Forms
                     OpenFolderButton.Visible = true;
                     RenameButton.Visible = true;
                     editGameInfoButton.Visible = true;
-                    installModsButton.Visible = true;
                     break;
             }
         }
@@ -197,8 +197,7 @@ namespace launcherdotnet.Launcher.Forms
             // legends will remember salamalonekabatrabaslatrowerebakaedro
             using GameInstallForm form = new GameInstallForm();
             form.ShowDialog();
-            if (form.Success)
-                UpdateGameList(gamesView);
+            if (form.Success) UpdateGameList(gamesView);
         }
 
         private async void button3_Click(object sender, EventArgs e)
@@ -221,6 +220,19 @@ namespace launcherdotnet.Launcher.Forms
             GameInfo? game = GetSelectedGame();
             if (game == null) return;
             installModsButton.Visible = game.ModManagerId != null;
+
+            pluginActionsButton.DropDownMenu = null;
+            foreach (IMenuPlugin menuPlugin in PluginRegistry.MenuPlugins)
+            {
+                if (menuPlugin.MenuPluginType == MenuPluginType.GamePluginActions && 
+                    menuPlugin.GetMenuItem() is ToolStripMenuItem item)
+                {
+                    pluginActionsButton.DropDownMenu ??= new ContextMenuStrip();
+                    pluginActionsButton.DropDownMenu.Items.Add(item);
+                }
+            }
+            pluginActionsButton.Visible = pluginActionsButton.DropDownMenu != null;
+
             InstallHint.Text = Path.GetFileName(game.AbsolutePath);
         }
 

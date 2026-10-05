@@ -39,6 +39,7 @@
             DeleteButton = new Button();
             InstallHint = new Label();
             Panel = new Panel();
+            pluginActionsButton = new launcherdotnet.Launcher.Controls.DropDownButton();
             installModsButton = new Button();
             editGameInfoButton = new Button();
             OpenFolderButton = new Button();
@@ -144,6 +145,7 @@
             // Panel
             // 
             Panel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            Panel.Controls.Add(pluginActionsButton);
             Panel.Controls.Add(installModsButton);
             Panel.Controls.Add(editGameInfoButton);
             Panel.Controls.Add(InstallHint);
@@ -155,6 +157,15 @@
             Panel.Name = "Panel";
             Panel.Size = new Size(173, 389);
             Panel.TabIndex = 3;
+            // 
+            // pluginActionsButton
+            // 
+            pluginActionsButton.Location = new Point(5, 258);
+            pluginActionsButton.Name = "pluginActionsButton";
+            pluginActionsButton.Size = new Size(156, 23);
+            pluginActionsButton.TabIndex = 9;
+            pluginActionsButton.Text = "Plugin actions";
+            pluginActionsButton.UseVisualStyleBackColor = true;
             // 
             // installModsButton
             // 
@@ -255,5 +266,6 @@
         private TextBox SearchBox;
         private Button editGameInfoButton;
         private Button installModsButton;
+        private Controls.DropDownButton pluginActionsButton;
     }
 }

@@ -11,6 +11,7 @@ namespace launcherdotnet.PluginAPI
         private static readonly List<IGameInstaller> _gameInstallPlugins = new();
         private static readonly List<IPluginWithSettings> _pluginsWithSettings = new();
         private static readonly List<IModSource> _modSources = new();
+        private static readonly List<IMenuPlugin> _menuPlugins = new();
 
         private static readonly Lock _lock = new();
 
@@ -29,6 +30,9 @@ namespace launcherdotnet.PluginAPI
 
                 if (descriptor.Instance is IModSource modSource)
                     _modSources.Add(modSource);
+
+                if (descriptor.Instance is IMenuPlugin menuPlugin)
+                    _menuPlugins.Add(menuPlugin);
             }
         }
 
@@ -56,6 +60,11 @@ namespace launcherdotnet.PluginAPI
         /// All registered mod source plugins
         /// </summary>
         public static IReadOnlyList<IModSource> ModSources => _modSources;
+
+        /// <summary>
+        /// All registered menu plugins
+        /// </summary>
+        public static IReadOnlyList<IMenuPlugin> MenuPlugins => _menuPlugins;
 
         public class PluginDescriptor
         {
