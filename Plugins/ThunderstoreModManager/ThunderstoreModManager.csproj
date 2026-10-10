@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
     <NoWarn>$(NoWarn);NU1701;</NoWarn>
   </PropertyGroup>
 

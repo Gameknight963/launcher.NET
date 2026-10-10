@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
     <RootNamespace>launcherdotnet.Plugins.GameFromUrl</RootNamespace>
   </PropertyGroup>
 
