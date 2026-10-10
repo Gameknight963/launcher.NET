@@ -4,6 +4,7 @@
     <OutputType>Library</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>launcherdotnet.Plugins.SteamGameCopy</RootNamespace>
@@ -11,8 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\launcherdotnet\launcherdotnet.csproj" />
-    <ProjectReference Include="..\ThunderstoreModManager\ThunderstoreModManager.csproj" />
+    <ProjectReference Include="..\..\launcherdotnet\launcherdotnet.csproj" Private="false" ExcludeAssets="runtime" />
+    <ProjectReference Include="..\ThunderstoreModManager\ThunderstoreModManager.csproj" Private="false" ExcludeAssets="runtime" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,8 +22,16 @@
     </Compile>
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;$(TargetDir)$(TargetName).dll&quot; &quot;..\..\launcherdotnet\bin\$(Configuration)\net10.0-windows\plugins\$(TargetName)\&quot; /Y /I" />
+  <Target Name="PostBuild" AfterTargets="Build">
+    <PropertyGroup>
+      <PluginOutputDir>$(MSBuildThisFileDirectory)..\..\launcherdotnet\bin\$(Configuration)\$(TargetFramework)\plugins\$(TargetName)\</PluginOutputDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <PluginFiles Include="$(TargetDir)*.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PluginFiles)"
+          DestinationFolder="$(PluginOutputDir)"
+          SkipUnchangedFiles="true" />
   </Target>
 
 </Project>

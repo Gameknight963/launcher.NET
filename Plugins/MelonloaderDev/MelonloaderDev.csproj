@@ -1,17 +1,31 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <RestoreAdditionalProjectSources>$(RestoreAdditionalProjectSources);$(MSBuildThisFileDirectory)packages</RestoreAdditionalProjectSources>
   </PropertyGroup>
   
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;$(TargetDir)$(TargetName).dll&quot; &quot;..\..\launcherdotnet\bin\$(Configuration)\net10.0-windows\plugins\$(TargetName)\&quot; /Y /I" />
+  <Target Name="PostBuild" AfterTargets="Build">
+    <PropertyGroup>
+      <PluginOutputDir>$(MSBuildThisFileDirectory)..\..\launcherdotnet\bin\$(Configuration)\$(TargetFramework)\plugins\$(TargetName)\</PluginOutputDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <PluginFiles Include="$(TargetDir)*.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PluginFiles)"
+          DestinationFolder="$(PluginOutputDir)"
+          SkipUnchangedFiles="true" />
   </Target>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\launcherdotnet\launcherdotnet.csproj" />
+    <ProjectReference Include="..\..\launcherdotnet\launcherdotnet.csproj" Private="false" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MelonLoader.VSWizard.ProjectGeneration" Version="0.1.0" />
   </ItemGroup>
   
 </Project>
