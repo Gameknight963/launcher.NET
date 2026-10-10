@@ -30,6 +30,10 @@ namespace launcherdotnet.Launcher.Controls
             }
         }
 
+        // todo: updates with application gradient color automatically
+        // may require some refactoring
+        public DwmColor AccentColor = DwmColor.FromAbgr(ThemeManager.ActiveGradientColor);
+
         public CoolContextMenu()
         {
             Renderer = new CoolRenderer();
@@ -37,42 +41,54 @@ namespace launcherdotnet.Launcher.Controls
             ForeColor = Color.White;
         }
 
-        // todo: updates with application gradient color automatically
-        // may require some refactoring
-        public DwmColor AccentColor = DwmColor.FromAbgr(ThemeManager.ActiveGradientColor);
-
-        private void HookMenuItem(ToolStripMenuItem item)
+        protected override void OnHandleCreated(EventArgs e)
         {
-            item.DropDownOpened += Item_DropDownOpened;
-
-            foreach (ToolStripMenuItem child in item.DropDownItems.OfType<ToolStripMenuItem>())
-            {
-                HookMenuItem(child);
-            }
+            base.OnHandleCreated(e);
+            DwmApi.SetAccentState(Handle, AccentState.ACCENT_ENABLE_BLURBEHIND, AccentColor.ToAbgr());
         }
 
         protected override void OnItemAdded(ToolStripItemEventArgs e)
         {
             base.OnItemAdded(e);
-
             if (e.Item is ToolStripMenuItem item)
             {
-                HookMenuItem(item);
+                ConfigureMenuItem(item);
             }
         }
 
-        private void Item_DropDownOpened(object? sender, EventArgs e)
+        private void ConfigureMenuItem(ToolStripMenuItem item)
         {
-            if (sender is ToolStripMenuItem item && item.DropDown.IsHandleCreated)
+            ConfigureDropDown(item.DropDown);
+
+            item.DropDown.ItemAdded += (s, e) =>
             {
-                DwmApi.SetAccentState(item.DropDown.Handle, AccentState.ACCENT_ENABLE_BLURBEHIND, AccentColor.ToAbgr());
+                if (e.Item is ToolStripMenuItem childItem)
+                {
+                    ConfigureMenuItem(childItem);
+                }
+            };
+
+            foreach (ToolStripMenuItem child in item.DropDownItems.OfType<ToolStripMenuItem>())
+            {
+                ConfigureMenuItem(child);
             }
         }
 
-        protected override void OnHandleCreated(EventArgs e)
+        private void ConfigureDropDown(ToolStripDropDown dropDown)
         {
-            base.OnHandleCreated(e);
-            DwmApi.SetAccentState(Handle, AccentState.ACCENT_ENABLE_BLURBEHIND, AccentColor.ToAbgr());
+            dropDown.BackColor = Color.FromArgb(0, 0, 0, 0);
+            dropDown.ForeColor = ForeColor;
+            dropDown.Renderer = Renderer;
+
+            dropDown.HandleCreated += (s, e) =>
+            {
+                DwmApi.SetAccentState(dropDown.Handle, AccentState.ACCENT_ENABLE_BLURBEHIND, AccentColor.ToAbgr());
+            };
+
+            if (dropDown.IsHandleCreated)
+            {
+                DwmApi.SetAccentState(dropDown.Handle, AccentState.ACCENT_ENABLE_BLURBEHIND, AccentColor.ToAbgr());
+            }
         }
     }
 }
