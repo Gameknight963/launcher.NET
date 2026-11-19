@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0-windows</TargetFramework>
@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+    <UseWindowsForms>true</UseWindowsForms>
     <RestoreAdditionalProjectSources>$(RestoreAdditionalProjectSources);$(MSBuildThisFileDirectory)packages</RestoreAdditionalProjectSources>
   </PropertyGroup>
   
@@ -16,9 +17,7 @@
     <ItemGroup>
       <PluginFiles Include="$(TargetDir)*.dll" />
     </ItemGroup>
-    <Copy SourceFiles="@(PluginFiles)"
-          DestinationFolder="$(PluginOutputDir)"
-          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(PluginOutputDir)" SkipUnchangedFiles="true" />
   </Target>
 
   <ItemGroup>
@@ -27,6 +26,10 @@
 
   <ItemGroup>
     <PackageReference Include="MelonLoader.VSWizard.ProjectGeneration" Version="0.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MLInstallerSharp" Version="1.0.0" />
   </ItemGroup>
   
 </Project>
